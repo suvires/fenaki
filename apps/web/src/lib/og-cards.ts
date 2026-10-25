@@ -39,7 +39,7 @@ export function pageCard(locale: Locale, page: OgPage): OgCard {
       }
     default:
       return {
-        eyebrow: siteName,
+        eyebrow: t('site.domain'),
         title: t('site.tagline'),
         subtitle: t('home.title'),
         siteName,

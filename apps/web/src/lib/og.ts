@@ -4,6 +4,7 @@
  * turns it into a PNG.
  */
 import { palettes } from '@fenaki/tokens'
+import wordmark from '@fenaki/ui/wordmark.svg?raw'
 import { readFile } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 import satori from 'satori'
@@ -96,6 +97,18 @@ const el = (type: string, style: Record<string, unknown>, children?: unknown): N
   props: { style, children },
 })
 
+/** The logo from the design system, as the site draws it, in the card's ink. */
+const WORDMARK_HEIGHT = 44
+const WORDMARK_RATIO = (() => {
+  const box = /viewBox="0 0 ([\d.]+) ([\d.]+)"/.exec(wordmark)
+  return box ? Number(box[1]) / Number(box[2]) : 3
+})()
+
+function wordmarkDataUri(ink: string): string {
+  const svg = wordmark.replace(/currentColor/g, ink)
+  return `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`
+}
+
 /** The card as Satori's element tree (React-like objects, no JSX needed). */
 export function ogTree(card: OgCard): Node {
   const tone = TONES[card.tone ?? 'sala']
@@ -170,16 +183,15 @@ export function ogTree(card: OgCard): Node {
               : []),
           ]),
           el('div', { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }, [
-            el(
-              'div',
-              {
-                fontFamily: 'display',
-                fontSize: 48,
-                textTransform: 'uppercase',
-                letterSpacing: '0.02em',
+            {
+              type: 'img',
+              props: {
+                src: wordmarkDataUri(tone.ink),
+                alt: card.siteName,
+                height: WORDMARK_HEIGHT,
+                width: Math.round(WORDMARK_HEIGHT * WORDMARK_RATIO),
               },
-              card.siteName,
-            ),
+            },
             el(
               'div',
               { fontFamily: 'mono', fontSize: 24, textTransform: 'uppercase', color: tone.muted },

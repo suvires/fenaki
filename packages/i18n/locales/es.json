@@ -1,6 +1,7 @@
 {
   "site": {
     "name": "Fenaki",
+    "domain": "fenaki.tv",
     "tagline": "Cortometrajes, no clips",
     "description": "Cortometrajes gratis y legales, elegidos uno a uno y vistos desde los canales de sus autores.",
     "skipToContent": "Saltar al contenido",
