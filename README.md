@@ -1,6 +1,6 @@
-# Shortix
+# Fenaki
 
-Curated catalog of free, legally available short films with a streaming-style UX ([shortix.film](https://shortix.film)). Built in public as a 30-day challenge.
+Curated catalog of free, legally available short films with a streaming-style UX ([fenaki.tv](https://fenaki.tv)). Built in public as a 30-day challenge.
 
 This repository is a pnpm + Turborepo monorepo:
 
@@ -37,9 +37,9 @@ Then open:
 
 - Site: <http://localhost:4321/es/> (`/` redirects there)
 - Admin: <http://localhost:3000/admin> (user and password from `SEED_ADMIN_EMAIL` and `SEED_ADMIN_PASSWORD` in `apps/cms/.env`)
-- listmonk: <http://localhost:9000/admin> (`admin` / `shortix-dev-admin`): waitlist subscribers under Subscribers
+- listmonk: <http://localhost:9000/admin> (`admin` / `fenaki-dev-admin`): waitlist subscribers under Subscribers
 - Mailpit: <http://localhost:8025>: every email sent locally lands here; nothing reaches a real inbox
-- Umami: <http://localhost:3001> (`admin` / `umami`): visits and events of the Shortix website
+- Umami: <http://localhost:3001> (`admin` / `umami`): visits and events of the Fenaki website
 - Storybook: <http://localhost:6006> after `pnpm storybook`
 
 `pnpm dev` keeps running in the foreground; stop it with Ctrl+C. `docker compose stop` stops the services and keeps their data.
@@ -69,7 +69,7 @@ To try the waitlist: with `SITE_MODE=landing`, sign up at <http://localhost:4321
 
 ### Adding shorts and checking embeds
 
-In the admin panel, the shorts list starts with «Añadir un corto desde una URL»: paste a YouTube or Vimeo link and Shortix creates the short and its source, pending review («Pendiente de revisión»), with what the provider says: title, official channel, thumbnail and embeddability from the public oEmbed endpoints, plus running time, channel id, language and age restriction from the YouTube Data API when `YOUTUBE_API_KEY` is set, and year, country and language from TMDB when `TMDB_API_KEY` is set. Without keys it still works (YouTube's oEmbed has no running time: the editor fills it in). Duplicates and videos that are missing, private, not embeddable or age restricted are refused. Nothing is published automatically.
+In the admin panel, the shorts list starts with «Añadir un corto desde una URL»: paste a YouTube or Vimeo link and Fenaki creates the short and its source, pending review («Pendiente de revisión»), with what the provider says: title, official channel, thumbnail and embeddability from the public oEmbed endpoints, plus running time, channel id, language and age restriction from the YouTube Data API when `YOUTUBE_API_KEY` is set, and year, country and language from TMDB when `TMDB_API_KEY` is set. Without keys it still works (YouTube's oEmbed has no running time: the editor fills it in). Duplicates and videos that are missing, private, not embeddable or age restricted are refused. Nothing is published automatically.
 
 Each source records its official channel (name, who runs it, URL) and the evidence that it is official. An editor cannot publish a short until one of its sources has both; the catalog import fills them from the catalog file.
 
@@ -84,9 +84,9 @@ A showcase (`Patrocinio › Escaparates`) is a festival's, film school's or inst
 The schema changes only through migrations in `apps/cms/src/migrations`, in development too (Payload's automatic schema push is off), so the first deployment runs exactly what was tested. After changing a collection:
 
 ```sh
-pnpm --filter @shortix/cms migrate:create <name>   # generate a migration from the schema change
+pnpm --filter @fenaki/cms migrate:create <name>   # generate a migration from the schema change
 pnpm migrate                                       # apply pending migrations
-pnpm --filter @shortix/cms generate:types          # and regenerate payload-types.ts
+pnpm --filter @fenaki/cms generate:types          # and regenerate payload-types.ts
 ```
 
 Payload writes `import { MigrateUpArgs, MigrateDownArgs, sql }` at the top of a new migration; mark the two types `type` (`import { sql, type MigrateDownArgs, type MigrateUpArgs }`) or `pnpm migrate` fails under Node's type stripping. Commit the migration with the change. A database created before migrations existed (by the schema push) has to start again: `docker compose down -v && docker compose up -d`, then the setup above from `pnpm migrate`.
@@ -95,37 +95,37 @@ Payload writes `import { MigrateUpArgs, MigrateDownArgs, sql }` at the top of a 
 
 Run from the repository root.
 
-| Command               | What it does                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm dev`            | Site, CMS and jobs worker in watch mode.                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| `pnpm build`          | Builds the tokens, the site and the CMS.                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| `pnpm lint`           | ESLint and Prettier check over the whole repo.                                                                                                                                                                                                                                                                                                                                                                                                             |
-| `pnpm format`         | Formats everything with Prettier.                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| `pnpm typecheck`      | TypeScript in every package (`astro check` for the site).                                                                                                                                                                                                                                                                                                                                                                                                  |
-| `pnpm test`           | Vitest unit tests: token build, i18n, formatting, catalog, search, import, waitlist, ingestion from URLs, the embed checker, showcase rules, browse filters and SEO helpers.                                                                                                                                                                                                                                                                               |
-| `pnpm test:e2e`       | Playwright tests of the catalog (home, short page, search, browse filters, person and showcase pages, structured data, OG images, sitemap, sponsorship page) and the landing (waitlist with the confirmation email, hidden catalog routes, legal pages). Needs the Docker services and `pnpm setup:services`; runs on its own database and ports (see below). Install the browser once with `pnpm --filter @shortix/web exec playwright install chromium`. |
-| `pnpm migrate`        | Applies pending database migrations.                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| `pnpm import:catalog` | Imports the real catalog from `CATALOG_IMPORT_PATH`.                                                                                                                                                                                                                                                                                                                                                                                                       |
-| `pnpm seed`           | Loads the sample catalog and the admin user (empty databases only).                                                                                                                                                                                                                                                                                                                                                                                        |
-| `pnpm setup:services` | Configures listmonk (lists, SMTP, privacy settings, confirmation email) and Umami (website). Idempotent; run it again after changing the email copy.                                                                                                                                                                                                                                                                                                       |
-| `pnpm storybook`      | Storybook for `packages/ui`, with the accessibility addon.                                                                                                                                                                                                                                                                                                                                                                                                 |
+| Command               | What it does                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm dev`            | Site, CMS and jobs worker in watch mode.                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `pnpm build`          | Builds the tokens, the site and the CMS.                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `pnpm lint`           | ESLint and Prettier check over the whole repo.                                                                                                                                                                                                                                                                                                                                                                                                            |
+| `pnpm format`         | Formats everything with Prettier.                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `pnpm typecheck`      | TypeScript in every package (`astro check` for the site).                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `pnpm test`           | Vitest unit tests: token build, i18n, formatting, catalog, search, import, waitlist, ingestion from URLs, the embed checker, showcase rules, browse filters and SEO helpers.                                                                                                                                                                                                                                                                              |
+| `pnpm test:e2e`       | Playwright tests of the catalog (home, short page, search, browse filters, person and showcase pages, structured data, OG images, sitemap, sponsorship page) and the landing (waitlist with the confirmation email, hidden catalog routes, legal pages). Needs the Docker services and `pnpm setup:services`; runs on its own database and ports (see below). Install the browser once with `pnpm --filter @fenaki/web exec playwright install chromium`. |
+| `pnpm migrate`        | Applies pending database migrations.                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `pnpm import:catalog` | Imports the real catalog from `CATALOG_IMPORT_PATH`.                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `pnpm seed`           | Loads the sample catalog and the admin user (empty databases only).                                                                                                                                                                                                                                                                                                                                                                                       |
+| `pnpm setup:services` | Configures listmonk (lists, SMTP, privacy settings, confirmation email) and Umami (website). Idempotent; run it again after changing the email copy.                                                                                                                                                                                                                                                                                                      |
+| `pnpm storybook`      | Storybook for `packages/ui`, with the accessibility addon.                                                                                                                                                                                                                                                                                                                                                                                                |
 
 One package or one test:
 
 ```sh
-pnpm --filter @shortix/i18n test                                   # one package
-pnpm --filter @shortix/i18n exec vitest run test/format.test.ts    # one file
-pnpm --filter @shortix/i18n exec vitest run -t "formatDuration"    # tests matching a name
-pnpm --filter @shortix/web exec playwright test -g "search"        # one smoke test
+pnpm --filter @fenaki/i18n test                                   # one package
+pnpm --filter @fenaki/i18n exec vitest run test/format.test.ts    # one file
+pnpm --filter @fenaki/i18n exec vitest run -t "formatDuration"    # tests matching a name
+pnpm --filter @fenaki/web exec playwright test -g "search"        # one smoke test
 ```
 
 CMS-specific:
 
 ```sh
-pnpm --filter @shortix/cms jobs              # the jobs worker alone
-pnpm --filter @shortix/cms generate:types    # after changing a collection: regenerate payload-types.ts
-pnpm --filter @shortix/cms generate:importmap
-pnpm --filter @shortix/cms reindex           # rebuild the search indexes and apply their settings
+pnpm --filter @fenaki/cms jobs              # the jobs worker alone
+pnpm --filter @fenaki/cms generate:types    # after changing a collection: regenerate payload-types.ts
+pnpm --filter @fenaki/cms generate:importmap
+pnpm --filter @fenaki/cms reindex           # rebuild the search indexes and apply their settings
 ```
 
 Run `reindex` after changing the search document or its settings (`apps/cms/src/search/document.ts`); the jobs worker only syncs shorts as they change.
@@ -139,7 +139,7 @@ Two GitHub Actions workflows run on every push and pull request, without secrets
 - `.github/workflows/checks.yml`: `pnpm lint`, `pnpm typecheck` and `pnpm test`.
 - `.github/workflows/visual.yml`: the visual regression tests.
 
-The e2e tests never touch the development data. Playwright starts a CMS on port 3100 against the `shortix_test` database (migrated and seeded on every start, `test_` search indexes) and one production build of the site, served in catalog mode on port 4400 and in landing mode on port 4401. All of them stop when the run ends. To run a second copy at the same time (another checkout), move it aside with `E2E_CMS_PORT`, `E2E_CATALOG_PORT`, `E2E_LANDING_PORT`, `E2E_DATABASE` (create the database first) and `E2E_INDEX_PREFIX`. The waitlist test signs up a unique `e2e+…@example.com` address, reads the email from Mailpit and deletes the subscriber from listmonk afterwards.
+The e2e tests never touch the development data. Playwright starts a CMS on port 3100 against the `fenaki_test` database (migrated and seeded on every start, `test_` search indexes) and one production build of the site, served in catalog mode on port 4400 and in landing mode on port 4401. All of them stop when the run ends. To run a second copy at the same time (another checkout), move it aside with `E2E_CMS_PORT`, `E2E_CATALOG_PORT`, `E2E_LANDING_PORT`, `E2E_DATABASE` (create the database first) and `E2E_INDEX_PREFIX`. The waitlist test signs up a unique `e2e+…@example.com` address, reads the email from Mailpit and deletes the subscriber from listmonk afterwards.
 
 The visual workflow runs the visual regression tests on every push and pull request, in the same Playwright image and on arm64 runners, the same architecture as Apple Silicon, so local baselines match CI exactly. It uses no secrets or paid services. When it fails, the job uploads the Playwright report with the expected, actual and diff images as an artifact.
 
@@ -167,7 +167,7 @@ Sentry (error tracking, server side only) is off while `SENTRY_DSN` is empty, so
 
 The site reads all of them when the server starts, not at build time, so one build serves either mode in any environment.
 
-**Email.** listmonk sends through the SMTP server that `pnpm setup:services` writes into its settings from `LISTMONK_SMTP_HOST`, `LISTMONK_SMTP_PORT`, `LISTMONK_SMTP_AUTH` (`none`, `login`, `plain` or `cram`), `LISTMONK_SMTP_TLS` (`none`, `STARTTLS` or `TLS`), `LISTMONK_SMTP_USERNAME` and `LISTMONK_SMTP_PASSWORD`, with `LISTMONK_FROM_EMAIL` as sender. Locally that is Mailpit (`mailpit:1025`, no auth, as seen from the listmonk container), and Compose resets listmonk to Mailpit on every start, so development never sends real email. In production it is Amazon SES in an EU region: `email-smtp.<region>.amazonaws.com`, port 587, `login`, `STARTTLS`, and the SES SMTP credentials. The confirmation email is listmonk's transactional template `shortix-waitlist-confirm-es`, generated from `packages/i18n` and the light palette; listmonk's own opt-in email is switched off.
+**Email.** listmonk sends through the SMTP server that `pnpm setup:services` writes into its settings from `LISTMONK_SMTP_HOST`, `LISTMONK_SMTP_PORT`, `LISTMONK_SMTP_AUTH` (`none`, `login`, `plain` or `cram`), `LISTMONK_SMTP_TLS` (`none`, `STARTTLS` or `TLS`), `LISTMONK_SMTP_USERNAME` and `LISTMONK_SMTP_PASSWORD`, with `LISTMONK_FROM_EMAIL` as sender. Locally that is Mailpit (`mailpit:1025`, no auth, as seen from the listmonk container), and Compose resets listmonk to Mailpit on every start, so development never sends real email. In production it is Amazon SES in an EU region: `email-smtp.<region>.amazonaws.com`, port 587, `login`, `STARTTLS`, and the SES SMTP credentials. The confirmation email is listmonk's transactional template `fenaki-waitlist-confirm-es`, generated from `packages/i18n` and the light palette; listmonk's own opt-in email is switched off.
 
 The values in `docker-compose.yml` and the `.env.example` files are for local development only.
 
