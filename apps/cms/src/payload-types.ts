@@ -71,6 +71,8 @@ export interface Config {
     sources: Source;
     people: Person;
     collections: Collection;
+    showcases: Showcase;
+    media: Media;
     licenses: License;
     'license-documents': LicenseDocument;
     sponsors: Sponsor;
@@ -91,6 +93,8 @@ export interface Config {
     sources: SourcesSelect<false> | SourcesSelect<true>;
     people: PeopleSelect<false> | PeopleSelect<true>;
     collections: CollectionsSelect<false> | CollectionsSelect<true>;
+    showcases: ShowcasesSelect<false> | ShowcasesSelect<true>;
+    media: MediaSelect<false> | MediaSelect<true>;
     licenses: LicensesSelect<false> | LicensesSelect<true>;
     'license-documents': LicenseDocumentsSelect<false> | LicenseDocumentsSelect<true>;
     sponsors: SponsorsSelect<false> | SponsorsSelect<true>;
@@ -429,6 +433,79 @@ export interface Sponsor {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "showcases".
+ */
+export interface Showcase {
+  id: number;
+  /**
+   * As it presents itself.
+   */
+  name: string;
+  /**
+   * Part of the URL. Generated from the title when left empty.
+   */
+  slug: string;
+  kind: 'festival' | 'school' | 'institution';
+  website?: string | null;
+  logo?: (number | null) | Media;
+  /**
+   * Two or three sentences about the organization and its selection.
+   */
+  intro?: string | null;
+  /**
+   * In display order. Only shorts on official channels; never non-commercial (NC) ones.
+   */
+  shorts?: (number | Short)[] | null;
+  /**
+   * Festivals show past editions or awards only. Tick it once you have checked every short; it is required to publish.
+   */
+  offCircuitConfirmed?: boolean | null;
+  /**
+   * Optional credit in the page header. Branded shorts cannot be in a presented showcase.
+   */
+  presentedBy?: (number | null) | Sponsor;
+  status: 'draft' | 'published';
+  /**
+   * Sample data for development, not a catalog entry.
+   */
+  sample?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  /**
+   * What the image says, for people who cannot see it. For a logo, the organization’s name.
+   */
+  alt: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  sizes?: {
+    logo?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -595,6 +672,14 @@ export interface PayloadLockedDocument {
         value: number | Collection;
       } | null)
     | ({
+        relationTo: 'showcases';
+        value: number | Showcase;
+      } | null)
+    | ({
+        relationTo: 'media';
+        value: number | Media;
+      } | null)
+    | ({
         relationTo: 'licenses';
         value: number | License;
       } | null)
@@ -749,6 +834,57 @@ export interface CollectionsSelect<T extends boolean = true> {
   importKey?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "showcases_select".
+ */
+export interface ShowcasesSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  kind?: T;
+  website?: T;
+  logo?: T;
+  intro?: T;
+  shorts?: T;
+  offCircuitConfirmed?: T;
+  presentedBy?: T;
+  status?: T;
+  sample?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media_select".
+ */
+export interface MediaSelect<T extends boolean = true> {
+  alt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+  sizes?:
+    | T
+    | {
+        logo?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

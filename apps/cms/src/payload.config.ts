@@ -9,8 +9,10 @@ import sharp from 'sharp'
 import { Collections } from './collections/Collections.ts'
 import { LicenseDocuments } from './collections/LicenseDocuments.ts'
 import { Licenses } from './collections/Licenses.ts'
+import { Media } from './collections/Media.ts'
 import { People } from './collections/People.ts'
 import { Shorts } from './collections/Shorts.ts'
+import { Showcases } from './collections/Showcases.ts'
 import { Sources } from './collections/Sources.ts'
 import { Sponsors } from './collections/Sponsors.ts'
 import { Users } from './collections/Users.ts'
@@ -47,7 +49,18 @@ export default buildConfig({
     defaultLocale,
     fallback: true,
   },
-  collections: [Shorts, Sources, People, Collections, Licenses, LicenseDocuments, Sponsors, Users],
+  collections: [
+    Shorts,
+    Sources,
+    People,
+    Collections,
+    Showcases,
+    Media,
+    Licenses,
+    LicenseDocuments,
+    Sponsors,
+    Users,
+  ],
   cors: [process.env.WEB_URL ?? 'http://localhost:4321'],
   // The schema changes only through migrations (`pnpm migrate`), in development too, so the
   // first deployment runs exactly what was tested locally.

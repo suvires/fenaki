@@ -5,7 +5,8 @@
 import config from '@payload-config'
 import { getPayload } from 'payload'
 import { slugify } from '../fields/slug.ts'
-import { SAMPLE_COLLECTION, SAMPLE_SHORTS, SAMPLE_SPONSOR } from './data.ts'
+import sharp from 'sharp'
+import { SAMPLE_COLLECTION, SAMPLE_SHORTS, SAMPLE_SHOWCASE, SAMPLE_SPONSOR } from './data.ts'
 import { ensureAdmin, removeSamples, runSearchSync } from './shared.ts'
 
 const payload = await getPayload({ config })
@@ -75,6 +76,8 @@ for (const sample of SAMPLE_SHORTS) {
       subtitles: sample.subtitles,
       embeddable: true,
       status: 'unchecked',
+      channel: { name: `[sample] ${sample.directors.join(', ')}`, kind: 'author' },
+      officialEvidence: 'Sample data. Not verified on an official channel.',
       license: license.id,
     },
   })
@@ -100,6 +103,38 @@ await payload.create({
   },
 })
 log('created the sponsored sample collection')
+
+// A plain typographic logo, generated: no real organization's mark.
+const logoSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="480" height="160"><rect width="480" height="160" fill="#f4efe6"/><text x="240" y="96" font-family="sans-serif" font-size="40" font-weight="700" text-anchor="middle" fill="#1a1714">ESCUELA · EJEMPLO</text></svg>`
+const logoPng = await sharp(Buffer.from(logoSvg)).png().toBuffer()
+const logo = await payload.create({
+  collection: 'media',
+  locale: 'es',
+  data: { alt: SAMPLE_SHOWCASE.name },
+  file: { data: logoPng, mimetype: 'image/png', name: 'sample-logo.png', size: logoPng.length },
+})
+const titles = new Map(SAMPLE_SHORTS.map((sample, index) => [sample.title, shortIds[index]]))
+await payload.create({
+  collection: 'showcases',
+  locale: 'es',
+  data: {
+    name: SAMPLE_SHOWCASE.name,
+    slug: slugify(SAMPLE_SHOWCASE.name),
+    kind: SAMPLE_SHOWCASE.kind,
+    website: SAMPLE_SHOWCASE.website,
+    intro: SAMPLE_SHOWCASE.intro,
+    logo: logo.id,
+    shorts: SAMPLE_SHOWCASE.shorts.map((title) => {
+      const id = titles.get(title)
+      if (id === undefined) throw new Error(`Unknown sample short ${title}`)
+      return id
+    }),
+    presentedBy: sponsor.id,
+    status: 'published',
+    sample: true,
+  },
+})
+log('created the sample showcase')
 
 await runSearchSync(payload, log)
 
