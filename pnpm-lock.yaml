@@ -234,6 +234,12 @@ importers:
         specifier: 8.72.0
         version: 8.72.0(eslint@10.13.0)(typescript@6.0.3)
 
+  packages/i18n:
+    devDependencies:
+      vitest:
+        specifier: 5.0.5
+        version: 5.0.5(@types/node@26.6.5)(vite@8.3.5(@types/node@26.6.5))
+
   packages/tokens:
     dependencies:
       '@fontsource/atkinson-hyperlegible-mono':

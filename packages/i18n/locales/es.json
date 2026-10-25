@@ -1,0 +1,108 @@
+{
+  "site": {
+    "name": "Shortix",
+    "tagline": "Cortometrajes, no clips",
+    "description": "Cortometrajes gratis y legales, elegidos uno a uno y vistos desde los canales de sus autores.",
+    "skipToContent": "Saltar al contenido",
+    "home": "Inicio"
+  },
+  "search": {
+    "label": "Buscar cortos",
+    "placeholder": "Título, director o tema",
+    "title": "Buscar",
+    "prompt": "Escribe un título, un director o un tema.",
+    "results": {
+      "one": "{count} corto encontrado",
+      "other": "{count} cortos encontrados"
+    },
+    "empty": "No hay cortos que coincidan con «{query}».",
+    "unavailable": "La búsqueda no está disponible ahora. Prueba de nuevo en unos minutos."
+  },
+  "home": {
+    "title": "Cortometrajes gratis y legales",
+    "filtersLabel": "Duración",
+    "filters": {
+      "short": "Menos de 5 min",
+      "mid": "De 5 a 15 min",
+      "long": "Más de 15 min",
+      "subtitles": "Con subtítulos en español"
+    },
+    "rails": {
+      "latest": "Novedades",
+      "noDialogue": "Sin diálogos",
+      "animation": "Animación"
+    },
+    "empty": "Todavía no hay cortos publicados.",
+    "noMatches": "Ningún corto coincide con este filtro."
+  },
+  "collection": {
+    "eyebrow": {
+      "one": "Colección · {count} corto",
+      "other": "Colección · {count} cortos"
+    },
+    "cta": "Ver la colección",
+    "addToList": "Añadir a mi lista",
+    "sponsoredBy": "Presentada por"
+  },
+  "rail": {
+    "seeAll": "Ver todo"
+  },
+  "short": {
+    "directedBy": "Dirigido por {names}",
+    "credits": "Créditos",
+    "synopsis": "Sinopsis",
+    "addToList": "Añadir a mi lista",
+    "related": "Si te ha gustado",
+    "origin": "{country} · {year}",
+    "player": {
+      "play": "Ver ahora",
+      "message": "Este corto se reproduce desde {provider}. Al darle a reproducir, {provider} puede guardar cookies en tu navegador.",
+      "more": "Más sobre las cookies",
+      "loaded": "Aquí se carga el reproductor de {provider}",
+      "sample": "Este es un corto de ejemplo: no tiene un reproductor real.",
+      "frameTitle": "Reproductor de {provider}: {title}"
+    },
+    "types": {
+      "fiction": "Ficción",
+      "documentary": "Documental",
+      "animation": "Animación",
+      "experimental": "Experimental"
+    },
+    "roles": {
+      "director": "Dirección",
+      "writer": "Guion",
+      "producer": "Producción",
+      "cinematographer": "Fotografía",
+      "editor": "Montaje",
+      "composer": "Música",
+      "cast": "Reparto"
+    }
+  },
+  "license": {
+    "routes": {
+      "embed": "Embed oficial",
+      "open": "Licencia abierta",
+      "direct": "Licencia directa"
+    },
+    "text": {
+      "embed": "Se reproduce desde el canal oficial en {provider}. Shortix no aloja ni modifica el corto.",
+      "open": "Se publica con una licencia abierta que permite verlo y compartirlo.",
+      "direct": "Se publica en Shortix con permiso directo de sus autores."
+    }
+  },
+  "badges": {
+    "new": "Nuevo",
+    "subtitles": "Sub {language}",
+    "noDialogue": "Sin diálogos"
+  },
+  "providers": {
+    "youtube": "YouTube",
+    "vimeo": "Vimeo",
+    "bunny": "Shortix"
+  },
+  "errors": {
+    "notFoundTitle": "No encontramos este corto",
+    "notFound": "Puede que la dirección esté mal escrita o que el corto ya no esté disponible.",
+    "backHome": "Volver al inicio"
+  }
+}
