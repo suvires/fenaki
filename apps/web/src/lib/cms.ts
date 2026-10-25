@@ -261,6 +261,7 @@ export function toCardSource(short: PublishedShort): CardSource {
   return {
     slug: short.slug,
     title: short.title,
+    synopsis: short.synopsis,
     directors: peopleOf(short, 'director'),
     year: short.year,
     durationSeconds: short.durationSeconds,

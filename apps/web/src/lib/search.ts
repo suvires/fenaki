@@ -11,6 +11,7 @@ export interface ShortHit {
   id: number
   slug: string
   title: string
+  synopsis?: string
   directors: string[]
   year: number | null
   durationSeconds: number
@@ -85,6 +86,7 @@ function toCardSource(hit: ShortHit): CardSource {
   return {
     slug: hit.slug,
     title: hit.title,
+    synopsis: hit.synopsis,
     directors: hit.directors,
     year: hit.year,
     durationSeconds: hit.durationSeconds,

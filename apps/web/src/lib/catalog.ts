@@ -1,11 +1,12 @@
 import { formatList, type Locale, type Translate } from '@fenaki/i18n'
-import type { NewSavedShort } from './myList.ts'
+import type { CurrentShort, NewSavedShort } from './myList.ts'
 import type { BadgeTone, PosterTone, ShortCardProps } from '@fenaki/ui'
 
 /** The catalog fields the cards, filters and badges need, from the CMS or the search index. */
 export interface CardSource {
   slug: string
   title: string
+  synopsis?: string | null
   directors: string[]
   year?: number | null
   durationSeconds: number
@@ -100,6 +101,7 @@ export function toCard(
 ): ShortCardProps {
   return {
     title: short.title,
+    synopsis: short.synopsis || undefined,
     director: short.directors.length > 0 ? formatList(short.directors, locale) : undefined,
     year: short.year ?? undefined,
     seconds: short.durationSeconds,
@@ -131,4 +133,9 @@ export function toSavedShort(short: CardSource, locale: Locale): NewSavedShort {
     tone: posterTone(short.posterTone),
     image: short.still ?? undefined,
   }
+}
+
+/** A short's card data as «Mi lista» shows it now: what it saves, plus the synopsis it does not. */
+export function toCurrentShort(short: CardSource, locale: Locale): CurrentShort {
+  return { ...toSavedShort(short, locale), synopsis: short.synopsis || undefined }
 }

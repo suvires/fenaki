@@ -35,3 +35,21 @@
   );
   background-size: var(--size-perforation) calc(2 * var(--size-perforation-hole));
 }
+
+/*
+ * A short card in its expanded state: hovered (only on devices that hover), keyboard focused, or
+ * forced with data-expanded for previews. Use inside an element with the `group` class.
+ */
+@custom-variant expanded {
+  &:where([data-expanded], [data-expanded] *) {
+    @slot;
+  }
+  &:where(.group:focus-visible *) {
+    @slot;
+  }
+  @media (hover: hover) {
+    &:where(.group:hover *) {
+      @slot;
+    }
+  }
+}

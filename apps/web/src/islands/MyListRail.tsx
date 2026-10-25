@@ -6,7 +6,7 @@ import {
   subscribe,
   withCurrent,
   type CurrentShorts,
-  type SavedShort,
+  type ListedShort,
 } from '../lib/myList.ts'
 
 interface MyListRailProps {
@@ -34,7 +34,7 @@ export function MyListRail({
   hrefBase,
   current,
 }: MyListRailProps) {
-  const [items, setItems] = useState<SavedShort[]>([])
+  const [items, setItems] = useState<ListedShort[]>([])
 
   useEffect(() => {
     const sync = () => setItems(withCurrent(readList(), current))
@@ -55,6 +55,7 @@ export function MyListRail({
           locale={locale}
           tone={item.tone}
           image={item.image}
+          synopsis={item.synopsis}
           href={`${hrefBase}${item.slug}`}
         />
       ))}

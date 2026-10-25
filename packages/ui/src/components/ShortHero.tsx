@@ -66,10 +66,10 @@ export function ShortHero({
             fetchPriority="high"
             className="absolute inset-0 -z-10 size-full object-cover"
           />
-          {/* Darkens the side the text sits on, so it reads over any image. */}
+          {/* Darkens from the bottom, where the text sits, so it reads over any image. */}
           <div
             aria-hidden="true"
-            className="absolute inset-0 -z-10 bg-linear-to-t md:bg-linear-to-r from-sala-0 via-sala-0/70 to-transparent"
+            className="absolute inset-0 -z-10 bg-linear-to-t from-sala-0 via-sala-0/(--opacity-scrim) to-transparent"
           />
         </>
       ) : null}

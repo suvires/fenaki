@@ -48,14 +48,20 @@ function isSaved(value: unknown): value is SavedShort {
   )
 }
 
+/** A short as the catalog shows it now: what is saved, plus the synopsis, which is never stored. */
+export type CurrentShort = NewSavedShort & { synopsis?: string }
+
 /** The catalog's current card data, by slug, as the server renders it for this locale. */
-export type CurrentShorts = Record<string, NewSavedShort>
+export type CurrentShorts = Record<string, CurrentShort>
+
+/** A saved short with its current catalog data. */
+export type ListedShort = SavedShort & Pick<CurrentShort, 'synopsis'>
 
 /**
  * The saved shorts with the catalog's current data (title, still…) instead of what was stored
  * when they were saved. Shorts no longer published are left out: their pages are gone.
  */
-export function withCurrent(items: SavedShort[], current: CurrentShorts): SavedShort[] {
+export function withCurrent(items: SavedShort[], current: CurrentShorts): ListedShort[] {
   return items.flatMap((item) => {
     const now = current[item.slug]
     return now ? [{ ...item, ...now, savedAt: item.savedAt }] : []

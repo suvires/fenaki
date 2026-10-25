@@ -40,7 +40,8 @@ export function Rail({ title, actionLabel, actionHref, className, children }: Ra
           )}
         </h2>
       </header>
-      <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory -mx-1 px-1 pt-2 pb-3 *:snap-start *:flex-none">
+      {/* The padding leaves room for the expanded card (scaled and lifted) inside the scroll area; the negative margin gives it back. */}
+      <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-pl-4 -mx-4 px-4 -my-2 py-4 *:snap-start *:flex-none">
         {children}
       </div>
     </section>

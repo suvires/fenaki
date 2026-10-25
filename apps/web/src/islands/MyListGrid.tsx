@@ -6,7 +6,7 @@ import {
   subscribe,
   withCurrent,
   type CurrentShorts,
-  type SavedShort,
+  type ListedShort,
 } from '../lib/myList.ts'
 
 interface MyListGridProps {
@@ -20,7 +20,7 @@ interface MyListGridProps {
 
 /** Every short the viewer saved, newest first. The hint is on the server render until storage is read. */
 export function MyListGrid({ emptyHint, locale, hrefBase, current }: MyListGridProps) {
-  const [items, setItems] = useState<SavedShort[]>([])
+  const [items, setItems] = useState<ListedShort[]>([])
 
   useEffect(() => {
     const sync = () => setItems(withCurrent(readList(), current))
@@ -39,6 +39,7 @@ export function MyListGrid({ emptyHint, locale, hrefBase, current }: MyListGridP
         locale,
         tone: item.tone,
         image: item.image,
+        synopsis: item.synopsis,
         href: `${hrefBase}${item.slug}`,
       }))}
     />

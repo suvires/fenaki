@@ -133,6 +133,7 @@ describe('withCurrent', () => {
         seconds: 60,
         tone: 'plata' as const,
         image: 'https://x/a.webp',
+        synopsis: 'Now.',
       },
     }
     expect(list.withCurrent(saved, current)).toEqual([
@@ -142,6 +143,7 @@ describe('withCurrent', () => {
         seconds: 60,
         tone: 'plata',
         image: 'https://x/a.webp',
+        synopsis: 'Now.',
         savedAt: 2,
       },
     ])

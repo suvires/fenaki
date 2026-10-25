@@ -18,6 +18,7 @@ const launched = { now: NOW, launchedAt: LAUNCH }
 const short: CardSource = {
   slug: 'alike',
   title: 'Alike',
+  synopsis: 'Un padre y su hijo.',
   directors: ['Daniel Martínez Lara', 'Rafa Cano Méndez'],
   year: 2015,
   durationSeconds: 480,
@@ -101,6 +102,7 @@ describe('toCard', () => {
     expect(card.director).toBe('Daniel Martínez Lara y Rafa Cano Méndez')
     expect(card.href).toBe('/es/cortos/alike')
     expect(card.seconds).toBe(480)
+    expect(card.synopsis).toBe('Un padre y su hijo.')
   })
 
   it('only accepts product poster tones', () => {
