@@ -71,6 +71,12 @@ variable "ovh_dkim" {
   default = []
 }
 
+variable "ovh_autodiscover_host" {
+  description = "The OVHcloud mail server that mail clients autodiscover (the SRV record OVHcloud creates for the mailbox). Empty: no record."
+  type        = string
+  default     = "zimbra1.mail.ovh.net"
+}
+
 variable "ses_region" {
   description = "Amazon SES region (EU)."
   type        = string

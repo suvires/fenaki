@@ -148,6 +148,23 @@ resource "cloudflare_dns_record" "ovh_dkim" {
   ttl      = 1
 }
 
+# Lets mail clients find the mailbox's settings on their own.
+resource "cloudflare_dns_record" "ovh_autodiscover" {
+  count   = var.ovh_autodiscover_host == "" ? 0 : 1
+  zone_id = cloudflare_zone.site.id
+  name    = "_autodiscover._tcp.${var.domain}"
+  type    = "SRV"
+  ttl     = 1
+  # Also at the top level: the API echoes it back there and would otherwise show a change.
+  priority = 0
+  data = {
+    priority = 0
+    weight   = 0
+    port     = 443
+    target   = var.ovh_autodiscover_host
+  }
+}
+
 resource "cloudflare_dns_record" "ses_dkim" {
   for_each = toset(var.ses_dkim_tokens)
   zone_id  = cloudflare_zone.site.id
