@@ -135,9 +135,7 @@ export function SiteHeader({
       <a href={account.signIn.href} className={linkClass}>
         {account.signIn.label}
       </a>
-      <Button href={account.signUp.href} size="sm">
-        {account.signUp.label}
-      </Button>
+      <Button href={account.signUp.href}>{account.signUp.label}</Button>
     </div>
   )
 
