@@ -1,0 +1,29 @@
+{
+  "name": "@shortix/tokens",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Design tokens: the single source for color, type, spacing, radius, shadow and motion.",
+  "exports": {
+    ".": "./src/index.ts",
+    "./theme.css": "./dist/theme.css",
+    "./light.css": "./dist/light.css",
+    "./palettes.json": "./dist/palettes.json",
+    "./tokens.json": "./tokens.json",
+    "./fonts.css": "./src/fonts.css"
+  },
+  "scripts": {
+    "build": "node scripts/build.ts",
+    "typecheck": "tsc",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.5",
+    "vitest": "5.0.5"
+  },
+  "dependencies": {
+    "@fontsource/atkinson-hyperlegible-mono": "5.3.0",
+    "@fontsource/atkinson-hyperlegible-next": "5.3.0",
+    "@fontsource/big-shoulders": "5.3.0"
+  }
+}
