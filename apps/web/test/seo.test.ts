@@ -11,7 +11,7 @@ import {
   videoObject,
 } from '../src/lib/seo.ts'
 
-const SITE = 'https://shortix.film'
+const SITE = 'https://fenaki.tv'
 
 describe('alternate URLs', () => {
   it('swap the locale prefix', () => {
@@ -21,8 +21,8 @@ describe('alternate URLs', () => {
 
   it('list every locale and x-default', () => {
     expect(hreflangLinks(SITE, '/es/cortos/cuerdas')).toEqual([
-      { hreflang: 'es', href: 'https://shortix.film/es/cortos/cuerdas' },
-      { hreflang: 'x-default', href: 'https://shortix.film/es/cortos/cuerdas' },
+      { hreflang: 'es', href: 'https://fenaki.tv/es/cortos/cuerdas' },
+      { hreflang: 'x-default', href: 'https://fenaki.tv/es/cortos/cuerdas' },
     ])
   })
 })
@@ -50,12 +50,12 @@ describe('structured data', () => {
     })
     expect(video).toMatchObject({
       '@type': 'VideoObject',
-      url: 'https://shortix.film/es/cortos/cuerdas',
-      thumbnailUrl: ['https://shortix.film/og/es/cortos/cuerdas.png'],
+      url: 'https://fenaki.tv/es/cortos/cuerdas',
+      thumbnailUrl: ['https://fenaki.tv/og/es/cortos/cuerdas.png'],
       duration: 'PT10M52S',
       inLanguage: 'es',
       dateCreated: '2013',
-      director: [{ '@type': 'Person', url: 'https://shortix.film/es/personas/pedro-solis-garcia' }],
+      director: [{ '@type': 'Person', url: 'https://fenaki.tv/es/personas/pedro-solis-garcia' }],
     })
   })
 
@@ -83,10 +83,7 @@ describe('structured data', () => {
       mainEntity: {
         '@type': 'ItemList',
         numberOfItems: 2,
-        itemListElement: [
-          { position: 1, url: 'https://shortix.film/es/cortos/a' },
-          { position: 2 },
-        ],
+        itemListElement: [{ position: 1, url: 'https://fenaki.tv/es/cortos/a' }, { position: 2 }],
       },
     })
     expect(profilePage(SITE, { name: 'Ana', url: '/es/personas/ana' }, items)).toMatchObject({
@@ -106,13 +103,13 @@ describe('sitemaps', () => {
       { paths: { es: '/es/' } },
       { paths: { es: '/es/cortos/a&b' }, lastModified: '2026-10-25T10:00:00.000Z' },
     ])
-    expect(xml).toContain('<loc>https://shortix.film/es/</loc>')
-    expect(xml).toContain('<loc>https://shortix.film/es/cortos/a&amp;b</loc>')
+    expect(xml).toContain('<loc>https://fenaki.tv/es/</loc>')
+    expect(xml).toContain('<loc>https://fenaki.tv/es/cortos/a&amp;b</loc>')
     expect(xml).toContain('<lastmod>2026-10-25T10:00:00.000Z</lastmod>')
     expect(xml).toContain('hreflang="x-default"')
   })
 
   it('point the index at one sitemap per locale', () => {
-    expect(sitemapIndexXml(SITE)).toContain('<loc>https://shortix.film/sitemap-es.xml</loc>')
+    expect(sitemapIndexXml(SITE)).toContain('<loc>https://fenaki.tv/sitemap-es.xml</loc>')
   })
 })

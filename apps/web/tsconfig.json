@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "paths": {
-      "@shortix/cms/types": ["../cms/src/payload-types.ts"]
+      "@fenaki/cms/types": ["../cms/src/payload-types.ts"]
     }
   },
   "include": [".astro/types.d.ts", "src", "test", "e2e", "*.ts"],

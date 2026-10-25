@@ -1,7 +1,7 @@
 /**
  * Rebuilds the search indexes from the database: queues a sync for every short and runs it, which
  * also applies the current index settings. Run after changing the search document or its
- * settings: `pnpm --filter @shortix/cms reindex`.
+ * settings: `pnpm --filter @fenaki/cms reindex`.
  */
 import config from '@payload-config'
 import { getPayload } from 'payload'

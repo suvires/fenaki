@@ -7,8 +7,8 @@ import type {
   Showcase,
   Source,
   Sponsor,
-} from '@shortix/cms/types'
-import type { Locale } from '@shortix/i18n'
+} from '@fenaki/cms/types'
+import type { Locale } from '@fenaki/i18n'
 import { CMS_URL } from 'astro:env/server'
 import type { CardSource } from './catalog.ts'
 

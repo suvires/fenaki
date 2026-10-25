@@ -1,4 +1,4 @@
-import { createListmonk, purgeExpired } from '@shortix/waitlist'
+import { createListmonk, purgeExpired } from '@fenaki/waitlist'
 import type { TaskConfig } from 'payload'
 
 /**
@@ -25,7 +25,7 @@ export const purgeWaitlistTask: TaskConfig<{
     }
     const client = createListmonk({
       url: process.env.LISTMONK_URL ?? 'http://localhost:9000',
-      user: process.env.LISTMONK_API_USER ?? 'shortix-web',
+      user: process.env.LISTMONK_API_USER ?? 'fenaki-web',
       token,
     })
     const output = await purgeExpired(client)

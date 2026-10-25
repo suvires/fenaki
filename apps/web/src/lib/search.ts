@@ -1,4 +1,4 @@
-import type { Locale } from '@shortix/i18n'
+import type { Locale } from '@fenaki/i18n'
 import { MEILISEARCH_HOST } from 'astro:env/server'
 import { getSecret, SEARCH_INDEX_PREFIX } from 'astro:env/server'
 import { Meilisearch } from 'meilisearch'

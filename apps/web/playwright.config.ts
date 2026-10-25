@@ -2,7 +2,7 @@ import { defineConfig, devices } from '@playwright/test'
 
 /**
  * End-to-end tests against their own stack, so they never touch the development data: a CMS on
- * port 3100 with the `shortix_test` database (migrated and loaded with the sample seed on start)
+ * port 3100 with the `fenaki_test` database (migrated and loaded with the sample seed on start)
  * and the `test_` search indexes, and one build of the site served in catalog mode on 4400 and
  * in landing mode on 4401.
  * Needs `docker compose up -d` and `pnpm setup:services`; the waitlist test uses listmonk and
@@ -22,7 +22,7 @@ const CMS_URL = `http://localhost:${CMS_PORT}`
  */
 const external = { catalog: process.env.E2E_CATALOG_URL, landing: process.env.E2E_LANDING_URL }
 const test = {
-  DATABASE_URL: `postgres://shortix:shortix@127.0.0.1:5432/${process.env.E2E_DATABASE ?? 'shortix_test'}`,
+  DATABASE_URL: `postgres://fenaki:fenaki@127.0.0.1:5432/${process.env.E2E_DATABASE ?? 'fenaki_test'}`,
   SEARCH_INDEX_PREFIX: process.env.E2E_INDEX_PREFIX ?? 'test_',
 }
 export default defineConfig({
@@ -55,7 +55,7 @@ export default defineConfig({
       ? []
       : [
           {
-            command: `pnpm --filter @shortix/cms migrate && pnpm --filter @shortix/cms seed && pnpm --filter @shortix/cms exec next dev --port ${CMS_PORT}`,
+            command: `pnpm --filter @fenaki/cms migrate && pnpm --filter @fenaki/cms seed && pnpm --filter @fenaki/cms exec next dev --port ${CMS_PORT}`,
             url: `${CMS_URL}/api/shorts?limit=1`,
             env: {
               ...test,

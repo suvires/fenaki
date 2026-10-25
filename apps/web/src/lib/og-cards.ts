@@ -1,5 +1,5 @@
 /** What each page's Open Graph image says. Read from the CMS, rendered by lib/og.ts. */
-import { formatDuration, formatList, formatYear, type Locale } from '@shortix/i18n'
+import { formatDuration, formatList, formatYear, type Locale } from '@fenaki/i18n'
 import { CREDIT_ROLES, posterTone } from './catalog.ts'
 import {
   getCollection,

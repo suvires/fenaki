@@ -90,7 +90,7 @@ function fakeListmonk(existing?: ListmonkSubscriber) {
   return { client: client as unknown as Listmonk, sent, confirmed, get: () => subscriber }
 }
 
-const input = { email: 'ana@ejemplo.com', locale: 'es' as const, siteUrl: 'https://shortix.film' }
+const input = { email: 'ana@ejemplo.com', locale: 'es' as const, siteUrl: 'https://fenaki.tv' }
 
 describe('checkEmail', () => {
   it('tells an empty field from an incomplete address', () => {
@@ -108,8 +108,8 @@ describe('subscribe', () => {
     expect(fake.get()?.lists.map((l) => l.id)).toEqual([LAUNCH.id])
     expect(fake.sent).toEqual([
       {
-        confirm_url: `https://shortix.film/es/lista-de-espera/confirmar?s=${UUID}`,
-        site_url: 'https://shortix.film/es/',
+        confirm_url: `https://fenaki.tv/es/lista-de-espera/confirmar?s=${UUID}`,
+        site_url: 'https://fenaki.tv/es/',
       },
     ])
   })

@@ -1,7 +1,7 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { es } from '@payloadcms/translations/languages/es'
 import { en } from '@payloadcms/translations/languages/en'
-import { defaultLocale, locales } from '@shortix/i18n'
+import { defaultLocale, locales } from '@fenaki/i18n'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { buildConfig } from 'payload'
@@ -30,7 +30,7 @@ export default buildConfig({
   admin: {
     user: Users.slug,
     importMap: { baseDir: path.resolve(dirname) },
-    meta: { titleSuffix: ' · Shortix' },
+    meta: { titleSuffix: ' · Fenaki' },
     components: {
       afterNavLinks: ['/admin/EmbedProblemsLink.tsx#EmbedProblemsLink'],
       views: {
@@ -42,7 +42,7 @@ export default buildConfig({
     },
   },
   i18n: { supportedLanguages: { es, en }, fallbackLanguage: 'es' },
-  // Content locales come from @shortix/i18n: adding `en` there enables it here.
+  // Content locales come from @fenaki/i18n: adding `en` there enables it here.
   localization: {
     locales: locales.map((code) => ({
       code,
@@ -71,7 +71,7 @@ export default buildConfig({
     push: false,
     migrationDir: path.resolve(dirname, 'migrations'),
   }),
-  // Jobs run in a separate process (`pnpm --filter @shortix/cms jobs`), never inside the web server.
+  // Jobs run in a separate process (`pnpm --filter @fenaki/cms jobs`), never inside the web server.
   jobs: {
     tasks: [indexShortTask, purgeWaitlistTask, checkEmbedsTask],
     deleteJobOnComplete: true,

@@ -5,7 +5,7 @@
  * Run with `pnpm import:catalog` (from the repository root).
  */
 import config from '@payload-config'
-import { defaultLocale } from '@shortix/i18n'
+import { defaultLocale } from '@fenaki/i18n'
 import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 import { getPayload, type CollectionSlug, type Where } from 'payload'

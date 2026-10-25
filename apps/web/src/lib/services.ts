@@ -14,7 +14,7 @@ import {
   UMAMI_SCRIPT_URL,
   UMAMI_WEBSITE_ID,
 } from 'astro:env/server'
-import { createListmonk, type Listmonk } from '@shortix/waitlist'
+import { createListmonk, type Listmonk } from '@fenaki/waitlist'
 import type { BadgeClock } from './catalog.ts'
 import { runtimePolicy } from './csp.ts'
 import type { SiteMode } from './site-mode.ts'

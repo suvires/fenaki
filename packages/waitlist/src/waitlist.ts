@@ -3,13 +3,13 @@
  * until the subscriber opens the link in the confirmation email, which the web app sends through
  * listmonk with its own copy (packages/i18n). Nothing about subscribers is stored here.
  */
-import type { Locale } from '@shortix/i18n'
+import type { Locale } from '@fenaki/i18n'
 import type { Listmonk, ListmonkList, ListmonkSubscriber } from './listmonk.ts'
 
 /** listmonk list tags: the setup script creates the lists, the web app finds them by tag. */
-export const LIST_TAGS = { launch: 'shortix-launch', weekly: 'shortix-weekly' } as const
+export const LIST_TAGS = { launch: 'fenaki-launch', weekly: 'fenaki-weekly' } as const
 
-export const confirmationTemplateName = (locale: Locale) => `shortix-waitlist-confirm-${locale}`
+export const confirmationTemplateName = (locale: Locale) => `fenaki-waitlist-confirm-${locale}`
 
 /**
  * When the weekly selection goes out: Friday morning, Spanish time, ready for the weekend. The
@@ -29,7 +29,7 @@ export const LINK_TTL_MS = 7 * 24 * 60 * 60 * 1000
 export const RESEND_INTERVAL_MS = 60 * 1000
 
 /** Subscriber attribute with the time of the last confirmation email (ISO 8601). */
-const SENT_AT = 'shortix_confirmation_sent_at'
+const SENT_AT = 'fenaki_confirmation_sent_at'
 
 export type EmailCheck = { ok: true; email: string } | { ok: false; error: 'empty' | 'invalid' }
 

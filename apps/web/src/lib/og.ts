@@ -3,7 +3,7 @@
  * self-hosted fonts, never a film still. Satori lays it out as SVG (text as paths) and sharp
  * turns it into a PNG.
  */
-import { palettes } from '@shortix/tokens'
+import { palettes } from '@fenaki/tokens'
 import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'

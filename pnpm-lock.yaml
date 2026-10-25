@@ -254,10 +254,10 @@ importers:
       '@sentry/node':
         specifier: 11.9.0
         version: 11.9.0
-      '@shortix/i18n':
+      '@fenaki/i18n':
         specifier: workspace:*
         version: link:../../packages/i18n
-      '@shortix/waitlist':
+      '@fenaki/waitlist':
         specifier: workspace:*
         version: link:../../packages/waitlist
       graphql:
@@ -318,16 +318,16 @@ importers:
       '@sentry/node':
         specifier: 11.9.0
         version: 11.9.0
-      '@shortix/i18n':
+      '@fenaki/i18n':
         specifier: workspace:*
         version: link:../../packages/i18n
-      '@shortix/tokens':
+      '@fenaki/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
-      '@shortix/ui':
+      '@fenaki/ui':
         specifier: workspace:*
         version: link:../../packages/ui
-      '@shortix/waitlist':
+      '@fenaki/waitlist':
         specifier: workspace:*
         version: link:../../packages/waitlist
       '@tailwindcss/vite':
@@ -404,10 +404,10 @@ importers:
       '@radix-ui/react-toggle-group':
         specifier: 1.2.1
         version: 1.2.1(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
-      '@shortix/i18n':
+      '@fenaki/i18n':
         specifier: workspace:*
         version: link:../i18n
-      '@shortix/tokens':
+      '@fenaki/tokens':
         specifier: workspace:*
         version: link:../tokens
     devDependencies:
@@ -453,7 +453,7 @@ importers:
 
   packages/waitlist:
     dependencies:
-      '@shortix/i18n':
+      '@fenaki/i18n':
         specifier: workspace:*
         version: link:../i18n
     devDependencies:

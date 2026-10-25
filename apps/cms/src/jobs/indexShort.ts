@@ -1,4 +1,4 @@
-import { createTranslator, isLocale } from '@shortix/i18n'
+import { createTranslator, isLocale } from '@fenaki/i18n'
 import type { TaskConfig } from 'payload'
 import type { SHORT_TYPES } from '../collections/Shorts.ts'
 import { searchClient } from '../search/client.ts'

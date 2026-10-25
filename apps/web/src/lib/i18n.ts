@@ -1,4 +1,4 @@
-import { createTranslator, defaultLocale, isLocale, type Locale } from '@shortix/i18n'
+import { createTranslator, defaultLocale, isLocale, type Locale } from '@fenaki/i18n'
 
 /** The locale of a request, from its `[locale]` route segment. Undefined when it is not one we serve. */
 export function localeFrom(param: string | undefined): Locale | undefined {

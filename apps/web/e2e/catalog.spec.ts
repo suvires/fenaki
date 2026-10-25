@@ -80,7 +80,7 @@ test('short pages carry structured data, canonical URLs and a generated OG image
 
 test('the sponsorship page has no contact links without a mailbox', async ({ page }) => {
   await page.goto('/es/patrocina')
-  await expect(page.getByRole('heading', { level: 1, name: 'Patrocina Shortix' })).toBeVisible()
+  await expect(page.getByRole('heading', { level: 1, name: 'Patrocina Fenaki' })).toBeVisible()
   await expect(page.getByRole('heading', { name: 'Colección patrocinada' })).toBeVisible()
   await expect(page.getByRole('heading', { name: 'Escaparate', exact: true })).toBeVisible()
   await expect(page.getByText('350 € + IVA')).toBeVisible()

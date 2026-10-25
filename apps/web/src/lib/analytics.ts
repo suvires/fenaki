@@ -2,7 +2,7 @@
  * Custom events for Umami (cookieless). Umami's tracker sends an event when an element with
  * `data-umami-event` is clicked, with each `data-umami-event-<key>` as event data.
  */
-import type { Sponsor } from '@shortix/cms/types'
+import type { Sponsor } from '@fenaki/cms/types'
 
 export const EVENTS = {
   waitlistSignup: 'waitlist-signup',

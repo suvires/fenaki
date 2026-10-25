@@ -1,5 +1,5 @@
 /**
- * Runs before the jobs worker starts (`shortix jobs` in the production image). Payload's worker
+ * Runs before the jobs worker starts (`fenaki jobs` in the production image). Payload's worker
  * stops at once on SIGTERM, so a deploy can cut a job short and leave it marked as processing,
  * and Payload never picks such a job again. Only one worker runs, so when it starts, every job
  * still processing was interrupted: they go back to the queue. Jobs here are idempotent.
