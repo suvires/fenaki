@@ -29,7 +29,6 @@ test('the home page shows the latest short, the sponsored collection and the rai
 }) => {
   await page.goto('/es/')
   // The latest short opens the page; the collection follows.
-  await expect(page.getByText('Último estreno')).toBeVisible()
   await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1)
   await expect(page.getByRole('link', { name: 'Ver ahora' })).toHaveAttribute(
     'href',

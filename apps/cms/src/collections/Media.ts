@@ -2,7 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { isAdmin } from '../access.ts'
 import { groups, label } from '../labels.ts'
 
-/** Public images: organization logos for showcases. Never film stills. */
+/** Public images: organization logos for showcases. Film stills live in the Stills collection. */
 export const Media: CollectionConfig = {
   slug: 'media',
   labels: { singular: label('Image', 'Imagen'), plural: label('Images', 'Imágenes') },

@@ -73,6 +73,7 @@ export interface Config {
     collections: Collection;
     showcases: Showcase;
     media: Media;
+    stills: Still;
     licenses: License;
     'license-documents': LicenseDocument;
     sponsors: Sponsor;
@@ -98,6 +99,7 @@ export interface Config {
     collections: CollectionsSelect<false> | CollectionsSelect<true>;
     showcases: ShowcasesSelect<false> | ShowcasesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    stills: StillsSelect<false> | StillsSelect<true>;
     licenses: LicensesSelect<false> | LicensesSelect<true>;
     'license-documents': LicenseDocumentsSelect<false> | LicenseDocumentsSelect<true>;
     sponsors: SponsorsSelect<false> | SponsorsSelect<true>;
@@ -228,6 +230,10 @@ export interface Short {
    */
   publishedAt?: string | null;
   /**
+   * The still the site shows behind the short. The nightly checker keeps a provider thumbnail here; one supplied by the author is never replaced.
+   */
+  still?: (number | null) | Still;
+  /**
    * The film on The Movie Database, when it is there.
    */
   tmdbId?: number | null;
@@ -313,7 +319,7 @@ export interface Source {
    */
   checkNote?: string | null;
   /**
-   * Reference only: Fenaki shows typographic posters, never film stills.
+   * Where the checker downloads the still from (Vimeo). Visitors never load it: Fenaki serves its own copy from the Stills collection.
    */
   thumbnailUrl?: string | null;
   uploadedAt?: string | null;
@@ -383,6 +389,48 @@ export interface LicenseDocument {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "stills".
+ */
+export interface Still {
+  id: number;
+  short: number | Short;
+  /**
+   * Provider stills are refreshed every night. Author stills are never touched by the checker.
+   */
+  origin: 'provider' | 'author';
+  /**
+   * The source the thumbnail was downloaded from.
+   */
+  source?: (number | null) | Source;
+  fetchedAt?: string | null;
+  /**
+   * Who granted the use of this still, and when. Internal.
+   */
+  permissionNote?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  sizes?: {
+    hero?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -796,6 +844,10 @@ export interface PayloadLockedDocument {
         value: number | Media;
       } | null)
     | ({
+        relationTo: 'stills';
+        value: number | Still;
+      } | null)
+    | ({
         relationTo: 'licenses';
         value: number | License;
       } | null)
@@ -894,6 +946,7 @@ export interface ShortsSelect<T extends boolean = true> {
   hiddenReason?: T;
   hiddenAt?: T;
   publishedAt?: T;
+  still?: T;
   tmdbId?: T;
   sample?: T;
   importKey?: T;
@@ -1003,6 +1056,42 @@ export interface MediaSelect<T extends boolean = true> {
     | T
     | {
         logo?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+      };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "stills_select".
+ */
+export interface StillsSelect<T extends boolean = true> {
+  short?: T;
+  origin?: T;
+  source?: T;
+  fetchedAt?: T;
+  permissionNote?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+  sizes?:
+    | T
+    | {
+        hero?:
           | T
           | {
               url?: T;
@@ -1330,6 +1419,7 @@ export interface TaskCheckEmbeds {
     problems: number;
     inconclusive: number;
     hidden: number;
+    stills: number;
   };
 }
 /**

@@ -7,9 +7,10 @@ import type {
   Showcase,
   Source,
   Sponsor,
+  Still,
 } from '@fenaki/cms/types'
 import type { Locale } from '@fenaki/i18n'
-import { CMS_URL } from 'astro:env/server'
+import { CMS_PUBLIC_URL, CMS_URL } from 'astro:env/server'
 import type { CardSource } from './catalog.ts'
 
 /** Reads the catalog through Payload's REST API. Only published documents are visible here. */
@@ -208,6 +209,16 @@ export function shortsOf(collection: { shorts?: (number | Short)[] | null }): Pu
 /** The organization's logo, when it has one. */
 export function logoOf(showcase: Showcase): Media | undefined {
   return isObject<Media>(showcase.logo) ? showcase.logo : undefined
+}
+
+/**
+ * The short's still as an absolute URL on the CMS origin (the hero size when it has one), or
+ * undefined when it has none. Visitors never load images from YouTube or Vimeo.
+ */
+export function stillUrlOf(short: Short): string | undefined {
+  if (!isObject<Still>(short.still)) return undefined
+  const path = short.still.sizes?.hero?.url ?? short.still.url
+  return path ? new URL(path, CMS_PUBLIC_URL || CMS_URL).toString() : undefined
 }
 
 export function presenterOf(showcase: Showcase): Sponsor | undefined {

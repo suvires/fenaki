@@ -1,6 +1,6 @@
 /**
  * Open Graph images in the brand style: a typographic card built from the design tokens and the
- * self-hosted fonts, never a film still. Satori lays it out as SVG (text as paths) and sharp
+ * self-hosted fonts. The OG image stays generated: stills are not used here. Satori lays it out as SVG (text as paths) and sharp
  * turns it into a PNG.
  */
 import { palettes } from '@fenaki/tokens'

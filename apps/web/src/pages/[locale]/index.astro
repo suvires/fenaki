@@ -11,6 +11,7 @@ import {
   peopleOf,
   shortsOf,
   sponsorOf,
+  stillUrlOf,
   toCardSource,
 } from '../../lib/cms.ts'
 import { sponsorCredit } from '../../lib/analytics.ts'
@@ -31,6 +32,7 @@ const [shorts, collections] = landing
 // For now the hero is the latest short; picking one from the admin panel comes later.
 const hero = shorts[0]
 const heroDirectors = hero ? peopleOf(hero, 'director') : []
+const heroBackdrop = hero ? stillUrlOf(hero) : undefined
 
 const featured = collections.find((c) => c.featured) ?? collections[0]
 const featuredShorts = featured ? shortsOf(featured) : []
@@ -64,7 +66,6 @@ const filterOptions = (['short', 'mid', 'long', 'subtitles'] as const).map((valu
   {landing && <Landing locale={locale} />}
   {!landing && hero && (
     <ShortHero
-      eyebrow={t('home.hero.eyebrow')}
       title={hero.title}
       seconds={hero.durationSeconds}
       locale={locale}
@@ -83,6 +84,7 @@ const filterOptions = (['short', 'mid', 'long', 'subtitles'] as const).map((valu
         year: hero.year ?? undefined,
         tone: posterTone(hero.posterTone),
       }}
+      backdrop={heroBackdrop}
     />
   )}
   {!landing && featured && (

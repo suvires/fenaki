@@ -1,4 +1,5 @@
 import type { PayloadRequest } from 'payload'
+import sharp from 'sharp'
 import { describe, expect, it } from 'vitest'
 import { hideReason } from '../src/ingest/check.ts'
 import type { Fetch } from '../src/ingest/oembed.ts'
@@ -7,22 +8,32 @@ import { checkEmbeds } from '../src/jobs/checkEmbeds.ts'
 type Doc = Record<string, unknown> & { id: number }
 
 /** Just enough of Payload's local API for the checker: find and update over in-memory docs. */
-function fakeRequest(collections: Record<'shorts' | 'sources', Doc[]>) {
+function fakeRequest(collections: Record<'shorts' | 'sources', Doc[]> & { stills?: Doc[] }) {
+  const creates: { collection: string; data: Record<string, unknown>; file?: unknown }[] = []
+  const deletes: { collection: string; id: number }[] = []
   const updates: { collection: string; id: number; data: Record<string, unknown> }[] = []
   const payload = {
     logger: { info: () => {}, warn: () => {} },
-    find: async ({ collection }: { collection: 'shorts' | 'sources' }) => {
-      const docs = collections[collection].filter((doc) =>
+    find: async ({ collection }: { collection: 'shorts' | 'sources' | 'stills' }) => {
+      const docs = (collections[collection] ?? []).filter((doc) =>
         collection === 'shorts' ? doc.status === 'published' || doc.hiddenReason : true,
       )
       return { docs, totalDocs: docs.length }
     },
     update: async (args: { collection: string; id: number; data: Record<string, unknown> }) => {
       updates.push(args)
+      return { id: args.id }
+    },
+    create: async (args: { collection: string; data: Record<string, unknown>; file?: unknown }) => {
+      creates.push(args)
+      return { id: 900 }
+    },
+    delete: async (args: { collection: string; id: number }) => {
+      deletes.push(args)
       return {}
     },
   }
-  return { req: { payload } as unknown as PayloadRequest, updates }
+  return { req: { payload } as unknown as PayloadRequest, updates, creates, deletes }
 }
 
 /** oEmbed answers by video id: 200, or the given HTTP status. */
@@ -70,7 +81,7 @@ describe('checkEmbeds', () => {
       ],
     })
     const summary = await checkEmbeds(req, oembedByVideo({ bbbbbbbbbbb: 404, ccccccccccc: 401 }), 0)
-    expect(summary).toEqual({ checked: 4, problems: 2, inconclusive: 0, hidden: 1 })
+    expect(summary).toEqual({ checked: 4, problems: 2, inconclusive: 0, hidden: 1, stills: 0 })
     expect(updates.find((u) => u.collection === 'sources' && u.id === 20)?.data).toMatchObject({
       status: 'broken',
       problemSince: expect.any(String),
@@ -104,5 +115,98 @@ describe('checkEmbeds', () => {
         req,
       },
     ])
+  })
+})
+
+describe('checkEmbeds stills', () => {
+  /** A 4:3 frame with black bars, as YouTube's sddefault: 640x480 with a 640x360 picture. */
+  const letterboxed = async () =>
+    sharp({ create: { width: 640, height: 480, channels: 3, background: '#000' } })
+      .composite([
+        {
+          input: await sharp({
+            create: { width: 640, height: 360, channels: 3, background: '#a07040' },
+          })
+            .png()
+            .toBuffer(),
+          top: 60,
+          left: 0,
+        },
+      ])
+      .jpeg()
+      .toBuffer()
+
+  /** oEmbed answers 200; thumbnails answer by file name, 404 when not listed. */
+  const withThumbnails =
+    (images: Record<string, Buffer>, requested: string[] = []): Fetch =>
+    async (input) => {
+      const url = String(input)
+      if (!url.includes('i.ytimg.com')) return new Response(JSON.stringify({ title: 'T' }))
+      requested.push(url)
+      const image = Object.entries(images).find(([key]) => url.endsWith(key))?.[1]
+      return image ? new Response(new Uint8Array(image)) : new Response('grey', { status: 404 })
+    }
+
+  const published = { id: 1, title: 'Plays', status: 'published' }
+  const youtube = { ...source(10, 1, 'aaaaaaaaaaa'), embeddable: true, status: 'ok' }
+
+  it('downloads the provider thumbnail, trims the bars and falls back from a missing maxres', async () => {
+    const { req, creates, updates } = fakeRequest({ shorts: [published], sources: [youtube] })
+    const requested: string[] = []
+    const summary = await checkEmbeds(
+      req,
+      withThumbnails({ 'sddefault.jpg': await letterboxed() }, requested),
+      0,
+    )
+    expect(summary.stills).toBe(1)
+    expect(requested.map((url) => url.split('/').pop())).toEqual([
+      'maxresdefault.jpg',
+      'sddefault.jpg',
+    ])
+    expect(creates).toHaveLength(1)
+    expect(creates[0]?.data).toMatchObject({ short: 1, origin: 'provider', source: 10 })
+    const stored = (creates[0]?.file as { data: Buffer }).data
+    const meta = await sharp(stored).metadata()
+    expect([meta.width, meta.height]).toEqual([640, 360])
+    expect(updates.find((u) => u.collection === 'shorts')?.data).toEqual({ still: 900 })
+  })
+
+  it('replaces the provider still in place', async () => {
+    const { req, creates, updates } = fakeRequest({
+      shorts: [{ ...published, still: 50 }],
+      sources: [youtube],
+      stills: [{ id: 50, short: 1, origin: 'provider' }],
+    })
+    await checkEmbeds(req, withThumbnails({ 'maxresdefault.jpg': await letterboxed() }), 0)
+    expect(creates).toHaveLength(0)
+    expect(updates.find((u) => u.collection === 'stills')?.id).toBe(50)
+  })
+
+  it('never touches a still supplied by the author', async () => {
+    const { req, creates, updates, deletes } = fakeRequest({
+      shorts: [{ ...published, still: 50 }],
+      sources: [youtube],
+      stills: [{ id: 50, short: 1, origin: 'author' }],
+    })
+    const requested: string[] = []
+    const summary = await checkEmbeds(req, withThumbnails({}, requested), 0)
+    expect(summary.stills).toBe(0)
+    expect(requested).toEqual([])
+    expect(creates).toEqual([])
+    expect(deletes).toEqual([])
+    expect(updates.filter((u) => u.collection !== 'sources')).toEqual([])
+  })
+
+  it('removes the provider still when the source stops playing', async () => {
+    const { req, deletes, updates } = fakeRequest({
+      shorts: [{ ...published, still: 50 }],
+      sources: [youtube],
+      stills: [{ id: 50, short: 1, origin: 'provider' }],
+    })
+    await checkEmbeds(req, oembedByVideo({ aaaaaaaaaaa: 404 }), 0)
+    expect(deletes).toEqual([{ collection: 'stills', id: 50, req }])
+    expect(updates.find((u) => 'still' in u.data)?.data).toEqual({
+      still: null,
+    })
   })
 })

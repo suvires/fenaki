@@ -5,6 +5,7 @@ import * as migration_20261025_123953_embed_check_task from './20261025_123953_e
 import * as migration_20261025_124459_showcases from './20261025_124459_showcases';
 import * as migration_20261025_175727_crm from './20261025_175727_crm';
 import * as migration_20261025_183142_distributor_type from './20261025_183142_distributor_type';
+import * as migration_20261025_223519_stills from './20261025_223519_stills';
 
 export const migrations = [
   {
@@ -40,6 +41,11 @@ export const migrations = [
   {
     up: migration_20261025_183142_distributor_type.up,
     down: migration_20261025_183142_distributor_type.down,
-    name: '20261025_183142_distributor_type'
+    name: '20261025_183142_distributor_type',
+  },
+  {
+    up: migration_20261025_223519_stills.up,
+    down: migration_20261025_223519_stills.down,
+    name: '20261025_223519_stills'
   },
 ];

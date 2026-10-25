@@ -19,6 +19,7 @@ import { Shorts } from './collections/Shorts.ts'
 import { Showcases } from './collections/Showcases.ts'
 import { Sources } from './collections/Sources.ts'
 import { Sponsors } from './collections/Sponsors.ts'
+import { Stills } from './collections/Stills.ts'
 import { Users } from './collections/Users.ts'
 import { emailAdapter } from './email.ts'
 import { checkEmbedsTask } from './jobs/checkEmbeds.ts'
@@ -70,6 +71,7 @@ export default buildConfig({
     Collections,
     Showcases,
     Media,
+    Stills,
     Licenses,
     LicenseDocuments,
     Sponsors,

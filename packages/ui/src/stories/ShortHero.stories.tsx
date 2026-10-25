@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import backdrop from './assets/backdrop.jpg'
 import { ShortHero } from '../components/ShortHero.tsx'
 
 const meta = {
   title: 'Media/ShortHero',
   component: ShortHero,
   args: {
-    eyebrow: 'Último estreno',
     title: 'Timecode',
     seconds: 900,
     details: ['Juanjo Giménez', '2016', 'Ficción'],
@@ -30,3 +30,6 @@ export const LongTitle: Story = {
   },
 }
 export const WithoutSynopsis: Story = { args: { synopsis: undefined, secondaryLabel: undefined } }
+
+/** An abstract gradient made for the catalog: never a third-party film image. */
+export const WithBackdrop: Story = { args: { backdrop } }

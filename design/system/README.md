@@ -32,7 +32,7 @@ Fenaki is a curated catalog of free, legal short films with the browsing experie
 
 **Shape.** Screens are rectangles: `radius-sm` (4px) is the largest corner on any poster, still or card. `radius-xs` for badges. `radius-full` only for filter chips.
 
-**Imagery.** Posters are `ratio-poster` (2:3), stills and the player `ratio-still` (16:9). Until a short has art cleared for use, it shows a typographic `Poster`: title in poster capitals, director and year, with a film-perforation strip on the left edge. Never use a frame grabbed from a video without rights.
+**Imagery.** Posters are `ratio-poster` (2:3), stills and the player `ratio-still` (16:9). A short's still comes only from the `stills` collection: the provider's thumbnail, cached on Fenaki's server and refreshed nightly, or one supplied by the author. Without a still it shows a typographic `Poster`: title in poster capitals, director and year, with a film-perforation strip on the left edge. Never use a frame grabbed from a video, and the OG image stays generated.
 
 **Elevation and motion.** Posters rest on `shadow-card` and lift 4px onto `shadow-hover` on hover or focus, in 150 ms. Nothing else moves. With `prefers-reduced-motion`, nothing moves at all.
 
@@ -50,7 +50,7 @@ The logotype is «FENAKI» in Big Shoulders 800, outlined: it never depends on t
 
 ## Iconography
 
-Inline SVG on a 24px grid, 1.75 stroke, round caps and joins, drawn in `currentColor`. The set is small on purpose: play (filled), plus, search, arrow. No emoji, no icon fonts.
+Inline SVG on a 24px grid, 1.75 stroke, round caps and joins, drawn in `currentColor`. Every icon sits in the 20px live area (2px padding) and fills the 16px keyline square (4–20): straight strokes span 16px, diagonals 14px (5–19), filled shapes 16px with their weight centred; the rail chevron is the one tall exception, sized to display capitals. The `Foundations/Icon` «Grid» story shows them over the keylines. In buttons the icon is about 56 % of the control's height (18, 22 and 28px for sm, md and lg). The set is small on purpose: play (filled), plus, search, arrow, chevron, close. No emoji, no icon fonts.
 
 ## Sample content
 

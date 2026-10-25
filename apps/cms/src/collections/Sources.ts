@@ -235,8 +235,8 @@ export const Sources: CollectionConfig = {
           access: { read: isAuthenticatedField },
           admin: {
             description: label(
-              'Reference only: Fenaki shows typographic posters, never film stills.',
-              'Solo de referencia: Fenaki muestra pósteres tipográficos, nunca fotogramas.',
+              'Where the checker downloads the still from (Vimeo). Visitors never load it: Fenaki serves its own copy from the Stills collection.',
+              'De dónde descarga el fotograma la comprobación (Vimeo). Los visitantes nunca la cargan: Fenaki sirve su propia copia desde Fotogramas.',
             ),
           },
         },

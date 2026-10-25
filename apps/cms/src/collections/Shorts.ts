@@ -280,6 +280,19 @@ export const Shorts: CollectionConfig = {
       },
     },
     {
+      name: 'still',
+      label: label('Still', 'Fotograma'),
+      type: 'upload',
+      relationTo: 'stills',
+      admin: {
+        position: 'sidebar',
+        description: label(
+          'The still the site shows behind the short. The nightly checker keeps a provider thumbnail here; one supplied by the author is never replaced.',
+          'El fotograma que la web muestra del corto. La comprobación nocturna guarda aquí la miniatura del proveedor; uno aportado por el autor nunca se sustituye.',
+        ),
+      },
+    },
+    {
       name: 'tmdbId',
       label: label('TMDB ID', 'ID de TMDB'),
       type: 'number',

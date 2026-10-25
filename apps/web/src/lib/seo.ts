@@ -52,7 +52,7 @@ export interface VideoInput {
   name: string
   description?: string | null
   url: string
-  /** The generated poster image: Fenaki never uses film stills. */
+  /** The generated poster image; stills come only from the Stills collection. */
   thumbnailUrl: string
   /** When the video was first published, on the provider or in Fenaki. */
   uploadDate?: string | null
