@@ -16,4 +16,21 @@ export const paths = {
   collection: (locale: Locale, slug: string) => `/${locale}/colecciones/${slug}`,
   search: (locale: Locale, query?: string) =>
     `/${locale}/buscar${query ? `?q=${encodeURIComponent(query)}` : ''}`,
+  /** A section of the landing page: `what`, `legal`, `faq` or `waitlist`. */
+  landingSection: (locale: Locale, section: 'what' | 'legal' | 'faq' | 'waitlist') =>
+    `/${locale}/#${section}`,
+  waitlistConfirm: (locale: Locale) => `/${locale}/lista-de-espera/confirmar`,
+  legal: (locale: Locale, page: LegalPage) => `/${locale}/${page}`,
 }
+
+/** The legal pages, by slug. Their text lives in packages/i18n/legal/<locale>/<slug>.md. */
+export const LEGAL_PAGES = [
+  'aviso-legal',
+  'privacidad',
+  'cookies',
+  'retirada-de-contenidos',
+] as const
+export type LegalPage = (typeof LEGAL_PAGES)[number]
+
+export const isLegalPage = (value: unknown): value is LegalPage =>
+  typeof value === 'string' && (LEGAL_PAGES as readonly string[]).includes(value)

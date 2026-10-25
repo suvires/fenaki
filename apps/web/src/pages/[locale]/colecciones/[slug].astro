@@ -4,6 +4,7 @@ import NotFound from '../../../components/NotFound.astro'
 import Base from '../../../layouts/Base.astro'
 import { toCard } from '../../../lib/catalog.ts'
 import { getCollection, shortsOf, sponsorOf, toCardSource } from '../../../lib/cms.ts'
+import { sponsorCredit } from '../../../lib/analytics.ts'
 import { localeFrom, paths, translator } from '../../../lib/i18n.ts'
 
 const locale = localeFrom(Astro.params.locale)
@@ -53,7 +54,11 @@ const now = Date.now()
             {collection.description}
           </p>
         )}
-        {sponsor && <SponsorCredit label={t('collection.sponsoredBy')} name={sponsor.name} />}
+        {sponsor && (
+          <SponsorCredit
+            {...sponsorCredit(sponsor, t('collection.sponsoredBy'), collection.slug)}
+          />
+        )}
       </header>
       <ul class="m-0 p-0 list-none grid grid-cols-[repeat(auto-fill,minmax(var(--size-card),1fr))] gap-4">
         {shorts.map((short) => (

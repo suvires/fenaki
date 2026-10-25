@@ -64,7 +64,8 @@ export function toCard(
   short: CardSource,
   locale: Locale,
   t: Translate,
-  href: string,
+  /** The short's page. Without it the card is not a link (the landing page's sample). */
+  href: string | undefined,
   now = Date.now(),
 ): ShortCardProps {
   return {

@@ -1,5 +1,6 @@
 ---
 import { CollectionHero, Rail, ShortCard } from '@shortix/ui'
+import Landing from '../../components/Landing.astro'
 import { HomeFilters } from '../../islands/HomeFilters.tsx'
 import Base from '../../layouts/Base.astro'
 import { filterAttributes, posterTone, toCard } from '../../lib/catalog.ts'
@@ -11,15 +12,20 @@ import {
   sponsorOf,
   toCardSource,
 } from '../../lib/cms.ts'
+import { sponsorCredit } from '../../lib/analytics.ts'
 import { localeFrom, paths, translator } from '../../lib/i18n.ts'
+import { siteMode } from '../../lib/services.ts'
 import type { Short } from '@shortix/cms/types'
 
 const locale = localeFrom(Astro.params.locale)
 if (!locale) return Astro.rewrite('/404')
 
 const t = translator(locale)
+const landing = siteMode === 'landing'
 const now = Date.now()
-const [shorts, collections] = await Promise.all([listShorts(locale), listCollections(locale)])
+const [shorts, collections] = landing
+  ? [[], []]
+  : await Promise.all([listShorts(locale), listCollections(locale)])
 
 const featured = collections.find((c) => c.featured) ?? collections[0]
 const featuredShorts = featured ? shortsOf(featured) : []
@@ -48,15 +54,18 @@ const filterOptions = (['short', 'mid', 'long', 'subtitles'] as const).map((valu
 }))
 ---
 
-<Base locale={locale} title={t('home.title')}>
-  {featured && (
+<Base locale={locale} title={landing ? t('landing.title') : t('home.title')}>
+  {landing && <Landing locale={locale} />}
+  {!landing && featured && (
     <CollectionHero
       eyebrow={t('collection.eyebrow', { count: featuredShorts.length })}
       title={featured.title}
       description={featured.description ?? ''}
       ctaLabel={t('collection.cta')}
       ctaHref={paths.collection(locale, featured.slug)}
-      sponsor={sponsor ? { label: t('collection.sponsoredBy'), name: sponsor.name } : undefined}
+      sponsor={
+        sponsor ? sponsorCredit(sponsor, t('collection.sponsoredBy'), featured.slug) : undefined
+      }
       posters={featuredShorts.slice(0, 3).map((s) => ({
         title: s.title,
         director: peopleOf(s, 'director').join(', '),
@@ -65,7 +74,7 @@ const filterOptions = (['short', 'mid', 'long', 'subtitles'] as const).map((valu
       }))}
     />
   )}
-  {shorts.length === 0 ? (
+  {landing ? null : shorts.length === 0 ? (
     <p class="m-0 text-body-l text-ink-muted">{t('home.empty')}</p>
   ) : (
     <>

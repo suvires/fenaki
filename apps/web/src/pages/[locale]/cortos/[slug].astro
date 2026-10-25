@@ -13,6 +13,7 @@ import {
   playableSource,
   toCardSource,
 } from '../../../lib/cms.ts'
+import { EVENTS, eventAttributes } from '../../../lib/analytics.ts'
 import { embedUrl } from '../../../lib/embed.ts'
 import { localeFrom, paths, translator } from '../../../lib/i18n.ts'
 
@@ -72,6 +73,10 @@ const origin = [
           source && !short.sample ? embedUrl(source.provider, source.externalId) : undefined
         }
         embedTitle={t('short.player.frameTitle', { provider, title: short.title })}
+        playAttributes={eventAttributes(EVENTS.play, {
+          short: short.slug,
+          ...(source ? { provider: source.provider } : {}),
+        })}
       />
       <div class="flex flex-wrap items-center gap-3">
         {short.brandedContent && <Badge tone="branded">{t('badges.branded')}</Badge>}

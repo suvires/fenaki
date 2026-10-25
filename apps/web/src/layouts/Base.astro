@@ -1,8 +1,9 @@
 ---
 import '../styles/global.css'
 import type { Locale } from '@shortix/i18n'
-import { SearchField } from '@shortix/ui'
+import { SearchField, SiteFooter } from '@shortix/ui'
 import { paths, translator } from '../lib/i18n.ts'
+import { siteMode, umami } from '../lib/services.ts'
 
 interface Props {
   locale: Locale
@@ -10,13 +11,45 @@ interface Props {
   description?: string
   /** The search page has its own field. */
   showSearch?: boolean
+  /** Pages that only make sense from a link, such as the waitlist confirmation. */
+  noindex?: boolean
 }
 
-const { locale, title, description, showSearch = true } = Astro.props
+const { locale, title, description, showSearch = true, noindex = false } = Astro.props
 const t = translator(locale)
+const landing = siteMode === 'landing'
 const pageTitle = title
   ? `${title} · ${t('site.name')}`
   : `${t('site.name')} · ${t('site.tagline')}`
+
+const footerGroups = [
+  ...(landing
+    ? [
+        {
+          title: t('footer.groups.shortix'),
+          links: [
+            { label: t('footer.links.what'), href: paths.landingSection(locale, 'what') },
+            { label: t('footer.links.legal'), href: paths.landingSection(locale, 'legal') },
+            { label: t('footer.links.faq'), href: paths.landingSection(locale, 'faq') },
+          ],
+        },
+      ]
+    : []),
+  {
+    title: t('footer.groups.filmmakers'),
+    links: [
+      { label: t('footer.links.takedown'), href: paths.legal(locale, 'retirada-de-contenidos') },
+    ],
+  },
+  {
+    title: t('footer.groups.legal'),
+    links: [
+      { label: t('footer.links.legalNotice'), href: paths.legal(locale, 'aviso-legal') },
+      { label: t('footer.links.privacy'), href: paths.legal(locale, 'privacidad') },
+      { label: t('footer.links.cookies'), href: paths.legal(locale, 'cookies') },
+    ],
+  },
+]
 ---
 
 <!doctype html>
@@ -27,6 +60,16 @@ const pageTitle = title
     <meta name="color-scheme" content="dark" />
     <title>{pageTitle}</title>
     <meta name="description" content={description ?? t('site.description')} />
+    {noindex && <meta name="robots" content="noindex" />}
+    {umami && (
+      <script
+        is:inline
+        defer
+        src={umami.scriptUrl}
+        data-website-id={umami.websiteId}
+        data-exclude-search="true"
+      />
+    )}
   </head>
   <body class="min-h-dvh overflow-x-hidden">
     <a
@@ -42,7 +85,7 @@ const pageTitle = title
       >
         {t('site.name')}
       </a>
-      {showSearch && (
+      {showSearch && !landing && (
         <form action={paths.search(locale)} method="get" role="search" class="w-full max-w-search">
           <SearchField
             name="q"
@@ -56,8 +99,11 @@ const pageTitle = title
     <main id="main" class="mx-auto max-w-page grid gap-12 px-4 md:px-8 py-8">
       <slot />
     </main>
-    <footer class="mx-auto max-w-page px-4 md:px-8 pb-8 text-meta text-ink-muted">
-      <p class="m-0 font-mono text-label uppercase">{t('site.tagline')}</p>
-    </footer>
+    <SiteFooter
+      className="mx-auto max-w-page px-4 md:px-8 pb-8"
+      label={t('footer.label')}
+      groups={footerGroups}
+      tagline={t('footer.tagline')}
+    />
   </body>
 </html>
