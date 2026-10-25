@@ -12,7 +12,7 @@ Shortix is a curated catalog of free, legal short films with the browsing experi
 
 ## Visual foundations
 
-**Color.** The dark theme (`dark`, «Sala») is the product; the light theme (`light`, «Vestíbulo») exists for viewers who ask for it and for printed or shared material.
+**Color.** The web and the apps are dark only (`dark`, «Sala»), with no theme switcher, like every streaming service: posters and video read best on dark. The light palette (`light`, «Vestíbulo») is not a product theme: use it only for the newsletter, the sponsor dossier and printed or PDF documents. Tokens are named by role, so a light product theme could be switched on later without touching components.
 
 - Pages sit on `sala-0`. Raised areas use `sala-1`; posters without art, secondary buttons and hover fills use `sala-2`.
 - `tungsteno` is projector light and the only action color: primary buttons, the active state, the focus ring. One primary button per view. Never use it as decoration or as a large background other than the `tungsteno` poster tone.

@@ -49,7 +49,7 @@ All UI goes through the design system (validated). Three layers:
 - `packages/ui`: React components built on accessible primitives (Radix / shadcn/ui), using tokens only. Astro renders them as static HTML and hydrates only interactive islands.
 - Storybook as the living catalog, with accessibility and visual regression tests.
 
-The validated visual direction lives in `design/system/`: brand book (`README.md`), tokens (`tokens.json`, compiled to `tokens.css`), a prototype component bundle with guidelines and previews, and a local gallery (`index.html`). Port it into `packages/tokens` and `packages/ui` when scaffolding; from then on the packages are the source of truth. Never hardcode a color, size or font, and never build a one-off button or card inside a page: add or change the component in `packages/ui`.
+The validated visual direction lives in `design/system/`: brand book (`README.md`), tokens (`tokens.json`, compiled to `tokens.css`), a prototype component bundle with guidelines and previews, and a local gallery (`index.html`). Port it into `packages/tokens` and `packages/ui` when scaffolding; from then on the packages are the source of truth. The product (web, apps, TV) is dark only, with no theme switcher; the light palette is only for the newsletter, the sponsor dossier and print/PDF documents. Never hardcode a color, size or font, and never build a one-off button or card inside a page: add or change the component in `packages/ui`.
 
 Monorepo (pnpm + Turborepo): `apps/web` (Astro), `apps/cms` (Payload), `packages/tokens`, `packages/ui`, `packages/i18n`.
 

@@ -17,8 +17,8 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@500&family=Atkinson+Hyperlegible+Next:wght@400&family=Big+Shoulders:wght@800&display=swap">
 </head>
 <body>
-<header><h1>Shortix · sistema de diseño</h1><button id="theme" type="button">Cambiar a tema claro</button></header>
-<p>Referencia visual validada el 25 oct 2026. Guía de uso en <code>README.md</code>, tokens en <code>tokens.json</code>. Se porta a <code>packages/tokens</code> y <code>packages/ui</code> al montar el monorepo.</p>
+<header><h1>Shortix · sistema de diseño</h1><button id="theme" type="button">Ver paleta clara</button></header>
+<p>Referencia visual validada el 25 oct 2026. Guía de uso en <code>README.md</code>, tokens en <code>tokens.json</code>. La web y las apps son solo oscuras; la paleta clara es para la newsletter, el dossier y los documentos. Se porta a <code>packages/tokens</code> y <code>packages/ui</code> al montar el monorepo.</p>
 <section><h2>Cover <small>Cover</small></h2><iframe title="Cover" src="components/Cover/preview.html" style="height:304px" loading="lazy"></iframe></section>
 <section><h2>HomePage <small>Pages</small></h2><iframe title="HomePage" src="components/HomePage/preview.html" style="height:1166px" loading="lazy"></iframe></section>
 <section><h2>ShortPage <small>Pages</small></h2><iframe title="ShortPage" src="components/ShortPage/preview.html" style="height:916px" loading="lazy"></iframe></section>
@@ -35,7 +35,7 @@
 <section><h2>LicenseNote <small>Legal</small></h2><iframe title="LicenseNote" src="components/LicenseNote/preview.html" style="height:246px" loading="lazy"></iframe></section>
 <section><h2>PlayerGate <small>Legal</small></h2><iframe title="PlayerGate" src="components/PlayerGate/preview.html" style="height:436px" loading="lazy"></iframe></section>
 <script>
-var light=false;document.getElementById("theme").onclick=function(){light=!light;document.documentElement.setAttribute("data-theme",light?"light":"dark");this.textContent=light?"Cambiar a tema oscuro":"Cambiar a tema claro";document.querySelectorAll("iframe").forEach(function(f){f.src=f.src.split("?")[0]+"?theme="+(light?"light":"dark");});};
+var light=false;document.getElementById("theme").onclick=function(){light=!light;document.documentElement.setAttribute("data-theme",light?"light":"dark");this.textContent=light?"Ver producto (oscuro)":"Ver paleta clara";document.querySelectorAll("iframe").forEach(function(f){f.src=f.src.split("?")[0]+"?theme="+(light?"light":"dark");});};
 </script>
 </body>
 </html>
