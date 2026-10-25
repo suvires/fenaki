@@ -1,0 +1,80 @@
+---
+import { formatList } from '@shortix/i18n'
+import { PageHeader, ShortGrid } from '@shortix/ui'
+import NotFound from '../../../components/NotFound.astro'
+import Base from '../../../layouts/Base.astro'
+import { CREDIT_ROLES, toCard } from '../../../lib/catalog.ts'
+import { getPerson, listShortsByPerson, rolesOf, toCardSource } from '../../../lib/cms.ts'
+import { localeFrom, paths, translator } from '../../../lib/i18n.ts'
+import { profilePage } from '../../../lib/seo.ts'
+import { badgeClock, siteUrl } from '../../../lib/services.ts'
+
+const locale = localeFrom(Astro.params.locale)
+if (!locale) return Astro.rewrite('/404')
+
+const t = translator(locale)
+const person = Astro.params.slug ? await getPerson(Astro.params.slug) : undefined
+const shorts = person ? await listShortsByPerson(locale, person.id) : []
+// A person page exists only while they have a published short.
+if (!person || shorts.length === 0) Astro.response.status = 404
+
+const credited = new Set(shorts.flatMap((short) => (person ? rolesOf(short, person.id) : [])))
+const roles = CREDIT_ROLES.filter((role) => credited.has(role)).map((role) =>
+  t(`short.roles.${role}`),
+)
+const clock = badgeClock()
+const found = person && shorts.length > 0 ? person : undefined
+const jsonLd = found
+  ? profilePage(
+      siteUrl,
+      {
+        name: found.name,
+        url: paths.person(locale, found.slug),
+        description: found.bio,
+        jobTitle: roles.join(', '),
+      },
+      shorts.map((s) => ({ name: s.title, url: paths.short(locale, s.slug) })),
+    )
+  : undefined
+---
+
+<Base
+  locale={locale}
+  title={person && shorts.length > 0 ? person.name : t('errors.notFoundTitle')}
+  description={
+    person && shorts.length > 0
+      ? t('person.description', {
+          name: person.name,
+          roles: formatList(roles, locale),
+          count: shorts.length,
+        })
+      : undefined
+  }
+  ogType={found ? 'profile' : undefined}
+  ogImage={found ? paths.og(locale, 'personas', found.slug) : undefined}
+  jsonLd={jsonLd}
+>
+  {!person || shorts.length === 0 ? (
+    <NotFound locale={locale} />
+  ) : (
+    <>
+      <PageHeader
+        eyebrow={roles.join(' · ')}
+        title={person.name}
+        description={person.bio ?? undefined}
+      >
+        <p class="m-0 text-meta text-ink-muted">{t('person.shorts', { count: shorts.length })}</p>
+      </PageHeader>
+      <section class="grid gap-4" aria-labelledby="person-shorts">
+        <h2 id="person-shorts" class="m-0 font-display text-title uppercase">
+          {t('person.shortsTitle')}
+        </h2>
+        <ShortGrid
+          items={shorts.map((short) =>
+            toCard(toCardSource(short), locale, t, paths.short(locale, short.slug), clock),
+          )}
+        />
+      </section>
+    </>
+  )}
+</Base>

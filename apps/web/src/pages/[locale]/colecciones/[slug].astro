@@ -7,6 +7,8 @@ import { toCard } from '../../../lib/catalog.ts'
 import { getCollection, shortsOf, sponsorOf, toCardSource } from '../../../lib/cms.ts'
 import { sponsorCredit } from '../../../lib/analytics.ts'
 import { localeFrom, paths, translator } from '../../../lib/i18n.ts'
+import { collectionPage } from '../../../lib/seo.ts'
+import { siteUrl } from '../../../lib/services.ts'
 
 const locale = localeFrom(Astro.params.locale)
 if (!locale) return Astro.rewrite('/404')
@@ -17,12 +19,22 @@ if (!collection) Astro.response.status = 404
 const shorts = collection ? shortsOf(collection) : []
 const sponsor = collection ? sponsorOf(collection) : undefined
 const clock = badgeClock()
+const jsonLd = collection
+  ? collectionPage(siteUrl, {
+      name: collection.title,
+      description: collection.description,
+      url: paths.collection(locale, collection.slug),
+      items: shorts.map((s) => ({ name: s.title, url: paths.short(locale, s.slug) })),
+    })
+  : undefined
 ---
 
 <Base
   locale={locale}
   title={collection?.title ?? t('errors.notFoundTitle')}
   description={collection?.description ?? undefined}
+  ogImage={collection ? paths.og(locale, 'colecciones', collection.slug) : undefined}
+  jsonLd={jsonLd}
 >
   {!collection ? (
     <NotFound locale={locale} />

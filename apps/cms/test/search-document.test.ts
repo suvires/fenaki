@@ -22,7 +22,7 @@ describe('toSearchDocument', () => {
       { person: { name: 'Rafa Cano Méndez' }, role: 'writer' },
       { person: 7, role: 'composer' },
     ],
-    sources: { docs: [{ subtitles: ['es', 'en'] }, { subtitles: ['es'] }, 12] },
+    sources: { docs: [{ subtitles: ['es', 'en-GB'] }, { subtitles: ['es-ES'] }, 12] },
   }
 
   it('flattens credits into directors and unique people', () => {
@@ -31,7 +31,7 @@ describe('toSearchDocument', () => {
     expect(doc.people).toEqual(['Daniel Martínez Lara', 'Rafa Cano Méndez'])
   })
 
-  it('merges subtitles from every populated source', () => {
+  it('merges subtitles from every populated source, by primary language', () => {
     expect(toSearchDocument(short, 'Animación').subtitles).toEqual(['es', 'en'])
   })
 
@@ -50,6 +50,23 @@ describe('toSearchDocument', () => {
     expect(toSearchDocument(short, 'Animación').brandedContent).toBe(false)
     expect(toSearchDocument({ ...short, brandedContent: true }, 'Animación').brandedContent).toBe(
       true,
+    )
+  })
+
+  it('adds the browse facets: language, duration band and form', () => {
+    expect(toSearchDocument(short, 'Animación')).toMatchObject({
+      originalLanguage: 'zxx',
+      durationBand: 'mid',
+      form: 'animation',
+    })
+    const spoken = { ...short, noDialogue: false, originalLanguage: 'es', type: 'fiction' }
+    expect(toSearchDocument({ ...spoken, durationSeconds: 299 }, 'Ficción')).toMatchObject({
+      originalLanguage: 'es',
+      durationBand: 'short',
+      form: 'live-action',
+    })
+    expect(toSearchDocument({ ...spoken, durationSeconds: 901 }, 'Ficción').durationBand).toBe(
+      'long',
     )
   })
 

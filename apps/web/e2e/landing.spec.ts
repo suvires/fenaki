@@ -59,12 +59,34 @@ test('the landing page replaces the home and shows a launch collection', async (
 
 test('the catalog routes are not public before launch', async ({ request }) => {
   for (const path of [
+    '/es/cortos',
     '/es/cortos/timecode',
     '/es/buscar',
     '/es/colecciones/imprescindibles-del-corto-espanol',
+    '/es/personas/juanjo-gimenez',
+    '/es/escaparates/escuela-de-cine-de-ejemplo',
+    '/og/es/cortos/timecode.png',
   ])
     expect((await request.get(path)).status()).toBe(404)
   expect((await request.get('/api/search?q=madre')).status()).toBe(404)
+})
+
+test('the sponsorship page is public before launch, with the contact links', async ({
+  page,
+  request,
+}) => {
+  await page.goto('/es/patrocina')
+  await expect(page.getByRole('heading', { level: 1, name: 'Patrocina Shortix' })).toBeVisible()
+  await expect(
+    page
+      .getByRole('main')
+      .getByRole('link', { name: 'Escaparates para festivales y escuelas' })
+      .first(),
+  ).toHaveAttribute('href', /^mailto:hola@shortix\.film\?subject=/)
+  // Before launch the sitemap lists only the public pages.
+  const sitemap = await (await request.get('/sitemap-es.xml')).text()
+  expect(sitemap).toContain('/es/patrocina</loc>')
+  expect(sitemap).not.toContain('/es/cortos')
 })
 
 test('the waitlist form explains what is wrong with the address', async ({ page }) => {
@@ -79,7 +101,6 @@ test('the waitlist form explains what is wrong with the address', async ({ page 
 
 test('signing up sends a confirmation email that confirms the subscription in listmonk', async ({
   page,
-  baseURL,
 }) => {
   const email = `e2e+${Date.now()}@example.com`
   await page.goto('/es/')
@@ -91,8 +112,10 @@ test('signing up sends a confirmation email that confirms the subscription in li
 
   const message = await waitForEmail(email)
   expect(message.Subject).toBe('Confirma tu correo para la lista de Shortix')
-  const confirmUrl = `${baseURL}/es/lista-de-espera/confirmar?s=`.replace(/[.?/]/g, '\\$&')
-  const link = new RegExp(`href="(${confirmUrl}[^"]+)"`).exec(message.HTML)?.[1]
+  const origin = new URL(page.url()).origin.replace(/[./]/g, '\\$&')
+  const link = new RegExp(`href="(${origin}/es/lista-de-espera/confirmar\\?s=[^"]+)"`).exec(
+    message.HTML,
+  )?.[1]
   expect(link).toBeDefined()
 
   try {

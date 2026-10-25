@@ -14,6 +14,11 @@ export const paths = {
   home: (locale: Locale) => `/${locale}/`,
   short: (locale: Locale, slug: string) => `/${locale}/cortos/${slug}`,
   collection: (locale: Locale, slug: string) => `/${locale}/colecciones/${slug}`,
+  person: (locale: Locale, slug: string) => `/${locale}/personas/${slug}`,
+  browse: (locale: Locale) => `/${locale}/cortos`,
+  showcase: (locale: Locale, slug: string) => `/${locale}/escaparates/${slug}`,
+  sponsor: (locale: Locale, section?: 'collection' | 'showcase') =>
+    `/${locale}/patrocina${section ? `#${section === 'collection' ? 'coleccion' : 'escaparate'}` : ''}`,
   search: (locale: Locale, query?: string) =>
     `/${locale}/buscar${query ? `?q=${encodeURIComponent(query)}` : ''}`,
   /** A section of the landing page: `what`, `legal`, `faq` or `waitlist`. */
@@ -21,6 +26,10 @@ export const paths = {
     `/${locale}/#${section}`,
   waitlistConfirm: (locale: Locale) => `/${locale}/lista-de-espera/confirmar`,
   legal: (locale: Locale, page: LegalPage) => `/${locale}/${page}`,
+  /** The generated Open Graph image of a document or page (see src/pages/og). */
+  og: (locale: Locale, kind: 'cortos' | 'personas' | 'colecciones' | 'escaparates', slug: string) =>
+    `/og/${locale}/${kind}/${slug}.png`,
+  ogPage: (locale: Locale, page: 'site' | 'browse' | 'sponsor') => `/og/${locale}/${page}.png`,
 }
 
 /** The legal pages, by slug. Their text lives in packages/i18n/legal/<locale>/<slug>.md. */

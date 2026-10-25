@@ -3,6 +3,7 @@ import { common, label, options, type AdminLabel } from '../labels.ts'
 
 const STATUSES = {
   draft: label('Draft', 'Borrador'),
+  review: label('Pending review', 'Pendiente de revisión'),
   published: label('Published', 'Publicado'),
   withdrawn: label('Withdrawn', 'Retirado'),
 } satisfies Record<string, AdminLabel>

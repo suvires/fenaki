@@ -18,11 +18,20 @@ describe('confirmationEmail', () => {
 
 describe('isHiddenInMode', () => {
   it('hides only the catalog routes, and only before launch', () => {
-    for (const path of ['/es/cortos/cuerdas', '/es/colecciones/x', '/es/buscar', '/api/search'])
+    for (const path of [
+      '/es/cortos',
+      '/es/cortos/cuerdas',
+      '/es/colecciones/x',
+      '/es/personas/nacho-vigalondo',
+      '/es/escaparates/x',
+      '/es/buscar',
+      '/api/search',
+    ])
       expect(isHiddenInMode(path, 'landing')).toBe(true)
     for (const path of [
       '/es/',
       '/es/aviso-legal',
+      '/es/patrocina',
       '/es/lista-de-espera/confirmar',
       '/api/waitlist',
     ])

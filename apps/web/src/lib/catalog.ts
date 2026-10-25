@@ -18,6 +18,17 @@ export interface CardSource {
 
 export type DurationBand = 'short' | 'mid' | 'long'
 
+/** Credit roles in the order pages list them (same as the CMS). */
+export const CREDIT_ROLES = [
+  'director',
+  'writer',
+  'producer',
+  'cinematographer',
+  'editor',
+  'composer',
+  'cast',
+] as const
+
 const NEW_FOR_DAYS = 30
 const DAY = 24 * 60 * 60 * 1000
 

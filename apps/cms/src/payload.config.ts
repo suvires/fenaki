@@ -9,12 +9,15 @@ import sharp from 'sharp'
 import { Collections } from './collections/Collections.ts'
 import { LicenseDocuments } from './collections/LicenseDocuments.ts'
 import { Licenses } from './collections/Licenses.ts'
+import { Media } from './collections/Media.ts'
 import { People } from './collections/People.ts'
 import { Shorts } from './collections/Shorts.ts'
+import { Showcases } from './collections/Showcases.ts'
 import { Sources } from './collections/Sources.ts'
 import { Sponsors } from './collections/Sponsors.ts'
 import { Users } from './collections/Users.ts'
 import { emailAdapter } from './email.ts'
+import { checkEmbedsTask } from './jobs/checkEmbeds.ts'
 import { indexShortTask } from './jobs/indexShort.ts'
 import { purgeWaitlistTask } from './jobs/purgeWaitlist.ts'
 import { initSentry, reportApiError } from './sentry.ts'
@@ -28,6 +31,15 @@ export default buildConfig({
     user: Users.slug,
     importMap: { baseDir: path.resolve(dirname) },
     meta: { titleSuffix: ' · Shortix' },
+    components: {
+      afterNavLinks: ['/admin/EmbedProblemsLink.tsx#EmbedProblemsLink'],
+      views: {
+        embedProblems: {
+          Component: '/admin/EmbedProblems.tsx#EmbedProblems',
+          path: '/embed-problems',
+        },
+      },
+    },
   },
   i18n: { supportedLanguages: { es, en }, fallbackLanguage: 'es' },
   // Content locales come from @shortix/i18n: adding `en` there enables it here.
@@ -39,7 +51,18 @@ export default buildConfig({
     defaultLocale,
     fallback: true,
   },
-  collections: [Shorts, Sources, People, Collections, Licenses, LicenseDocuments, Sponsors, Users],
+  collections: [
+    Shorts,
+    Sources,
+    People,
+    Collections,
+    Showcases,
+    Media,
+    Licenses,
+    LicenseDocuments,
+    Sponsors,
+    Users,
+  ],
   cors: [process.env.WEB_URL ?? 'http://localhost:4321'],
   // The schema changes only through migrations (`pnpm migrate`), in development too, so the
   // first deployment runs exactly what was tested locally.
@@ -50,7 +73,7 @@ export default buildConfig({
   }),
   // Jobs run in a separate process (`pnpm --filter @shortix/cms jobs`), never inside the web server.
   jobs: {
-    tasks: [indexShortTask, purgeWaitlistTask],
+    tasks: [indexShortTask, purgeWaitlistTask, checkEmbedsTask],
     deleteJobOnComplete: true,
   },
   // SMTP (Amazon SES in production) when SMTP_HOST is set; otherwise emails go to the console.

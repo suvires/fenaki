@@ -17,6 +17,9 @@
     "@astrojs/node": "11.1.9",
     "@astrojs/react": "7.1.1",
     "@sentry/node": "11.9.0",
+    "@fontsource/atkinson-hyperlegible-mono": "5.3.0",
+    "@fontsource/atkinson-hyperlegible-next": "5.3.0",
+    "@fontsource/big-shoulders": "5.3.0",
     "@shortix/i18n": "workspace:*",
     "@shortix/tokens": "workspace:*",
     "@shortix/ui": "workspace:*",
@@ -26,6 +29,8 @@
     "meilisearch": "0.62.0",
     "react": "19.3.1",
     "react-dom": "19.3.1",
+    "satori": "0.62.0",
+    "sharp": "0.35.5",
     "tailwindcss": "4.3.3"
   },
   "devDependencies": {

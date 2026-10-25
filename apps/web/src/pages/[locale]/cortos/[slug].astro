@@ -1,21 +1,24 @@
 ---
 import { badgeClock } from '../../../lib/services.ts'
-import { formatCountry, formatList, formatYear } from '@shortix/i18n'
+import { createRichTranslator, formatCountry, formatYear } from '@shortix/i18n'
 import { Badge, Duration, LicenseNote, PlayerGate, Rail, ShortCard } from '@shortix/ui'
 import NotFound from '../../../components/NotFound.astro'
+import PeopleLinks from '../../../components/PeopleLinks.astro'
 import Base from '../../../layouts/Base.astro'
 import { toCard } from '../../../lib/catalog.ts'
 import {
+  creditsOf,
   getShort,
   licenseOf,
   listShorts,
   listSources,
-  peopleOf,
   playableSource,
   toCardSource,
 } from '../../../lib/cms.ts'
 import { EVENTS, eventAttributes } from '../../../lib/analytics.ts'
-import { embedUrl } from '../../../lib/embed.ts'
+import { embedPageUrl, embedUrl } from '../../../lib/embed.ts'
+import { videoObject } from '../../../lib/seo.ts'
+import { siteUrl } from '../../../lib/services.ts'
 import { localeFrom, paths, translator } from '../../../lib/i18n.ts'
 
 const locale = localeFrom(Astro.params.locale)
@@ -30,11 +33,14 @@ const source = short ? playableSource(await listSources(short.id)) : undefined
 const license = source ? licenseOf(source) : undefined
 const provider = source ? t(`providers.${source.provider}`) : ''
 const card = short ? toCardSource(short) : undefined
-const directors = short ? peopleOf(short, 'director') : []
+const directors = short ? creditsOf(short, 'director') : []
+const directedBy = createRichTranslator(locale)('short.directedBy', { names: true as const })
 
 const ROLES = ['writer', 'producer', 'cinematographer', 'editor', 'composer', 'cast'] as const
 const credits = short
-  ? ROLES.map((role) => ({ role, names: peopleOf(short, role) })).filter((c) => c.names.length > 0)
+  ? ROLES.map((role) => ({ role, people: creditsOf(short, role) })).filter(
+      (c) => c.people.length > 0,
+    )
   : []
 
 const related = short
@@ -43,6 +49,24 @@ const related = short
       .sort((a, b) => Number(b.type === short.type) - Number(a.type === short.type))
       .slice(0, 6)
   : []
+
+const jsonLd = short
+  ? videoObject(siteUrl, {
+      name: short.title,
+      description: short.synopsis,
+      url: paths.short(locale, short.slug),
+      thumbnailUrl: paths.og(locale, 'cortos', short.slug),
+      uploadDate: source?.uploadedAt ?? short.publishedAt,
+      durationSeconds: short.durationSeconds,
+      embedUrl:
+        source && !short.sample ? embedPageUrl(source.provider, source.externalId) : undefined,
+      inLanguage: short.originalLanguage,
+      countryOfOrigin: short.country ? formatCountry(short.country, locale) : undefined,
+      year: short.year,
+      genre: t(`short.types.${short.type}`),
+      directors: directors.map((d) => ({ name: d.name, url: paths.person(locale, d.slug) })),
+    })
+  : undefined
 
 const origin = [
   short?.country ? formatCountry(short.country, locale) : undefined,
@@ -56,6 +80,9 @@ const origin = [
   locale={locale}
   title={short?.title ?? t('errors.notFoundTitle')}
   description={short?.synopsis ?? undefined}
+  ogType={short ? 'video.other' : undefined}
+  ogImage={short ? paths.og(locale, 'cortos', short.slug) : undefined}
+  jsonLd={jsonLd}
 >
   {!short || !card ? (
     <NotFound locale={locale} />
@@ -92,7 +119,9 @@ const origin = [
       {short.synopsis && <p class="m-0 max-w-synopsis text-body-l">{short.synopsis}</p>}
       {directors.length > 0 && (
         <p class="m-0 text-ink-muted">
-          {t('short.directedBy', { names: formatList(directors, locale) })}
+          {directedBy.map((piece) =>
+            piece === true ? <PeopleLinks locale={locale} people={directors} /> : piece,
+          )}
         </p>
       )}
       {credits.length > 0 && (
@@ -104,7 +133,9 @@ const origin = [
             {credits.map((credit) => (
               <>
                 <dt class="text-ink-muted">{t(`short.roles.${credit.role}`)}</dt>
-                <dd class="m-0">{formatList(credit.names, locale)}</dd>
+                <dd class="m-0">
+                  <PeopleLinks locale={locale} people={credit.people} />
+                </dd>
               </>
             ))}
           </dl>

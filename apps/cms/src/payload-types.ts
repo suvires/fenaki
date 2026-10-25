@@ -71,6 +71,8 @@ export interface Config {
     sources: Source;
     people: Person;
     collections: Collection;
+    showcases: Showcase;
+    media: Media;
     licenses: License;
     'license-documents': LicenseDocument;
     sponsors: Sponsor;
@@ -91,6 +93,8 @@ export interface Config {
     sources: SourcesSelect<false> | SourcesSelect<true>;
     people: PeopleSelect<false> | PeopleSelect<true>;
     collections: CollectionsSelect<false> | CollectionsSelect<true>;
+    showcases: ShowcasesSelect<false> | ShowcasesSelect<true>;
+    media: MediaSelect<false> | MediaSelect<true>;
     licenses: LicensesSelect<false> | LicensesSelect<true>;
     'license-documents': LicenseDocumentsSelect<false> | LicenseDocumentsSelect<true>;
     sponsors: SponsorsSelect<false> | SponsorsSelect<true>;
@@ -120,6 +124,7 @@ export interface Config {
     tasks: {
       indexShort: TaskIndexShort;
       purgeWaitlist: TaskPurgeWaitlist;
+      checkEmbeds: TaskCheckEmbeds;
       inline: {
         input: unknown;
         output: unknown;
@@ -161,7 +166,7 @@ export interface Short {
   /**
    * Running time in seconds.
    */
-  durationSeconds: number;
+  durationSeconds?: number | null;
   year?: number | null;
   /**
    * ISO 3166-1 alpha-2 code, e.g. ES.
@@ -171,7 +176,7 @@ export interface Short {
    * BCP 47 code, e.g. es. Use zxx for no dialogue.
    */
   originalLanguage?: string | null;
-  type: 'fiction' | 'documentary' | 'animation' | 'experimental';
+  type?: ('fiction' | 'documentary' | 'animation' | 'experimental') | null;
   noDialogue?: boolean | null;
   /**
    * Typographic poster tone until the short has cleared art.
@@ -203,11 +208,20 @@ export interface Short {
     hasNextPage?: boolean;
     totalDocs?: number;
   };
-  status: 'draft' | 'published' | 'withdrawn';
+  status: 'draft' | 'review' | 'published' | 'withdrawn';
+  /**
+   * Set by the nightly embed checker, which withdrew the short. Clear it and publish again once a source plays.
+   */
+  hiddenReason?: ('broken' | 'private' | 'not-embeddable' | 'age-restricted') | null;
+  hiddenAt?: string | null;
   /**
    * Set when first published.
    */
   publishedAt?: string | null;
+  /**
+   * The film on The Movie Database, when it is there.
+   */
+  tmdbId?: number | null;
   /**
    * Sample data for development, not a catalog entry.
    */
@@ -252,6 +266,22 @@ export interface Source {
    */
   url?: string | null;
   /**
+   * Only official channels (author, producer, distributor, festival, school or institution) enter the catalog. The legal route of an embed depends on it.
+   */
+  channel?: {
+    name?: string | null;
+    kind?: ('author' | 'producer' | 'distributor' | 'festival' | 'school' | 'institution') | null;
+    url?: string | null;
+    /**
+     * Filled from the provider when available.
+     */
+    externalId?: string | null;
+  };
+  /**
+   * What shows the channel belongs to the rights holder (links from the official website, the festival or the credits), and when it was checked. Required to publish the short.
+   */
+  officialEvidence?: string | null;
+  /**
    * BCP 47 codes of the available subtitles, e.g. es, en.
    */
   subtitles?: string[] | null;
@@ -261,6 +291,23 @@ export interface Source {
    */
   status: 'unchecked' | 'ok' | 'broken' | 'private';
   lastCheckedAt?: string | null;
+  /**
+   * Age-restricted videos do not play embedded.
+   */
+  ageRestricted?: boolean | null;
+  /**
+   * When the checker first found it unplayable.
+   */
+  problemSince?: string | null;
+  /**
+   * What the last check found, in the checker’s words.
+   */
+  checkNote?: string | null;
+  /**
+   * Reference only: Shortix shows typographic posters, never film stills.
+   */
+  thumbnailUrl?: string | null;
+  uploadedAt?: string | null;
   license: number | License;
   /**
    * Set by the catalog import. Re-running the import updates this document.
@@ -386,6 +433,79 @@ export interface Sponsor {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "showcases".
+ */
+export interface Showcase {
+  id: number;
+  /**
+   * As it presents itself.
+   */
+  name: string;
+  /**
+   * Part of the URL. Generated from the title when left empty.
+   */
+  slug: string;
+  kind: 'festival' | 'school' | 'institution';
+  website?: string | null;
+  logo?: (number | null) | Media;
+  /**
+   * Two or three sentences about the organization and its selection.
+   */
+  intro?: string | null;
+  /**
+   * In display order. Only shorts on official channels; never non-commercial (NC) ones.
+   */
+  shorts?: (number | Short)[] | null;
+  /**
+   * Festivals show past editions or awards only. Tick it once you have checked every short; it is required to publish.
+   */
+  offCircuitConfirmed?: boolean | null;
+  /**
+   * Optional credit in the page header. Branded shorts cannot be in a presented showcase.
+   */
+  presentedBy?: (number | null) | Sponsor;
+  status: 'draft' | 'published';
+  /**
+   * Sample data for development, not a catalog entry.
+   */
+  sample?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  /**
+   * What the image says, for people who cannot see it. For a logo, the organization’s name.
+   */
+  alt: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  sizes?: {
+    logo?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -479,7 +599,7 @@ export interface PayloadJob {
     | {
         executedAt: string;
         completedAt: string;
-        taskSlug: 'inline' | 'indexShort' | 'purgeWaitlist';
+        taskSlug: 'inline' | 'indexShort' | 'purgeWaitlist' | 'checkEmbeds';
         taskID: string;
         input?:
           | {
@@ -512,7 +632,7 @@ export interface PayloadJob {
         id?: string | null;
       }[]
     | null;
-  taskSlug?: ('inline' | 'indexShort' | 'purgeWaitlist') | null;
+  taskSlug?: ('inline' | 'indexShort' | 'purgeWaitlist' | 'checkEmbeds') | null;
   queue?: string | null;
   waitUntil?: string | null;
   processing?: boolean | null;
@@ -550,6 +670,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'collections';
         value: number | Collection;
+      } | null)
+    | ({
+        relationTo: 'showcases';
+        value: number | Showcase;
+      } | null)
+    | ({
+        relationTo: 'media';
+        value: number | Media;
       } | null)
     | ({
         relationTo: 'licenses';
@@ -635,7 +763,10 @@ export interface ShortsSelect<T extends boolean = true> {
       };
   sources?: T;
   status?: T;
+  hiddenReason?: T;
+  hiddenAt?: T;
   publishedAt?: T;
+  tmdbId?: T;
   sample?: T;
   importKey?: T;
   updatedAt?: T;
@@ -650,10 +781,24 @@ export interface SourcesSelect<T extends boolean = true> {
   provider?: T;
   externalId?: T;
   url?: T;
+  channel?:
+    | T
+    | {
+        name?: T;
+        kind?: T;
+        url?: T;
+        externalId?: T;
+      };
+  officialEvidence?: T;
   subtitles?: T;
   embeddable?: T;
   status?: T;
   lastCheckedAt?: T;
+  ageRestricted?: T;
+  problemSince?: T;
+  checkNote?: T;
+  thumbnailUrl?: T;
+  uploadedAt?: T;
   license?: T;
   importKey?: T;
   updatedAt?: T;
@@ -689,6 +834,57 @@ export interface CollectionsSelect<T extends boolean = true> {
   importKey?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "showcases_select".
+ */
+export interface ShowcasesSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  kind?: T;
+  website?: T;
+  logo?: T;
+  intro?: T;
+  shorts?: T;
+  offCircuitConfirmed?: T;
+  presentedBy?: T;
+  status?: T;
+  sample?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media_select".
+ */
+export interface MediaSelect<T extends boolean = true> {
+  alt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+  sizes?:
+    | T
+    | {
+        logo?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -890,6 +1086,19 @@ export interface TaskPurgeWaitlist {
   output: {
     deleted: number;
     unsubscribed: number;
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskCheckEmbeds".
+ */
+export interface TaskCheckEmbeds {
+  input?: unknown;
+  output: {
+    checked: number;
+    problems: number;
+    inconclusive: number;
+    hidden: number;
   };
 }
 /**

@@ -46,6 +46,17 @@ export function formatList(items: string[], locale: Locale): string {
   return new Intl.ListFormat(locale, { style: 'long', type: 'conjunction' }).format(items)
 }
 
+/**
+ * A list split into its items and the words between them, so each item can become a link:
+ * «A, B y C» → A · «, » · B · « y » · C.
+ */
+export function formatListParts(
+  items: string[],
+  locale: Locale,
+): { type: 'element' | 'literal'; value: string }[] {
+  return new Intl.ListFormat(locale, { style: 'long', type: 'conjunction' }).formatToParts(items)
+}
+
 /** The name of a weekday, ISO numbered (1 = Monday … 7 = Sunday): «jueves». */
 export function formatWeekday(isoDay: number, locale: Locale): string {
   // 2024-01-01 was a Monday.

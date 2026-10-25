@@ -1,10 +1,22 @@
 import type { CollectionConfig } from 'payload'
-import { isAuthenticated } from '../access.ts'
+import { isAuthenticated, isAuthenticatedField } from '../access.ts'
 import { importKeyField } from '../fields/importKey.ts'
+import { checkEmbedsEndpoint } from '../jobs/checkEmbedsEndpoint.ts'
 import { queueIndexShort } from '../jobs/queue.ts'
 import { groups, label, options } from '../labels.ts'
 
 export const PROVIDERS = ['youtube', 'vimeo', 'bunny'] as const
+
+/** Who runs the channel a source plays from. Only official channels enter the catalog. */
+export const CHANNEL_KINDS = [
+  'author',
+  'producer',
+  'distributor',
+  'festival',
+  'school',
+  'institution',
+] as const
+export type ChannelKind = (typeof CHANNEL_KINDS)[number]
 
 export const Sources: CollectionConfig = {
   slug: 'sources',
@@ -14,6 +26,7 @@ export const Sources: CollectionConfig = {
     defaultColumns: ['short', 'provider', 'externalId', 'status', 'lastCheckedAt'],
     group: groups.catalog,
   },
+  endpoints: [checkEmbedsEndpoint],
   access: {
     read: ({ req }) => (req.user ? true : { 'short.status': { equals: 'published' } }),
     create: isAuthenticated,
@@ -64,6 +77,67 @@ export const Sources: CollectionConfig = {
       },
     },
     {
+      name: 'channel',
+      label: label('Official channel', 'Canal oficial'),
+      type: 'group',
+      admin: {
+        description: label(
+          'Only official channels (author, producer, distributor, festival, school or institution) enter the catalog. The legal route of an embed depends on it.',
+          'Solo entran canales oficiales (autor, productora, distribuidora, festival, escuela o institución). La vía legal del embed depende de ello.',
+        ),
+      },
+      fields: [
+        {
+          type: 'row',
+          fields: [
+            { name: 'name', label: label('Channel', 'Canal'), type: 'text' },
+            {
+              name: 'kind',
+              label: label('Who runs it', 'Quién lo gestiona'),
+              type: 'select',
+              options: options({
+                author: label('Author', 'Autor'),
+                producer: label('Producer', 'Productora'),
+                distributor: label('Distributor', 'Distribuidora'),
+                festival: label('Festival', 'Festival'),
+                school: label('Film school', 'Escuela de cine'),
+                institution: label('Institution', 'Institución'),
+              }),
+            },
+          ],
+        },
+        {
+          type: 'row',
+          fields: [
+            { name: 'url', label: label('Channel URL', 'URL del canal'), type: 'text' },
+            {
+              name: 'externalId',
+              label: label('Channel ID', 'ID del canal'),
+              type: 'text',
+              admin: {
+                description: label(
+                  'Filled from the provider when available.',
+                  'Se rellena desde el proveedor cuando está disponible.',
+                ),
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'officialEvidence',
+      label: label('Evidence that the channel is official', 'Prueba de que el canal es oficial'),
+      type: 'textarea',
+      access: { read: isAuthenticatedField },
+      admin: {
+        description: label(
+          'What shows the channel belongs to the rights holder (links from the official website, the festival or the credits), and when it was checked. Required to publish the short.',
+          'Qué demuestra que el canal es del titular (enlaces desde la web oficial, el festival o los créditos) y cuándo se comprobó. Obligatoria para publicar el corto.',
+        ),
+      },
+    },
+    {
       name: 'subtitles',
       label: label('Subtitles', 'Subtítulos'),
       type: 'text',
@@ -106,6 +180,69 @@ export const Sources: CollectionConfig = {
         {
           name: 'lastCheckedAt',
           label: label('Last checked', 'Última comprobación'),
+          type: 'date',
+        },
+      ],
+    },
+    {
+      type: 'row',
+      fields: [
+        {
+          name: 'ageRestricted',
+          label: label('Age restricted', 'Restringido por edad'),
+          type: 'checkbox',
+          defaultValue: false,
+          admin: {
+            description: label(
+              'Age-restricted videos do not play embedded.',
+              'Los vídeos con restricción de edad no se reproducen incrustados.',
+            ),
+          },
+        },
+        {
+          name: 'problemSince',
+          label: label('Problem since', 'Problema desde'),
+          type: 'date',
+          admin: {
+            description: label(
+              'When the checker first found it unplayable.',
+              'Cuándo la comprobación la encontró sin reproducción por primera vez.',
+            ),
+          },
+        },
+      ],
+    },
+    {
+      name: 'checkNote',
+      label: label('Last check', 'Última comprobación'),
+      type: 'text',
+      access: { read: isAuthenticatedField },
+      admin: {
+        readOnly: true,
+        description: label(
+          'What the last check found, in the checker’s words.',
+          'Lo que encontró la última comprobación.',
+        ),
+      },
+    },
+    {
+      type: 'row',
+      fields: [
+        {
+          name: 'thumbnailUrl',
+          label: label('Provider thumbnail', 'Miniatura del proveedor'),
+          type: 'text',
+          access: { read: isAuthenticatedField },
+          admin: {
+            description: label(
+              'Reference only: Shortix shows typographic posters, never film stills.',
+              'Solo de referencia: Shortix muestra pósteres tipográficos, nunca fotogramas.',
+            ),
+          },
+        },
+        {
+          name: 'uploadedAt',
+          label: label('Published on the provider', 'Publicado en el proveedor'),
           type: 'date',
         },
       ],

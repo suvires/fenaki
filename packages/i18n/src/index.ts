@@ -20,6 +20,7 @@ export {
   formatDuration,
   formatLanguage,
   formatList,
+  formatListParts,
   formatNumber,
   formatWeekday,
   formatYear,
