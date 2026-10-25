@@ -39,8 +39,8 @@ const linkClass =
   'rounded-xs text-nav text-ink no-underline hover:text-tungsteno-text focus-visible:focus-ring'
 
 /**
- * The site's top bar: logo, main navigation (genres, links), a search that opens in place, and the
- * account links. Disclosure buttons (aria-expanded), not menu roles: Escape closes what is open.
+ * The site's top bar: logo, main navigation (genres, links), a search that slides open to the left
+ * of the magnifier in the same bar (the menu steps aside meanwhile), and the account links. Disclosure buttons (aria-expanded), not menu roles: Escape closes what is open.
  * On small screens the navigation and account links fold into a menu; the magnifier stays.
  */
 export function SiteHeader({
@@ -145,10 +145,30 @@ export function SiteHeader({
         <a href={home.href} className="inline-flex text-ink rounded-xs focus-visible:focus-ring">
           <Wordmark label={home.label} className="h-6 w-auto" />
         </a>
-        <nav aria-label={navLabel} className="hidden md:block md:ml-6">
+        <nav aria-label={navLabel} className={cx('hidden md:ml-6', !searchOpen && 'md:block')}>
           {navigation('bar')}
         </nav>
-        <div className="ml-auto flex items-center gap-4">
+        <div className="ml-auto flex flex-1 min-w-0 items-center justify-end gap-4">
+          <form
+            id={searchId}
+            inert={!searchOpen}
+            aria-hidden={!searchOpen}
+            action={search.action}
+            method="get"
+            role="search"
+            className={cx(
+              'w-full overflow-hidden transition-[max-width,opacity] motion-reduce:transition-none',
+              searchOpen ? 'max-w-search opacity-100' : 'max-w-0 opacity-0',
+            )}
+          >
+            <SearchField
+              ref={searchInput}
+              name={search.name}
+              id={`${searchId}-field`}
+              label={search.label}
+              placeholder={search.placeholder}
+            />
+          </form>
           <button
             type="button"
             aria-expanded={searchOpen}
@@ -171,22 +191,6 @@ export function SiteHeader({
           </button>
         </div>
       </div>
-      <form
-        id={searchId}
-        hidden={!searchOpen}
-        action={search.action}
-        method="get"
-        role="search"
-        className="w-full max-w-search ml-auto"
-      >
-        <SearchField
-          ref={searchInput}
-          name={search.name}
-          id={`${searchId}-field`}
-          label={search.label}
-          placeholder={search.placeholder}
-        />
-      </form>
       <div id={menuId} hidden={!menuOpen} className="md:hidden grid gap-6 pb-2">
         <nav aria-label={navLabel}>{navigation('menu')}</nav>
         {accountLinks}
