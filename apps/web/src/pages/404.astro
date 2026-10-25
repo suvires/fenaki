@@ -1,0 +1,12 @@
+---
+import { defaultLocale } from '@shortix/i18n'
+import NotFound from '../components/NotFound.astro'
+import Base from '../layouts/Base.astro'
+import { localeFrom } from '../lib/i18n.ts'
+
+const locale = localeFrom(Astro.url.pathname.split('/')[1]) ?? defaultLocale
+---
+
+<Base locale={locale}>
+  <NotFound locale={locale} />
+</Base>

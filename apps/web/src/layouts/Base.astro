@@ -1,0 +1,63 @@
+---
+import '../styles/global.css'
+import type { Locale } from '@shortix/i18n'
+import { SearchField } from '@shortix/ui'
+import { paths, translator } from '../lib/i18n.ts'
+
+interface Props {
+  locale: Locale
+  title?: string
+  description?: string
+  /** The search page has its own field. */
+  showSearch?: boolean
+}
+
+const { locale, title, description, showSearch = true } = Astro.props
+const t = translator(locale)
+const pageTitle = title
+  ? `${title} · ${t('site.name')}`
+  : `${t('site.name')} · ${t('site.tagline')}`
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description ?? t('site.description')} />
+  </head>
+  <body class="min-h-dvh overflow-x-hidden">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:p-2 focus:bg-sala-1 focus:focus-ring rounded-sm"
+    >
+      {t('site.skipToContent')}
+    </a>
+    <header class="mx-auto max-w-page flex flex-wrap items-center justify-between gap-3 px-4 md:px-8 pt-6">
+      <a
+        href={paths.home(locale)}
+        class="font-display text-title uppercase text-ink no-underline rounded-xs focus-visible:focus-ring"
+      >
+        {t('site.name')}
+      </a>
+      {showSearch && (
+        <form action={paths.search(locale)} method="get" role="search" class="w-full max-w-search">
+          <SearchField
+            name="q"
+            id="site-search"
+            label={t('search.label')}
+            placeholder={t('search.placeholder')}
+          />
+        </form>
+      )}
+    </header>
+    <main id="main" class="mx-auto max-w-page grid gap-12 px-4 md:px-8 py-8">
+      <slot />
+    </main>
+    <footer class="mx-auto max-w-page px-4 md:px-8 pb-8 text-meta text-ink-muted">
+      <p class="m-0 font-mono text-label uppercase">{t('site.tagline')}</p>
+    </footer>
+  </body>
+</html>

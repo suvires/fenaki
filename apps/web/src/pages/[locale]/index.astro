@@ -1,0 +1,98 @@
+---
+import { CollectionHero, Rail, ShortCard } from '@shortix/ui'
+import { HomeFilters } from '../../islands/HomeFilters.tsx'
+import Base from '../../layouts/Base.astro'
+import { filterAttributes, posterTone, toCard } from '../../lib/catalog.ts'
+import {
+  listCollections,
+  listShorts,
+  peopleOf,
+  shortsOf,
+  sponsorOf,
+  toCardSource,
+} from '../../lib/cms.ts'
+import { localeFrom, paths, translator } from '../../lib/i18n.ts'
+import type { Short } from '@shortix/cms/types'
+
+const locale = localeFrom(Astro.params.locale)
+if (!locale) return Astro.rewrite('/404')
+
+const t = translator(locale)
+const now = Date.now()
+const [shorts, collections] = await Promise.all([listShorts(locale), listCollections(locale)])
+
+const featured = collections.find((c) => c.featured) ?? collections[0]
+const featuredShorts = featured ? shortsOf(featured) : []
+const sponsor = featured ? sponsorOf(featured) : undefined
+
+const rails: { key: string; title: string; href?: string; shorts: Short[] }[] = [
+  { key: 'latest', title: t('home.rails.latest'), shorts },
+  {
+    key: 'animation',
+    title: t('home.rails.animation'),
+    shorts: shorts.filter((s) => s.type === 'animation'),
+  },
+  ...collections
+    .filter((c) => c !== featured)
+    .map((c) => ({
+      key: `c-${c.id}`,
+      title: c.title,
+      href: paths.collection(locale, c.slug),
+      shorts: shortsOf(c),
+    })),
+].filter((rail) => rail.shorts.length > 0)
+
+const filterOptions = (['short', 'mid', 'long', 'subtitles'] as const).map((value) => ({
+  value,
+  label: t(`home.filters.${value}`),
+}))
+---
+
+<Base locale={locale} title={t('home.title')}>
+  {featured && (
+    <CollectionHero
+      eyebrow={t('collection.eyebrow', { count: featuredShorts.length })}
+      title={featured.title}
+      description={featured.description ?? ''}
+      ctaLabel={t('collection.cta')}
+      ctaHref={paths.collection(locale, featured.slug)}
+      sponsor={sponsor ? { label: t('collection.sponsoredBy'), name: sponsor.name } : undefined}
+      posters={featuredShorts.slice(0, 3).map((s) => ({
+        title: s.title,
+        director: peopleOf(s, 'director').join(', '),
+        year: s.year ?? undefined,
+        tone: posterTone(s.posterTone),
+      }))}
+    />
+  )}
+  {shorts.length === 0 ? (
+    <p class="m-0 text-body-l text-ink-muted">{t('home.empty')}</p>
+  ) : (
+    <>
+      <HomeFilters
+        client:idle
+        label={t('home.filtersLabel')}
+        options={filterOptions}
+        noMatchesLabel={t('home.noMatches')}
+      />
+      {rails.map((rail) => (
+        <div data-rail>
+          <Rail
+            title={rail.title}
+            actionLabel={rail.href ? t('rail.seeAll') : undefined}
+            actionHref={rail.href}
+          >
+            {rail.shorts.map((short) => {
+              const card = toCardSource(short)
+              return (
+                <div {...filterAttributes(card, locale)}>
+                  <ShortCard {...toCard(card, locale, t, paths.short(locale, short.slug), now)} />
+                </div>
+              )
+            })}
+          </Rail>
+        </div>
+      ))}
+    </>
+  )}
+</Base>

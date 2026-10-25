@@ -1,0 +1,70 @@
+---
+import { ShortCard, SponsorCredit } from '@shortix/ui'
+import NotFound from '../../../components/NotFound.astro'
+import Base from '../../../layouts/Base.astro'
+import { toCard } from '../../../lib/catalog.ts'
+import { getCollection, shortsOf, sponsorOf, toCardSource } from '../../../lib/cms.ts'
+import { localeFrom, paths, translator } from '../../../lib/i18n.ts'
+
+const locale = localeFrom(Astro.params.locale)
+if (!locale) return Astro.rewrite('/404')
+
+const t = translator(locale)
+const collection = Astro.params.slug ? await getCollection(locale, Astro.params.slug) : undefined
+if (!collection) Astro.response.status = 404
+const shorts = collection ? shortsOf(collection) : []
+const sponsor = collection ? sponsorOf(collection) : undefined
+const now = Date.now()
+---
+
+<Base
+  locale={locale}
+  title={collection?.title ?? t('errors.notFoundTitle')}
+  description={collection?.description ?? undefined}
+>
+  {!collection ? (
+    <NotFound locale={locale} />
+  ) : (
+    <>
+      <header
+        class:list={[
+          'grid gap-4 p-6 md:p-8 rounded-sm',
+          sponsor ? 'bg-telon text-on-telon' : 'bg-sala-1',
+        ]}
+      >
+        <p
+          class:list={[
+            'm-0 font-mono text-label uppercase',
+            sponsor ? 'text-on-telon' : 'text-tungsteno-text',
+          ]}
+        >
+          {t('collection.eyebrow', { count: shorts.length })}
+        </p>
+        <h1 class="m-0 font-display text-display-l md:text-display-xl uppercase text-balance">
+          {collection.title}
+        </h1>
+        {collection.description && (
+          <p
+            class:list={[
+              'm-0 max-w-hero-text text-body-l',
+              sponsor ? 'text-on-telon' : 'text-ink-muted',
+            ]}
+          >
+            {collection.description}
+          </p>
+        )}
+        {sponsor && <SponsorCredit label={t('collection.sponsoredBy')} name={sponsor.name} />}
+      </header>
+      <ul class="m-0 p-0 list-none grid grid-cols-[repeat(auto-fill,minmax(var(--size-card),1fr))] gap-4">
+        {shorts.map((short) => (
+          <li>
+            <ShortCard
+              {...toCard(toCardSource(short), locale, t, paths.short(locale, short.slug), now)}
+              stretch
+            />
+          </li>
+        ))}
+      </ul>
+    </>
+  )}
+</Base>

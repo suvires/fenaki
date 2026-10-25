@@ -1,0 +1,120 @@
+---
+import { formatCountry, formatList, formatYear } from '@shortix/i18n'
+import { Badge, Duration, LicenseNote, PlayerGate, Rail, ShortCard } from '@shortix/ui'
+import NotFound from '../../../components/NotFound.astro'
+import Base from '../../../layouts/Base.astro'
+import { toCard } from '../../../lib/catalog.ts'
+import {
+  getShort,
+  licenseOf,
+  listShorts,
+  listSources,
+  peopleOf,
+  playableSource,
+  toCardSource,
+} from '../../../lib/cms.ts'
+import { embedUrl } from '../../../lib/embed.ts'
+import { localeFrom, paths, translator } from '../../../lib/i18n.ts'
+
+const locale = localeFrom(Astro.params.locale)
+if (!locale) return Astro.rewrite('/404')
+
+const t = translator(locale)
+const short = Astro.params.slug ? await getShort(locale, Astro.params.slug) : undefined
+if (!short) Astro.response.status = 404
+
+const now = Date.now()
+const source = short ? playableSource(await listSources(short.id)) : undefined
+const license = source ? licenseOf(source) : undefined
+const provider = source ? t(`providers.${source.provider}`) : ''
+const card = short ? toCardSource(short) : undefined
+const directors = short ? peopleOf(short, 'director') : []
+
+const ROLES = ['writer', 'producer', 'cinematographer', 'editor', 'composer', 'cast'] as const
+const credits = short
+  ? ROLES.map((role) => ({ role, names: peopleOf(short, role) })).filter((c) => c.names.length > 0)
+  : []
+
+const related = short
+  ? (await listShorts(locale, 24))
+      .filter((s) => s.id !== short.id)
+      .sort((a, b) => Number(b.type === short.type) - Number(a.type === short.type))
+      .slice(0, 6)
+  : []
+
+const origin = [
+  short?.country ? formatCountry(short.country, locale) : undefined,
+  short?.year ? formatYear(short.year, locale) : undefined,
+]
+  .filter(Boolean)
+  .join(' · ')
+---
+
+<Base
+  locale={locale}
+  title={short?.title ?? t('errors.notFoundTitle')}
+  description={short?.synopsis ?? undefined}
+>
+  {!short || !card ? (
+    <NotFound locale={locale} />
+  ) : (
+    <article class="grid gap-6 max-w-article">
+      <h1 class="sr-only">{short.title}</h1>
+      <PlayerGate
+        client:visible
+        title={short.title}
+        message={t('short.player.message', { provider })}
+        playLabel={t('short.player.play')}
+        loadedLabel={
+          short.sample ? t('short.player.sample') : t('short.player.loaded', { provider })
+        }
+        embedSrc={
+          source && !short.sample ? embedUrl(source.provider, source.externalId) : undefined
+        }
+        embedTitle={t('short.player.frameTitle', { provider, title: short.title })}
+      />
+      <div class="flex flex-wrap items-center gap-3">
+        <Duration seconds={short.durationSeconds} locale={locale} />
+        <Badge>{t(`short.types.${short.type}`)}</Badge>
+        {card.subtitles.includes(locale) && (
+          <Badge tone="info">{t('badges.subtitles', { language: locale.toUpperCase() })}</Badge>
+        )}
+        {short.noDialogue && <Badge>{t('badges.noDialogue')}</Badge>}
+        {origin && <span class="text-meta text-ink-muted">{origin}</span>}
+      </div>
+      {short.synopsis && <p class="m-0 max-w-synopsis text-body-l">{short.synopsis}</p>}
+      {directors.length > 0 && (
+        <p class="m-0 text-ink-muted">
+          {t('short.directedBy', { names: formatList(directors, locale) })}
+        </p>
+      )}
+      {credits.length > 0 && (
+        <section class="grid gap-2" aria-labelledby="credits">
+          <h2 id="credits" class="m-0 font-display text-title uppercase">
+            {t('short.credits')}
+          </h2>
+          <dl class="m-0 grid grid-cols-[max-content_1fr] gap-x-4 gap-y-1 text-body">
+            {credits.map((credit) => (
+              <>
+                <dt class="text-ink-muted">{t(`short.roles.${credit.role}`)}</dt>
+                <dd class="m-0">{formatList(credit.names, locale)}</dd>
+              </>
+            ))}
+          </dl>
+        </section>
+      )}
+      {license && (
+        <LicenseNote route={license.route} routeLabel={t(`license.routes.${license.route}`)}>
+          {license.attribution || t(`license.text.${license.route}`, { provider })}
+        </LicenseNote>
+      )}
+      {related.length > 0 && (
+        <Rail title={t('short.related')}>
+          {related.map((s) => (
+            <ShortCard {...toCard(toCardSource(s), locale, t, paths.short(locale, s.slug), now)} />
+          ))}
+        </Rail>
+      )}
+    </article>
+  )}
+</Base>

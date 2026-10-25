@@ -1,0 +1,6 @@
+---
+import { defaultLocale } from '@shortix/i18n'
+import { paths } from '../lib/i18n.ts'
+
+return Astro.redirect(paths.home(defaultLocale), 302)
+---
