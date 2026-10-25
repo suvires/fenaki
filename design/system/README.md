@@ -50,7 +50,7 @@ The logotype is «FENAKI» in Big Shoulders 800, outlined: it never depends on t
 
 ## Iconography
 
-Inline SVG on a 24px grid, 1.75 stroke, round caps and joins, drawn in `currentColor`. Every icon sits in the 20px live area (2px padding) and is sized by optical weight, not by bounding box: straight open strokes span 16px (plus, arrow), diagonals 13px (close), closed round shapes 15.5px (the magnifier), filled shapes 14px with rounded corners and their weight centred (play). The rail chevron is the one tall exception, sized to display capitals. The `Foundations/Icon` «Grid» story shows them over the keylines. In buttons the icon is about 56 % of the control's height (18, 22 and 28px for sm, md and lg). The set is small on purpose: play (filled), plus, search, arrow, chevron, close. No emoji, no icon fonts.
+Inline SVG on a 24px grid, 1.75 stroke, round caps and joins, drawn in `currentColor`. Every icon sits in the 20px live area (2px padding) and is sized by optical weight, not by bounding box: straight open strokes span 16px (plus, arrow), diagonals 13px (close), closed round shapes 15.5px (the magnifier), the play triangle 17px with rounded corners and its weight centred (a triangle fills only half its box). The rail chevron is the one tall exception, sized to display capitals. The `Foundations/Icon` «Grid» story shows them over the keylines. In buttons the icon is about 56 % of the control's height (18, 22 and 28px for sm, md and lg). The set is small on purpose: play (filled), plus, search, arrow, chevron, close. No emoji, no icon fonts.
 
 ## Sample content
 

@@ -6,14 +6,15 @@ import { cx } from '../cx.ts'
  * - straight open strokes (plus, arrow) span 16px (4–20);
  * - diagonal strokes (close) span 13px (5.5–18.5): a diagonal runs 1.41× its box;
  * - closed round shapes (the magnifier) span 15.5px (4.5–20): a ring carries more mass than lines;
- * - filled shapes (play) span 14px (5–19): fill is heavier than stroke.
+ * - the play triangle spans 17px (3.5–20.5): a triangle fills only half its box, so it needs
+ *   more height than the plus to read at the same size.
  * The chevron is the one exception: tall, to sit at the cap height of a display title (Rail).
  * The «Grid» story shows them over the keylines.
  */
 const PATHS = {
   // Corners rounded by the 3px round-joined stroke it is drawn with (see below): the path is inset
   // 1.5px. Its centroid sits on the centre, so the point reaches further right than the base.
-  play: 'M8.5 6.5v11l9.5-5.5z',
+  play: 'M8 5v14l12-7z',
   plus: 'M12 4v16M4 12h16',
   search: 'M10.5 16.5a6 6 0 1 1 0-12 6 6 0 0 1 0 12zM15 15l5 5',
   arrow: 'M4 12h16M14 6l6 6-6 6',
