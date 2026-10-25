@@ -17,6 +17,7 @@ import { Users } from './collections/Users.ts'
 import { emailAdapter } from './email.ts'
 import { indexShortTask } from './jobs/indexShort.ts'
 import { purgeWaitlistTask } from './jobs/purgeWaitlist.ts'
+import { initSentry, reportApiError } from './sentry.ts'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -54,6 +55,10 @@ export default buildConfig({
   },
   // SMTP (Amazon SES in production) when SMTP_HOST is set; otherwise emails go to the console.
   email: emailAdapter(),
+  // Sentry when SENTRY_DSN is set, in every process that loads Payload: the admin server, the jobs
+  // worker and the CLI.
+  onInit: () => initSentry(),
+  hooks: { afterError: [reportApiError] },
   typescript: { outputFile: path.resolve(dirname, 'payload-types.ts') },
   sharp,
   telemetry: false,

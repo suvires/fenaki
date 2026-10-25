@@ -63,6 +63,14 @@ export default defineConfig({
       CONTACT_EMAIL: envField.string({ context: 'server', access: 'secret', optional: true }),
       UMAMI_SCRIPT_URL: envField.string({ context: 'server', access: 'secret', optional: true }),
       UMAMI_WEBSITE_ID: envField.string({ context: 'server', access: 'secret', optional: true }),
+      // Sentry (server-side errors). Empty: off.
+      SENTRY_DSN: envField.string({ context: 'server', access: 'secret', optional: true }),
+      SENTRY_ENVIRONMENT: envField.string({
+        context: 'server',
+        access: 'secret',
+        default: 'production',
+      }),
+      SENTRY_RELEASE: envField.string({ context: 'server', access: 'secret', optional: true }),
     },
   },
   vite: { plugins: [tailwindcss()] },
