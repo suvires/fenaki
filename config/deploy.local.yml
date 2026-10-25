@@ -54,7 +54,8 @@ servers:
       clear:
         SITE_URL: <%= base % "fenaki" %>
         SITE_MODE: <%= ENV.fetch("SITE_MODE", "landing") %>
-        CONTACT_EMAIL: hola@fenaki.tv
+        # As the e2e tests expect (apps/web/e2e/serve.sh): a mailbox in landing mode, none in catalog.
+        CONTACT_EMAIL: <%= ENV.fetch("SITE_MODE", "landing") == "catalog" ? '""' : "hola@shortix.film" %>
         LISTMONK_PUBLIC_URL: <%= base % "listas.fenaki" %>
         LISTMONK_SMTP_HOST: shortix-mailpit
         LISTMONK_SMTP_PORT: 1025
