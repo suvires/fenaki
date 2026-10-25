@@ -12,3 +12,6 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const OnTelon: Story = {}
+export const Linked: Story = {
+  args: { href: 'https://example.com', linkAttributes: { 'data-umami-event': 'sponsor-click' } },
+}
