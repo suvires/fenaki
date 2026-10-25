@@ -44,6 +44,10 @@ Fenaki is a curated catalog of free, legal short films with the browsing experie
 - Sponsorship lives on the collection page, the home hero and the newsletter, never on or near the player. A short's page shows no sponsor credit inside the player area.
 - Every short's page shows its `LicenseNote`: how it reaches Fenaki (official embed, open license, direct license) and the credit the license asks for.
 
+## Logo
+
+The logotype is «FENAKI» in Big Shoulders 800, outlined: it never depends on the font. It lives in the design system as `Wordmark` (`packages/ui`, drawn in `currentColor`, sized by height with a spacing class such as `h-6`) and as the file `packages/ui/src/assets/wordmark.svg` (`@fenaki/ui/wordmark.svg`) for emails, OG images and print. Use it in `ink` on the `sala` surfaces, or in `tungsteno` as an accent; never redraw it as text.
+
 ## Iconography
 
 Inline SVG on a 24px grid, 1.75 stroke, round caps and joins, drawn in `currentColor`. The set is small on purpose: play (filled), plus, search, arrow. No emoji, no icon fonts.
