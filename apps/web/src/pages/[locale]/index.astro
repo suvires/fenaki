@@ -32,7 +32,7 @@ const featuredShorts = featured ? shortsOf(featured) : []
 const sponsor = featured ? sponsorOf(featured) : undefined
 
 const rails: { key: string; title: string; href?: string; shorts: PublishedShort[] }[] = [
-  { key: 'latest', title: t('home.rails.latest'), shorts },
+  { key: 'latest', title: t('home.rails.latest'), href: paths.browse(locale), shorts },
   {
     key: 'animation',
     title: t('home.rails.animation'),

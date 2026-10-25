@@ -60,7 +60,12 @@ const footerGroups = [
           ],
         },
       ]
-    : []),
+    : [
+        {
+          title: t('footer.groups.shortix'),
+          links: [{ label: t('footer.links.browse'), href: paths.browse(locale) }],
+        },
+      ]),
   {
     title: t('footer.groups.filmmakers'),
     links: [
@@ -68,9 +73,13 @@ const footerGroups = [
       { label: t('footer.links.takedown'), href: paths.legal(locale, 'retirada-de-contenidos') },
     ],
   },
-  ...(contact
-    ? [{ title: t('footer.groups.organizations'), links: [contact.sponsor, contact.showcase] }]
-    : []),
+  {
+    title: t('footer.groups.organizations'),
+    links: [
+      { label: t('footer.links.sponsor'), href: paths.sponsor(locale, 'collection') },
+      { label: t('footer.links.showcase'), href: paths.sponsor(locale, 'showcase') },
+    ],
+  },
   {
     title: t('footer.groups.legal'),
     links: [
