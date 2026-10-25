@@ -1,5 +1,5 @@
 #!/bin/sh
-# Prepares a fresh OVHcloud VPS (Ubuntu 24.04) for Kamal, from your machine. Run once, before the
+# Prepares a fresh OVHcloud VPS (Ubuntu 26.04 LTS; also works on 24.04) for Kamal, from your machine. Run once, before the
 # first `bin/kamal setup`, while you can still log in as `ubuntu` with the key you gave OVHcloud:
 #
 #   infra/server/bootstrap.sh <server ip> <your public key file> <CI deploy public key file>

@@ -1,6 +1,6 @@
 # Deployment
 
-Fenaki runs on one OVHcloud VPS-1 (2 vCores, 4 GB, 40 GB NVMe, x86_64, Ubuntu 24.04) behind Cloudflare, deployed with [Kamal](https://kamal-deploy.org). This document is the first-deploy runbook, the day-to-day operations, monitoring and the restore drill.
+Fenaki runs on one OVHcloud VPS-1 (2 vCores, 4 GB, 40 GB NVMe, x86_64, Ubuntu 26.04 LTS) behind Cloudflare, deployed with [Kamal](https://kamal-deploy.org). This document is the first-deploy runbook, the day-to-day operations, monitoring and the restore drill.
 
 - [How it is built](#how-it-is-built)
 - [Secrets](#secrets)
@@ -91,7 +91,7 @@ Accounts, purchases and anything that needs your identity or a card. Paste each 
 
 1. **OVHcloud**
    1. The domain `fenaki.tv` (if not bought yet). The redirect domains (`fenaki.es`, `fenakitv.es`, `fenakitv.com`) come later, at the launch: see [Redirect domains](#redirect-domains).
-   2. VPS-1 with **Ubuntu 24.04**, in an EU data centre, with **your own SSH public key**: Ed25519, or RSA of at least 3072 bits (`ssh-keygen -t ed25519` if you have none; give Claude the `.pub` file, never the private key). Note its IP address.
+   2. VPS-1 with **Ubuntu 26.04 LTS**, in an EU data centre, with **your own SSH public key**: Ed25519, or RSA of at least 3072 bits (`ssh-keygen -t ed25519` if you have none; give Claude the `.pub` file, never the private key). Note its IP address.
    3. Zimbra Starter mailbox `hola@fenaki.tv`. Note the MX and DKIM values its control panel shows.
 2. **Cloudflare** (free plan): create the account. In Zero Trust, choose a team name and the Free plan (it may ask for a card even for the free plan). Give Claude the **account ID** and an **API token** with:
    - Account: Cloudflare Tunnel Edit, Access: Apps and Policies Edit, Workers R2 Storage Edit, Account Settings Read.
