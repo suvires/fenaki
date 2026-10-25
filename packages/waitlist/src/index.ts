@@ -17,7 +17,7 @@ export {
   isUuid,
   LINK_TTL_MS,
   LIST_TAGS,
-  NEWSLETTER_WEEKDAY,
+  NEWSLETTER_SCHEDULE,
   purgeExpired,
   RESEND_INTERVAL_MS,
   subscribe,

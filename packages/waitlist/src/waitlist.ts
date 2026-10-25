@@ -12,10 +12,15 @@ export const LIST_TAGS = { launch: 'shortix-launch', weekly: 'shortix-weekly' } 
 export const confirmationTemplateName = (locale: Locale) => `shortix-waitlist-confirm-${locale}`
 
 /**
- * The weekly selection goes out on Thursdays (ISO weekday 4): early enough to plan the weekend's
- * viewing, late enough to be fresh.
+ * When the weekly selection goes out: Friday morning, Spanish time, ready for the weekend. The
+ * confirmation page announces the day; the newsletter campaigns are scheduled at this time.
  */
-export const NEWSLETTER_WEEKDAY = 4
+export const NEWSLETTER_SCHEDULE = {
+  /** ISO weekday: 1 = Monday … 7 = Sunday. */
+  weekday: 5,
+  time: '09:00',
+  timeZone: 'Europe/Madrid',
+} as const
 
 /** How long a confirmation link works («El enlace caduca en 7 días»). */
 export const LINK_TTL_MS = 7 * 24 * 60 * 60 * 1000

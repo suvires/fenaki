@@ -103,7 +103,9 @@ test('signing up sends a confirmation email that confirms the subscription in li
     await expect(
       page.getByRole('heading', { level: 1, name: 'Ya estás en la lista' }),
     ).toBeVisible()
-    await expect(page.getByText('la recibirás los jueves cuando empiece')).toBeVisible()
+    await expect(
+      page.getByText('la recibirás los viernes por la mañana cuando empiece'),
+    ).toBeVisible()
     expect((await listmonkSubscriber(email))?.lists.map((l) => l.subscription_status)).toEqual([
       'confirmed',
       'confirmed',

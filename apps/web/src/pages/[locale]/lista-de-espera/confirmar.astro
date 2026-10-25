@@ -4,7 +4,7 @@ import Base from '../../../layouts/Base.astro'
 import { localeFrom, paths, translator } from '../../../lib/i18n.ts'
 import { listmonk } from '../../../lib/services.ts'
 import { formatWeekday } from '@shortix/i18n'
-import { confirm, NEWSLETTER_WEEKDAY, type ConfirmResult } from '@shortix/waitlist'
+import { confirm, NEWSLETTER_SCHEDULE, type ConfirmResult } from '@shortix/waitlist'
 
 const locale = localeFrom(Astro.params.locale)
 if (!locale) return Astro.rewrite('/404')
@@ -38,7 +38,7 @@ const title =
         {result.newsletter && (
           <p class="m-0 text-body-l">
             {t('waitlist.confirmed.newsletter', {
-              weekday: formatWeekday(NEWSLETTER_WEEKDAY, locale),
+              weekday: formatWeekday(NEWSLETTER_SCHEDULE.weekday, locale),
             })}
           </p>
         )}

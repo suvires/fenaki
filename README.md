@@ -152,6 +152,7 @@ To start from an empty database and index (this also empties listmonk and Umami)
 - The player gate loads no third-party request until the viewer presses play.
 - The waitlist lives in listmonk, never in the site's own storage: `/api/waitlist` subscribes the address as unconfirmed on double opt-in lists and sends the confirmation email; `/es/lista-de-espera/confirmar` confirms it through listmonk. Links expire 7 days after the last email and work once.
 - Analytics are Umami, cookieless (no cookies, no local storage, no query strings sent). Custom events: `waitlist-signup`, `play` (the PlayerGate button) and `sponsor-click` (the sponsor credit, which links to the sponsor's site).
+- The weekly selection goes out on Friday mornings, 09:00 Spanish time (`NEWSLETTER_SCHEDULE` in `packages/waitlist`); the waitlist confirmation page announces it.
 - «Nuevo» marks the shorts published after `LAUNCH_DATE`, for 30 days. The catalog published before the launch is never «Nuevo», and while `LAUNCH_DATE` is empty or in the future no short is.
 - Shorts made by or for a brand carry a «Contenido de marca» badge on cards and their page, and sponsored collections reject them, as they reject NC licenses.
 - Sponsored collections reject shorts under non-commercial (NC) licenses; signed license documents and internal notes are never readable through the public API.

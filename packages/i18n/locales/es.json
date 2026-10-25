@@ -230,7 +230,7 @@
     "confirmed": {
       "title": "Ya estás en la lista",
       "text": "Te escribiremos cuando Shortix abra.",
-      "newsletter": "Si marcaste la selección semanal, la recibirás los {weekday} cuando empiece.",
+      "newsletter": "Si marcaste la selección semanal, la recibirás los {weekday} por la mañana cuando empiece.",
       "building": "Mientras tanto, lo estamos construyendo en público, un día cada vez."
     },
     "expired": {
