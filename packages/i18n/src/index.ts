@@ -7,9 +7,11 @@ export {
   type Messages,
 } from './messages.ts'
 export {
+  createRichTranslator,
   createTranslator,
   type MessageKey,
   type MessageParams,
+  type RichTranslate,
   type Translate,
 } from './translate.ts'
 export {

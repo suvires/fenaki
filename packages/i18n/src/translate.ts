@@ -50,3 +50,29 @@ export function createTranslator(locale: Locale): Translate {
     return interpolate(message[plurals.select(count)] ?? message.other, params, locale)
   }
 }
+
+/**
+ * A message split around the placeholders named in `parts`, so a component can put links or
+ * emphasis there without HTML in the locale files: `{legalNotice}` becomes the given node.
+ * Other placeholders are filled from `params`, as in `Translate`.
+ */
+export type RichTranslate = <T>(
+  key: MessageKey,
+  parts: Record<string, T>,
+  params?: MessageParams,
+) => (string | T)[]
+
+export function createRichTranslator(locale: Locale): RichTranslate {
+  return (key, parts, params = {}) => {
+    const message = lookup(messages[locale], key)
+    if (typeof message !== 'string') throw new Error(`Message "${key}" has plural forms`)
+    return message
+      .split(/(\{\w+\})/)
+      .filter((piece) => piece !== '')
+      .map((piece) => {
+        const name = /^\{(\w+)\}$/.exec(piece)?.[1]
+        if (name && name in parts) return parts[name] as (typeof parts)[string]
+        return interpolate(piece, params, locale)
+      })
+  }
+}
