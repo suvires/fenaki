@@ -451,6 +451,13 @@
     },
     "description": "Colecciones patrocinadas y escaparates para festivales, escuelas de cine e instituciones culturales en Fenaki, el catálogo de cortometrajes gratis y legales."
   },
+  "crm": {
+    "footer": {
+      "identity": "Fenaki (fenaki.tv), catálogo de cortometrajes gratuitos y legales.",
+      "privacy": "Cómo tratamos tus datos: {url}",
+      "optOut": "Si no quieres que volvamos a escribirte, responde «no» a este correo y no lo haremos."
+    }
+  },
   "seo": {
     "ogShort": "Cortometraje · {duration}",
     "ogBrowse": "Catálogo"
