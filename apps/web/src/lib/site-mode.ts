@@ -2,6 +2,8 @@
 const CATALOG_ROUTES = [
   /^\/[a-z]{2}\/cortos(\/|$)/,
   /^\/[a-z]{2}\/colecciones(\/|$)/,
+  /^\/[a-z]{2}\/personas(\/|$)/,
+  /^\/[a-z]{2}\/escaparates(\/|$)/,
   /^\/[a-z]{2}\/buscar\/?$/,
   /^\/api\/search\/?$/,
 ]

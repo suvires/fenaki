@@ -58,6 +58,31 @@ export async function listSources(shortId: number): Promise<Source[]> {
   return list.docs
 }
 
+export async function getPerson(slug: string): Promise<Person | undefined> {
+  const list = await get<List<Person>>('people', {
+    depth: 0,
+    limit: 1,
+    'where[slug][equals]': slug,
+  })
+  return list.docs[0]
+}
+
+/** The published shorts that credit a person, in any role. */
+export async function listShortsByPerson(
+  locale: Locale,
+  personId: number,
+): Promise<PublishedShort[]> {
+  const list = await get<List<PublishedShort>>('shorts', {
+    locale,
+    depth: SHORT_DEPTH,
+    limit: 100,
+    sort: '-year',
+    'where[credits.person][equals]': personId,
+    'where[status][equals]': 'published',
+  })
+  return list.docs
+}
+
 export async function listCollections(locale: Locale): Promise<Collection[]> {
   const list = await get<List<Collection>>('collections', {
     locale,
@@ -89,6 +114,23 @@ export function sourcesOf(short: Short): Source[] {
 
 export function licenseOf(source: Source): License | undefined {
   return isObject<License>(source.license) ? source.license : undefined
+}
+
+/** The people credited on a short, in a role or in any, with their page's slug. */
+export function creditsOf(short: Short, role?: string): Person[] {
+  return (short.credits ?? [])
+    .filter((credit) => !role || credit.role === role)
+    .map((credit) => credit.person)
+    .filter(isObject<Person>)
+}
+
+/** The roles a person has on a short. */
+export function rolesOf(short: Short, personId: number): string[] {
+  return (short.credits ?? [])
+    .filter(
+      (credit) => (isObject<Person>(credit.person) ? credit.person.id : credit.person) === personId,
+    )
+    .map((credit) => credit.role)
 }
 
 export function peopleOf(short: Short, role?: string): string[] {

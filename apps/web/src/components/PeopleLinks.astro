@@ -1,0 +1,28 @@
+---
+import { formatListParts, type Locale } from '@shortix/i18n'
+import { paths } from '../lib/i18n.ts'
+
+interface Props {
+  locale: Locale
+  people: { name: string; slug: string }[]
+}
+
+/** «A, B y C», each name linking to the person's page. */
+const { locale, people } = Astro.props
+let index = 0
+const parts = formatListParts(
+  people.map((person) => person.name),
+  locale,
+).map((part) => (part.type === 'element' ? { ...part, person: people[index++] } : part))
+const link = 'text-inherit underline underline-offset-4 rounded-xs focus-visible:focus-ring'
+---
+
+{parts.map((part) =>
+  'person' in part && part.person ? (
+    <a href={paths.person(locale, part.person.slug)} class={link}>
+      {part.value}
+    </a>
+  ) : (
+    part.value
+  ),
+)}

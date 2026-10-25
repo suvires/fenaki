@@ -14,6 +14,11 @@ export const paths = {
   home: (locale: Locale) => `/${locale}/`,
   short: (locale: Locale, slug: string) => `/${locale}/cortos/${slug}`,
   collection: (locale: Locale, slug: string) => `/${locale}/colecciones/${slug}`,
+  person: (locale: Locale, slug: string) => `/${locale}/personas/${slug}`,
+  browse: (locale: Locale) => `/${locale}/cortos`,
+  showcase: (locale: Locale, slug: string) => `/${locale}/escaparates/${slug}`,
+  sponsor: (locale: Locale, section?: 'collection' | 'showcase') =>
+    `/${locale}/patrocina${section ? `#${section === 'collection' ? 'coleccion' : 'escaparate'}` : ''}`,
   search: (locale: Locale, query?: string) =>
     `/${locale}/buscar${query ? `?q=${encodeURIComponent(query)}` : ''}`,
   /** A section of the landing page: `what`, `legal`, `faq` or `waitlist`. */
