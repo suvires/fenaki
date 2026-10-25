@@ -268,3 +268,21 @@ resource "cloudflare_zero_trust_access_application" "admin" {
   destinations     = [for uri in each.value : { type = "public", uri = uri }]
   policies         = [{ id = cloudflare_zero_trust_access_policy.editors[0].id, precedence = 1 }]
 }
+
+# The CMS health check stays public, for the external uptime monitor.
+resource "cloudflare_zero_trust_access_policy" "everyone" {
+  count      = length(var.access_emails) > 0 ? 1 : 0
+  account_id = var.account_id
+  name       = "Everyone (bypass)"
+  decision   = "bypass"
+  include    = [{ everyone = {} }]
+}
+
+resource "cloudflare_zero_trust_access_application" "cms_health" {
+  count        = length(var.access_emails) > 0 ? 1 : 0
+  account_id   = var.account_id
+  name         = "Shortix CMS health check"
+  type         = "self_hosted"
+  destinations = [{ type = "public", uri = "cms.${var.domain}/up" }]
+  policies     = [{ id = cloudflare_zero_trust_access_policy.everyone[0].id, precedence = 1 }]
+}
