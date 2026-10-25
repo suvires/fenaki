@@ -13,7 +13,8 @@ export function initSentry(): void {
   Sentry.init({
     dsn,
     environment: process.env.SENTRY_ENVIRONMENT ?? 'production',
-    release: process.env.SENTRY_RELEASE || undefined,
+    // Kamal sets KAMAL_VERSION (the git commit) in every container.
+    release: process.env.SENTRY_RELEASE || process.env.KAMAL_VERSION || undefined,
     serverName: 'cms',
     dataCollection: {
       userInfo: false,

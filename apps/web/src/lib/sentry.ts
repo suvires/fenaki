@@ -6,7 +6,8 @@ if (SENTRY_DSN && !Sentry.isInitialized()) {
   Sentry.init({
     dsn: SENTRY_DSN,
     environment: SENTRY_ENVIRONMENT,
-    release: SENTRY_RELEASE || undefined,
+    // Kamal sets KAMAL_VERSION (the git commit) in every container.
+    release: SENTRY_RELEASE || process.env.KAMAL_VERSION || undefined,
     serverName: 'web',
     tracesSampleRate: 0,
     // None of the request data the SDK collects by default: visitors' cookies, bodies (waitlist
