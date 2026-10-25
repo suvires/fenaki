@@ -1,4 +1,4 @@
-import { ValidationError, type CollectionConfig, type PayloadRequest } from 'payload'
+import type { CollectionConfig, PayloadRequest, Validate } from 'payload'
 import { isAuthenticatedField, publishedOrAuthenticated } from '../access.ts'
 import { importKeyField } from '../fields/importKey.ts'
 import { requiredToPublish } from '../fields/requiredToPublish.ts'
@@ -22,6 +22,25 @@ export const CREDIT_ROLES = [
   'composer',
   'cast',
 ] as const
+
+/**
+ * Editors publish only shorts whose channel is on record as official. The catalog import (no
+ * user) carries its own evidence and writes sources after shorts.
+ */
+const officialToPublish: Validate = async (value, { data, event, id, previousValue, req }) => {
+  if (value !== 'published' || previousValue === 'published') return true
+  if (event === 'onChange' || !req.user || !id || (data as { sample?: boolean }).sample) return true
+  const official = await req.payload.count({
+    collection: 'sources',
+    where: {
+      short: { equals: id },
+      'channel.name': { exists: true, not_equals: '' },
+      officialEvidence: { exists: true, not_equals: '' },
+    },
+    req,
+  })
+  return official.totalDocs > 0 || inLanguage(messages.noOfficialEvidence, req.i18n?.language)
+}
 
 export const Shorts: CollectionConfig = {
   slug: 'shorts',
@@ -213,7 +232,7 @@ export const Shorts: CollectionConfig = {
         ),
       },
     },
-    statusField(['draft', 'review', 'published', 'withdrawn']),
+    { ...statusField(['draft', 'review', 'published', 'withdrawn']), validate: officialToPublish },
     {
       type: 'collapsible',
       label: label('Hidden by the embed checker', 'Oculto por la comprobación de embeds'),
@@ -279,31 +298,8 @@ export const Shorts: CollectionConfig = {
   ],
   hooks: {
     beforeChange: [
-      async ({ data, originalDoc, req }) => {
+      ({ data, originalDoc }) => {
         const publishing = data.status === 'published' && originalDoc?.status !== 'published'
-        // Editors publish only shorts whose channel is on record as official. The catalog
-        // import (no user) carries its own evidence and writes sources after shorts.
-        if (publishing && req.user && originalDoc?.id && !data.sample) {
-          const official = await req.payload.count({
-            collection: 'sources',
-            where: {
-              short: { equals: originalDoc.id },
-              'channel.name': { exists: true, not_equals: '' },
-              officialEvidence: { exists: true, not_equals: '' },
-            },
-            req,
-          })
-          if (official.totalDocs === 0)
-            throw new ValidationError({
-              collection: 'shorts',
-              errors: [
-                {
-                  path: 'status',
-                  message: inLanguage(messages.noOfficialEvidence, req.i18n?.language),
-                },
-              ],
-            })
-        }
         if (publishing) {
           data.hiddenReason = null
           data.hiddenAt = null
