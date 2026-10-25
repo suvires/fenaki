@@ -107,6 +107,14 @@ variable "dmarc_report_address" {
   default     = ""
 }
 
+# --- Social -------------------------------------------------------------------------------------
+
+variable "bluesky_did" {
+  description = "The Bluesky account's DID (did:plc:...), for the handle @<domain>. Empty: no record."
+  type        = string
+  default     = "did:plc:2ldbo45gkowl6ck6tvs4bz3i"
+}
+
 # --- Access --------------------------------------------------------------------------------------
 
 variable "access_emails" {

@@ -194,6 +194,18 @@ resource "cloudflare_dns_record" "ses_mail_from_spf" {
   ttl     = 1
 }
 
+# --- Social -------------------------------------------------------------------------------------
+
+# Bluesky handle @fenaki.tv: proves the account owns the domain.
+resource "cloudflare_dns_record" "bluesky" {
+  count   = var.bluesky_did == "" ? 0 : 1
+  zone_id = cloudflare_zone.site.id
+  name    = "_atproto.${var.domain}"
+  type    = "TXT"
+  content = "\"did=${var.bluesky_did}\""
+  ttl     = 1
+}
+
 # --- Redirect domains ----------------------------------------------------------------------------
 
 # Proxied placeholders: the redirect rule answers before any origin is needed.
