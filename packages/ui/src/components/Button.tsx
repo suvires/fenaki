@@ -19,6 +19,9 @@ const VARIANTS = {
   ghost: 'bg-transparent text-ink border-transparent underline underline-offset-4',
 } as const
 
+/** About 40 % of the control's height, so the icon keeps its weight at every size. */
+const ICON_SIZES = { sm: '2xs', md: 'xs', lg: 'md' } as const
+
 /** The one way to trigger an action. One primary button per view. */
 export function Button({
   variant = 'primary',
@@ -48,7 +51,7 @@ export function Button({
   )
   const content = (
     <>
-      {icon ? <Icon name={icon} size={size === 'lg' ? 'lg' : 'sm'} /> : null}
+      {icon ? <Icon name={icon} size={ICON_SIZES[size]} /> : null}
       <span>{children}</span>
     </>
   )

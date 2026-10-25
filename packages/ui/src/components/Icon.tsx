@@ -13,6 +13,7 @@ const PATHS = {
 export type IconName = keyof typeof PATHS
 
 const SIZES = {
+  '2xs': 'size-(--size-icon-2xs)',
   xs: 'size-(--size-icon-xs)',
   sm: 'size-(--size-icon-sm)',
   md: 'size-(--size-icon-md)',
