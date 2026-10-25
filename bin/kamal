@@ -1,0 +1,36 @@
+#!/bin/sh
+# Kamal, from its official image pinned by digest: a laptop and GitHub Actions run the same
+# version, with nothing to install but Docker.
+#
+#   bin/kamal deploy            (any Kamal command; docs/deploy.md)
+#
+# Passes through the environment every variable .kamal/secrets reads, and SHORTIX_HOST.
+# SSH uses the key at SHORTIX_SSH_KEY (default ~/.ssh/id_ed25519) and ~/.ssh/known_hosts.
+# KAMAL_DOCKER_OPTS adds options to `docker run` (the local rehearsal uses it).
+set -eu
+
+image=ghcr.io/basecamp/kamal:v2.12.0@sha256:7b5be276aa17bbe122887f6a1ff12865f4848111989699b9786083be95d98415
+root=$(cd "$(dirname "$0")/.." && pwd)
+# A git worktree keeps its repository outside the working tree: mount both at the same paths.
+common=$(git -C "$root" rev-parse --path-format=absolute --git-common-dir)
+key=${SHORTIX_SSH_KEY:-$HOME/.ssh/id_ed25519}
+
+env_args=""
+for name in SHORTIX_HOST $(grep -oE '\$\{?[A-Z][A-Z0-9_]*' "$root/.kamal/secrets.example" | tr -d '${' | sort -u); do
+  env_args="$env_args -e $name"
+done
+
+ssh_args=""
+[ -f "$key" ] && ssh_args="-v $key:/root/.ssh/id_ed25519:ro"
+[ -f "$HOME/.ssh/known_hosts" ] && ssh_args="$ssh_args -v $HOME/.ssh/known_hosts:/root/.ssh/known_hosts:ro"
+
+tty=""
+[ -t 0 ] && [ -t 1 ] && tty="-it"
+
+# shellcheck disable=SC2086
+exec docker run --rm $tty \
+  -v "$root:$root" -v "$common:$common" -w "$root" \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -e GIT_CONFIG_COUNT=1 -e GIT_CONFIG_KEY_0=safe.directory -e GIT_CONFIG_VALUE_0='*' \
+  $env_args $ssh_args ${KAMAL_DOCKER_OPTS:-} \
+  "$image" "$@"

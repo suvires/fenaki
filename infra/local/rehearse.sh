@@ -1,7 +1,7 @@
 #!/bin/sh
 # Rehearses a production deploy on this machine, with the real config/deploy.yml (destination
 # `local`, config/deploy.local.yml) against a stand-in VPS: an Ubuntu container with SSH and its
-# own Docker daemon. Needs only Docker; Kamal runs from its official image.
+# own Docker daemon. Needs only Docker; Kamal runs from its official image (bin/kamal).
 #
 #   infra/local/rehearse.sh up              start the stand-in and run `kamal setup`
 #   infra/local/rehearse.sh kamal <args>    any Kamal command, e.g. `kamal deploy`, `kamal app logs`
@@ -16,20 +16,15 @@ set -eu
 root=$(cd "$(dirname "$0")/../.." && pwd)
 state="$root/infra/local/.state"
 vps=shortix-rehearsal-vps
-kamal_image=ghcr.io/basecamp/kamal:v2.12.0
 
 key="$state/id_ed25519"
 ssh_opts="-i $key -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR"
 
 kamal() {
-  # The working tree and the repository's git directory (a worktree points outside it) at the
-  # same paths, and the host's Docker for building and for the local registry.
-  common=$(git -C "$root" rev-parse --path-format=absolute --git-common-dir)
-  docker run --rm --network host \
-    -v "$root:$root" -v "$common:$common" -w "$root" \
-    -v /var/run/docker.sock:/var/run/docker.sock \
-    -e KAMAL_REHEARSAL=1 -e SHORTIX_HOST=127.0.0.1 -e REHEARSAL_SSH_KEY="$key" -e SITE_MODE="${SITE_MODE:-landing}" \
-    "$kamal_image" "$@" -d local
+  # bin/kamal, on the host network (the stand-in's SSH and the local registry are on localhost).
+  SHORTIX_HOST=127.0.0.1 \
+    KAMAL_DOCKER_OPTS="--network host -e KAMAL_REHEARSAL=1 -e REHEARSAL_SSH_KEY=$key -e SITE_MODE=${SITE_MODE:-landing}" \
+    "$root/bin/kamal" "$@" -d local
 }
 
 # The backup image Kamal would pull from GHCR is loaded straight into the stand-in.
