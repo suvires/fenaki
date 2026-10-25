@@ -8,10 +8,15 @@ import { defineConfig, devices } from '@playwright/test'
  * Needs `docker compose up -d` and `pnpm setup:services`; the waitlist test uses listmonk and
  * reads the confirmation email from Mailpit.
  */
-const CMS_URL = 'http://localhost:3100'
+// E2E_* variables move the whole stack aside, so two checkouts can run the tests at once.
+const port = (name: string, fallback: number) => Number(process.env[name] ?? fallback)
+const CMS_PORT = port('E2E_CMS_PORT', 3100)
+const CATALOG_PORT = port('E2E_CATALOG_PORT', 4400)
+const LANDING_PORT = port('E2E_LANDING_PORT', 4401)
+const CMS_URL = `http://localhost:${CMS_PORT}`
 const test = {
-  DATABASE_URL: 'postgres://shortix:shortix@127.0.0.1:5432/shortix_test',
-  SEARCH_INDEX_PREFIX: 'test_',
+  DATABASE_URL: `postgres://shortix:shortix@127.0.0.1:5432/${process.env.E2E_DATABASE ?? 'shortix_test'}`,
+  SEARCH_INDEX_PREFIX: process.env.E2E_INDEX_PREFIX ?? 'test_',
 }
 export default defineConfig({
   testDir: 'e2e',
@@ -23,19 +28,18 @@ export default defineConfig({
   projects: [
     {
       name: 'catalog',
-      testMatch: 'smoke.spec.ts',
-      use: { ...devices['Desktop Chrome'], baseURL: 'http://localhost:4400' },
+      testMatch: ['smoke.spec.ts', 'catalog.spec.ts'],
+      use: { ...devices['Desktop Chrome'], baseURL: `http://localhost:${CATALOG_PORT}` },
     },
     {
       name: 'landing',
       testMatch: 'landing.spec.ts',
-      use: { ...devices['Desktop Chrome'], baseURL: 'http://localhost:4401' },
+      use: { ...devices['Desktop Chrome'], baseURL: `http://localhost:${LANDING_PORT}` },
     },
   ],
   webServer: [
     {
-      command:
-        'pnpm --filter @shortix/cms migrate && pnpm --filter @shortix/cms seed && pnpm --filter @shortix/cms exec next dev --port 3100',
+      command: `pnpm --filter @shortix/cms migrate && pnpm --filter @shortix/cms seed && pnpm --filter @shortix/cms exec next dev --port ${CMS_PORT}`,
       url: `${CMS_URL}/api/shorts?limit=1`,
       env: {
         ...test,
@@ -49,10 +53,12 @@ export default defineConfig({
     {
       // A production build, served twice: catalog mode on 4400 and landing mode on 4401.
       command: 'sh e2e/serve.sh',
-      url: 'http://localhost:4401/es/',
+      url: `http://localhost:${LANDING_PORT}/es/`,
       env: {
         ...test,
         CMS_URL,
+        CATALOG_PORT: String(CATALOG_PORT),
+        LANDING_PORT: String(LANDING_PORT),
         HOST: 'localhost',
         // Real visitors only: the tests never reach Umami.
         UMAMI_SCRIPT_URL: '',
