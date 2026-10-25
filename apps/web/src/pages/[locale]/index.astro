@@ -90,7 +90,6 @@ const filterOptions = (['short', 'mid', 'long', 'subtitles'] as const).map((valu
   {!landing && featured && (
     <CollectionHero
       headingLevel={hero ? 2 : 1}
-      eyebrow={t('collection.eyebrow', { count: featuredShorts.length })}
       title={featured.title}
       description={featured.description ?? ''}
       ctaLabel={t('collection.cta')}

@@ -4,7 +4,8 @@ import { Poster, type PosterProps } from './Poster.tsx'
 import { SponsorCredit, type SponsorCreditProps } from './SponsorCredit.tsx'
 
 export interface CollectionHeroProps {
-  eyebrow: string
+  /** Optional: the home page shows the title alone. */
+  eyebrow?: string
   title: string
   description: string
   ctaLabel: string
@@ -47,14 +48,16 @@ export function CollectionHero({
       )}
     >
       <div className="grid gap-4 min-w-0">
-        <p
-          className={cx(
-            'm-0 font-mono text-label uppercase',
-            sponsored ? 'text-on-telon' : 'text-tungsteno-text',
-          )}
-        >
-          {eyebrow}
-        </p>
+        {eyebrow ? (
+          <p
+            className={cx(
+              'm-0 font-mono text-label uppercase',
+              sponsored ? 'text-on-telon' : 'text-tungsteno-text',
+            )}
+          >
+            {eyebrow}
+          </p>
+        ) : null}
         <Heading className="m-0 font-display text-display-l md:text-display-xl uppercase text-balance">
           {title}
         </Heading>

@@ -34,3 +34,4 @@ export const Sponsored: Story = {
   },
 }
 export const WithoutSecondaryAction: Story = { args: { secondaryLabel: undefined } }
+export const WithoutEyebrow: Story = { args: { eyebrow: undefined } }
