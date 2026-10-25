@@ -155,7 +155,8 @@ describe('sourceData', () => {
   })
 
   it('leaves the channel empty when the file has none', () => {
-    const source: ImportSource = { ...catalog().sources[0]!, _import: undefined }
+    const [first] = catalog().sources as [ImportSource]
+    const source: ImportSource = { ...first, _import: undefined }
     expect(
       sourceData(
         source,

@@ -2,6 +2,7 @@ import { ValidationError, type CollectionConfig, type PayloadRequest } from 'pay
 import { isAuthenticatedField, publishedOrAuthenticated } from '../access.ts'
 import { importKeyField } from '../fields/importKey.ts'
 import { requiredToPublish } from '../fields/requiredToPublish.ts'
+import { addFromUrlEndpoint } from '../ingest/addFromUrl.ts'
 import { slugField } from '../fields/slug.ts'
 import { statusField } from '../fields/status.ts'
 import { queueIndexShort } from '../jobs/queue.ts'
@@ -29,7 +30,9 @@ export const Shorts: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'year', 'durationSeconds', 'status', 'sample'],
     group: groups.catalog,
+    components: { beforeListTable: ['/admin/AddFromUrl.tsx#AddFromUrl'] },
   },
+  endpoints: [addFromUrlEndpoint],
   access: { read: publishedOrAuthenticated },
   defaultSort: '-publishedAt',
   fields: [
