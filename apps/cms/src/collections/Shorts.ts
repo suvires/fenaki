@@ -1,5 +1,5 @@
 import type { CollectionConfig, PayloadRequest, Validate } from 'payload'
-import { isAuthenticatedField, publishedOrAuthenticated } from '../access.ts'
+import { isAdmin, isAuthenticatedField, publishedOrAuthenticated } from '../access.ts'
 import { importKeyField } from '../fields/importKey.ts'
 import { requiredToPublish } from '../fields/requiredToPublish.ts'
 import { addFromUrlEndpoint } from '../ingest/addFromUrl.ts'
@@ -52,7 +52,12 @@ export const Shorts: CollectionConfig = {
     components: { beforeListTable: ['/admin/AddFromUrl.tsx#AddFromUrl'] },
   },
   endpoints: [addFromUrlEndpoint],
-  access: { read: publishedOrAuthenticated },
+  access: {
+    read: publishedOrAuthenticated,
+    create: isAdmin,
+    update: isAdmin,
+    delete: isAdmin,
+  },
   defaultSort: '-publishedAt',
   fields: [
     { name: 'title', label: common.title, type: 'text', required: true, localized: true },

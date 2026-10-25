@@ -1,4 +1,5 @@
 import type { Endpoint, PayloadRequest } from 'payload'
+import { isAdminUser } from '../access.ts'
 import { slugify } from '../fields/slug.ts'
 import { inLanguage, label, type AdminLabel } from '../labels.ts'
 import { unplayableReason } from './check.ts'
@@ -155,7 +156,7 @@ export const addFromUrlEndpoint: Endpoint = {
   method: 'post',
   handler: async (req) => {
     const language = req.i18n?.language
-    if (!req.user)
+    if (!isAdminUser(req.user))
       return Response.json({ error: inLanguage(errors.unauthorized, language) }, { status: 401 })
     const body = (await req.json?.().catch(() => ({}))) as { url?: unknown } | undefined
     const result = await addShortFromUrl(req, typeof body?.url === 'string' ? body.url : '')

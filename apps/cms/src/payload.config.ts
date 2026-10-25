@@ -6,6 +6,10 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { buildConfig } from 'payload'
 import sharp from 'sharp'
+import { Contacts } from './collections/Contacts.ts'
+import { InboxState } from './collections/InboxState.ts'
+import { Messages } from './collections/Messages.ts'
+import { Organizations } from './collections/Organizations.ts'
 import { Collections } from './collections/Collections.ts'
 import { LicenseDocuments } from './collections/LicenseDocuments.ts'
 import { Licenses } from './collections/Licenses.ts'
@@ -20,6 +24,7 @@ import { emailAdapter } from './email.ts'
 import { checkEmbedsTask } from './jobs/checkEmbeds.ts'
 import { indexShortTask } from './jobs/indexShort.ts'
 import { purgeWaitlistTask } from './jobs/purgeWaitlist.ts'
+import { syncInboxTask } from './jobs/syncInbox.ts'
 import { initSentry, reportApiError } from './sentry.ts'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -32,11 +37,18 @@ export default buildConfig({
     importMap: { baseDir: path.resolve(dirname) },
     meta: { titleSuffix: ' · Fenaki' },
     components: {
-      afterNavLinks: ['/admin/EmbedProblemsLink.tsx#EmbedProblemsLink'],
+      afterNavLinks: [
+        '/admin/TodayLink.tsx#TodayLink',
+        '/admin/EmbedProblemsLink.tsx#EmbedProblemsLink',
+      ],
       views: {
         embedProblems: {
           Component: '/admin/EmbedProblems.tsx#EmbedProblems',
           path: '/embed-problems',
+        },
+        today: {
+          Component: '/admin/Today.tsx#Today',
+          path: '/today',
         },
       },
     },
@@ -61,8 +73,12 @@ export default buildConfig({
     Licenses,
     LicenseDocuments,
     Sponsors,
+    Organizations,
+    Contacts,
+    Messages,
     Users,
   ],
+  globals: [InboxState],
   cors: [process.env.WEB_URL ?? 'http://localhost:4321'],
   // The schema changes only through migrations (`pnpm migrate`), in development too, so the
   // first deployment runs exactly what was tested locally.
@@ -73,7 +89,7 @@ export default buildConfig({
   }),
   // Jobs run in a separate process (`pnpm --filter @fenaki/cms jobs`), never inside the web server.
   jobs: {
-    tasks: [indexShortTask, purgeWaitlistTask, checkEmbedsTask],
+    tasks: [indexShortTask, purgeWaitlistTask, checkEmbedsTask, syncInboxTask],
     deleteJobOnComplete: true,
   },
   // SMTP (Amazon SES in production) when SMTP_HOST is set; otherwise emails go to the console.

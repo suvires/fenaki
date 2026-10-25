@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { isAuthenticated, isAuthenticatedField } from '../access.ts'
+import { isAdmin, isAuthenticatedField } from '../access.ts'
 import { importKeyField } from '../fields/importKey.ts'
 import { common, groups, label, options } from '../labels.ts'
 
@@ -29,9 +29,9 @@ export const Licenses: CollectionConfig = {
   admin: { useAsTitle: 'name', defaultColumns: ['name', 'route', 'type'], group: groups.rights },
   access: {
     read: () => true,
-    create: isAuthenticated,
-    update: isAuthenticated,
-    delete: isAuthenticated,
+    create: isAdmin,
+    update: isAdmin,
+    delete: isAdmin,
   },
   fields: [
     {

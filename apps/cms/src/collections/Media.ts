@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { isAuthenticated } from '../access.ts'
+import { isAdmin } from '../access.ts'
 import { groups, label } from '../labels.ts'
 
 /** Public images: organization logos for showcases. Never film stills. */
@@ -9,9 +9,9 @@ export const Media: CollectionConfig = {
   admin: { group: groups.sponsorship, useAsTitle: 'alt' },
   access: {
     read: () => true,
-    create: isAuthenticated,
-    update: isAuthenticated,
-    delete: isAuthenticated,
+    create: isAdmin,
+    update: isAdmin,
+    delete: isAdmin,
   },
   upload: {
     staticDir: 'media',

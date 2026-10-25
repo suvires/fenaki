@@ -25,12 +25,21 @@ x-cms-env: &cms-env
     SMTP_TLS: STARTTLS
     EMAIL_FROM_ADDRESS: hola@fenaki.tv
     EMAIL_FROM_NAME: Fenaki
+    # The sales CRM's own mailbox (hola@fenaki.tv, OVHcloud Zimbra): outreach goes out through its
+    # SMTP server (SSL, 465), replies are read over IMAP (SSL, 993). Not SES.
+    MAILBOX_USER: hola@fenaki.tv
+    MAILBOX_IMAP_HOST: imap.mail.ovh.net
+    MAILBOX_IMAP_PORT: 993
+    MAILBOX_SMTP_HOST: smtp.mail.ovh.net
+    MAILBOX_SMTP_PORT: 465
+    CRM_DAILY_SEND_LIMIT: 20
   secret:
     - DATABASE_URL
     - PAYLOAD_SECRET
     - MEILISEARCH_ADMIN_KEY:MEILI_MASTER_KEY
     - SMTP_USERNAME:SES_SMTP_USERNAME
     - SMTP_PASSWORD:SES_SMTP_PASSWORD
+    - MAILBOX_PASSWORD
     # Optional metadata APIs for «Add from URL» and the nightly embed checker (03:00 UTC).
     - YOUTUBE_API_KEY
     - TMDB_API_KEY

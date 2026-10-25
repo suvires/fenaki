@@ -70,6 +70,19 @@ services:
       - '127.0.0.1:1025:1025'
       - '127.0.0.1:8025:8025'
 
+  # Test-only mail server for the CRM integration test: IMAP on 3143 and SMTP on 3025, any
+  # login accepted. Started on demand: `docker compose --profile test up -d greenmail`.
+  greenmail:
+    image: greenmail/standalone:2.1.8
+    profiles: [test]
+    environment:
+      GREENMAIL_OPTS: >-
+        -Dgreenmail.setup.test.smtp -Dgreenmail.setup.test.imap
+        -Dgreenmail.hostname=0.0.0.0 -Dgreenmail.auth.disabled
+    ports:
+      - '127.0.0.1:3025:3025'
+      - '127.0.0.1:3143:3143'
+
   # listmonk: waitlist and newsletter, on its own database. Admin at http://localhost:9000/admin.
   # Three steps: install (first run only), set the web app's API token and point SMTP at Mailpit,
   # then serve. Lists, SMTP and templates are set by `pnpm setup:services`.

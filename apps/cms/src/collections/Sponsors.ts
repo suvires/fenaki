@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { isAuthenticated, isAuthenticatedField } from '../access.ts'
+import { isAdmin, isAuthenticatedField } from '../access.ts'
 import { common, groups, label } from '../labels.ts'
 
 export const Sponsors: CollectionConfig = {
@@ -11,9 +11,9 @@ export const Sponsors: CollectionConfig = {
   admin: { useAsTitle: 'name', group: groups.sponsorship },
   access: {
     read: () => true,
-    create: isAuthenticated,
-    update: isAuthenticated,
-    delete: isAuthenticated,
+    create: isAdmin,
+    update: isAdmin,
+    delete: isAdmin,
   },
   fields: [
     {

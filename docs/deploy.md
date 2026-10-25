@@ -74,6 +74,7 @@ Generate every password, secret and token with `openssl rand -hex 32` (hexadecim
 | `LISTMONK_ADMIN_PASSWORD`, `LISTMONK_API_TOKEN`                                                    | listmonk's `admin` user and the API token of `fenaki-web`                                                 | generated                                                                       |
 | `UMAMI_APP_SECRET`, `UMAMI_ADMIN_PASSWORD`                                                         | Umami                                                                                                     | generated                                                                       |
 | `SES_SMTP_USERNAME`, `SES_SMTP_PASSWORD`                                                           | Amazon SES SMTP credentials (not AWS access keys)                                                         | AWS console (human)                                                             |
+| `MAILBOX_PASSWORD`                                                                                 | Password of the mailbox `hola@fenaki.tv` (OVHcloud Zimbra): the sales CRM sends and reads mail with it    | OVHcloud (human)                                                                |
 | `CLOUDFLARE_TUNNEL_TOKEN`                                                                          | The tunnel's token                                                                                        | `infra/cloudflare/tofu output -raw tunnel_token`                                |
 | `YOUTUBE_API_KEY`, `TMDB_API_KEY`                                                                  | Optional: video and film metadata for «Add from URL» and the nightly embed checker                        | Google Cloud (YouTube Data API v3, key restricted to that API) and TMDB (human) |
 | `SENTRY_DSN`                                                                                       | Sentry project DSN (EU)                                                                                   | Sentry (human)                                                                  |
@@ -191,6 +192,29 @@ Payload's jobs worker stops at once when a deploy replaces it. A job it was runn
 ### Redirect domains
 
 Other domains that only redirect to `fenaki.tv` (planned: `fenaki.es`, `fenakitv.es`, `fenakitv.com`, bought at the launch) need no server change. After buying them at OVHcloud, add them to `redirect_domains` in `infra/cloudflare/terraform.tfvars` and run `infra/cloudflare/tofu plan` and `apply`: OpenTofu creates each zone, a redirect of every URL (and its `www.`) to the same path on `fenaki.tv`, and records saying the domain sends no email. Then set the name servers from `tofu output name_servers` at OVHcloud.
+
+## Sales CRM mailbox
+
+The sales CRM (admin group «Comercial») sends outreach and reads replies through the mailbox `hola@fenaki.tv` itself, not through SES (which keeps Payload's account emails and listmonk). The settings are in `config/deploy.yml` for the CMS and jobs roles:
+
+| Variable                                 | Value                                                          | Kind   |
+| ---------------------------------------- | -------------------------------------------------------------- | ------ |
+| `MAILBOX_USER`                           | `hola@fenaki.tv` (the full address is the login)               | clear  |
+| `MAILBOX_IMAP_HOST`, `MAILBOX_IMAP_PORT` | `imap.mail.ovh.net`, `993` (SSL/TLS)                           | clear  |
+| `MAILBOX_SMTP_HOST`, `MAILBOX_SMTP_PORT` | `smtp.mail.ovh.net`, `465` (SSL/TLS; `587` would use STARTTLS) | clear  |
+| `CRM_DAILY_SEND_LIMIT`                   | `20` outreach emails per day (Madrid time)                     | clear  |
+| `MAILBOX_PASSWORD`                       | The mailbox password                                           | secret |
+
+Source: OVHcloud's guide [Zimbra: configuring your email account on an email client](https://docs.ovhcloud.com/en/guides/web-cloud/email-and-collaborative-solutions/zimbra/mail-apps), which lists `imap.mail.ovh.net` (or `ssl0.ovh.net`) on 993 and `smtp.mail.ovh.net` (or `ssl0.ovh.net`) on 465, both SSL/TLS, with the full address as the username; accounts in the Americas or Asia-Pacific use `imap.mail.ovh.ca` and `smtp.mail.ovh.ca`. The same page applies to Zimbra Starter and the MX Plan. Not tested against the real mailbox: nothing in this repository ever connects to it.
+
+**The human sets `MAILBOX_PASSWORD`** as a GitHub secret (the deploy workflow passes it to Kamal as a secret, see `.kamal/secrets.example`). While it is empty, nothing is sent and the inbox sync is off.
+
+What the mailbox is used for, and what it is not:
+
+- **Sending**: only after an admin approves each email (`Aprobar y enviar`), through a separate nodemailer transport (the SES one is untouched). Messages go out from `Fenaki <hola@fenaki.tv>` with Reply-To `hola@fenaki.tv`; no BCC.
+- **Sent folder**: after sending, the same message (same bytes, same `Message-ID`) is appended to the mailbox's Sent folder over IMAP, so it shows in Zimbra. The folder is found by its `\Sent` flag or its usual names; set `MAILBOX_SENT_FOLDER` if it is not. This is the **only write** to the mailbox. If it fails, the email has already gone out: the message stays `sent` and its `error` field says the copy was not saved.
+- **Reading**: every 5 minutes the jobs worker opens INBOX **read-only** (IMAP `EXAMINE`, `BODY.PEEK`): it never deletes, moves or marks anything. It stores a message only when it answers one of ours (by `In-Reply-To`/`References`) or comes from a known contact; everything else is ignored and not stored. The first run only remembers where the mailbox ends (replies are read from then on), and `crm-inbox` (hidden global) keeps the last UID processed.
+- **Deliverability**: the emails are signed by the domain's SPF and DKIM at OVHcloud (the records the Zimbra control panel shows, in `infra/cloudflare`), not by SES. A low daily limit (20) protects that reputation.
 
 ## Monitoring
 
