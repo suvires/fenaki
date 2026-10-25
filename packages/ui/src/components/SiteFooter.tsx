@@ -16,7 +16,7 @@ export interface SiteFooterProps {
 export function SiteFooter({ label, groups, tagline, brand, className }: SiteFooterProps) {
   return (
     <footer className={cx('grid gap-8 pt-8 border-t border-line', className)}>
-      <div className="grid gap-8 md:grid-cols-[var(--size-card)_1fr]">
+      <div className="grid gap-8 md:grid-cols-[var(--size-column)_1fr]">
         <div className="grid content-start gap-3">
           <Monogram
             label={brand}
@@ -26,7 +26,7 @@ export function SiteFooter({ label, groups, tagline, brand, className }: SiteFoo
         </div>
         <nav
           aria-label={label}
-          className="grid grid-cols-[repeat(auto-fit,minmax(var(--size-card),1fr))] gap-6"
+          className="grid grid-cols-[repeat(auto-fit,minmax(var(--size-column),1fr))] gap-6"
         >
           {groups.map((group) => (
             <div key={group.title} className="grid content-start gap-2">

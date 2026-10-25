@@ -11,6 +11,8 @@ export interface ShortCardProps {
   seconds?: number
   locale?: Locale
   tone?: PosterTone
+  /** A still of the short served from Fenaki. Without it the card shows the typographic poster. */
+  image?: string
   /** The short's page. The whole card is one link. */
   href?: string
   /** At most three. */
@@ -20,6 +22,13 @@ export interface ShortCardProps {
   className?: string
 }
 
+const LIFT = cx(
+  'shadow-card transition-[transform,box-shadow] duration-(--duration-lift) ease-standard',
+  'group-hover:-translate-y-(--size-lift) group-hover:shadow-hover',
+  'group-focus-visible:-translate-y-(--size-lift) group-focus-visible:shadow-hover',
+  'motion-reduce:transition-none motion-reduce:translate-none!',
+)
+
 /** A short in a rail or grid: poster, title, duration and director, up to three badges. */
 export function ShortCard({
   title,
@@ -28,6 +37,7 @@ export function ShortCard({
   seconds,
   locale,
   tone,
+  image,
   href,
   badges,
   stretch = false,
@@ -43,18 +53,24 @@ export function ShortCard({
         className,
       )}
     >
-      <Poster
-        title={title}
-        director={director}
-        year={year}
-        tone={tone}
-        className={cx(
-          'shadow-card transition-[transform,box-shadow] duration-(--duration-lift) ease-standard',
-          'group-hover:-translate-y-(--size-lift) group-hover:shadow-hover',
-          'group-focus-visible:-translate-y-(--size-lift) group-focus-visible:shadow-hover',
-          'motion-reduce:transition-none motion-reduce:translate-none!',
-        )}
-      />
+      {image ? (
+        <img
+          src={image}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          className={cx('aspect-still w-full rounded-sm object-cover bg-sala-2', LIFT)}
+        />
+      ) : (
+        <Poster
+          shape="landscape"
+          title={title}
+          director={director}
+          year={year}
+          tone={tone}
+          className={LIFT}
+        />
+      )}
       <span className="grid gap-hair min-w-0">
         <span className="text-card-title truncate">{title}</span>
         <span className="flex items-baseline gap-2 min-w-0 text-meta text-ink-muted">

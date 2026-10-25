@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Button } from '../components/Button.tsx'
 import backdrop from './assets/backdrop.jpg'
 import { ShortHero } from '../components/ShortHero.tsx'
 
@@ -13,7 +14,11 @@ const meta = {
       'Luna y Diego son los vigilantes de un aparcamiento. Ella trabaja de día; él, de noche. Un rasguño en un coche les lleva a revisar las grabaciones de seguridad, donde descubren otra forma de comunicarse.',
     ctaLabel: 'Ver ahora',
     ctaHref: '#',
-    secondaryLabel: 'Añadir a mi lista',
+    secondaryAction: (
+      <Button variant="secondary" size="lg" icon="plus">
+        Añadir a mi lista
+      </Button>
+    ),
     poster: { title: 'Timecode', director: 'Juanjo Giménez', year: 2016, tone: 'tungsteno' },
   },
 } satisfies Meta<typeof ShortHero>
@@ -29,7 +34,17 @@ export const LongTitle: Story = {
     poster: { title: 'Aquel no era yo', director: 'Esteban Crespo', year: 2012, tone: 'sala' },
   },
 }
-export const WithoutSynopsis: Story = { args: { synopsis: undefined, secondaryLabel: undefined } }
+export const WithoutSynopsis: Story = { args: { synopsis: undefined, secondaryAction: undefined } }
+
+export const InMyList: Story = {
+  args: {
+    secondaryAction: (
+      <Button variant="secondary" size="lg" icon="check" aria-pressed>
+        En mi lista
+      </Button>
+    ),
+  },
+}
 
 /** An abstract gradient made for the catalog: never a third-party film image. */
 export const WithBackdrop: Story = { args: { backdrop } }

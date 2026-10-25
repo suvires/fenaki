@@ -1,4 +1,5 @@
 import { formatList, type Locale, type Translate } from '@fenaki/i18n'
+import type { NewSavedShort } from './myList.ts'
 import type { BadgeTone, PosterTone, ShortCardProps } from '@fenaki/ui'
 
 /** The catalog fields the cards, filters and badges need, from the CMS or the search index. */
@@ -9,6 +10,8 @@ export interface CardSource {
   year?: number | null
   durationSeconds: number
   posterTone?: string | null
+  /** Absolute URL of the card-sized still, when the short has one. */
+  still?: string | null
   type: string
   noDialogue?: boolean | null
   brandedContent?: boolean | null
@@ -102,6 +105,7 @@ export function toCard(
     seconds: short.durationSeconds,
     locale,
     tone: posterTone(short.posterTone),
+    image: short.still ?? undefined,
     href,
     badges: badgesFor(short, locale, t, clock),
   }
@@ -113,5 +117,18 @@ export function filterAttributes(short: CardSource, locale: Locale) {
     'data-card': '',
     'data-band': durationBand(short.durationSeconds),
     'data-subtitles': short.subtitles.includes(locale) ? 'yes' : 'no',
+  }
+}
+
+/** What «Mi lista» keeps of a short, so its rail can render cards without asking the CMS. */
+export function toSavedShort(short: CardSource, locale: Locale): NewSavedShort {
+  return {
+    slug: short.slug,
+    title: short.title,
+    director: short.directors.length > 0 ? formatList(short.directors, locale) : undefined,
+    year: short.year ?? undefined,
+    seconds: short.durationSeconds,
+    tone: posterTone(short.posterTone),
+    image: short.still ?? undefined,
   }
 }

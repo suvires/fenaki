@@ -21,6 +21,8 @@ export const paths = {
     `/${locale}/cortos?type=${type}`,
   /** The latest shorts: one rail on the home page, not a full list. */
   latest: (locale: Locale) => `/${locale}/#novedades`,
+  /** The viewer's saved shorts (kept in their browser, so the page is never indexed). */
+  myList: (locale: Locale) => `/${locale}/mi-lista`,
   showcase: (locale: Locale, slug: string) => `/${locale}/escaparates/${slug}`,
   sponsor: (locale: Locale, section?: 'collection' | 'showcase') =>
     `/${locale}/patrocina${section ? `#${section === 'collection' ? 'coleccion' : 'escaparate'}` : ''}`,

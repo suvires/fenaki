@@ -5,6 +5,7 @@ import { cx } from '../cx.ts'
  * bounding box, so the set reads at one size:
  * - straight open strokes (plus, arrow) span 16px (4–20);
  * - diagonal strokes (close) span 13px (5.5–18.5): a diagonal runs 1.41× its box;
+ * - the check spans 13px wide (5.5–18.5), like the close: both are diagonals;
  * - closed round shapes (the magnifier) span 15.5px (4.5–20): a ring carries more mass than lines;
  * - the play triangle spans 17px (3.5–20.5): a triangle fills only half its box, so it needs
  *   more height than the plus to read at the same size.
@@ -19,6 +20,7 @@ const PATHS = {
   search: 'M10.5 16.5a6 6 0 1 1 0-12 6 6 0 0 1 0 12zM15 15l5 5',
   arrow: 'M4 12h16M14 6l6 6-6 6',
   chevron: 'M8.5 3.5 17 12l-8.5 8.5',
+  check: 'M5.5 12.5l4.5 4.5 8.5-9.5',
   close: 'M5.5 5.5l13 13M18.5 5.5l-13 13',
 } as const
 

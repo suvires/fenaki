@@ -82,7 +82,7 @@ export function ShowcaseHero({
             alt={logo.alt}
             width={logo.width}
             height={logo.height}
-            className="block h-auto max-h-(--size-card) w-auto max-w-(--size-card)"
+            className="block h-auto max-h-(--size-column) w-auto max-w-(--size-column)"
           />
         </div>
       ) : null}

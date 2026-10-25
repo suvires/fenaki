@@ -128,7 +128,7 @@ export function SiteHeader({
         <ul
           id={`${genresId}-${where}`}
           hidden={!genresOpen}
-          className="m-0 mt-2 p-2 list-none grid gap-1 md:absolute md:left-0 md:top-full md:z-10 md:min-w-(--size-card) rounded-sm bg-sala-1 border border-line shadow-hover"
+          className="m-0 mt-2 p-2 list-none grid gap-1 md:absolute md:left-0 md:top-full md:z-10 md:min-w-(--size-column) rounded-sm bg-sala-1 border border-line shadow-hover"
         >
           {genres.items.map((item) => (
             <li key={item.href}>

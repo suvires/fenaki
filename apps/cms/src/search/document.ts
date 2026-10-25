@@ -19,6 +19,8 @@ export interface ShortSearchDocument {
   /** The type in the index's locale («Animación»), so viewers can search by it. */
   typeLabel: string
   posterTone: string
+  /** Path of the card-sized still on the CMS origin, or null when the short has none. */
+  still: string | null
   noDialogue: boolean
   /** Made by or for a brand: cards show a «Contenido de marca» badge. */
   brandedContent: boolean
@@ -80,6 +82,10 @@ export interface IndexableShort {
   originalLanguage?: string | null
   type: string
   posterTone?: string | null
+  still?:
+    | number
+    | { url?: string | null; sizes?: { card?: { url?: string | null } | null } | null }
+    | null
   noDialogue?: boolean | null
   brandedContent?: boolean | null
   publishedAt?: string | null
@@ -118,6 +124,10 @@ export function toSearchDocument(short: IndexableShort, typeLabel: string): Shor
     type: short.type,
     typeLabel,
     posterTone: short.posterTone ?? 'sala',
+    still:
+      typeof short.still === 'object' && short.still
+        ? (short.still.sizes?.card?.url ?? short.still.url ?? null)
+        : null,
     noDialogue: Boolean(short.noDialogue),
     brandedContent: Boolean(short.brandedContent),
     subtitles: [...subtitles],

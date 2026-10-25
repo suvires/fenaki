@@ -5,7 +5,7 @@ const meta = {
   title: 'Media/Poster',
   component: Poster,
   args: { title: 'Cuerdas', director: 'Pedro Solís García', year: 2013, tone: 'sala' },
-  decorators: [(Story) => <div className="w-(--size-card)">{Story()}</div>],
+  decorators: [(Story) => <div className="w-(--size-column)">{Story()}</div>],
 } satisfies Meta<typeof Poster>
 
 export default meta
@@ -25,7 +25,7 @@ export const TitleOnly: Story = { args: { director: undefined, year: undefined }
 export const AllTones: Story = {
   decorators: [(Story) => <div>{Story()}</div>],
   render: () => (
-    <div className="flex gap-4 *:w-(--size-card)">
+    <div className="flex gap-4 *:w-(--size-column)">
       <Poster title="Cuerdas" director="Pedro Solís García" year={2013} />
       <Poster title="Timecode" director="Juanjo Giménez" year={2016} tone="tungsteno" />
       <Poster title="Madre" director="Rodrigo Sorogoyen" year={2017} tone="plata" />

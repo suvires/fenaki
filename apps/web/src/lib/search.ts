@@ -3,6 +3,7 @@ import { MEILISEARCH_HOST } from 'astro:env/server'
 import { getSecret, SEARCH_INDEX_PREFIX } from 'astro:env/server'
 import { Meilisearch } from 'meilisearch'
 import { browseQueries, mergeFacets, PAGE_SIZE, type FacetCounts, type Filters } from './browse.ts'
+import { cmsUrl } from './cms.ts'
 import type { CardSource } from './catalog.ts'
 
 /** A hit from the per-locale shorts index (see apps/cms/src/search/document.ts). */
@@ -14,6 +15,7 @@ export interface ShortHit {
   year: number | null
   durationSeconds: number
   posterTone: string
+  still?: string | null
   type: string
   noDialogue: boolean
   brandedContent?: boolean
@@ -87,6 +89,7 @@ function toCardSource(hit: ShortHit): CardSource {
     year: hit.year,
     durationSeconds: hit.durationSeconds,
     posterTone: hit.posterTone,
+    still: cmsUrl(hit.still),
     type: hit.type,
     noDialogue: hit.noDialogue,
     brandedContent: hit.brandedContent,

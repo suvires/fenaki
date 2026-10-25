@@ -87,3 +87,41 @@ test('the sponsorship page has no contact links without a mailbox', async ({ pag
   await expect(page.locator('a[href^="mailto:"]')).toHaveCount(0)
   await expect(page.getByText('Muy pronto tendrás aquí una dirección de contacto.')).toBeVisible()
 })
+
+test('a short added to «Mi lista» appears in the rail and the list page, and survives a reload', async ({
+  page,
+}) => {
+  await page.goto('/es/')
+  const rail = page.getByRole('region', { name: 'Mi lista' })
+  await expect(rail.getByText(/Guarda cortos con/)).toBeVisible()
+
+  const hero = page.locator('section').first()
+  await hero.getByRole('button', { name: 'Añadir a mi lista' }).click()
+  const saved = hero.getByRole('button', { name: 'En mi lista' })
+  await expect(saved).toHaveAttribute('aria-pressed', 'true')
+  await expect(rail.getByRole('link')).toHaveCount(2) // the title link and one card
+  const title = (await page.getByRole('heading', { level: 1 }).first().innerText()).trim()
+
+  await page.reload()
+  await expect(
+    page.locator('section').first().getByRole('button', { name: 'En mi lista' }),
+  ).toBeVisible()
+  await expect(page.getByRole('region', { name: 'Mi lista' }).getByRole('link')).toHaveCount(2)
+
+  // The header link and the rail title lead to the page with the whole list.
+  await page
+    .getByRole('region', { name: 'Mi lista' })
+    .getByRole('link', { name: /Mi lista/ })
+    .click()
+  await expect(page).toHaveURL(/\/es\/mi-lista$/)
+  await expect(page.getByRole('heading', { level: 1, name: 'Mi lista' })).toBeVisible()
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, follow')
+  await expect(page.getByRole('link', { name: new RegExp(title, 'i') })).toBeVisible()
+
+  // Removing it from the home hero empties the rail again.
+  await page.goto('/es/')
+  await page.locator('section').first().getByRole('button', { name: 'En mi lista' }).click()
+  await expect(
+    page.getByRole('region', { name: 'Mi lista' }).getByText(/Guarda cortos con/),
+  ).toBeVisible()
+})

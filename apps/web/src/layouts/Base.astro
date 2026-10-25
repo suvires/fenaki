@@ -172,7 +172,7 @@ const footerGroups = [
           links={[
             { label: t('header.latest'), href: paths.latest(locale) },
             // Accounts arrive later: the links are in place, without a page yet.
-            { label: t('header.myList'), href: '#' },
+            { label: t('header.myList'), href: paths.myList(locale) },
           ]}
           search={{
             action: paths.search(locale),

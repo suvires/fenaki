@@ -3,8 +3,10 @@ import { CollectionHero, Rail, ShortCard, ShortHero } from '@fenaki/ui'
 import { formatList, formatYear } from '@fenaki/i18n'
 import Landing from '../../components/Landing.astro'
 import { HomeFilters } from '../../islands/HomeFilters.tsx'
+import { MyListButton } from '../../islands/MyListButton.tsx'
+import { MyListRail } from '../../islands/MyListRail.tsx'
 import Base from '../../layouts/Base.astro'
-import { filterAttributes, posterTone, toCard } from '../../lib/catalog.ts'
+import { filterAttributes, posterTone, toCard, toSavedShort } from '../../lib/catalog.ts'
 import {
   listCollections,
   listShorts,
@@ -77,7 +79,6 @@ const filterOptions = (['short', 'mid', 'long', 'subtitles'] as const).map((valu
       synopsis={hero.synopsis ?? undefined}
       ctaLabel={t('home.hero.cta')}
       ctaHref={paths.short(locale, hero.slug)}
-      secondaryLabel={t('short.addToList')}
       poster={{
         title: hero.title,
         director: heroDirectors.join(', '),
@@ -85,7 +86,29 @@ const filterOptions = (['short', 'mid', 'long', 'subtitles'] as const).map((valu
         tone: posterTone(hero.posterTone),
       }}
       backdrop={heroBackdrop}
-    />
+    >
+      <MyListButton
+        slot="secondaryAction"
+        client:load
+        size="lg"
+        short={toSavedShort(toCardSource(hero), locale)}
+        label={t('short.addToList')}
+        savedLabel={t('short.inMyList')}
+      />
+    </ShortHero>
+  )}
+  {!landing && (
+    <div id="mi-lista">
+      <MyListRail
+        client:load
+        title={t('home.myList.title')}
+        actionLabel={t('rail.seeAll')}
+        actionHref={paths.myList(locale)}
+        emptyHint={t('home.myList.empty')}
+        locale={locale}
+        hrefBase={paths.short(locale, '')}
+      />
+    </div>
   )}
   {!landing && featured && (
     <CollectionHero

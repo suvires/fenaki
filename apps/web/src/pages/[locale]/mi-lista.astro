@@ -1,0 +1,23 @@
+---
+import { PageHeader } from '@fenaki/ui'
+import { MyListGrid } from '../../islands/MyListGrid.tsx'
+import Base from '../../layouts/Base.astro'
+import { localeFrom, paths, translator } from '../../lib/i18n.ts'
+
+const locale = localeFrom(Astro.params.locale)
+if (!locale) return Astro.rewrite('/404')
+
+const t = translator(locale)
+---
+
+<Base locale={locale} title={t('home.myList.title')} noindex>
+  <div class="grid gap-8">
+    <PageHeader title={t('home.myList.title')} />
+    <MyListGrid
+      client:load
+      emptyHint={t('home.myList.empty')}
+      locale={locale}
+      hrefBase={paths.short(locale, '')}
+    />
+  </div>
+</Base>

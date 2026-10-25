@@ -32,6 +32,8 @@ export const Stills: CollectionConfig = {
     mimeTypes: ['image/png', 'image/jpeg', 'image/webp'],
     imageSizes: [
       { name: 'hero', width: 1600, withoutEnlargement: true, formatOptions: { format: 'webp' } },
+      // The thumbnail of a short card in rails and grids.
+      { name: 'card', width: 640, withoutEnlargement: true, formatOptions: { format: 'webp' } },
     ],
   },
   fields: [

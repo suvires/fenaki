@@ -4,8 +4,9 @@ import { createRichTranslator, formatCountry, formatYear } from '@fenaki/i18n'
 import { Badge, Duration, LicenseNote, PlayerGate, Rail, ShortCard } from '@fenaki/ui'
 import NotFound from '../../../components/NotFound.astro'
 import PeopleLinks from '../../../components/PeopleLinks.astro'
+import { MyListButton } from '../../../islands/MyListButton.tsx'
 import Base from '../../../layouts/Base.astro'
-import { toCard } from '../../../lib/catalog.ts'
+import { toCard, toSavedShort } from '../../../lib/catalog.ts'
 import {
   creditsOf,
   getShort,
@@ -115,6 +116,14 @@ const origin = [
         )}
         {short.noDialogue && <Badge>{t('badges.noDialogue')}</Badge>}
         {origin && <span class="text-meta text-ink-muted">{origin}</span>}
+      </div>
+      <div>
+        <MyListButton
+          client:load
+          short={toSavedShort(card, locale)}
+          label={t('short.addToList')}
+          savedLabel={t('short.inMyList')}
+        />
       </div>
       {short.synopsis && <p class="m-0 max-w-synopsis text-body-l">{short.synopsis}</p>}
       {directors.length > 0 && (

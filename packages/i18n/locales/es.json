@@ -36,6 +36,10 @@
     "hero": {
       "cta": "Ver ahora"
     },
+    "myList": {
+      "title": "Mi lista",
+      "empty": "Guarda cortos con «Añadir a mi lista» y aparecerán aquí."
+    },
     "empty": "Todavía no hay cortos publicados.",
     "noMatches": "Ningún corto coincide con este filtro."
   },
@@ -56,6 +60,7 @@
     "credits": "Créditos",
     "synopsis": "Sinopsis",
     "addToList": "Añadir a mi lista",
+    "inMyList": "En mi lista",
     "related": "Si te ha gustado",
     "origin": "{country} · {year}",
     "player": {

@@ -221,6 +221,17 @@ export function stillUrlOf(short: Short): string | undefined {
   return path ? new URL(path, CMS_PUBLIC_URL || CMS_URL).toString() : undefined
 }
 
+/** The short's still at card size (640w) as an absolute URL, or undefined when it has none. */
+export function stillCardUrlOf(short: Short): string | undefined {
+  if (!isObject<Still>(short.still)) return undefined
+  return cmsUrl(short.still.sizes?.card?.url ?? short.still.url)
+}
+
+/** A path served by the CMS (media) as an absolute URL. */
+export function cmsUrl(path: string | null | undefined): string | undefined {
+  return path ? new URL(path, CMS_PUBLIC_URL || CMS_URL).toString() : undefined
+}
+
 export function presenterOf(showcase: Showcase): Sponsor | undefined {
   return isObject<Sponsor>(showcase.presentedBy) ? showcase.presentedBy : undefined
 }
@@ -254,6 +265,7 @@ export function toCardSource(short: PublishedShort): CardSource {
     year: short.year,
     durationSeconds: short.durationSeconds,
     posterTone: short.posterTone,
+    still: stillCardUrlOf(short),
     type: short.type,
     noDialogue: short.noDialogue,
     brandedContent: short.brandedContent,

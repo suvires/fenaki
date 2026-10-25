@@ -8,6 +8,8 @@ export interface PosterProps {
   year?: number
   /** `telon` only inside a sponsored collection. Vary tones along a rail. */
   tone?: PosterTone
+  /** `landscape` (16:9) is the thumbnail of a short card; portrait (2:3) is the poster of the heroes. */
+  shape?: 'portrait' | 'landscape'
   className?: string
 }
 
@@ -19,13 +21,22 @@ const TONES = {
 } as const
 
 /** The typographic poster: the cover a short shows until it has art cleared for use. */
-export function Poster({ title, director, year, tone = 'sala', className }: PosterProps) {
+export function Poster({
+  title,
+  director,
+  year,
+  tone = 'sala',
+  shape = 'portrait',
+  className,
+}: PosterProps) {
   return (
     <div
       role="img"
       aria-label={director ? `${title}, ${director}` : title}
       className={cx(
-        'relative flex flex-col justify-end gap-1 aspect-poster max-w-full box-border overflow-hidden',
+        'relative flex flex-col justify-end gap-1 max-w-full',
+        shape === 'landscape' ? 'aspect-still' : 'aspect-poster',
+        'box-border overflow-hidden',
         'p-3 pl-6 rounded-sm',
         TONES[tone],
         className,

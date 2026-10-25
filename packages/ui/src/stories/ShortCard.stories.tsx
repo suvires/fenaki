@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import backdrop from './assets/backdrop.jpg'
 import { ShortCard } from '../components/ShortCard.tsx'
 import { SHORTS } from './fixtures.ts'
 
@@ -12,6 +13,8 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const WithBadge: Story = {}
+/** With the short's still; the others show the typographic poster in landscape. */
+export const WithImage: Story = { args: { image: backdrop } }
 export const WithoutBadges: Story = { args: { ...SHORTS[2], title: 'Madre', href: '#' } }
 export const LongDirector: Story = { args: { ...SHORTS[3], title: 'Alike', href: '#' } }
 export const Accent: Story = { args: { ...SHORTS[5], title: 'Aquel no era yo', href: '#' } }

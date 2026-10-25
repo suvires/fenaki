@@ -56,7 +56,7 @@ export const Grid: Story = {
     <div className="flex flex-wrap gap-6 text-ink">
       {ICON_NAMES.map((name) => (
         <div key={name} className="grid gap-2 justify-items-center">
-          <div className="relative size-(--size-card)">
+          <div className="relative size-(--size-column)">
             <Keylines />
             <Icon name={name} className="relative size-full" />
           </div>

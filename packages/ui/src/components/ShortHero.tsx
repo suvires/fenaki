@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import type { Locale } from '@fenaki/i18n'
 import { cx } from '../cx.ts'
 import { Button } from './Button.tsx'
@@ -17,7 +18,8 @@ export interface ShortHeroProps {
   synopsis?: string
   ctaLabel: string
   ctaHref?: string
-  secondaryLabel?: string
+  /** A second action next to the main one, such as the «Añadir a mi lista» button. */
+  secondaryAction?: ReactNode
   poster: Omit<PosterProps, 'className'>
   /** A still of the short served from Fenaki. Decorative (empty alt); it fills the hero and replaces the poster. */
   backdrop?: string
@@ -39,7 +41,7 @@ export function ShortHero({
   synopsis,
   ctaLabel,
   ctaHref,
-  secondaryLabel,
+  secondaryAction,
   poster,
   backdrop,
   headingLevel = 1,
@@ -93,11 +95,7 @@ export function ShortHero({
           <Button variant="primary" size="lg" icon="play" href={ctaHref}>
             {ctaLabel}
           </Button>
-          {secondaryLabel ? (
-            <Button variant="secondary" size="lg" icon="plus">
-              {secondaryLabel}
-            </Button>
-          ) : null}
+          {secondaryAction}
         </div>
       </div>
       {backdrop ? null : (
