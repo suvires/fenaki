@@ -11,3 +11,5 @@ test-results/
 apps/cms/src/payload-types.ts
 apps/cms/src/app/(payload)/
 apps/cms/src/migrations/
+# Kamal configuration: YAML with ERB tags
+config/deploy*.yml
