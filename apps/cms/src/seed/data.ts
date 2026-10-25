@@ -2,7 +2,7 @@
  * Sample catalog: the six shorts from the design system previews. Real Spanish shorts so the
  * layouts read true, but durations are approximate, video ids are placeholders, and nothing here
  * has been verified on an official channel. Every document is flagged `sample: true`.
- * The sponsor «Festival de Cine Breve» is fictional.
+ * The sponsor «Festival de Cine Breve» and the school «Escuela de Cine de Ejemplo» are fictional.
  */
 export interface SampleShort {
   title: string
@@ -123,4 +123,15 @@ export const SAMPLE_COLLECTION = {
   description: 'Seis cortos que marcaron una época, en los canales de sus autores.',
   sponsorshipStartsAt: '2026-10-01T00:00:00.000Z',
   sponsorshipEndsAt: '2027-03-31T23:59:59.000Z',
+}
+
+/** A film school's showcase, presented by the sample sponsor. Fictional. */
+export const SAMPLE_SHOWCASE = {
+  name: 'Escuela de Cine de Ejemplo',
+  kind: 'school' as const,
+  website: 'https://example.com',
+  intro:
+    'Una escuela de cine ficticia para probar los escaparates: su selección de cortos de alumnos y antiguos alumnos.',
+  /** Titles from SAMPLE_SHORTS, in display order. */
+  shorts: ['Cuerdas', 'Alike', 'Madre'],
 }

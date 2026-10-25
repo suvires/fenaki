@@ -59,6 +59,23 @@ export const messages = {
     'A sponsored collection cannot include non-commercial (NC) shorts:',
     'Una colección patrocinada no puede incluir cortos con licencia no comercial (NC):',
   ),
+  requiredToPublish: label('Required to publish the short.', 'Hace falta para publicar el corto.'),
+  noOfficialEvidence: label(
+    'To publish a short, at least one of its sources needs its official channel and the evidence that it is official.',
+    'Para publicar un corto, al menos una de sus fuentes necesita su canal oficial y la prueba de que es oficial.',
+  ),
+  unofficialInShowcase: label(
+    'A showcase only includes shorts on official channels. These have no source with an official channel and its evidence:',
+    'Un escaparate solo incluye cortos en canales oficiales. Estos no tienen una fuente con canal oficial y su prueba:',
+  ),
+  nonCommercialInShowcase: label(
+    'A showcase cannot include non-commercial (NC) shorts:',
+    'Un escaparate no puede incluir cortos con licencia no comercial (NC):',
+  ),
+  offCircuitRequired: label(
+    'Confirm that no short is still on the festival circuit before publishing a festival showcase.',
+    'Confirma que ningún corto sigue en el circuito de festivales antes de publicar el escaparate de un festival.',
+  ),
   brandedInSponsored: label(
     'A sponsored collection cannot include branded content:',
     'Una colección patrocinada no puede incluir contenido de marca:',

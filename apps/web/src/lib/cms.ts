@@ -1,4 +1,13 @@
-import type { Collection, License, Person, Short, Source, Sponsor } from '@shortix/cms/types'
+import type {
+  Collection,
+  License,
+  Media,
+  Person,
+  Short,
+  Showcase,
+  Source,
+  Sponsor,
+} from '@shortix/cms/types'
 import type { Locale } from '@shortix/i18n'
 import { CMS_URL } from 'astro:env/server'
 import type { CardSource } from './catalog.ts'
@@ -12,6 +21,9 @@ async function get<T>(path: string, params: Record<string, string | number>): Pr
   return (await response.json()) as T
 }
 
+/** A published short always has a running time and a type: the CMS requires them to publish. */
+export type PublishedShort = Short & { durationSeconds: number; type: NonNullable<Short['type']> }
+
 interface List<T> {
   docs: T[]
   totalDocs: number
@@ -20,8 +32,8 @@ interface List<T> {
 /** Populates credits (people) and the join field of sources. */
 const SHORT_DEPTH = 1
 
-export async function listShorts(locale: Locale, limit = 100): Promise<Short[]> {
-  const list = await get<List<Short>>('shorts', {
+export async function listShorts(locale: Locale, limit = 100): Promise<PublishedShort[]> {
+  const list = await get<List<PublishedShort>>('shorts', {
     locale,
     depth: SHORT_DEPTH,
     limit,
@@ -31,8 +43,8 @@ export async function listShorts(locale: Locale, limit = 100): Promise<Short[]> 
   return list.docs
 }
 
-export async function getShort(locale: Locale, slug: string): Promise<Short | undefined> {
-  const list = await get<List<Short>>('shorts', {
+export async function getShort(locale: Locale, slug: string): Promise<PublishedShort | undefined> {
+  const list = await get<List<PublishedShort>>('shorts', {
     locale,
     depth: SHORT_DEPTH,
     limit: 1,
@@ -51,6 +63,31 @@ export async function listSources(shortId: number): Promise<Source[]> {
     depth: 1,
     limit: 20,
     'where[short][equals]': shortId,
+  })
+  return list.docs
+}
+
+export async function getPerson(slug: string): Promise<Person | undefined> {
+  const list = await get<List<Person>>('people', {
+    depth: 0,
+    limit: 1,
+    'where[slug][equals]': slug,
+  })
+  return list.docs[0]
+}
+
+/** The published shorts that credit a person, in any role. */
+export async function listShortsByPerson(
+  locale: Locale,
+  personId: number,
+): Promise<PublishedShort[]> {
+  const list = await get<List<PublishedShort>>('shorts', {
+    locale,
+    depth: SHORT_DEPTH,
+    limit: 100,
+    sort: '-year',
+    'where[credits.person][equals]': personId,
+    'where[status][equals]': 'published',
   })
   return list.docs
 }
@@ -77,6 +114,55 @@ export async function getCollection(locale: Locale, slug: string): Promise<Colle
   return list.docs[0]
 }
 
+export async function getShowcase(locale: Locale, slug: string): Promise<Showcase | undefined> {
+  const list = await get<List<Showcase>>('showcases', {
+    locale,
+    depth: 2,
+    limit: 1,
+    'where[slug][equals]': slug,
+    'where[status][equals]': 'published',
+  })
+  return list.docs[0]
+}
+
+export async function listShowcases(locale: Locale): Promise<Showcase[]> {
+  const list = await get<List<Showcase>>('showcases', {
+    locale,
+    depth: 0,
+    limit: 100,
+    'where[status][equals]': 'published',
+  })
+  return list.docs
+}
+
+/** Every published short and person, for the sitemap: slugs and dates only. */
+export async function listSitemapDocs(locale: Locale) {
+  const [shorts, collections] = await Promise.all([
+    get<List<Pick<Short, 'slug' | 'updatedAt' | 'credits'>>>('shorts', {
+      locale,
+      depth: 1,
+      limit: 1000,
+      'where[status][equals]': 'published',
+      'select[slug]': 'true',
+      'select[updatedAt]': 'true',
+      'select[credits]': 'true',
+    }),
+    get<List<Pick<Collection, 'slug' | 'updatedAt'>>>('collections', {
+      locale,
+      depth: 0,
+      limit: 200,
+      'where[status][equals]': 'published',
+      'select[slug]': 'true',
+      'select[updatedAt]': 'true',
+    }),
+  ])
+  const people = new Map<string, string>()
+  for (const short of shorts.docs)
+    for (const credit of short.credits ?? [])
+      if (isObject<Person>(credit.person)) people.set(credit.person.slug, credit.person.updatedAt)
+  return { shorts: shorts.docs, collections: collections.docs, people }
+}
+
 const isObject = <T>(value: number | T | null | undefined): value is T =>
   typeof value === 'object' && value !== null
 
@@ -88,6 +174,23 @@ export function licenseOf(source: Source): License | undefined {
   return isObject<License>(source.license) ? source.license : undefined
 }
 
+/** The people credited on a short, in a role or in any, with their page's slug. */
+export function creditsOf(short: Short, role?: string): Person[] {
+  return (short.credits ?? [])
+    .filter((credit) => !role || credit.role === role)
+    .map((credit) => credit.person)
+    .filter(isObject<Person>)
+}
+
+/** The roles a person has on a short. */
+export function rolesOf(short: Short, personId: number): string[] {
+  return (short.credits ?? [])
+    .filter(
+      (credit) => (isObject<Person>(credit.person) ? credit.person.id : credit.person) === personId,
+    )
+    .map((credit) => credit.role)
+}
+
 export function peopleOf(short: Short, role?: string): string[] {
   return (short.credits ?? [])
     .filter((credit) => !role || credit.role === role)
@@ -96,8 +199,19 @@ export function peopleOf(short: Short, role?: string): string[] {
     .map((person) => person.name)
 }
 
-export function shortsOf(collection: Collection): Short[] {
-  return (collection.shorts ?? []).filter(isObject<Short>).filter((s) => s.status === 'published')
+export function shortsOf(collection: { shorts?: (number | Short)[] | null }): PublishedShort[] {
+  return (collection.shorts ?? [])
+    .filter(isObject<Short>)
+    .filter((s): s is PublishedShort => s.status === 'published')
+}
+
+/** The organization's logo, when it has one. */
+export function logoOf(showcase: Showcase): Media | undefined {
+  return isObject<Media>(showcase.logo) ? showcase.logo : undefined
+}
+
+export function presenterOf(showcase: Showcase): Sponsor | undefined {
+  return isObject<Sponsor>(showcase.presentedBy) ? showcase.presentedBy : undefined
 }
 
 export function sponsorOf(collection: Collection, now = new Date()): Sponsor | undefined {
@@ -113,11 +227,15 @@ export function sponsorOf(collection: Collection, now = new Date()): Sponsor | u
 /** The source a short plays from: the first embeddable one that the checker has not flagged. */
 export function playableSource(sources: Source[]): Source | undefined {
   return sources.find(
-    (source) => source.embeddable && source.status !== 'broken' && source.status !== 'private',
+    (source) =>
+      source.embeddable &&
+      !source.ageRestricted &&
+      source.status !== 'broken' &&
+      source.status !== 'private',
   )
 }
 
-export function toCardSource(short: Short): CardSource {
+export function toCardSource(short: PublishedShort): CardSource {
   return {
     slug: short.slug,
     title: short.title,
@@ -128,7 +246,14 @@ export function toCardSource(short: Short): CardSource {
     type: short.type,
     noDialogue: short.noDialogue,
     brandedContent: short.brandedContent,
-    subtitles: [...new Set(sourcesOf(short).flatMap((source) => source.subtitles ?? []))],
+    // By primary language, as in the search index: «es-ES» counts as Spanish.
+    subtitles: [
+      ...new Set(
+        sourcesOf(short)
+          .flatMap((source) => source.subtitles ?? [])
+          .map((code) => code.split('-')[0]?.toLowerCase() ?? code),
+      ),
+    ],
     publishedAt: short.publishedAt,
   }
 }

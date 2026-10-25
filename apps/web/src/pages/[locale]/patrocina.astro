@@ -1,0 +1,114 @@
+---
+import { Button, Notice, OfferCard, PageHeader, Prose } from '@shortix/ui'
+import Base from '../../layouts/Base.astro'
+import { contactLinks } from '../../lib/contact.ts'
+import { localeFrom, paths, translator } from '../../lib/i18n.ts'
+import { contactEmail } from '../../lib/services.ts'
+
+const locale = localeFrom(Astro.params.locale)
+if (!locale) return Astro.rewrite('/404')
+
+const t = translator(locale)
+// The contact links appear only once the mailbox exists (CONTACT_EMAIL).
+const contact = contactLinks(contactEmail, t)
+
+const offers = [
+  {
+    id: 'coleccion',
+    key: 'collection',
+    includes: ['header', 'newsletter', 'social', 'report'],
+    link: contact?.sponsor,
+  },
+  {
+    id: 'escaparate',
+    key: 'showcase',
+    includes: ['page', 'launch', 'report'],
+    link: contact?.showcase,
+  },
+] as const
+---
+
+<Base
+  locale={locale}
+  title={t('sponsor.title')}
+  description={t('sponsor.description')}
+  ogImage={paths.ogPage(locale, 'sponsor')}
+>
+  <PageHeader
+    eyebrow={t('sponsor.eyebrow')}
+    title={t('sponsor.title')}
+    description={t('sponsor.lead')}
+  />
+
+  <Prose>
+    <ul>
+      {(['curated', 'legal', 'useful'] as const).map((key) => (
+        <li>
+          <strong>{t(`sponsor.pillars.${key}.title`)}</strong> {t(`sponsor.pillars.${key}.text`)}
+        </li>
+      ))}
+    </ul>
+    <h2>{t('sponsor.audience.title')}</h2>
+    <ul>
+      {(['viewers', 'teachers', 'filmmakers'] as const).map((key) => (
+        <li>{t(`sponsor.audience.${key}`)}</li>
+      ))}
+    </ul>
+    <h2>{t('sponsor.founders.title')}</h2>
+    <p>{t('sponsor.founders.text')}</p>
+  </Prose>
+
+  <section class="grid gap-6" aria-labelledby="offers">
+    <h2 id="offers" class="m-0 font-display text-title uppercase">
+      {t('sponsor.offersTitle')}
+    </h2>
+    <div class="grid gap-6 md:grid-cols-2">
+      {offers.map((offer) => (
+        <OfferCard
+          id={offer.id}
+          audience={t(`sponsor.${offer.key}.audience`)}
+          title={t(`sponsor.${offer.key}.title`)}
+          description={t(`sponsor.${offer.key}.description`)}
+          includesLabel={t('sponsor.includes')}
+          includes={offer.includes.map((item) =>
+            t(`sponsor.${offer.key}.includes.${item}` as Parameters<typeof t>[0]),
+          )}
+          listPrice={t(`sponsor.${offer.key}.listPrice`)}
+          price={t(`sponsor.${offer.key}.price`)}
+          priceNote={t('sponsor.founderNote')}
+          action={offer.link}
+        />
+      ))}
+    </div>
+  </section>
+
+  <Prose>
+    <h2>{t('sponsor.guarantee.title')}</h2>
+    <p>{t('sponsor.guarantee.text')}</p>
+    <h2>{t('sponsor.figures.title')}</h2>
+    <p>{t('sponsor.figures.text')}</p>
+    <h2>{t('sponsor.rules.title')}</h2>
+    <ul>
+      {(['placement', 'player', 'nonCommercial', 'selection', 'festivals'] as const).map((key) => (
+        <li>{t(`sponsor.rules.${key}`)}</li>
+      ))}
+    </ul>
+  </Prose>
+
+  <section class="grid gap-4 max-w-synopsis" aria-labelledby="contact">
+    <h2 id="contact" class="m-0 font-display text-title uppercase">
+      {t('sponsor.contact.title')}
+    </h2>
+    <p class="m-0 text-body-l text-ink-muted">{t('sponsor.contact.text')}</p>
+    {contact ? (
+      <div class="flex flex-wrap gap-3">
+        <Button href={contact.sponsor.href}>{contact.sponsor.label}</Button>
+        <Button variant="secondary" href={contact.showcase.href}>
+          {contact.showcase.label}
+        </Button>
+      </div>
+    ) : (
+      <Notice>{t('sponsor.contact.soon')}</Notice>
+    )}
+  </section>
+</Base>

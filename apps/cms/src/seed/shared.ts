@@ -15,6 +15,8 @@ export async function removeSamples(payload: Payload): Promise<void> {
   })
   const ids = shorts.docs.map((s) => s.id)
   await payload.delete({ collection: 'collections', where: { sample: { equals: true } } })
+  await payload.delete({ collection: 'showcases', where: { sample: { equals: true } } })
+  await payload.delete({ collection: 'media', where: { filename: { like: 'sample-logo' } } })
   if (ids.length > 0) {
     await payload.delete({ collection: 'sources', where: { short: { in: ids } } })
     await payload.delete({ collection: 'shorts', where: { id: { in: ids } } })

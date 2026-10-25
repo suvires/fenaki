@@ -16,6 +16,7 @@
     "jobs": "NODE_OPTIONS=--no-deprecation payload jobs:run --cron \"*/10 * * * * *\" --queue default --handle-schedules",
     "seed": "NODE_OPTIONS=--no-deprecation payload run src/seed/index.ts",
     "import:catalog": "NODE_OPTIONS=--no-deprecation payload run src/import/index.ts",
+    "reindex": "NODE_OPTIONS=--no-deprecation payload run src/search/reindex.ts",
     "migrate": "NODE_OPTIONS=--no-deprecation payload migrate",
     "migrate:create": "NODE_OPTIONS=--no-deprecation payload migrate:create",
     "migrate:status": "NODE_OPTIONS=--no-deprecation payload migrate:status",

@@ -6,6 +6,7 @@ import {
   parseImportFile,
   shortData,
   shortStatus,
+  sourceData,
   type ImportCollection,
   type ImportFile,
   type ImportShort,
@@ -43,6 +44,11 @@ function catalog(): ImportFile {
         provider: 'youtube',
         externalId: 'abc',
         licenseKey: 'yt',
+        _import: {
+          channel: 'La Espera Cortometraje',
+          channelType: 'productora',
+          officialChannelEvidence: 'Enlazado desde la web oficial del corto.',
+        },
       },
     ],
     collections: [
@@ -129,6 +135,37 @@ describe('shortData', () => {
     expect(shortData(branded, ids, 'draft')).toMatchObject({
       brandedContent: true,
       brand: 'Marca Ficticia',
+    })
+  })
+})
+
+describe('sourceData', () => {
+  it('records the official channel and its evidence', () => {
+    const [source] = catalog().sources as [ImportSource]
+    expect(
+      sourceData(
+        source,
+        () => 1,
+        () => 2,
+      ),
+    ).toMatchObject({
+      channel: { name: 'La Espera Cortometraje', kind: 'producer' },
+      officialEvidence: 'Enlazado desde la web oficial del corto.',
+    })
+  })
+
+  it('leaves the channel empty when the file has none', () => {
+    const [first] = catalog().sources as [ImportSource]
+    const source: ImportSource = { ...first, _import: undefined }
+    expect(
+      sourceData(
+        source,
+        () => 1,
+        () => 2,
+      ),
+    ).toMatchObject({
+      channel: { name: null, kind: null },
+      officialEvidence: null,
     })
   })
 })
