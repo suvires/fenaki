@@ -92,6 +92,7 @@ jobs:
           UMAMI_ADMIN_PASSWORD: ${{ secrets.UMAMI_ADMIN_PASSWORD }}
           SES_SMTP_USERNAME: ${{ secrets.SES_SMTP_USERNAME }}
           SES_SMTP_PASSWORD: ${{ secrets.SES_SMTP_PASSWORD }}
+          MAILBOX_PASSWORD: ${{ secrets.MAILBOX_PASSWORD }}
           CLOUDFLARE_TUNNEL_TOKEN: ${{ secrets.CLOUDFLARE_TUNNEL_TOKEN }}
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
