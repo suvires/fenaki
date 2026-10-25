@@ -3,7 +3,7 @@ Fenaki is a curated catalog of free, legal short films with the browsing experie
 ## Content fundamentals
 
 - Write in neutral Spanish that works in Spain and Latin America. Address the viewer as «tú», never «vosotros». Avoid Spain-only words («móvil», «ordenador», «molar»).
-- Say «corto» or «cortometraje», never «vídeo» or «clip». The motto is «Cortometrajes, no clips».
+- Say «corto» or «cortometraje», never «vídeo» or «clip». The motto is «El mejor cine, en cortos».
 - Short, plain sentences. No exclamation marks, no superlatives, no emoji.
 - Buttons say what happens: «Ver ahora», «Añadir a mi lista», «Ver todo». Never «Haz clic aquí».
 - Credit people by name: «Dirigido por Juanjo Giménez». Directors' names are never truncated on a short's page.

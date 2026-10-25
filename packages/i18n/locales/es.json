@@ -2,7 +2,7 @@
   "site": {
     "name": "Fenaki",
     "domain": "fenaki.tv",
-    "tagline": "Cortometrajes, no clips",
+    "tagline": "El mejor cine, en cortos",
     "description": "Cortometrajes gratis y legales, elegidos uno a uno y vistos desde los canales de sus autores.",
     "skipToContent": "Saltar al contenido",
     "home": "Inicio"
@@ -111,7 +111,7 @@
     "title": "Cortometrajes gratis y legales en español",
     "hero": {
       "eyebrow": "En construcción",
-      "title": "Cortometrajes, no clips.",
+      "title": "El mejor cine, en cortos.",
       "lead": "Cortos gratis y legales en español, elegidos uno a uno. Con fichas completas, filtros por duración e idioma y colecciones para ver una tras otra.",
       "cta": "Avisarme cuando abra",
       "note": "Un correo cuando abramos y, si quieres, una selección semanal. Sin cuenta, sin pagar."
@@ -251,7 +251,7 @@
       "fallback": "Si el botón no funciona, copia este enlace en el navegador: {url}",
       "expiry": "El enlace caduca en 7 días. Si no has sido tú, no hagas nada: sin confirmar, no te volveremos a escribir y borraremos este correo de la lista.",
       "signature": "Fenaki",
-      "motto": "Cortometrajes, no clips.",
+      "motto": "El mejor cine, en cortos.",
       "footer": "Recibes este mensaje porque alguien escribió esta dirección en fenaki.tv. Responsable del tratamiento y datos de contacto en el {legalNotice}. {privacyPolicy}"
     }
   },
@@ -286,7 +286,7 @@
       "showcase": "Escaparates para festivales y escuelas",
       "browse": "Todos los cortos"
     },
-    "tagline": "Fenaki · Cortometrajes, no clips. Cada corto es de quien lo hizo.",
+    "tagline": "Fenaki · El mejor cine, en cortos. Cada corto es de quien lo hizo.",
     "tmdb": {
       "text": "Este producto usa la API de TMDB, pero TMDB no lo respalda ni lo certifica.",
       "logo": "The Movie Database (TMDB)"

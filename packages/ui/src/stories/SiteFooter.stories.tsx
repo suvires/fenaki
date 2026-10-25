@@ -28,7 +28,7 @@ const meta = {
         ],
       },
     ],
-    tagline: 'Fenaki · Cortometrajes, no clips. Cada corto es de quien lo hizo.',
+    tagline: 'Fenaki · El mejor cine, en cortos. Cada corto es de quien lo hizo.',
   },
 } satisfies Meta<typeof SiteFooter>
 

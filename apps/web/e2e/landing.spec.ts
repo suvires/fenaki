@@ -36,7 +36,7 @@ async function listmonkSubscriber(email: string) {
 test('the landing page replaces the home and shows a launch collection', async ({ page }) => {
   await page.goto('/es/')
   await expect(
-    page.getByRole('heading', { level: 1, name: 'Cortometrajes, no clips.' }),
+    page.getByRole('heading', { level: 1, name: 'El mejor cine, en cortos.' }),
   ).toBeVisible()
   await expect(page.getByText('Una de las colecciones de lanzamiento')).toBeVisible()
   await expect(
