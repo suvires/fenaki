@@ -5,25 +5,32 @@
 #   infra/server/bootstrap.sh <server ip> <your public key file> <CI deploy public key file>
 #
 # BOOTSTRAP_SSH_OPTS adds options to ssh and scp (e.g. -o Port=2223 for a local test).
-# Both keys must be Ed25519. They are passed to the server here and never stored in the repository.
+# Your key: Ed25519, or RSA of at least 3072 bits. The CI deploy key: Ed25519. They are passed to the server here and never stored in the repository.
 # Copies sshd.conf and bootstrap-remote.sh to the server and runs it (docs/deploy.md), then checks
 # that you can still log in. Idempotent: run it again to change a key.
 set -eu
 host=${1:?usage: bootstrap.sh <server ip> <your public key file> <CI deploy public key file>}
-human_file=${2:?your public key file, e.g. ~/.ssh/id_ed25519.pub}
+human_file=${2:?your public key file, e.g. ~/.ssh/id_ed25519.pub or ~/.ssh/id_rsa.pub}
 deploy_file=${3:?the CI deploy public key file}
 here=$(cd "$(dirname "$0")" && pwd)
 
+# The key line of a public key file, if its type is allowed: `ed25519`, or `rsa` too.
 key() {
-  ssh-keygen -l -f "$1" >/dev/null 2>&1 || { echo "Not a public key: $1" >&2; exit 1; }
+  info=$(ssh-keygen -l -f "$1" 2>/dev/null) || { echo "Not a public key: $1" >&2; exit 1; }
+  bits=${info%% *}
   read -r type rest <"$1"
   case $type in
-    ssh-ed25519 | sk-ssh-ed25519@openssh.com) printf '%s %s' "$type" "$rest" ;;
-    *) echo "$1 is $type: use an Ed25519 key (ssh-keygen -t ed25519)" >&2; exit 1 ;;
+    ssh-ed25519 | sk-ssh-ed25519@openssh.com) ;;
+    ssh-rsa)
+      [ "$2" = rsa ] || { echo "$1 is RSA: the CI deploy key must be Ed25519 (ssh-keygen -t ed25519)" >&2; exit 1; }
+      [ "$bits" -ge 3072 ] || { echo "$1 is a $bits-bit RSA key: RSA keys need at least 3072 bits (ssh-keygen -t ed25519, or -t rsa -b 4096)" >&2; exit 1; }
+      ;;
+    *) echo "$1 is $type: use an Ed25519 key (ssh-keygen -t ed25519) or RSA of at least 3072 bits" >&2; exit 1 ;;
   esac
+  printf '%s %s' "$type" "$rest"
 }
-human_key=$(key "$human_file")
-deploy_key=$(key "$deploy_file")
+human_key=$(key "$human_file" rsa)
+deploy_key=$(key "$deploy_file" ed25519)
 
 target="ubuntu@$host"
 opts=${BOOTSTRAP_SSH_OPTS:-}

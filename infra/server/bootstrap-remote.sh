@@ -35,12 +35,15 @@ sudo ufw allow OpenSSH
 sudo ufw --force enable
 
 log "ssh: public keys only, user ubuntu, modern algorithms"
-for key in "$human_key" "$deploy_key"; do
-  case $key in
-    ssh-ed25519\ * | sk-ssh-ed25519@openssh.com\ *) ;;
-    *) echo "bootstrap: not an Ed25519 public key: $key" >&2; exit 1 ;;
-  esac
-done
+# bootstrap.sh has checked the keys (RSA under 3072 bits is refused; sshd enforces it too).
+case $human_key in
+  ssh-ed25519\ * | sk-ssh-ed25519@openssh.com\ * | ssh-rsa\ *) ;;
+  *) echo "bootstrap: your key must be Ed25519 or RSA: $human_key" >&2; exit 1 ;;
+esac
+case $deploy_key in
+  ssh-ed25519\ * | sk-ssh-ed25519@openssh.com\ *) ;;
+  *) echo "bootstrap: the CI deploy key must be Ed25519: $deploy_key" >&2; exit 1 ;;
+esac
 # Exactly these two keys: yours, for interactive access, and the one GitHub Actions deploys with.
 install -d -m 700 /home/ubuntu/.ssh
 printf '%s\n%s\n' "$human_key" "$deploy_key" >/home/ubuntu/.ssh/authorized_keys.new
