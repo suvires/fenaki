@@ -4,7 +4,7 @@
 -- The web app's API user gets a known token (LISTMONK_API_TOKEN in apps/web/.env).
 UPDATE users
 SET password = encode(sha256(convert_to(:'token', 'UTF8')), 'hex')
-WHERE username = 'shortix-web' AND type = 'api';
+WHERE username = 'fenaki-web' AND type = 'api';
 
 -- Every email goes to Mailpit, never to a real server: listmonk installs with sample SMTP hosts.
 UPDATE settings SET value = '[{

@@ -15,7 +15,7 @@ heartbeat() {
 require PGHOST PGUSER PGPASSWORD MEILISEARCH_HOST MEILI_MASTER_KEY BACKUP_AGE_RECIPIENT
 offsite_setup
 stamp=$(date -u +%Y-%m-%dT%H%M%SZ)
-name="shortix-$stamp.tar.age"
+name="fenaki-$stamp.tar.age"
 work=$(mktemp -d /tmp/backup.XXXXXX)
 trap 'status=$?; rm -rf "$work"; [ "$status" -eq 0 ] || heartbeat /fail' EXIT
 mkdir "$work/postgres"
@@ -55,7 +55,7 @@ size=$(du -h "$work.age" | cut -f1)
 rm -f "$work.age"
 
 log "deleting archives older than ${BACKUP_RETENTION_DAYS:-30} days"
-rclone delete --min-age "${BACKUP_RETENTION_DAYS:-30}d" --include 'shortix-*.tar.age' "$OFFSITE"
+rclone delete --min-age "${BACKUP_RETENTION_DAYS:-30}d" --include 'fenaki-*.tar.age' "$OFFSITE"
 
 heartbeat ""
 log "done: $name ($size)"

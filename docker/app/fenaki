@@ -2,7 +2,7 @@
 # Entry point of the production image. Each Kamal role runs one command:
 #   web             the Astro site on $PORT (4321)
 #   cms             applies pending migrations, then serves Payload on port 3000
-#   jobs            the background jobs worker (same schedule as `pnpm --filter @shortix/cms jobs`)
+#   jobs            the background jobs worker (same schedule as `pnpm --filter @fenaki/cms jobs`)
 #   migrate         applies pending migrations and exits
 #   payload <args>  the Payload CLI, e.g. `payload migrate:status`
 #   setup-services  configures listmonk and Umami (`pnpm setup:services`)

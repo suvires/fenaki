@@ -4,8 +4,8 @@
 #
 #   bin/kamal deploy            (any Kamal command; docs/deploy.md)
 #
-# Passes through the environment every variable .kamal/secrets reads, and SHORTIX_HOST.
-# SSH uses the key at SHORTIX_SSH_KEY (default ~/.ssh/id_ed25519) and ~/.ssh/known_hosts.
+# Passes through the environment every variable .kamal/secrets reads, and FENAKI_HOST.
+# SSH uses the key at FENAKI_SSH_KEY (default ~/.ssh/id_ed25519) and ~/.ssh/known_hosts.
 # KAMAL_DOCKER_OPTS adds options to `docker run` (the local rehearsal uses it).
 set -eu
 
@@ -13,10 +13,10 @@ image=ghcr.io/basecamp/kamal:v2.12.0@sha256:7b5be276aa17bbe122887f6a1ff12865f484
 root=$(cd "$(dirname "$0")/.." && pwd)
 # A git worktree keeps its repository outside the working tree: mount both at the same paths.
 common=$(git -C "$root" rev-parse --path-format=absolute --git-common-dir)
-key=${SHORTIX_SSH_KEY:-$HOME/.ssh/id_ed25519}
+key=${FENAKI_SSH_KEY:-$HOME/.ssh/id_ed25519}
 
 env_args=""
-for name in SHORTIX_HOST $(grep -oE '\$\{?[A-Z][A-Z0-9_]*' "$root/.kamal/secrets.example" | tr -d '${' | sort -u); do
+for name in FENAKI_HOST $(grep -oE '\$\{?[A-Z][A-Z0-9_]*' "$root/.kamal/secrets.example" | tr -d '${' | sort -u); do
   env_args="$env_args -e $name"
 done
 

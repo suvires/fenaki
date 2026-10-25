@@ -1,7 +1,7 @@
 #!/bin/sh
 # First start of the production PostgreSQL (the Kamal `postgres` accessory) only: the official
 # image runs this when the data directory is empty. Creates the listmonk and Umami roles and
-# databases next to Shortix's own, with passwords from the accessory's secrets.
+# databases next to Fenaki's own, with passwords from the accessory's secrets.
 set -eu
 
 psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" \

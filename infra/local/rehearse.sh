@@ -15,36 +15,36 @@ set -eu
 
 root=$(cd "$(dirname "$0")/../.." && pwd)
 state="$root/infra/local/.state"
-vps=shortix-rehearsal-vps
+vps=fenaki-rehearsal-vps
 
 key="$state/id_ed25519"
 ssh_opts="-i $key -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR"
 
 kamal() {
   # bin/kamal, on the host network (the stand-in's SSH and the local registry are on localhost).
-  SHORTIX_HOST=127.0.0.1 \
+  FENAKI_HOST=127.0.0.1 \
     KAMAL_DOCKER_OPTS="--network host -e KAMAL_REHEARSAL=1 -e REHEARSAL_SSH_KEY=$key -e SITE_MODE=${SITE_MODE:-landing}" \
     "$root/bin/kamal" "$@" -d local
 }
 
 # The backup image Kamal would pull from GHCR is loaded straight into the stand-in.
 load_backup_image() {
-  docker save shortix-backup:rehearsal | docker exec -i "$vps" docker load -q
+  docker save fenaki-backup:rehearsal | docker exec -i "$vps" docker load -q
 }
 
 secrets() {
   [ -f "$root/.kamal/secrets.local" ] && return
   # Throwaway values for the rehearsal only, in the same shape as .kamal/secrets.example.
   r() { openssl rand -hex 24; }
-  age_key=$(docker run --rm --entrypoint age-keygen shortix-backup:rehearsal 2>/dev/null)
+  age_key=$(docker run --rm --entrypoint age-keygen fenaki-backup:rehearsal 2>/dev/null)
   echo "$age_key" >"$state/backup-age-identity.txt"
   cat >"$root/.kamal/secrets.local" <<EOF
 KAMAL_REGISTRY_PASSWORD=unused
 POSTGRES_PASSWORD=$(r)
 LISTMONK_DB_PASSWORD=$(r)
 UMAMI_DB_PASSWORD=$(r)
-DATABASE_URL=postgres://shortix:\${POSTGRES_PASSWORD}@shortix-postgres:5432/shortix
-UMAMI_DATABASE_URL=postgresql://umami:\${UMAMI_DB_PASSWORD}@shortix-postgres:5432/umami
+DATABASE_URL=postgres://fenaki:\${POSTGRES_PASSWORD}@fenaki-postgres:5432/fenaki
+UMAMI_DATABASE_URL=postgresql://umami:\${UMAMI_DB_PASSWORD}@fenaki-postgres:5432/umami
 PAYLOAD_SECRET=$(r)
 MEILI_MASTER_KEY=$(r)
 MEILI_SEARCH_KEY_UID=8a1c2e9e-3c51-4f3b-9d6e-5b1d1c0f7a42
@@ -59,8 +59,8 @@ CLOUDFLARE_TUNNEL_TOKEN=unused
 SENTRY_DSN=
 YOUTUBE_API_KEY=
 TMDB_API_KEY=
-BACKUP_S3_ENDPOINT=http://shortix-s3:8080
-BACKUP_S3_BUCKET=shortix-backups
+BACKUP_S3_ENDPOINT=http://fenaki-s3:8080
+BACKUP_S3_BUCKET=fenaki-backups
 BACKUP_S3_ACCESS_KEY_ID=rehearsal
 BACKUP_S3_SECRET_ACCESS_KEY=rehearsal-secret
 BACKUP_AGE_RECIPIENT=$(echo "$age_key" | sed -n 's/^# public key: //p')
@@ -71,14 +71,14 @@ EOF
 case "${1:-}" in
   up)
     mkdir -p "$state"
-    [ -f "$key" ] || ssh-keygen -q -t ed25519 -N '' -C shortix-rehearsal -f "$key"
-    docker build -q -t shortix-rehearsal-vps:local -f "$root/infra/local/vps.Dockerfile" "$root/infra" >/dev/null
-    docker build -q -t shortix-backup:rehearsal "$root/infra/backup" >/dev/null
+    [ -f "$key" ] || ssh-keygen -q -t ed25519 -N '' -C fenaki-rehearsal -f "$key"
+    docker build -q -t fenaki-rehearsal-vps:local -f "$root/infra/local/vps.Dockerfile" "$root/infra" >/dev/null
+    docker build -q -t fenaki-backup:rehearsal "$root/infra/backup" >/dev/null
     if ! docker inspect "$vps" >/dev/null 2>&1; then
       docker run -d --name "$vps" --privileged \
         -p 127.0.0.1:2222:22 -p 127.0.0.1:8480:80 -p 127.0.0.1:8125:8025 \
-        -v "$key.pub:/authorized_keys:ro" -v shortix-rehearsal-docker:/var/lib/docker \
-        shortix-rehearsal-vps:local >/dev/null
+        -v "$key.pub:/authorized_keys:ro" -v fenaki-rehearsal-docker:/var/lib/docker \
+        fenaki-rehearsal-vps:local >/dev/null
       until docker exec "$vps" docker info >/dev/null 2>&1; do sleep 1; done
     fi
     load_backup_image
@@ -86,7 +86,7 @@ case "${1:-}" in
     kamal setup
     ;;
   backup-image)
-    docker build -q -t shortix-backup:rehearsal "$root/infra/backup" >/dev/null
+    docker build -q -t fenaki-backup:rehearsal "$root/infra/backup" >/dev/null
     # `accessory remove` deletes the image too, so it is loaded again before booting.
     kamal accessory remove backup -y
     load_backup_image
@@ -103,7 +103,7 @@ case "${1:-}" in
     ;;
   down)
     docker rm -f "$vps" >/dev/null 2>&1 || true
-    docker volume rm shortix-rehearsal-docker >/dev/null 2>&1 || true
+    docker volume rm fenaki-rehearsal-docker >/dev/null 2>&1 || true
     docker rm -f kamal-docker-registry >/dev/null 2>&1 || true
     rm -f "$root/.kamal/secrets.local"
     rm -rf "$state"

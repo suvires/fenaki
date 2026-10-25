@@ -35,11 +35,11 @@ deploy_key=$(key "$deploy_file" ed25519)
 target="ubuntu@$host"
 opts=${BOOTSTRAP_SSH_OPTS:-}
 # shellcheck disable=SC2086
-ssh $opts "$target" 'mkdir -p /tmp/shortix-bootstrap'
+ssh $opts "$target" 'mkdir -p /tmp/fenaki-bootstrap'
 # shellcheck disable=SC2086
-scp -q $opts "$here/bootstrap-remote.sh" "$here/sshd.conf" "$target:/tmp/shortix-bootstrap/"
+scp -q $opts "$here/bootstrap-remote.sh" "$here/sshd.conf" "$target:/tmp/fenaki-bootstrap/"
 # shellcheck disable=SC2086
-ssh $opts "$target" "sh /tmp/shortix-bootstrap/bootstrap-remote.sh '$human_key' '$deploy_key' && rm -rf /tmp/shortix-bootstrap"
+ssh $opts "$target" "sh /tmp/fenaki-bootstrap/bootstrap-remote.sh '$human_key' '$deploy_key' && rm -rf /tmp/fenaki-bootstrap"
 
 # A new connection, with the new configuration: if this fails, keep the session you have open
 # elsewhere, or use the OVHcloud rescue mode (docs/deploy.md, "Break glass").

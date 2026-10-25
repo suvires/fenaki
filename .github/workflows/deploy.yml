@@ -46,7 +46,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          image="ghcr.io/suvires/shortix-backup:$(git rev-parse --short=12 HEAD:infra/backup)"
+          image="ghcr.io/suvires/fenaki-backup:$(git rev-parse --short=12 HEAD:infra/backup)"
           echo "$GITHUB_TOKEN" | docker login ghcr.io --username "$GITHUB_ACTOR" --password-stdin
           if docker manifest inspect "$image" >/dev/null 2>&1; then
             echo "$image exists"
@@ -78,8 +78,8 @@ jobs:
         env:
           COMMAND: ${{ inputs.command || 'deploy' }}
           VERSION: ${{ inputs.version }}
-          SHORTIX_SSH_KEY: ${{ runner.temp }}/deploy_key
-          SHORTIX_HOST: ${{ secrets.SHORTIX_HOST }}
+          FENAKI_SSH_KEY: ${{ runner.temp }}/deploy_key
+          FENAKI_HOST: ${{ secrets.FENAKI_HOST }}
           KAMAL_REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           LISTMONK_DB_PASSWORD: ${{ secrets.LISTMONK_DB_PASSWORD }}
@@ -115,8 +115,8 @@ jobs:
         if: cancelled()
         run: bin/kamal lock release
         env:
-          SHORTIX_SSH_KEY: ${{ runner.temp }}/deploy_key
-          SHORTIX_HOST: ${{ secrets.SHORTIX_HOST }}
+          FENAKI_SSH_KEY: ${{ runner.temp }}/deploy_key
+          FENAKI_HOST: ${{ secrets.FENAKI_HOST }}
           KAMAL_REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Forget the SSH key and the secrets file
