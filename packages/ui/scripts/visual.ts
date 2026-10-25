@@ -11,11 +11,15 @@ import { fileURLToPath } from 'node:url'
 const IMAGE = 'mcr.microsoft.com/playwright:v1.64.1-noble'
 const repo = fileURLToPath(new URL('../../../', import.meta.url))
 
+// Baselines are only accepted from linux/arm64 (Apple Silicon and the CI runner): text renders
+// slightly differently on other architectures, and the comparison has no tolerance.
+const updating = process.argv.includes('--update-snapshots') || process.argv.includes('-u')
 if (process.arch !== 'arm64') {
-  console.warn(
-    'Baselines are rendered on linux/arm64 (Apple Silicon and the CI runner). ' +
-      'On another architecture, small font rendering differences can fail the comparison.',
-  )
+  if (updating) {
+    console.error('Baselines can only be generated on arm64 (Apple Silicon). Not updating them.')
+    process.exit(1)
+  }
+  console.warn('Comparing on a non-arm64 machine: text rendering differences may fail the run.')
 }
 
 try {
