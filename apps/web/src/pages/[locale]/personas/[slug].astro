@@ -50,6 +50,9 @@ const jsonLd = found
         })
       : undefined
   }
+  ogType={found ? 'profile' : undefined}
+  ogImage={found ? paths.og(locale, 'personas', found.slug) : undefined}
+  jsonLd={jsonLd}
 >
   {!person || shorts.length === 0 ? (
     <NotFound locale={locale} />
