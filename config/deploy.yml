@@ -97,9 +97,8 @@ servers:
   jobs:
     hosts:
       - <%= ENV.fetch("SHORTIX_HOST", "set-SHORTIX_HOST") %>
+    # Payload's worker stops at once on SIGTERM; the next one requeues what it left half done.
     cmd: jobs
-    # Lets a running job finish before the old worker stops.
-    stop_timeout: 60
     options:
       volume: shortix-uploads:/app/apps/cms/documents
       memory: 800m

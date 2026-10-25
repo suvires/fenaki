@@ -26,7 +26,8 @@ case "$1" in
     exec node node_modules/next/dist/bin/next start --port 3000
     ;;
   jobs)
-    cd /app/apps/cms
+    # Jobs a stopped worker left half done go back to the queue first.
+    payload run src/jobs/releaseInterrupted.ts
     exec node node_modules/payload/bin.js jobs:run --cron '*/10 * * * * *' --queue default --handle-schedules
     ;;
   migrate)
