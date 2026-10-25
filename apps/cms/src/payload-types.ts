@@ -520,7 +520,7 @@ export interface Media {
 export interface Organization {
   id: number;
   name: string;
-  type: 'festival' | 'school' | 'brand' | 'institution' | 'other';
+  type: 'festival' | 'school' | 'brand' | 'distributor' | 'institution' | 'other';
   priority?: ('A' | 'B' | 'C') | null;
   status: 'to_contact' | 'contacted' | 'replied' | 'proposal' | 'negotiation' | 'won' | 'lost' | 'not_interested';
   country?: string | null;
