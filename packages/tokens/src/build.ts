@@ -66,6 +66,7 @@ export function buildThemeCss(tokens: TokenFile): string {
   for (const t of tokens.breakpoint.tokens) add(`breakpoint-${t.name}`, t.value)
   for (const t of tokens.motion.tokens) add(t.name, t.value)
   for (const t of tokens.opacity.tokens) add(`opacity-${t.name}`, t.value)
+  for (const t of tokens.blur.tokens) add(`blur-${t.name}`, t.value)
   if (tokens.type.wordSpacing) add('word-spacing', tokens.type.wordSpacing)
   add('default-font-family', 'var(--font-text)')
   add('default-mono-font-family', 'var(--font-mono)')

@@ -15,12 +15,14 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const VARIANTS = {
   primary: 'bg-tungsteno text-on-tungsteno border-transparent hover:bg-tungsteno-hover',
-  secondary: 'bg-sala-2 text-ink border-line-strong hover:bg-sala-1',
+  // Translucent: the ground, or a hero image, shows through, blurred.
+  secondary:
+    'bg-ink/(--opacity-veil) backdrop-blur-veil text-ink border-line-strong hover:bg-ink/(--opacity-veil-hover)',
   ghost: 'bg-transparent text-ink border-transparent underline underline-offset-4',
 } as const
 
-/** About 40 % of the control's height, so the icon keeps its weight at every size. */
-const ICON_SIZES = { sm: '2xs', md: 'xs', lg: 'md' } as const
+/** About 56 % of the control's height, so the icon holds its own next to the label at every size. */
+const ICON_SIZES = { sm: 'sm', md: 'lg', lg: 'xl' } as const
 
 /** The one way to trigger an action. One primary button per view. */
 export function Button({

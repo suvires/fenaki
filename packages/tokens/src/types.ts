@@ -47,4 +47,5 @@ export interface TokenFile {
   breakpoint: TokenGroup
   motion: TokenGroup
   opacity: TokenGroup
+  blur: TokenGroup
 }
