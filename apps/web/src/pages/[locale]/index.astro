@@ -97,18 +97,19 @@ const filterOptions = (['short', 'mid', 'long', 'subtitles'] as const).map((valu
       />
     </ShortHero>
   )}
+  {/* Renders nothing until the viewer has saved something. */}
   {!landing && (
-    <div id="mi-lista">
-      <MyListRail
-        client:load
-        title={t('home.myList.title')}
-        actionLabel={t('rail.seeAll')}
-        actionHref={paths.myList(locale)}
-        emptyHint={t('home.myList.empty')}
-        locale={locale}
-        hrefBase={paths.short(locale, '')}
-      />
-    </div>
+    <MyListRail
+      client:load
+      title={t('home.myList.title')}
+      actionLabel={t('rail.seeAll')}
+      actionHref={paths.myList(locale)}
+      locale={locale}
+      hrefBase={paths.short(locale, '')}
+      current={Object.fromEntries(
+        shorts.map((s) => [s.slug, toSavedShort(toCardSource(s), locale)]),
+      )}
+    />
   )}
   {!landing && featured && (
     <CollectionHero

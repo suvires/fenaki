@@ -119,3 +119,31 @@ describe('my list storage', () => {
     expect(cb).toHaveBeenCalledTimes(2)
   })
 })
+
+describe('withCurrent', () => {
+  it('shows the catalog’s current data and drops shorts no longer published', () => {
+    const saved = [
+      { slug: 'a', title: 'Old', seconds: 60, tone: 'sala' as const, savedAt: 2 },
+      { slug: 'gone', title: 'Gone', seconds: 60, tone: 'sala' as const, savedAt: 1 },
+    ]
+    const current = {
+      a: {
+        slug: 'a',
+        title: 'New',
+        seconds: 60,
+        tone: 'plata' as const,
+        image: 'https://x/a.webp',
+      },
+    }
+    expect(list.withCurrent(saved, current)).toEqual([
+      {
+        slug: 'a',
+        title: 'New',
+        seconds: 60,
+        tone: 'plata',
+        image: 'https://x/a.webp',
+        savedAt: 2,
+      },
+    ])
+  })
+})

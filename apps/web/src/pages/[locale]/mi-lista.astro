@@ -2,12 +2,18 @@
 import { PageHeader } from '@fenaki/ui'
 import { MyListGrid } from '../../islands/MyListGrid.tsx'
 import Base from '../../layouts/Base.astro'
+import { toSavedShort } from '../../lib/catalog.ts'
+import { listShorts, toCardSource } from '../../lib/cms.ts'
 import { localeFrom, paths, translator } from '../../lib/i18n.ts'
 
 const locale = localeFrom(Astro.params.locale)
 if (!locale) return Astro.rewrite('/404')
 
 const t = translator(locale)
+// The whole published catalog: saved shorts show their current data, unpublished ones drop out.
+const current = Object.fromEntries(
+  (await listShorts(locale, 1000)).map((s) => [s.slug, toSavedShort(toCardSource(s), locale)]),
+)
 ---
 
 <Base locale={locale} title={t('home.myList.title')} noindex>
@@ -18,6 +24,7 @@ const t = translator(locale)
       emptyHint={t('home.myList.empty')}
       locale={locale}
       hrefBase={paths.short(locale, '')}
+      current={current}
     />
   </div>
 </Base>

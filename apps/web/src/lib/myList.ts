@@ -48,6 +48,20 @@ function isSaved(value: unknown): value is SavedShort {
   )
 }
 
+/** The catalog's current card data, by slug, as the server renders it for this locale. */
+export type CurrentShorts = Record<string, NewSavedShort>
+
+/**
+ * The saved shorts with the catalog's current data (title, still…) instead of what was stored
+ * when they were saved. Shorts no longer published are left out: their pages are gone.
+ */
+export function withCurrent(items: SavedShort[], current: CurrentShorts): SavedShort[] {
+  return items.flatMap((item) => {
+    const now = current[item.slug]
+    return now ? [{ ...item, ...now, savedAt: item.savedAt }] : []
+  })
+}
+
 /** The saved shorts, newest first. Never throws: corrupt or unreadable storage is an empty list. */
 export function readList(): SavedShort[] {
   try {

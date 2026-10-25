@@ -93,7 +93,8 @@ test('a short added to «Mi lista» appears in the rail and the list page, and s
 }) => {
   await page.goto('/es/')
   const rail = page.getByRole('region', { name: 'Mi lista' })
-  await expect(rail.getByText(/Guarda cortos con/)).toBeVisible()
+  // Nothing saved yet: no rail at all.
+  await expect(rail).toHaveCount(0)
 
   const hero = page.locator('section').first()
   // The island may not be hydrated yet: click again until the state changes.
@@ -122,10 +123,10 @@ test('a short added to «Mi lista» appears in the rail and the list page, and s
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, follow')
   await expect(page.getByRole('link', { name: new RegExp(title, 'i') })).toBeVisible()
 
-  // Removing it from the home hero empties the rail again.
+  // Removing it from the home hero takes the rail away again; the list page shows the hint.
   await page.goto('/es/')
   await page.locator('section').first().getByRole('button', { name: 'En mi lista' }).click()
-  await expect(
-    page.getByRole('region', { name: 'Mi lista' }).getByText(/Guarda cortos con/),
-  ).toBeVisible()
+  await expect(page.getByRole('region', { name: 'Mi lista' })).toHaveCount(0)
+  await page.goto('/es/mi-lista')
+  await expect(page.getByText(/Guarda cortos con/)).toBeVisible()
 })
