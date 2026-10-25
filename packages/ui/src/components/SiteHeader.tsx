@@ -66,6 +66,7 @@ export function SiteHeader({
   const menuId = useId()
   const searchInput = useRef<HTMLInputElement | null>(null)
   const searchForm = useRef<HTMLFormElement | null>(null)
+  const searchToggle = useRef<HTMLButtonElement | null>(null)
   const root = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
@@ -94,6 +95,8 @@ export function SiteHeader({
 
   const onKeyDown = (event: KeyboardEvent) => {
     if (event.key !== 'Escape') return
+    // Focus goes back to the magnifier, not lost with the folded field.
+    if (searchOpen) searchToggle.current?.focus()
     setGenresOpen(false)
     setSearchOpen(false)
     setMenuOpen(false)
@@ -173,25 +176,33 @@ export function SiteHeader({
             method="get"
             role="search"
             className={cx(
-              'flex items-center h-(--size-control-md) rounded-control border overflow-hidden',
+              // Always full width, capped by max-width: animating the cap folds it smoothly from
+              // its visible size (animating a 100% width first shrinks unseen, then jumps).
+              'flex items-center w-full h-(--size-control-md) rounded-control border overflow-hidden',
               searchUsed &&
-                'transition-[width,background-color,border-color] motion-reduce:transition-none',
+                'transition-[max-width,background-color,border-color] motion-reduce:transition-none',
               'has-[input:focus-visible]:focus-ring',
               searchOpen
-                ? 'w-full max-w-search bg-sala-1 border-line-strong'
-                : 'w-(--size-control-md) bg-transparent border-transparent',
+                ? 'max-w-search bg-sala-1 border-line-strong'
+                : 'max-w-(--size-control-md) bg-transparent border-transparent',
             )}
           >
             <button
+              ref={searchToggle}
               type="button"
               aria-expanded={searchOpen}
               aria-controls={`${searchId}-field`}
               aria-label={search.toggleLabel}
+              // Open, the magnifier is only the field's icon: Escape or a click outside folds it.
+              tabIndex={searchOpen ? -1 : undefined}
               onClick={() => {
                 setSearchUsed(true)
                 setSearchOpen((open) => !open)
               }}
-              className="flex-none inline-flex items-center justify-center size-(--size-control-md) rounded-control bg-transparent border-0 text-ink hover:text-tungsteno-text cursor-pointer focus-visible:focus-ring"
+              className={cx(
+                'flex-none inline-flex items-center justify-center size-(--size-control-md) rounded-control bg-transparent border-0 text-ink cursor-pointer focus-visible:focus-ring',
+                searchOpen ? 'pointer-events-none' : 'hover:text-tungsteno-text',
+              )}
             >
               <Icon name="search" size="lg" />
             </button>
