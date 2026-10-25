@@ -38,8 +38,12 @@ export default buildConfig({
   },
   collections: [Shorts, Sources, People, Collections, Licenses, LicenseDocuments, Sponsors, Users],
   cors: [process.env.WEB_URL ?? 'http://localhost:4321'],
+  // The schema changes only through migrations (`pnpm migrate`), in development too, so the
+  // first deployment runs exactly what was tested locally.
   db: postgresAdapter({
     pool: { connectionString: process.env.DATABASE_URL ?? '' },
+    push: false,
+    migrationDir: path.resolve(dirname, 'migrations'),
   }),
   // Jobs run in a separate process (`pnpm --filter @shortix/cms jobs`), never inside the web server.
   jobs: {

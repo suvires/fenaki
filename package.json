@@ -16,6 +16,7 @@
     "test:e2e": "turbo run test:e2e",
     "seed": "pnpm --filter @shortix/cms seed",
     "import:catalog": "pnpm --filter @shortix/cms import:catalog",
+    "migrate": "pnpm --filter @shortix/cms migrate",
     "storybook": "pnpm --filter @shortix/ui storybook",
     "test:visual": "pnpm --filter @shortix/ui test:visual",
     "test:visual:update": "pnpm --filter @shortix/ui test:visual:update"
