@@ -20,33 +20,35 @@ VPS ── cloudflared ─▶ kamal-proxy ─┬─ fenaki.tv         → web   
        (accessory)   (routes by    ├─ cms.fenaki.tv     → cms   (Payload, :3000)
                       host)        ├─ listas.fenaki.tv  → listmonk
                                    └─ stats.fenaki.tv   → Umami
-       jobs (Payload worker) · PostgreSQL · Meilisearch · backup ─▶ R2 or B2 (encrypted)
+       jobs (Payload worker) · PostgreSQL · Meilisearch · backup ─▶ Cloudflare R2, EU (encrypted)
 ```
 
 - **One image, three roles.** `Dockerfile` builds the site, the CMS and the jobs worker into one image (`ghcr.io/suvires/shortix`), so the three always run the same commit. `docker/app/shortix` picks the process (`web`, `cms`, `jobs`, `migrate`, `payload <args>`, `setup-services`). It is built for linux/amd64 from any machine and runs as the `node` user.
 - **Migrations on deploy.** `cms` is Kamal's primary role: its container applies pending migrations, then starts. Kamal boots `web` and `jobs` only once the new CMS answers `/up`, so they never run against an unmigrated schema, and a failed migration fails the deploy while the previous version keeps serving. During the switch the old site still runs against the new schema for a few seconds, so **migrations must work with the previous version** (add columns before using them, drop them a release later).
 - **Zero downtime.** kamal-proxy starts the new container, waits for `/up`, moves traffic and drains the old one. Measured in the rehearsal: 2,194 requests during a deploy, all 200.
-- **No inbound ports but SSH.** TLS ends at Cloudflare; the tunnel is an outbound connection from the `cloudflared` accessory to Cloudflare, and kamal-proxy publishes no ports (`proxy.run.publish: false`). The firewall lets in only SSH (key only), which Kamal needs. kamal-proxy still does what it is there for (host routing, health checks, gapless deploys) but not Let's Encrypt: there is nothing to certify behind the tunnel.
+- **No inbound ports but SSH.** TLS ends at Cloudflare; the tunnel is an outbound connection from the `cloudflared` accessory to Cloudflare, for HTTP only, and kamal-proxy publishes no ports (`proxy.run.publish: false`). The firewall lets in only SSH, on port 22, which Kamal needs. kamal-proxy still does what it is there for (host routing, health checks, gapless deploys) but not Let's Encrypt: there is nothing to certify behind the tunnel.
+- **SSH, hardened** (`infra/server/sshd.conf`, installed by the bootstrap): public keys only (no passwords, no keyboard-interactive, no root), only the user `ubuntu`, Ed25519 keys, modern key exchange, ciphers and MACs, no forwarding, 3 tries per connection. Exactly two keys may log in: the human's own, for interactive access, and the CI deploy key. fail2ban bans for an hour (longer if it repeats) any address that fails 5 times in 10 minutes. Kamal's SSH library has no curve25519, so `ecdh-sha2-nistp256` closes the key-exchange list; OpenSSH clients pick the stronger ones first. With an SSH agent holding several keys, set `IdentitiesOnly yes` and the key in `~/.ssh/config` for the server, or the three tries run out.
 - **Accessories** (not touched by `kamal deploy`): PostgreSQL 18 (Shortix, listmonk and Umami databases), Meilisearch, listmonk, Umami, `cloudflared` and `backup`. Data lives in named Docker volumes: `shortix-postgres`, `shortix-meilisearch`, `shortix-uploads` (signed license documents) and `shortix-media` (logos and other images).
 - **The site reaches the CMS** at `http://shortix-cms:3000` on the Docker network, never through Cloudflare.
 - **Memory** (limits in `config/deploy.yml`, about 7 GB with everything at its limit): PostgreSQL 2 GB, CMS 1.2 GB, Meilisearch 1 GB, worker 800 MB, site 600 MB, Umami 512 MB, backup 512 MB, listmonk 256 MB, cloudflared 128 MB, plus 2 GB of swap.
+- **Content Security Policy.** Every page carries Astro's CSP header with the hashes of its scripts and styles (`apps/web/src/lib/csp.ts`): no `unsafe-inline`; frames only from the YouTube and Vimeo players; images from the site and `cms.fenaki.tv` (logos); connections to the site and `stats.fenaki.tv`. A new third-party resource needs a change there, or the browser blocks it (`e2e/csp.spec.ts` catches it).
 - **Cloudflare as code** with OpenTofu (`infra/cloudflare`): a plan shows every change before it is applied, the state is encrypted natively, and the official provider covers everything needed (zones, DNS, the tunnel and its routes, redirect rules, Access). A script against the API would have to re-implement idempotency and drift detection. OpenTofu over Terraform for its open-source licence and built-in state encryption.
 
 What lives where:
 
-| Path                                                    | What                                                                            |
-| ------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| `Dockerfile`, `docker/app/shortix`                      | The production image and its entry point                                        |
-| `config/deploy.yml`                                     | Kamal: roles, accessories, proxy, aliases                                       |
-| `.kamal/secrets.example`                                | Every secret, read from the environment (copy to `.kamal/secrets`)              |
-| `bin/kamal`                                             | Kamal from its official image, pinned by digest: the same on a laptop and in CI |
-| `.github/workflows/deploy.yml`                          | Build and deploy on push to `main`, when `DEPLOY_ENABLED` is `true`             |
-| `infra/server/bootstrap.sh`                             | Prepares a fresh VPS (Docker, firewall, SSH, updates, swap)                     |
-| `infra/server/import-catalog.sh`                        | Loads the real catalog into production                                          |
-| `infra/cloudflare/`                                     | OpenTofu: zones, DNS, tunnel, redirects, Access                                 |
-| `infra/backup/`                                         | The backup accessory image: `backup`, `restore`, `list-backups`                 |
-| `infra/postgres`, `infra/listmonk`, `infra/meilisearch` | Scripts the accessories mount                                                   |
-| `config/deploy.local.yml`, `infra/local/`               | The local deploy rehearsal                                                      |
+| Path                                                            | What                                                                            |
+| --------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `Dockerfile`, `docker/app/shortix`                              | The production image and its entry point                                        |
+| `config/deploy.yml`                                             | Kamal: roles, accessories, proxy, aliases                                       |
+| `.kamal/secrets.example`                                        | Every secret, read from the environment (copy to `.kamal/secrets`)              |
+| `bin/kamal`                                                     | Kamal from its official image, pinned by digest: the same on a laptop and in CI |
+| `.github/workflows/deploy.yml`                                  | Build and deploy on push to `main`, when `DEPLOY_ENABLED` is `true`             |
+| `infra/server/bootstrap.sh`, `bootstrap-remote.sh`, `sshd.conf` | Prepares a fresh VPS (Docker, firewall, hardened SSH, fail2ban, updates, swap)  |
+| `infra/server/import-catalog.sh`                                | Loads the real catalog into production                                          |
+| `infra/cloudflare/`                                             | OpenTofu: zones, DNS, tunnel, redirects, Access                                 |
+| `infra/backup/`                                                 | The backup accessory image: `backup`, `restore`, `list-backups`                 |
+| `infra/postgres`, `infra/listmonk`, `infra/meilisearch`         | Scripts the accessories mount                                                   |
+| `config/deploy.local.yml`, `infra/local/`                       | The local deploy rehearsal                                                      |
 
 ## Secrets
 
@@ -89,10 +91,10 @@ Accounts, purchases and anything that needs your identity or a card. Paste each 
 
 1. **OVHcloud**
    1. The domain `fenaki.tv` (if not bought yet). The redirect domains (`fenaki.es`, `fenakitv.es`, `fenakitv.com`) come later, at the launch: see [Redirect domains](#redirect-domains).
-   2. VPS-2 with **Ubuntu 24.04**, in an EU data centre, with the SSH public key Claude gives you (Claude generates a dedicated key pair). Note its IP address.
+   2. VPS-2 with **Ubuntu 24.04**, in an EU data centre, with **your own SSH public key** (Ed25519: `ssh-keygen -t ed25519` if you have none; give Claude the `.pub` file, never the private key). Note its IP address.
    3. Zimbra Starter mailbox `hola@fenaki.tv`. Note the MX and DKIM values its control panel shows.
 2. **Cloudflare** (free plan): create the account. In Zero Trust, choose a team name and the Free plan (it may ask for a card even for the free plan). Give Claude the **account ID** and an **API token** with:
-   - Account: Cloudflare Tunnel Edit, Access: Apps and Policies Edit, Account Settings Read.
+   - Account: Cloudflare Tunnel Edit, Access: Apps and Policies Edit, Workers R2 Storage Edit, Account Settings Read.
    - Zone (all zones of the account): Zone Edit, DNS Edit, Zone Settings Edit, Single Redirect Edit.
    - The **email addresses** that may open the CMS and listmonk's admin (Cloudflare Access).
 3. **Name servers**: once Claude has created the zone, set the two Cloudflare name servers it gives you for the domain in the OVHcloud control panel (Domains → DNS servers → Modify). DNSSEC: off at OVHcloud first; Claude enables it in Cloudflare afterwards and gives you the DS record.
@@ -100,9 +102,8 @@ Accounts, purchases and anything that needs your identity or a card. Paste each 
    1. Create the identity `fenaki.tv` with Easy DKIM (RSA 2048) and custom MAIL FROM `bounce.fenaki.tv`. Give Claude the three DKIM tokens.
    2. Request production access (leave the sandbox). Claude drafts the text: transactional and newsletter email with double opt-in, low volume, bounce and complaint handling by listmonk.
    3. Create **SMTP credentials** (SES → SMTP settings) and give them to Claude.
-5. **Backup bucket**, one of (the provider is still open; both are configured the same way):
-   - **Cloudflare R2**: bucket `shortix-backups` with **EU jurisdiction**, and an API token with Object Read & Write on that bucket only. Endpoint `https://<account-id>.eu.r2.cloudflarestorage.com`. Free up to 10 GB.
-   - **Backblaze B2**: bucket in **EU Central**, private, and an application key for that bucket only. Endpoint `https://s3.eu-central-003.backblazeb2.com`; set `BACKUP_S3_PROVIDER: Other` in `config/deploy.yml`.
+5. **Backup bucket access** (Cloudflare R2, EU jurisdiction; OpenTofu creates the bucket `shortix-backups`): once it exists, R2 → Manage API tokens → create a token with **Object Read & Write** on that bucket only, and give Claude its access key ID and secret. The endpoint is `tofu output backup_s3_endpoint`. Free up to 10 GB.
+   - Alternative, if R2 is ever dropped: **Backblaze B2**, bucket in EU Central, private, an application key for that bucket only, endpoint `https://s3.eu-central-003.backblazeb2.com`, `BACKUP_S3_PROVIDER: Other` in `config/deploy.yml` and `backup_bucket = ""` in `terraform.tfvars`.
 6. **Metadata APIs** (optional, can come later): a YouTube Data API v3 key in a Google Cloud project (restrict it to that API) and a TMDB API key.
 7. **Sentry**: account with the data region **EU** (`de.sentry.io`), free plan, one project `shortix` (platform Node.js). Give Claude its DSN.
 8. **Better Stack** (uptime monitoring, EU company, free plan): account; give Claude an API token (or create the monitors listed in [Monitoring](#monitoring) by hand).
@@ -129,9 +130,12 @@ From the main checkout (where `private/` exists), with the values above in the e
 3. **Prepare the server**, after checking its host key against the one in the OVHcloud console:
 
    ```sh
-   ssh-keyscan -t ed25519 <ip>                              # → SSH_KNOWN_HOSTS
-   ssh ubuntu@<ip> 'sh -s' < infra/server/bootstrap.sh
+   ssh-keyscan -t ed25519 <ip>                              # → SSH_KNOWN_HOSTS (and your ~/.ssh/known_hosts)
+   ssh-keygen -t ed25519 -N '' -C shortix-deploy -f deploy_key   # the CI key: private half → SSH_PRIVATE_KEY
+   infra/server/bootstrap.sh <ip> <human's key .pub> deploy_key.pub
    ```
+
+   The bootstrap replaces the server's authorized keys with exactly those two, hardens SSH, turns on the firewall (SSH only) and fail2ban, and checks that you can still log in. Neither key is stored in the repository; delete `deploy_key` once it is in GitHub and the password manager. To change a key later, run it again.
 
 4. **Secrets into GitHub**: `gh secret set <NAME> --env production` for every secret in the table except the OpenTofu ones and the backup private key.
 5. **First deploy**, from the laptop so every step can be watched (or Actions → Deploy → Run workflow → `setup`):
@@ -154,6 +158,16 @@ From the main checkout (where `private/` exists), with the values above in the e
    - `bin/kamal backups` lists the first archive; the heartbeat is green in Better Stack.
    - Sentry: the project shows the deployed release once the first error arrives; `bin/kamal app exec --roles cms "printenv SENTRY_DSN"` confirms the DSN reached the containers.
 7. **Turn on continuous deployment**: repository variable `DEPLOY_ENABLED` = `true`. From then on every push to `main` deploys.
+
+### Break glass
+
+If nobody can log in by SSH (keys lost, an address banned, a broken SSH configuration):
+
+1. **Wait or switch network**: a fail2ban ban ends after an hour; another network has another address.
+2. **OVHcloud rescue mode**: in the OVHcloud control panel, VPS → Boot → Reboot in rescue mode. OVHcloud emails root credentials for a temporary rescue system; log in to it by SSH, mount the server's disk (`lsblk`, then `mount /dev/sda1 /mnt`) and fix `/mnt/home/ubuntu/.ssh/authorized_keys` or `/mnt/etc/ssh/sshd_config.d/90-shortix.conf`. Then reboot normally from the panel. The site stays down while in rescue mode.
+3. **KVM console** (VPS → KVM in the panel) shows the server's screen, but logging in needs a local password and `ubuntu` has none: use rescue mode to set one (`chroot /mnt passwd ubuntu`) if console access is ever needed. SSH never accepts it.
+
+The site itself does not depend on SSH: it keeps running while SSH is unreachable; only deploys wait.
 
 ## Day to day
 
