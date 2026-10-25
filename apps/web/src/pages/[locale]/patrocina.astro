@@ -76,13 +76,7 @@ const offers = [
           listPrice={t(`sponsor.${offer.key}.listPrice`)}
           price={t(`sponsor.${offer.key}.price`)}
           priceNote={t('sponsor.founderNote')}
-          action={
-            offer.link ? (
-              <Button variant="secondary" href={offer.link.href}>
-                {offer.link.label}
-              </Button>
-            ) : undefined
-          }
+          action={offer.link}
         />
       ))}
     </div>

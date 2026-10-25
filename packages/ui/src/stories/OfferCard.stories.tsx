@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Button } from '../components/Button.tsx'
 import { OfferCard } from '../components/OfferCard.tsx'
 
 const meta = {
@@ -28,13 +27,7 @@ type Story = StoryObj<typeof meta>
 
 export const Founder: Story = {}
 export const WithAction: Story = {
-  args: {
-    action: (
-      <Button variant="secondary" href="#">
-        Escribirnos
-      </Button>
-    ),
-  },
+  args: { action: { href: '#', label: 'Escaparates para festivales y escuelas' } },
 }
 export const ListPriceOnly: Story = {
   args: { listPrice: undefined, price: '700 € + IVA', priceNote: undefined },

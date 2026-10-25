@@ -1,5 +1,5 @@
-import type { ReactNode } from 'react'
 import { cx } from '../cx.ts'
+import { Button } from './Button.tsx'
 
 export interface OfferCardProps {
   /** Anchor for links to this offer. */
@@ -16,8 +16,8 @@ export interface OfferCardProps {
   price: string
   /** «Precio de fundador · tres plazas». */
   priceNote?: string
-  /** A contact link, when there is a mailbox. */
-  action?: ReactNode
+  /** A contact link, when there is a mailbox. Data, not an element: Astro pages render this card. */
+  action?: { href: string; label: string }
   className?: string
 }
 
@@ -67,7 +67,13 @@ export function OfferCard({
           </span>
         ) : null}
       </p>
-      {action ? <div>{action}</div> : null}
+      {action ? (
+        <div>
+          <Button variant="secondary" href={action.href}>
+            {action.label}
+          </Button>
+        </div>
+      ) : null}
     </article>
   )
 }
