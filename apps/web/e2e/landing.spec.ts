@@ -161,3 +161,18 @@ test('the legal pages are linked from the footer and marked as drafts', async ({
   await expect(page.getByText('hola@fenaki.tv').first()).toBeVisible()
   await expect(page.getByText('REVISAR')).toHaveCount(0)
 })
+
+test('the credits page carries the TMDB attribution and is linked from the footer', async ({
+  page,
+}) => {
+  await page.goto('/es/')
+  await page
+    .getByRole('navigation', { name: 'Pie de página' })
+    .getByRole('link', { name: 'Créditos' })
+    .click()
+  await expect(page).toHaveURL(/\/es\/creditos$/)
+  await expect(page.getByRole('img', { name: 'The Movie Database (TMDB)' })).toBeVisible()
+  await expect(
+    page.getByText('This product uses the TMDB API but is not endorsed or certified by TMDB.'),
+  ).toBeVisible()
+})

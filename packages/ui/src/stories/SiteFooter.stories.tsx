@@ -37,13 +37,3 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Default: Story = {}
-
-export const WithTmdbCredit: Story = {
-  args: {
-    tmdbCredit: {
-      text: 'Este producto usa la API de TMDB, pero TMDB no lo respalda ni lo certifica.',
-      href: 'https://www.themoviedb.org',
-      logoLabel: 'The Movie Database (TMDB)',
-    },
-  },
-}

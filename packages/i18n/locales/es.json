@@ -284,13 +284,10 @@
       "cookies": "Cookies",
       "sponsor": "Patrocinar una colección",
       "showcase": "Escaparates para festivales y escuelas",
-      "browse": "Todos los cortos"
+      "browse": "Todos los cortos",
+      "credits": "Créditos"
     },
-    "tagline": "El mejor cine, en cortos.",
-    "tmdb": {
-      "text": "Este producto usa la API de TMDB, pero TMDB no lo respalda ni lo certifica.",
-      "logo": "The Movie Database (TMDB)"
-    }
+    "tagline": "El mejor cine, en cortos."
   },
   "contact": {
     "propose": {
@@ -462,5 +459,29 @@
   "seo": {
     "ogShort": "Cortometraje · {duration}",
     "ogBrowse": "Catálogo"
+  },
+  "credits": {
+    "title": "Créditos",
+    "intro": "Fenaki se apoya en el trabajo de otras personas y servicios. Estos son sus créditos.",
+    "shorts": {
+      "title": "Los cortos",
+      "text": "Cada corto es de quien lo hizo. Se reproduce desde su canal oficial, con el reproductor de YouTube o de Vimeo, y su ficha enlaza a ese canal."
+    },
+    "tmdb": {
+      "title": "The Movie Database (TMDB)",
+      "logo": "The Movie Database (TMDB)",
+      "notice": "This product uses the TMDB API but is not endorsed or certified by TMDB.",
+      "translation": "(Este producto usa la API de TMDB, pero TMDB no lo respalda ni lo certifica.) Algunos datos de las fichas, como el año, el país o el reparto, proceden de TMDB."
+    },
+    "youtube": {
+      "title": "YouTube",
+      "text": "Fenaki usa los servicios de API de YouTube para obtener los datos de los cortos publicados en YouTube, como la duración o los subtítulos. Al ver un corto de YouTube aceptas sus condiciones.",
+      "terms": "Condiciones del servicio de YouTube",
+      "privacy": "Política de privacidad de Google"
+    },
+    "fonts": {
+      "title": "Tipografías",
+      "text": "La web usa Archivo, de Omnibus-Type, y el logotipo, Big Shoulders, de Patric King. Las dos tienen licencia SIL Open Font License."
+    }
   }
 }

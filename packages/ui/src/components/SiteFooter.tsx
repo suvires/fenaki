@@ -1,6 +1,5 @@
 import { cx } from '../cx.ts'
 import { Monogram } from './Monogram.tsx'
-import { TmdbLogo } from './TmdbLogo.tsx'
 
 export interface SiteFooterProps {
   /** Accessible name of the footer navigation. */
@@ -10,20 +9,11 @@ export interface SiteFooterProps {
   tagline: string
   /** Accessible name of the monogram: the brand name. */
   brand: string
-  /** Credit to The Movie Database, whose API fills in film metadata (its terms require it). */
-  tmdbCredit?: { text: string; href: string; logoLabel: string }
   className?: string
 }
 
-/** The footer on every page: the monogram and the motto, grouped links (legal pages always among them) and data credits. */
-export function SiteFooter({
-  label,
-  groups,
-  tagline,
-  brand,
-  tmdbCredit,
-  className,
-}: SiteFooterProps) {
+/** The footer on every page: the monogram and the motto, and grouped links (legal pages and credits always among them). */
+export function SiteFooter({ label, groups, tagline, brand, className }: SiteFooterProps) {
   return (
     <footer className={cx('grid gap-8 pt-8 border-t border-line', className)}>
       <div className="grid gap-8 md:grid-cols-[var(--size-card)_1fr]">
@@ -57,18 +47,6 @@ export function SiteFooter({
           ))}
         </nav>
       </div>
-      {tmdbCredit && (
-        <p className="m-0 flex flex-wrap items-center gap-3 text-meta text-ink-muted">
-          <a
-            href={tmdbCredit.href}
-            className="inline-flex rounded-xs focus-visible:focus-ring"
-            rel="noopener"
-          >
-            <TmdbLogo label={tmdbCredit.logoLabel} className="h-3 w-auto" />
-          </a>
-          <span>{tmdbCredit.text}</span>
-        </p>
-      )}
     </footer>
   )
 }

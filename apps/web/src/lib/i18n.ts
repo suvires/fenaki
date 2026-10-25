@@ -26,6 +26,7 @@ export const paths = {
     `/${locale}/#${section}`,
   waitlistConfirm: (locale: Locale) => `/${locale}/lista-de-espera/confirmar`,
   legal: (locale: Locale, page: LegalPage) => `/${locale}/${page}`,
+  credits: (locale: Locale) => `/${locale}/creditos`,
   /** The generated Open Graph image of a document or page (see src/pages/og). */
   og: (locale: Locale, kind: 'cortos' | 'personas' | 'colecciones' | 'escaparates', slug: string) =>
     `/og/${locale}/${kind}/${slug}.png`,
