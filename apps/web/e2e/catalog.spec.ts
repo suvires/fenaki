@@ -130,3 +130,12 @@ test('a short added to «Mi lista» appears in the rail and the list page, and s
   await page.goto('/es/mi-lista')
   await expect(page.getByText(/Guarda cortos con/)).toBeVisible()
 })
+
+test('the home page has no «Lo más visto» rail until the CMS has a real ranking of ten', async ({
+  page,
+}) => {
+  // The sample seed has six shorts and no plays: a ranking is never invented in production.
+  await page.goto('/es/')
+  await expect(page.getByRole('region', { name: 'Novedades' })).toBeVisible()
+  await expect(page.getByRole('region', { name: 'Lo más visto' })).toHaveCount(0)
+})

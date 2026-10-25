@@ -12,6 +12,7 @@ import type {
 import type { Locale } from '@fenaki/i18n'
 import { CMS_PUBLIC_URL, CMS_URL } from 'astro:env/server'
 import type { CardSource } from './catalog.ts'
+import { rankedShorts } from './ranking.ts'
 
 /** Reads the catalog through Payload's REST API. Only published documents are visible here. */
 async function get<T>(path: string, params: Record<string, string | number>): Promise<T> {
@@ -42,6 +43,21 @@ export async function listShorts(locale: Locale, limit = 100): Promise<Published
     'where[status][equals]': 'published',
   })
   return list.docs
+}
+
+/** The nightly «Lo más visto» ranking: published shorts, most played of the last 7 days first. */
+export async function getRanking(locale: Locale): Promise<PublishedShort[]> {
+  try {
+    // Depth 2: the global's relationships, and their stills and credits.
+    const ranking = await get<{ shorts?: (number | Short)[] | null }>('globals/ranking', {
+      locale,
+      depth: SHORT_DEPTH + 1,
+    })
+    return rankedShorts(ranking)
+  } catch {
+    // The home page does not depend on the rail: without a ranking it shows none.
+    return []
+  }
 }
 
 export async function getShort(locale: Locale, slug: string): Promise<PublishedShort | undefined> {

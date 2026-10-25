@@ -78,6 +78,8 @@ export default defineConfig({
       CONTACT_EMAIL: envField.string({ context: 'server', access: 'secret', optional: true }),
       UMAMI_SCRIPT_URL: envField.string({ context: 'server', access: 'secret', optional: true }),
       UMAMI_WEBSITE_ID: envField.string({ context: 'server', access: 'secret', optional: true }),
+      // Development only: the «Lo más visto» rail shows the 10 latest shorts. Ignored in production.
+      TOP10_PREVIEW: envField.boolean({ context: 'server', access: 'secret', default: false }),
       // Sentry (server-side errors). Empty: off.
       SENTRY_DSN: envField.string({ context: 'server', access: 'secret', optional: true }),
       SENTRY_ENVIRONMENT: envField.string({

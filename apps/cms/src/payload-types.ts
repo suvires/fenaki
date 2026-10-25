@@ -119,10 +119,12 @@ export interface Config {
   fallbackLocale: ('false' | 'none' | 'null') | false | null | 'es' | 'es'[];
   globals: {
     'crm-inbox': CrmInbox;
+    ranking: Ranking;
     'payload-jobs-stats': PayloadJobsStat;
   };
   globalsSelect: {
     'crm-inbox': CrmInboxSelect<false> | CrmInboxSelect<true>;
+    ranking: RankingSelect<false> | RankingSelect<true>;
     'payload-jobs-stats': PayloadJobsStatsSelect<false> | PayloadJobsStatsSelect<true>;
   };
   locale: 'es';
@@ -135,6 +137,7 @@ export interface Config {
       indexShort: TaskIndexShort;
       purgeWaitlist: TaskPurgeWaitlist;
       checkEmbeds: TaskCheckEmbeds;
+      computeRanking: TaskComputeRanking;
       syncInbox: TaskSyncInbox;
       inline: {
         input: unknown;
@@ -771,7 +774,7 @@ export interface PayloadJob {
     | {
         executedAt: string;
         completedAt: string;
-        taskSlug: 'inline' | 'indexShort' | 'purgeWaitlist' | 'checkEmbeds' | 'syncInbox';
+        taskSlug: 'inline' | 'indexShort' | 'purgeWaitlist' | 'checkEmbeds' | 'computeRanking' | 'syncInbox';
         taskID: string;
         input?:
           | {
@@ -804,7 +807,7 @@ export interface PayloadJob {
         id?: string | null;
       }[]
     | null;
-  taskSlug?: ('inline' | 'indexShort' | 'purgeWaitlist' | 'checkEmbeds' | 'syncInbox') | null;
+  taskSlug?: ('inline' | 'indexShort' | 'purgeWaitlist' | 'checkEmbeds' | 'computeRanking' | 'syncInbox') | null;
   queue?: string | null;
   waitUntil?: string | null;
   processing?: boolean | null;
@@ -1353,6 +1356,21 @@ export interface CrmInbox {
   createdAt?: string | null;
 }
 /**
+ * Computed every night from the plays of the last 7 days. Read only.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ranking".
+ */
+export interface Ranking {
+  id: number;
+  shorts?: (number | Short)[] | null;
+  computedAt?: string | null;
+  windowStart?: string | null;
+  windowEnd?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-jobs-stats".
  */
@@ -1379,6 +1397,19 @@ export interface CrmInboxSelect<T extends boolean = true> {
   lastUid?: T;
   lastRunAt?: T;
   lastError?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ranking_select".
+ */
+export interface RankingSelect<T extends boolean = true> {
+  shorts?: T;
+  computedAt?: T;
+  windowStart?: T;
+  windowEnd?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -1438,6 +1469,17 @@ export interface TaskCheckEmbeds {
     inconclusive: number;
     hidden: number;
     stills: number;
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskComputeRanking".
+ */
+export interface TaskComputeRanking {
+  input?: unknown;
+  output: {
+    skipped: boolean;
+    ranked: number;
   };
 }
 /**
