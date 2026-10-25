@@ -435,7 +435,7 @@
     "rules": {
       "title": "Reglas",
       "placement": "El patrocinio aparece en la página de la colección, en la cabecera de la portada, en la newsletter y en redes.",
-      "player": "Nunca aparece dentro del reproductor ni junto a él, ni se presenta como «este corto lo patrocina…». Así lo exigen las condiciones de las plataformas de vídeo y así lo preferimos.",
+      "player": "Nunca aparece dentro del reproductor ni junto a él, ni se presenta como «este corto lo patrocina…». Así lo exigen las condiciones de YouTube y Vimeo, y así lo preferimos.",
       "nonCommercial": "Las colecciones patrocinadas no incluyen cortos con licencia no comercial (NC).",
       "selection": "La selección de una colección patrocinada la hace el equipo editorial de Shortix; puedes proponer el tema. En un escaparate, la selección es tuya, siempre que los cortos estén publicados en canales oficiales.",
       "festivals": "Los festivales muestran cortos que ya han terminado su recorrido (ediciones anteriores o palmarés), nunca cortos aún en circuito."
@@ -443,15 +443,12 @@
     "contact": {
       "title": "Siguiente paso",
       "text": "Escríbenos con el producto que te interesa y te proponemos una llamada de 20 minutos. Si te encaja, reservamos tu plaza de fundador con un acuerdo de una página y una factura.",
-      "soon": "Muy pronto tendrás aquí una dirección de contacto.",
-      "write": "Escribirnos"
+      "soon": "Muy pronto tendrás aquí una dirección de contacto."
     },
     "description": "Colecciones patrocinadas y escaparates para festivales, escuelas de cine e instituciones culturales en Shortix, el catálogo de cortometrajes gratis y legales."
   },
   "seo": {
     "ogShort": "Cortometraje · {duration}",
-    "ogPerson": "Cine breve",
-    "ogCollection": "Colección",
     "ogBrowse": "Catálogo"
   }
 }
