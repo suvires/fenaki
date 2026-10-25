@@ -26,18 +26,24 @@ describe('toSearchDocument', () => {
   }
 
   it('flattens credits into directors and unique people', () => {
-    const doc = toSearchDocument(short)
+    const doc = toSearchDocument(short, 'Animación')
     expect(doc.directors).toEqual(['Daniel Martínez Lara', 'Rafa Cano Méndez'])
     expect(doc.people).toEqual(['Daniel Martínez Lara', 'Rafa Cano Méndez'])
   })
 
   it('merges subtitles from every populated source', () => {
-    expect(toSearchDocument(short).subtitles).toEqual(['es', 'en'])
+    expect(toSearchDocument(short, 'Animación').subtitles).toEqual(['es', 'en'])
   })
 
   it('stores the publication date as a sortable timestamp', () => {
-    expect(toSearchDocument(short).publishedAt).toBe(Date.parse('2026-09-18T10:00:00.000Z'))
-    expect(toSearchDocument({ ...short, publishedAt: null }).publishedAt).toBeNull()
+    expect(toSearchDocument(short, 'Animación').publishedAt).toBe(
+      Date.parse('2026-09-18T10:00:00.000Z'),
+    )
+    expect(toSearchDocument({ ...short, publishedAt: null }, 'Animación').publishedAt).toBeNull()
+  })
+
+  it('keeps the localized type label searchable', () => {
+    expect(toSearchDocument(short, 'Animación').typeLabel).toBe('Animación')
   })
 
   it('names one index per locale', () => {

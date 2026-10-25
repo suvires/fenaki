@@ -10,6 +10,8 @@ export interface ShortSearchDocument {
   durationSeconds: number
   country: string | null
   type: string
+  /** The type in the index's locale («Animación»), so viewers can search by it. */
+  typeLabel: string
   posterTone: string
   noDialogue: boolean
   subtitles: string[]
@@ -17,7 +19,7 @@ export interface ShortSearchDocument {
 }
 
 export const SHORTS_INDEX_SETTINGS = {
-  searchableAttributes: ['title', 'directors', 'people', 'synopsis'],
+  searchableAttributes: ['title', 'directors', 'people', 'typeLabel', 'synopsis'],
   filterableAttributes: ['type', 'durationSeconds', 'subtitles', 'noDialogue', 'year', 'country'],
   sortableAttributes: ['publishedAt', 'year', 'durationSeconds'],
   displayedAttributes: ['*'],
@@ -50,7 +52,7 @@ export interface IndexableShort {
 
 const nameOf = (person: number | PersonLike) => (typeof person === 'object' ? person.name : null)
 
-export function toSearchDocument(short: IndexableShort): ShortSearchDocument {
+export function toSearchDocument(short: IndexableShort, typeLabel: string): ShortSearchDocument {
   const credits = short.credits ?? []
   const names = (role?: string) =>
     credits
@@ -71,6 +73,7 @@ export function toSearchDocument(short: IndexableShort): ShortSearchDocument {
     durationSeconds: short.durationSeconds,
     country: short.country ?? null,
     type: short.type,
+    typeLabel,
     posterTone: short.posterTone ?? 'sala',
     noDialogue: Boolean(short.noDialogue),
     subtitles: [...subtitles],

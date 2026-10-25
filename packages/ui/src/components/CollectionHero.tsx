@@ -17,7 +17,10 @@ export interface CollectionHeroProps {
   className?: string
 }
 
-/** The featured collection at the top of the home page. One per page. */
+/**
+ * The featured collection at the top of the home page. One per page.
+ * The three posters are decorative and only show from the `md` breakpoint up.
+ */
 export function CollectionHero({
   eyebrow,
   title,
@@ -76,7 +79,7 @@ export function CollectionHero({
         </div>
         {sponsor ? <SponsorCredit label={sponsor.label} name={sponsor.name} /> : null}
       </div>
-      <div aria-hidden="true" className="grid grid-cols-3 items-end gap-3">
+      <div aria-hidden="true" className="hidden md:grid grid-cols-3 items-end gap-3">
         {posters.slice(0, 3).map((poster, index) => (
           <Poster key={index} {...poster} className={index === 1 ? '-translate-y-6' : undefined} />
         ))}

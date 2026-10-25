@@ -1,4 +1,6 @@
+import { createTranslator, isLocale } from '@shortix/i18n'
 import type { TaskConfig } from 'payload'
+import type { SHORT_TYPES } from '../collections/Shorts.ts'
 import { searchClient } from '../search/client.ts'
 import {
   SHORTS_INDEX_SETTINGS,
@@ -54,7 +56,9 @@ export const indexShortTask: TaskConfig<{
         .catch(() => null)
 
       if (short && short.status === 'published') {
-        await index.addDocuments([toSearchDocument(short as IndexableShort)]).waitTask()
+        const type = short.type as (typeof SHORT_TYPES)[number]
+        const typeLabel = isLocale(locale) ? createTranslator(locale)(`short.types.${type}`) : type
+        await index.addDocuments([toSearchDocument(short as IndexableShort, typeLabel)]).waitTask()
         actions.push(`${locale}:upsert`)
       } else {
         await index.deleteDocument(input.shortId).waitTask()
