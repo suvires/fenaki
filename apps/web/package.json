@@ -16,6 +16,7 @@
   "dependencies": {
     "@astrojs/node": "11.1.9",
     "@astrojs/react": "7.1.1",
+    "@sentry/node": "11.9.0",
     "@shortix/i18n": "workspace:*",
     "@shortix/tokens": "workspace:*",
     "@shortix/ui": "workspace:*",
