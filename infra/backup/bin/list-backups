@@ -1,0 +1,6 @@
+#!/bin/sh
+# The archives in the bucket, oldest first.   kamal backups
+set -eu
+. /usr/local/bin/backup-common
+offsite_setup
+rclone lsl --include 'shortix-*.tar.age' "$OFFSITE" | sort -k4

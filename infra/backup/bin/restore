@@ -1,0 +1,106 @@
+#!/bin/sh
+# Restores one archive. The private age key never lives on the server: the command asks for it
+# (or reads it from standard input, or from BACKUP_AGE_IDENTITY) and deletes it when done.
+#
+#   restore list                          the archives in the bucket
+#   restore fetch <archive|latest>        download and decrypt into /restore (check it first)
+#   restore postgres <archive|latest>     every database, replacing their contents
+#   restore meilisearch <archive|latest>  leave the dump for infra/meilisearch/import-dump.sh
+#   restore uploads <archive|latest>      replace the uploads
+#
+# <archive> is a name from `restore list` or a local path. Stop the app roles before restoring
+# PostgreSQL (`kamal app stop`). Step by step: docs/deploy.md, "Restore".
+set -eu
+. /usr/local/bin/backup-common
+
+usage() { sed -n '2,15p' "$0" >&2; exit 2; }
+[ $# -ge 1 ] || usage
+command=$1
+offsite_setup
+
+if [ "$command" = list ]; then
+  exec list-backups
+fi
+[ $# -eq 2 ] || usage
+archive=$2
+
+# The private key, from BACKUP_AGE_IDENTITY, a prompt or standard input.
+read_identity() {
+  if [ -n "${BACKUP_AGE_IDENTITY:-}" ]; then
+    printf '%s\n' "$BACKUP_AGE_IDENTITY"
+  elif [ -t 0 ]; then
+    printf 'Private backup key (AGE-SECRET-KEY-...): ' >&2
+    stty -echo
+    read -r key
+    stty echo
+    echo >&2
+    printf '%s\n' "$key"
+  else
+    cat
+  fi
+}
+
+fetch() {
+  if [ "$archive" = latest ]; then
+    archive=$(rclone lsf --include 'shortix-*.tar.age' "$OFFSITE" | sort | tail -n 1)
+    [ -n "$archive" ] || fail "no archives in $OFFSITE"
+  fi
+  rm -rf /restore && mkdir -p /restore
+  identity=$(mktemp)
+  trap 'rm -f "$identity"' EXIT
+  read_identity >"$identity"
+  grep -q '^AGE-SECRET-KEY-' "$identity" || fail "that is not an age private key"
+  if [ -f "$archive" ]; then
+    log "decrypting $archive"
+    age --decrypt --identity "$identity" "$archive" | tar -C /restore -xf -
+  else
+    log "downloading and decrypting $archive"
+    rclone cat "$OFFSITE/$archive" | age --decrypt --identity "$identity" | tar -C /restore -xf -
+  fi
+  rm -f "$identity"
+  log "archive created at $(cat /restore/created-at)"
+}
+
+# The decrypted archive holds personal data: it never outlives the command, except for `fetch`.
+case $command in
+  fetch)
+    fetch
+    ls -la /restore /restore/postgres
+    log "inspect /restore, then delete it: rm -rf /restore"
+    exit 0
+    ;;
+  postgres)
+    require PGHOST PGUSER PGPASSWORD
+    fetch
+    log "postgres: roles (existing ones are kept)"
+    psql --quiet --dbname=postgres --file=/restore/postgres/globals.sql >/dev/null 2>&1 || true
+    for file in /restore/postgres/*.dump; do
+      db=$(basename "$file" .dump)
+      log "postgres: $db"
+      # listmonk and umami own their databases; Shortix's belongs to the main user.
+      owner=$PGUSER
+      if psql --dbname=postgres -tAc "SELECT 1 FROM pg_roles WHERE rolname = '$db'" | grep -q 1; then
+        owner=$db
+      fi
+      if ! psql --dbname=postgres -tAc "SELECT 1 FROM pg_database WHERE datname = '$db'" | grep -q 1; then
+        createdb --owner="$owner" "$db"
+      fi
+      pg_restore --clean --if-exists --no-comments --exit-on-error --dbname="$db" "$file"
+    done
+    ;;
+  meilisearch)
+    fetch
+    mkdir -p /meili_data/restore
+    mv /restore/meilisearch.dump /meili_data/restore/latest.dump
+    log "meilisearch: dump ready; stop the accessory and run import-dump.sh (docs/deploy.md)"
+    ;;
+  uploads)
+    fetch
+    [ -f /restore/uploads.tar ] || fail "the archive has no uploads"
+    find /uploads -mindepth 1 -delete
+    tar -C /uploads -xf /restore/uploads.tar
+    log "uploads: restored"
+    ;;
+  *) usage ;;
+esac
+rm -rf /restore

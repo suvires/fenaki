@@ -1,0 +1,60 @@
+#!/bin/sh
+# One backup, now: every database (pg_dump, custom format), the roles, a Meilisearch dump and the
+# uploads, in one tar archive encrypted with age for BACKUP_AGE_RECIPIENT (the server never holds
+# the private key), uploaded to the bucket. Then deletes archives older than
+# BACKUP_RETENTION_DAYS and pings BACKUP_HEARTBEAT_URL (or its /fail URL), so the uptime monitor
+# alerts when a day is missed.
+#   kamal backup-now
+set -eu
+. /usr/local/bin/backup-common
+
+heartbeat() {
+  [ -n "${BACKUP_HEARTBEAT_URL:-}" ] || return 0
+  curl -fsS -m 10 --retry 3 -o /dev/null "$BACKUP_HEARTBEAT_URL$1" || log "warning: heartbeat failed"
+}
+require PGHOST PGUSER PGPASSWORD MEILISEARCH_HOST MEILI_MASTER_KEY BACKUP_AGE_RECIPIENT
+offsite_setup
+stamp=$(date -u +%Y-%m-%dT%H%M%SZ)
+name="shortix-$stamp.tar.age"
+work=$(mktemp -d /tmp/backup.XXXXXX)
+trap 'status=$?; rm -rf "$work"; [ "$status" -eq 0 ] || heartbeat /fail' EXIT
+mkdir "$work/postgres"
+
+log "postgres: roles"
+pg_dumpall --globals-only >"$work/postgres/globals.sql"
+for db in $DATABASES; do
+  log "postgres: $db"
+  pg_dump --format=custom --dbname="$db" --file="$work/postgres/$db.dump"
+done
+
+log "meilisearch: dump"
+auth="Authorization: Bearer $MEILI_MASTER_KEY"
+task=$(curl -fsS -X POST -H "$auth" "$MEILISEARCH_HOST/dumps" | jq -r .taskUid)
+while :; do
+  state=$(curl -fsS -H "$auth" "$MEILISEARCH_HOST/tasks/$task")
+  case $(echo "$state" | jq -r .status) in
+    succeeded) break ;;
+    failed | canceled) fail "meilisearch dump: $(echo "$state" | jq -c .error)" ;;
+  esac
+  sleep 2
+done
+dump=$(echo "$state" | jq -r .details.dumpUid)
+mv "/meili_data/dumps/$dump.dump" "$work/meilisearch.dump"
+
+if [ -d /uploads ]; then
+  log "uploads"
+  tar -C /uploads -cf "$work/uploads.tar" .
+fi
+
+echo "$stamp" >"$work/created-at"
+log "encrypting and uploading $name"
+tar -C "$work" -cf - . | age --encrypt --recipient "$BACKUP_AGE_RECIPIENT" >"$work.age"
+rclone copyto "$work.age" "$OFFSITE/$name"
+size=$(du -h "$work.age" | cut -f1)
+rm -f "$work.age"
+
+log "deleting archives older than ${BACKUP_RETENTION_DAYS:-30} days"
+rclone delete --min-age "${BACKUP_RETENTION_DAYS:-30}d" --include 'shortix-*.tar.age' "$OFFSITE"
+
+heartbeat ""
+log "done: $name ($size)"
