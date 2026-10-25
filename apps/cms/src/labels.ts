@@ -18,6 +18,7 @@ export const groups = {
   catalog: label('Catalog', 'Catálogo'),
   rights: label('Rights', 'Derechos'),
   sponsorship: label('Sponsorship', 'Patrocinio'),
+  sales: label('Sales', 'Comercial'),
   admin: label('Admin', 'Administración'),
 }
 

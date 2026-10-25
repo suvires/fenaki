@@ -1,8 +1,9 @@
-import * as migration_20261025_113022_initial from './20261025_113022_initial';
-import * as migration_20261025_115917_waitlist_purge_task from './20261025_115917_waitlist_purge_task';
-import * as migration_20261025_123044_official_channel_and_review from './20261025_123044_official_channel_and_review';
-import * as migration_20261025_123953_embed_check_task from './20261025_123953_embed_check_task';
-import * as migration_20261025_124459_showcases from './20261025_124459_showcases';
+import * as migration_20261025_113022_initial from './20261025_113022_initial'
+import * as migration_20261025_115917_waitlist_purge_task from './20261025_115917_waitlist_purge_task'
+import * as migration_20261025_123044_official_channel_and_review from './20261025_123044_official_channel_and_review'
+import * as migration_20261025_123953_embed_check_task from './20261025_123953_embed_check_task'
+import * as migration_20261025_124459_showcases from './20261025_124459_showcases'
+import * as migration_20261025_175727_crm from './20261025_175727_crm'
 
 export const migrations = [
   {
@@ -28,6 +29,11 @@ export const migrations = [
   {
     up: migration_20261025_124459_showcases.up,
     down: migration_20261025_124459_showcases.down,
-    name: '20261025_124459_showcases'
+    name: '20261025_124459_showcases',
   },
-];
+  {
+    up: migration_20261025_175727_crm.up,
+    down: migration_20261025_175727_crm.down,
+    name: '20261025_175727_crm',
+  },
+]

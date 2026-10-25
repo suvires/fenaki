@@ -76,6 +76,9 @@ export interface Config {
     licenses: License;
     'license-documents': LicenseDocument;
     sponsors: Sponsor;
+    organizations: Organization;
+    contacts: Contact;
+    messages: Message;
     users: User;
     'payload-kv': PayloadKv;
     'payload-jobs': PayloadJob;
@@ -98,6 +101,9 @@ export interface Config {
     licenses: LicensesSelect<false> | LicensesSelect<true>;
     'license-documents': LicenseDocumentsSelect<false> | LicenseDocumentsSelect<true>;
     sponsors: SponsorsSelect<false> | SponsorsSelect<true>;
+    organizations: OrganizationsSelect<false> | OrganizationsSelect<true>;
+    contacts: ContactsSelect<false> | ContactsSelect<true>;
+    messages: MessagesSelect<false> | MessagesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
@@ -110,9 +116,11 @@ export interface Config {
   };
   fallbackLocale: ('false' | 'none' | 'null') | false | null | 'es' | 'es'[];
   globals: {
+    'crm-inbox': CrmInbox;
     'payload-jobs-stats': PayloadJobsStat;
   };
   globalsSelect: {
+    'crm-inbox': CrmInboxSelect<false> | CrmInboxSelect<true>;
     'payload-jobs-stats': PayloadJobsStatsSelect<false> | PayloadJobsStatsSelect<true>;
   };
   locale: 'es';
@@ -125,6 +133,7 @@ export interface Config {
       indexShort: TaskIndexShort;
       purgeWaitlist: TaskPurgeWaitlist;
       checkEmbeds: TaskCheckEmbeds;
+      syncInbox: TaskSyncInbox;
       inline: {
         input: unknown;
         output: unknown;
@@ -506,12 +515,119 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "organizations".
+ */
+export interface Organization {
+  id: number;
+  name: string;
+  type: 'festival' | 'school' | 'brand' | 'institution' | 'other';
+  priority?: ('A' | 'B' | 'C') | null;
+  status: 'to_contact' | 'contacted' | 'replied' | 'proposal' | 'negotiation' | 'won' | 'lost' | 'not_interested';
+  country?: string | null;
+  city?: string | null;
+  website?: string | null;
+  /**
+   * URL or address where they publish that they accept proposals.
+   */
+  proposalsChannel?: string | null;
+  nextEdition?: string | null;
+  whyFits?: string | null;
+  recommendedProduct?: ('showcase' | 'collection' | 'sponsorship' | 'other') | null;
+  source?: string | null;
+  notes?: string | null;
+  lastContactDate?: string | null;
+  nextFollowUpDate?: string | null;
+  /**
+   * Link the sponsor when this organization buys.
+   */
+  sponsor?: (number | null) | Sponsor;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contacts".
+ */
+export interface Contact {
+  id: number;
+  email: string;
+  name?: string | null;
+  role?: string | null;
+  organization: number | Organization;
+  legalBasis: 'published_for_proposals' | 'existing_relationship' | 'wrote_first' | 'other';
+  /**
+   * Where the basis can be checked: the page that publishes the address, the earlier thread…
+   */
+  legalEvidence: string;
+  /**
+   * Nothing is ever sent to a contact with this mark.
+   */
+  doNotContact?: boolean | null;
+  doNotContactDate?: string | null;
+  doNotContactReason?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "messages".
+ */
+export interface Message {
+  id: number;
+  direction: 'outbound' | 'inbound';
+  status: 'draft' | 'approved' | 'sending' | 'sent' | 'failed' | 'received';
+  organization: number | Organization;
+  contact?: (number | null) | Contact;
+  subject: string;
+  /**
+   * Plain text. The footer (who we are, privacy, how to opt out) is added when sending.
+   */
+  body: string;
+  /**
+   * Pick the received message you answer: the email is threaded under it.
+   */
+  replyingTo?: (number | null) | Message;
+  /**
+   * Set on the organization when the email goes out. Empty: 7 days later.
+   */
+  followUpDate?: string | null;
+  /**
+   * For received messages: tick once the reply has been dealt with.
+   */
+  handled?: boolean | null;
+  sentAt?: string | null;
+  receivedAt?: string | null;
+  messageId?: string | null;
+  inReplyTo?: string | null;
+  references?: string | null;
+  error?: string | null;
+  approvedBy?: (number | null) | User;
+  approvedAt?: string | null;
+  attachmentNames?:
+    | {
+        name?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
   id: number;
+  /**
+   * Agents work on the sales CRM and draft emails; only admins approve and send, and change the catalog.
+   */
+  role: 'admin' | 'agent';
   updatedAt: string;
   createdAt: string;
+  enableAPIKey?: boolean | null;
+  apiKey?: string | null;
+  apiKeyIndex?: string | null;
+  hasAPIKey?: boolean | null;
   email: string;
   resetPasswordToken?: string | null;
   resetPasswordExpiration?: string | null;
@@ -599,7 +715,7 @@ export interface PayloadJob {
     | {
         executedAt: string;
         completedAt: string;
-        taskSlug: 'inline' | 'indexShort' | 'purgeWaitlist' | 'checkEmbeds';
+        taskSlug: 'inline' | 'indexShort' | 'purgeWaitlist' | 'checkEmbeds' | 'syncInbox';
         taskID: string;
         input?:
           | {
@@ -632,7 +748,7 @@ export interface PayloadJob {
         id?: string | null;
       }[]
     | null;
-  taskSlug?: ('inline' | 'indexShort' | 'purgeWaitlist' | 'checkEmbeds') | null;
+  taskSlug?: ('inline' | 'indexShort' | 'purgeWaitlist' | 'checkEmbeds' | 'syncInbox') | null;
   queue?: string | null;
   waitUntil?: string | null;
   processing?: boolean | null;
@@ -690,6 +806,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'sponsors';
         value: number | Sponsor;
+      } | null)
+    | ({
+        relationTo: 'organizations';
+        value: number | Organization;
+      } | null)
+    | ({
+        relationTo: 'contacts';
+        value: number | Contact;
+      } | null)
+    | ({
+        relationTo: 'messages';
+        value: number | Message;
       } | null)
     | ({
         relationTo: 'users';
@@ -934,11 +1062,88 @@ export interface SponsorsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "organizations_select".
+ */
+export interface OrganizationsSelect<T extends boolean = true> {
+  name?: T;
+  type?: T;
+  priority?: T;
+  status?: T;
+  country?: T;
+  city?: T;
+  website?: T;
+  proposalsChannel?: T;
+  nextEdition?: T;
+  whyFits?: T;
+  recommendedProduct?: T;
+  source?: T;
+  notes?: T;
+  lastContactDate?: T;
+  nextFollowUpDate?: T;
+  sponsor?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contacts_select".
+ */
+export interface ContactsSelect<T extends boolean = true> {
+  email?: T;
+  name?: T;
+  role?: T;
+  organization?: T;
+  legalBasis?: T;
+  legalEvidence?: T;
+  doNotContact?: T;
+  doNotContactDate?: T;
+  doNotContactReason?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "messages_select".
+ */
+export interface MessagesSelect<T extends boolean = true> {
+  direction?: T;
+  status?: T;
+  organization?: T;
+  contact?: T;
+  subject?: T;
+  body?: T;
+  replyingTo?: T;
+  followUpDate?: T;
+  handled?: T;
+  sentAt?: T;
+  receivedAt?: T;
+  messageId?: T;
+  inReplyTo?: T;
+  references?: T;
+  error?: T;
+  approvedBy?: T;
+  approvedAt?: T;
+  attachmentNames?:
+    | T
+    | {
+        name?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  role?: T;
   updatedAt?: T;
   createdAt?: T;
+  enableAPIKey?: T;
+  apiKey?: T;
+  apiKeyIndex?: T;
+  hasAPIKey?: T;
   email?: T;
   resetPasswordToken?: T;
   resetPasswordExpiration?: T;
@@ -1029,6 +1234,19 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "crm-inbox".
+ */
+export interface CrmInbox {
+  id: number;
+  uidValidity?: string | null;
+  lastUid?: number | null;
+  lastRunAt?: string | null;
+  lastError?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-jobs-stats".
  */
 export interface PayloadJobsStat {
@@ -1044,6 +1262,19 @@ export interface PayloadJobsStat {
     | null;
   updatedAt?: string | null;
   createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "crm-inbox_select".
+ */
+export interface CrmInboxSelect<T extends boolean = true> {
+  uidValidity?: T;
+  lastUid?: T;
+  lastRunAt?: T;
+  lastError?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1099,6 +1330,18 @@ export interface TaskCheckEmbeds {
     problems: number;
     inconclusive: number;
     hidden: number;
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskSyncInbox".
+ */
+export interface TaskSyncInbox {
+  input?: unknown;
+  output: {
+    stored: number;
+    seen: number;
+    skipped: boolean;
   };
 }
 /**
