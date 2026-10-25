@@ -14,6 +14,8 @@ export interface CollectionHeroProps {
   sponsor?: Omit<SponsorCreditProps, 'className'>
   /** Up to three. */
   posters?: Omit<PosterProps, 'className'>[]
+  /** 1 when it opens the page; 2 under another page title, such as the featured short's. */
+  headingLevel?: 1 | 2
   className?: string
 }
 
@@ -30,9 +32,11 @@ export function CollectionHero({
   secondaryLabel,
   sponsor,
   posters = [],
+  headingLevel = 1,
   className,
 }: CollectionHeroProps) {
   const sponsored = Boolean(sponsor)
+  const Heading = headingLevel === 1 ? 'h1' : 'h2'
   return (
     <section
       className={cx(
@@ -51,9 +55,9 @@ export function CollectionHero({
         >
           {eyebrow}
         </p>
-        <h1 className="m-0 font-display text-display-l md:text-display-xl uppercase text-balance">
+        <Heading className="m-0 font-display text-display-l md:text-display-xl uppercase text-balance">
           {title}
-        </h1>
+        </Heading>
         <p
           className={cx(
             'm-0 max-w-hero-text text-body-l',

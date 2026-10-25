@@ -33,6 +33,10 @@
       "noDialogue": "Sin diálogos",
       "animation": "Animación"
     },
+    "hero": {
+      "eyebrow": "Último estreno",
+      "cta": "Ver ahora"
+    },
     "empty": "Todavía no hay cortos publicados.",
     "noMatches": "Ningún corto coincide con este filtro."
   },

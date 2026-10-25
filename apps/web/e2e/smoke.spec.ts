@@ -24,10 +24,19 @@ test('every page links the site icon, and it is served', async ({ page, request 
   }
 })
 
-test('the home page shows the sponsored collection and the rails', async ({ page }) => {
+test('the home page shows the latest short, the sponsored collection and the rails', async ({
+  page,
+}) => {
   await page.goto('/es/')
+  // The latest short opens the page; the collection follows.
+  await expect(page.getByText('Último estreno')).toBeVisible()
+  await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1)
+  await expect(page.getByRole('link', { name: 'Ver ahora' })).toHaveAttribute(
+    'href',
+    /\/es\/cortos\//,
+  )
   await expect(
-    page.getByRole('heading', { level: 1, name: 'Imprescindibles del corto español' }),
+    page.getByRole('heading', { level: 2, name: 'Imprescindibles del corto español' }),
   ).toBeVisible()
   await expect(page.getByText('Presentada por')).toBeVisible()
   await expect(page.getByRole('region', { name: 'Novedades' })).toBeVisible()

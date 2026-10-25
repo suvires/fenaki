@@ -1,5 +1,6 @@
 ---
-import { CollectionHero, Rail, ShortCard } from '@fenaki/ui'
+import { CollectionHero, Rail, ShortCard, ShortHero } from '@fenaki/ui'
+import { formatList, formatYear } from '@fenaki/i18n'
 import Landing from '../../components/Landing.astro'
 import { HomeFilters } from '../../islands/HomeFilters.tsx'
 import Base from '../../layouts/Base.astro'
@@ -26,6 +27,10 @@ const clock = badgeClock()
 const [shorts, collections] = landing
   ? [[], []]
   : await Promise.all([listShorts(locale), listCollections(locale)])
+
+// For now the hero is the latest short; picking one from the admin panel comes later.
+const hero = shorts[0]
+const heroDirectors = hero ? peopleOf(hero, 'director') : []
 
 const featured = collections.find((c) => c.featured) ?? collections[0]
 const featuredShorts = featured ? shortsOf(featured) : []
@@ -57,8 +62,32 @@ const filterOptions = (['short', 'mid', 'long', 'subtitles'] as const).map((valu
 
 <Base locale={locale} title={landing ? t('landing.title') : t('home.title')}>
   {landing && <Landing locale={locale} />}
+  {!landing && hero && (
+    <ShortHero
+      eyebrow={t('home.hero.eyebrow')}
+      title={hero.title}
+      seconds={hero.durationSeconds}
+      locale={locale}
+      details={[
+        ...(heroDirectors.length > 0 ? [formatList(heroDirectors, locale)] : []),
+        ...(hero.year ? [formatYear(hero.year, locale)] : []),
+        t(`short.types.${hero.type}`),
+      ]}
+      synopsis={hero.synopsis ?? undefined}
+      ctaLabel={t('home.hero.cta')}
+      ctaHref={paths.short(locale, hero.slug)}
+      secondaryLabel={t('short.addToList')}
+      poster={{
+        title: hero.title,
+        director: heroDirectors.join(', '),
+        year: hero.year ?? undefined,
+        tone: posterTone(hero.posterTone),
+      }}
+    />
+  )}
   {!landing && featured && (
     <CollectionHero
+      headingLevel={hero ? 2 : 1}
       eyebrow={t('collection.eyebrow', { count: featuredShorts.length })}
       title={featured.title}
       description={featured.description ?? ''}
