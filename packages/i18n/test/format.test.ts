@@ -5,6 +5,7 @@ import {
   formatDuration,
   formatLanguage,
   formatList,
+  formatListParts,
   formatNumber,
   formatWeekday,
   formatYear,
@@ -56,5 +57,17 @@ describe('formatWeekday', () => {
     expect(formatWeekday(1, 'es')).toBe('lunes')
     expect(formatWeekday(4, 'es')).toBe('jueves')
     expect(formatWeekday(7, 'es')).toBe('domingo')
+  })
+})
+
+describe('formatListParts', () => {
+  it('keeps the items apart from the words that join them', () => {
+    expect(formatListParts(['Ana', 'Luis', 'Marta'], 'es')).toEqual([
+      { type: 'element', value: 'Ana' },
+      { type: 'literal', value: ', ' },
+      { type: 'element', value: 'Luis' },
+      { type: 'literal', value: ' y ' },
+      { type: 'element', value: 'Marta' },
+    ])
   })
 })
