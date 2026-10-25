@@ -165,7 +165,7 @@ From the main checkout (where `private/` exists), with the values above in the e
 If nobody can log in by SSH (keys lost, an address banned, a broken SSH configuration):
 
 1. **Wait or switch network**: a fail2ban ban ends after an hour; another network has another address.
-2. **OVHcloud rescue mode**: in the OVHcloud control panel, VPS → Boot → Reboot in rescue mode. OVHcloud emails root credentials for a temporary rescue system; log in to it by SSH, mount the server's disk (`lsblk`, then `mount /dev/sda1 /mnt`) and fix `/mnt/home/ubuntu/.ssh/authorized_keys` or `/mnt/etc/ssh/sshd_config.d/90-fenaki.conf`. Then reboot normally from the panel. The site stays down while in rescue mode.
+2. **OVHcloud rescue mode**: in the OVHcloud control panel, VPS → Boot → Reboot in rescue mode. OVHcloud emails root credentials for a temporary rescue system; log in to it by SSH, mount the server's disk (`lsblk`, then `mount /dev/sda1 /mnt`) and fix `/mnt/home/ubuntu/.ssh/authorized_keys` or `/mnt/etc/ssh/sshd_config.d/00-fenaki.conf`. Then reboot normally from the panel. The site stays down while in rescue mode.
 3. **KVM console** (VPS → KVM in the panel) shows the server's screen, but logging in needs a local password and `ubuntu` has none: use rescue mode to set one (`chroot /mnt passwd ubuntu`) if console access is ever needed. SSH never accepts it.
 
 The site itself does not depend on SSH: it keeps running while SSH is unreachable; only deploys wait.

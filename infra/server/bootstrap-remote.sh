@@ -49,8 +49,13 @@ install -d -m 700 /home/ubuntu/.ssh
 printf '%s\n%s\n' "$human_key" "$deploy_key" >/home/ubuntu/.ssh/authorized_keys.new
 chmod 600 /home/ubuntu/.ssh/authorized_keys.new
 mv /home/ubuntu/.ssh/authorized_keys.new /home/ubuntu/.ssh/authorized_keys
-sudo install -m 644 "$here/sshd.conf" /etc/ssh/sshd_config.d/90-fenaki.conf
+# sshd keeps the first value it reads, and the image's own drop-ins (50-cloud-init.conf turns
+# passwords on) come before any later name: ours must sort first.
+sudo rm -f /etc/ssh/sshd_config.d/90-fenaki.conf
+sudo install -m 644 "$here/sshd.conf" /etc/ssh/sshd_config.d/00-fenaki.conf
 sudo sshd -t
+[ "$(sudo sshd -T | awk '/^passwordauthentication /{print $2}')" = no ] ||
+  { echo "bootstrap: sshd still accepts passwords" >&2; exit 1; }
 # Open sessions survive the restart.
 sudo systemctl restart ssh
 

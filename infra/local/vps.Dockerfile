@@ -9,7 +9,7 @@ RUN apt-get update \
   && usermod -aG docker ubuntu \
   && mkdir -p /run/sshd /home/ubuntu/.ssh
 # The production SSH hardening, so the rehearsal proves Kamal connects with it.
-COPY server/sshd.conf /etc/ssh/sshd_config.d/90-fenaki.conf
+COPY server/sshd.conf /etc/ssh/sshd_config.d/00-fenaki.conf
 # Rehearsal only: Kamal reaches its local registry through a remote port forward (production pulls
 # from GHCR). sshd keeps the first value it reads, so this file goes first.
 RUN echo 'AllowTcpForwarding remote' > /etc/ssh/sshd_config.d/10-rehearsal.conf
