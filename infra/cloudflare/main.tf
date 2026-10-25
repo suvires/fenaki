@@ -269,7 +269,8 @@ resource "cloudflare_zero_trust_access_application" "admin" {
   policies         = [{ id = cloudflare_zero_trust_access_policy.editors[0].id, precedence = 1 }]
 }
 
-# The CMS health check stays public, for the external uptime monitor.
+# Paths of the CMS that stay public: the health check (external uptime monitor) and uploaded media
+# (organization logos), which public pages may show.
 resource "cloudflare_zero_trust_access_policy" "everyone" {
   count      = length(var.access_emails) > 0 ? 1 : 0
   account_id = var.account_id
@@ -278,11 +279,14 @@ resource "cloudflare_zero_trust_access_policy" "everyone" {
   include    = [{ everyone = {} }]
 }
 
-resource "cloudflare_zero_trust_access_application" "cms_health" {
-  count        = length(var.access_emails) > 0 ? 1 : 0
-  account_id   = var.account_id
-  name         = "Shortix CMS health check"
-  type         = "self_hosted"
-  destinations = [{ type = "public", uri = "cms.${var.domain}/up" }]
-  policies     = [{ id = cloudflare_zero_trust_access_policy.everyone[0].id, precedence = 1 }]
+resource "cloudflare_zero_trust_access_application" "cms_public" {
+  count      = length(var.access_emails) > 0 ? 1 : 0
+  account_id = var.account_id
+  name       = "Shortix CMS public paths"
+  type       = "self_hosted"
+  destinations = [
+    { type = "public", uri = "cms.${var.domain}/up" },
+    { type = "public", uri = "cms.${var.domain}/api/media/file" },
+  ]
+  policies = [{ id = cloudflare_zero_trust_access_policy.everyone[0].id, precedence = 1 }]
 }
