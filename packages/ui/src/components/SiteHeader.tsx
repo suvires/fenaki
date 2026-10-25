@@ -36,7 +36,7 @@ export interface SiteHeaderProps {
 }
 
 const linkClass =
-  'rounded-xs text-small-strong text-ink no-underline hover:text-tungsteno-text focus-visible:focus-ring'
+  'rounded-xs text-nav text-ink no-underline hover:text-tungsteno-text focus-visible:focus-ring'
 
 /**
  * The site's top bar: logo, main navigation (genres, links), a search that opens in place, and the
@@ -135,7 +135,9 @@ export function SiteHeader({
       <a href={account.signIn.href} className={linkClass}>
         {account.signIn.label}
       </a>
-      <Button href={account.signUp.href}>{account.signUp.label}</Button>
+      <Button href={account.signUp.href} size="sm">
+        {account.signUp.label}
+      </Button>
     </div>
   )
 
@@ -155,7 +157,7 @@ export function SiteHeader({
             aria-controls={searchId}
             aria-label={search.toggleLabel}
             onClick={() => setSearchOpen((open) => !open)}
-            className="inline-flex items-center justify-center size-(--size-control-md) rounded-sm bg-transparent border-0 text-ink hover:text-tungsteno-text cursor-pointer focus-visible:focus-ring"
+            className="inline-flex items-center justify-center size-(--size-control-sm) rounded-sm bg-transparent border-0 text-ink hover:text-tungsteno-text cursor-pointer focus-visible:focus-ring"
           >
             <Icon name="search" />
           </button>

@@ -4,7 +4,7 @@ import { Icon, type IconName } from './Icon.tsx'
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'ghost'
-  size?: 'md' | 'lg'
+  size?: 'sm' | 'md' | 'lg'
   icon?: IconName
   /** Renders a link that looks like a button. */
   href?: string
@@ -35,8 +35,12 @@ export function Button({
     'inline-flex items-center gap-2 rounded-sm border cursor-pointer no-underline',
     'transition-[background-color,transform] duration-(--duration-press) ease-standard',
     'active:translate-y-(--size-press) focus-visible:focus-ring motion-reduce:transition-none',
-    size === 'lg' ? 'h-(--size-control-lg) text-button-lg' : 'h-(--size-control-md) text-button',
-    variant === 'ghost' ? 'px-2' : size === 'lg' ? 'px-6' : 'px-4',
+    size === 'lg'
+      ? 'h-(--size-control-lg) text-button-lg'
+      : size === 'sm'
+        ? 'h-(--size-control-sm) text-button-sm'
+        : 'h-(--size-control-md) text-button',
+    variant === 'ghost' ? 'px-2' : size === 'lg' ? 'px-6' : size === 'sm' ? 'px-3' : 'px-4',
     variant === 'secondary' && surface === 'telon'
       ? 'bg-transparent text-on-telon border-on-telon'
       : VARIANTS[variant],

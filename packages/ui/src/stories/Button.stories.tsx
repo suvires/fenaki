@@ -17,6 +17,7 @@ export const Secondary: Story = {
 export const Ghost: Story = {
   args: { variant: 'ghost', children: 'Más sobre las cookies', href: '#' },
 }
+export const Small: Story = { args: { size: 'sm', children: 'Crear cuenta' } }
 export const Large: Story = { args: { size: 'lg', icon: 'play', children: 'Ver la colección' } }
 export const AsLink: Story = {
   args: { href: '#', icon: 'arrow', variant: 'secondary', children: 'Ver todo' },
@@ -44,6 +45,7 @@ export const AllVariants: Story = {
       <Button size="lg" icon="play">
         Ver la colección
       </Button>
+      <Button size="sm">Crear cuenta</Button>
     </div>
   ),
 }
