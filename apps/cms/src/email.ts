@@ -31,7 +31,7 @@ export function emailAdapter(env: Env = process.env) {
   const transportOptions = smtpTransport(env)
   if (!transportOptions) return undefined
   return nodemailerAdapter({
-    defaultFromAddress: env.EMAIL_FROM_ADDRESS ?? 'hola@shortix.film',
+    defaultFromAddress: env.EMAIL_FROM_ADDRESS ?? 'hola@fenaki.tv',
     defaultFromName: env.EMAIL_FROM_NAME ?? 'Shortix',
     transportOptions,
   })

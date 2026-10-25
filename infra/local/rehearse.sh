@@ -9,7 +9,7 @@
 #   infra/local/rehearse.sh ssh [command]   a shell on the stand-in
 #   infra/local/rehearse.sh down            remove the stand-in and everything in it
 #
-# The site answers at http://shortix.localhost:8480, the CMS at http://cms.shortix.localhost:8480
+# The site answers at http://fenaki.localhost:8480, the CMS at http://cms.fenaki.localhost:8480
 # and Mailpit at http://localhost:8125. SITE_MODE=catalog in the environment deploys the catalog.
 set -eu
 

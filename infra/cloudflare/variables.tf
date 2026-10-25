@@ -24,13 +24,13 @@ variable "state_passphrase" {
 variable "domain" {
   description = "The site's domain."
   type        = string
-  default     = "shortix.film"
+  default     = "fenaki.tv"
 }
 
 variable "redirect_domains" {
-  description = "Domains that only redirect to the site, keeping the path."
+  description = "Domains that only redirect to the site, keeping the path (e.g. fenaki.es, fenakitv.es, fenakitv.com, once bought). Empty: none."
   type        = list(string)
-  default     = ["shortix.es"]
+  default     = []
 }
 
 variable "subdomains" {

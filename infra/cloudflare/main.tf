@@ -1,5 +1,5 @@
 # Cloudflare for Shortix, as code: the zones, the tunnel to the server and its routes, the DNS
-# records (site, OVHcloud mailbox, Amazon SES), the redirects (www and shortix.es) and, optionally,
+# records (site, OVHcloud mailbox, Amazon SES), the redirects (www and any redirect domains) and, optionally,
 # Cloudflare Access in front of the admin panels. Runbook: docs/deploy.md.
 
 locals {

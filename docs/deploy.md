@@ -16,10 +16,10 @@ Shortix runs on one OVHcloud VPS-2 (4 vCores, 8 GB, x86_64, Ubuntu 24.04) behind
 visitor ─HTTPS─▶ Cloudflare (TLS, CDN, redirects, Access)
                     │  Cloudflare Tunnel (outbound connection from the server)
                     ▼
-VPS ── cloudflared ─▶ kamal-proxy ─┬─ shortix.film         → web   (Astro, :4321)
-       (accessory)   (routes by    ├─ cms.shortix.film     → cms   (Payload, :3000)
-                      host)        ├─ listas.shortix.film  → listmonk
-                                   └─ stats.shortix.film   → Umami
+VPS ── cloudflared ─▶ kamal-proxy ─┬─ fenaki.tv         → web   (Astro, :4321)
+       (accessory)   (routes by    ├─ cms.fenaki.tv     → cms   (Payload, :3000)
+                      host)        ├─ listas.fenaki.tv  → listmonk
+                                   └─ stats.fenaki.tv   → Umami
        jobs (Payload worker) · PostgreSQL · Meilisearch · backup ─▶ R2 or B2 (encrypted)
 ```
 
@@ -87,16 +87,16 @@ The order matters in three places: the domains must point to Cloudflare before t
 Accounts, purchases and anything that needs your identity or a card. Paste each value into the password manager and give it to Claude in the session (never in a chat that is public, never in the repository).
 
 1. **OVHcloud**
-   1. Domains `shortix.film` and `shortix.es` (if not bought yet).
+   1. The domain `fenaki.tv` (if not bought yet). The redirect domains (`fenaki.es`, `fenakitv.es`, `fenakitv.com`) come later, at the launch: see [Redirect domains](#redirect-domains).
    2. VPS-2 with **Ubuntu 24.04**, in an EU data centre, with the SSH public key Claude gives you (Claude generates a dedicated key pair). Note its IP address.
-   3. Zimbra Starter mailbox `hola@shortix.film`. Note the MX and DKIM values its control panel shows.
+   3. Zimbra Starter mailbox `hola@fenaki.tv`. Note the MX and DKIM values its control panel shows.
 2. **Cloudflare** (free plan): create the account. In Zero Trust, choose a team name and the Free plan (it may ask for a card even for the free plan). Give Claude the **account ID** and an **API token** with:
    - Account: Cloudflare Tunnel Edit, Access: Apps and Policies Edit, Account Settings Read.
    - Zone (all zones of the account): Zone Edit, DNS Edit, Zone Settings Edit, Single Redirect Edit.
    - The **email addresses** that may open the CMS and listmonk's admin (Cloudflare Access).
-3. **Name servers**: once Claude has created the zones, set the two Cloudflare name servers it gives you for each domain in the OVHcloud control panel (Domains → DNS servers → Modify). DNSSEC: off at OVHcloud first; Claude enables it in Cloudflare afterwards and gives you the DS record.
+3. **Name servers**: once Claude has created the zone, set the two Cloudflare name servers it gives you for the domain in the OVHcloud control panel (Domains → DNS servers → Modify). DNSSEC: off at OVHcloud first; Claude enables it in Cloudflare afterwards and gives you the DS record.
 4. **Amazon Web Services**: account, then in **SES, region eu-west-1 (Ireland)**:
-   1. Create the identity `shortix.film` with Easy DKIM (RSA 2048) and custom MAIL FROM `bounce.shortix.film`. Give Claude the three DKIM tokens.
+   1. Create the identity `fenaki.tv` with Easy DKIM (RSA 2048) and custom MAIL FROM `bounce.fenaki.tv`. Give Claude the three DKIM tokens.
    2. Request production access (leave the sandbox). Claude drafts the text: transactional and newsletter email with double opt-in, low volume, bounce and complaint handling by listmonk.
    3. Create **SMTP credentials** (SES → SMTP settings) and give them to Claude.
 5. **Backup bucket**, one of (the provider is still open; both are configured the same way):
@@ -145,10 +145,10 @@ From the main checkout (where `private/` exists), with the values above in the e
    ```
 
 6. **Check**:
-   - <https://shortix.film/es/> shows the landing page; <https://shortix.film/es/cortos/…> answers 404; <https://www.shortix.film> and <https://shortix.es/x> redirect to `https://shortix.film/` and `…/x`.
-   - <https://cms.shortix.film/admin> asks for the Cloudflare Access code, then Payload's login.
-   - Sign up for the waitlist with a real address: the confirmation email arrives (SES), its link confirms it in listmonk (<https://listas.shortix.film/admin>).
-   - Umami (<https://stats.shortix.film>) shows the visit; `curl -sI https://shortix.film/es/` shows the security headers.
+   - <https://fenaki.tv/es/> shows the landing page; <https://fenaki.tv/es/cortos/…> answers 404; <https://www.fenaki.tv/x> redirects to `https://fenaki.tv/x`.
+   - <https://cms.fenaki.tv/admin> asks for the Cloudflare Access code, then Payload's login.
+   - Sign up for the waitlist with a real address: the confirmation email arrives (SES), its link confirms it in listmonk (<https://listas.fenaki.tv/admin>).
+   - Umami (<https://stats.fenaki.tv>) shows the visit; `curl -sI https://fenaki.tv/es/` shows the security headers.
    - `bin/kamal backups` lists the first archive; the heartbeat is green in Better Stack.
    - Sentry: the project shows the deployed release once the first error arrives; `bin/kamal app exec --roles cms "printenv SENTRY_DSN"` confirms the DSN reached the containers.
 7. **Turn on continuous deployment**: repository variable `DEPLOY_ENABLED` = `true`. From then on every push to `main` deploys.
@@ -170,12 +170,16 @@ From the main checkout (where `private/` exists), with the values above in the e
 
 Payload's jobs worker stops at once when a deploy replaces it. A job it was running stays marked as processing, which Payload would never retry, so the new worker puts such jobs back in the queue before it starts (`src/jobs/releaseInterrupted.ts`). Jobs must stay idempotent.
 
+### Redirect domains
+
+Other domains that only redirect to `fenaki.tv` (planned: `fenaki.es`, `fenakitv.es`, `fenakitv.com`, bought at the launch) need no server change. After buying them at OVHcloud, add them to `redirect_domains` in `infra/cloudflare/terraform.tfvars` and run `infra/cloudflare/tofu plan` and `apply`: OpenTofu creates each zone, a redirect of every URL (and its `www.`) to the same path on `fenaki.tv`, and records saying the domain sends no email. Then set the name servers from `tofu output name_servers` at OVHcloud.
+
 ## Monitoring
 
 - **Better Stack** (free: 10 monitors, 3-minute checks, email and app alerts):
-  - HTTP keyword monitor `https://shortix.film/es/`, keyword `Shortix` (the site renders data from the CMS).
-  - HTTP status monitor `https://cms.shortix.film/up` (Payload and PostgreSQL; kept outside Cloudflare Access).
-  - HTTP status monitors `https://listas.shortix.film/health` and `https://stats.shortix.film/api/heartbeat`.
+  - HTTP keyword monitor `https://fenaki.tv/es/`, keyword: the site's name (the page renders data from the CMS).
+  - HTTP status monitor `https://cms.fenaki.tv/up` (Payload and PostgreSQL; kept outside Cloudflare Access).
+  - HTTP status monitors `https://listas.fenaki.tv/health` and `https://stats.fenaki.tv/api/heartbeat`.
   - Heartbeat "Daily backup", period 1 day, grace 2 hours: its URL is `BACKUP_HEARTBEAT_URL`. The backup pings it on success and `…/fail` on failure.
 - **Sentry**: errors from the site, the CMS server, the jobs worker and the Payload CLI, tagged with the deployed commit. Server side only, without request bodies, cookies, query strings or user data. Set an alert for new issues to email.
 - **Cloudflare**: Notifications → "Tunnel health" alert (the tunnel going down means the site is down even if the server is fine).
@@ -232,8 +236,8 @@ infra/local/rehearse.sh up                 # stand-in server + `kamal setup`
 infra/local/rehearse.sh kamal setup-services
 infra/local/rehearse.sh kamal app exec --roles cms "shortix payload run src/seed/index.ts"   # sample data
 SITE_MODE=catalog infra/local/rehearse.sh kamal deploy
-E2E_CATALOG_URL=http://shortix.localhost:8480 pnpm --filter @shortix/web exec playwright test --project catalog
+E2E_CATALOG_URL=http://fenaki.localhost:8480 pnpm --filter @shortix/web exec playwright test --project catalog
 infra/local/rehearse.sh down               # removes everything
 ```
 
-For the landing tests, deploy with the default `SITE_MODE` and run the `landing` project with `E2E_LANDING_URL=http://shortix.localhost:8480`, `E2E_MAILPIT_URL=http://localhost:8125`, `E2E_LISTMONK_URL=http://listas.shortix.localhost:8480` and `LISTMONK_API_TOKEN` from `.kamal/secrets.local`. Before running `setup-services` the first time, run `listmonk-token`, `accessory restart listmonk` and `search-key`, as in production.
+For the landing tests, deploy with the default `SITE_MODE` and run the `landing` project with `E2E_LANDING_URL=http://fenaki.localhost:8480`, `E2E_MAILPIT_URL=http://localhost:8125`, `E2E_LISTMONK_URL=http://listas.fenaki.localhost:8480` and `LISTMONK_API_TOKEN` from `.kamal/secrets.local`. Before running `setup-services` the first time, run `listmonk-token`, `accessory restart listmonk` and `search-key`, as in production.

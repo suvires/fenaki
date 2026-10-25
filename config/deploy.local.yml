@@ -33,45 +33,45 @@ proxy:
 
 x-local-cms-env: &local-cms-env
   clear:
-    PAYLOAD_PUBLIC_SERVER_URL: <%= base % "cms.shortix" %>
-    WEB_URL: <%= base % "shortix" %>
+    PAYLOAD_PUBLIC_SERVER_URL: <%= base % "cms.fenaki" %>
+    WEB_URL: <%= base % "fenaki" %>
     SMTP_HOST: shortix-mailpit
     SMTP_PORT: 1025
     SMTP_TLS: none
     # The sample seed (`pnpm seed`) for the catalog tests.
-    SEED_ADMIN_EMAIL: admin@shortix.localhost
+    SEED_ADMIN_EMAIL: admin@fenaki.localhost
     SEED_ADMIN_PASSWORD: rehearsal-admin
 
 servers:
   cms:
     proxy:
-      host: cms.shortix.localhost
+      host: cms.fenaki.localhost
     env: *local-cms-env
   web:
     proxy:
-      host: shortix.localhost
+      host: fenaki.localhost
     env:
       clear:
-        SITE_URL: <%= base % "shortix" %>
+        SITE_URL: <%= base % "fenaki" %>
         SITE_MODE: <%= ENV.fetch("SITE_MODE", "landing") %>
-        CONTACT_EMAIL: hola@shortix.film
-        LISTMONK_PUBLIC_URL: <%= base % "listas.shortix" %>
+        CONTACT_EMAIL: hola@fenaki.tv
+        LISTMONK_PUBLIC_URL: <%= base % "listas.fenaki" %>
         LISTMONK_SMTP_HOST: shortix-mailpit
         LISTMONK_SMTP_PORT: 1025
         LISTMONK_SMTP_AUTH: none
         LISTMONK_SMTP_TLS: none
         UMAMI_SCRIPT_URL: ""
-        UMAMI_WEBSITE_DOMAIN: shortix.localhost
+        UMAMI_WEBSITE_DOMAIN: fenaki.localhost
   jobs:
     env: *local-cms-env
 
 accessories:
   listmonk:
     proxy:
-      host: listas.shortix.localhost
+      host: listas.fenaki.localhost
   umami:
     proxy:
-      host: stats.shortix.localhost
+      host: stats.fenaki.localhost
   cloudflared:
     image: alpine:3.24
     cmd: sleep infinity

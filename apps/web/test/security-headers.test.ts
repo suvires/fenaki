@@ -16,9 +16,9 @@ describe('withSecurityHeaders', () => {
   })
 
   it('works on redirects, whose headers are immutable', () => {
-    const response = withSecurityHeaders(Response.redirect('https://shortix.film/es/', 302))
+    const response = withSecurityHeaders(Response.redirect('https://fenaki.tv/es/', 302))
     expect(response.status).toBe(302)
-    expect(response.headers.get('Location')).toBe('https://shortix.film/es/')
+    expect(response.headers.get('Location')).toBe('https://fenaki.tv/es/')
     expect(response.headers.get('X-Content-Type-Options')).toBe('nosniff')
   })
 

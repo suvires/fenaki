@@ -18,13 +18,13 @@ image: suvires/shortix
 # Environment shared by the CMS server and the jobs worker.
 x-cms-env: &cms-env
   clear:
-    PAYLOAD_PUBLIC_SERVER_URL: https://cms.shortix.film
-    WEB_URL: https://shortix.film
+    PAYLOAD_PUBLIC_SERVER_URL: https://cms.fenaki.tv
+    WEB_URL: https://fenaki.tv
     SMTP_HOST: email-smtp.eu-west-1.amazonaws.com
     SMTP_PORT: 587
     SMTP_TLS: STARTTLS
-    EMAIL_FROM_ADDRESS: hola@shortix.film
-    EMAIL_FROM_NAME: Shortix
+    EMAIL_FROM_ADDRESS: hola@fenaki.tv
+    EMAIL_FROM_NAME: Fenaki
   secret:
     - DATABASE_URL
     - PAYLOAD_SECRET
@@ -38,7 +38,7 @@ servers:
       - <%= ENV.fetch("SHORTIX_HOST", "set-SHORTIX_HOST") %>
     cmd: cms
     proxy:
-      host: cms.shortix.film
+      host: cms.fenaki.tv
       app_port: 3000
       healthcheck:
         path: /up
@@ -60,7 +60,7 @@ servers:
       - <%= ENV.fetch("SHORTIX_HOST", "set-SHORTIX_HOST") %>
     cmd: web
     proxy:
-      host: shortix.film
+      host: fenaki.tv
       app_port: 4321
       healthcheck:
         path: /up
@@ -70,7 +70,7 @@ servers:
       memory: 600m
     env:
       clear:
-        SITE_URL: https://shortix.film
+        SITE_URL: https://fenaki.tv
         # `landing` until the public launch, then `catalog` (one deploy; see docs/deploy.md).
         SITE_MODE: landing
         LEGAL_DRAFT: true
@@ -80,17 +80,17 @@ servers:
         CONTACT_EMAIL: ""
         CMS_URL: http://shortix-cms:3000
         SEARCH_INDEX_PREFIX: ""
-        LISTMONK_FROM_EMAIL: Shortix <hola@shortix.film>
+        LISTMONK_FROM_EMAIL: Fenaki <hola@fenaki.tv>
         # Public address of listmonk: the unsubscribe links in emails point here.
-        LISTMONK_PUBLIC_URL: https://listas.shortix.film
+        LISTMONK_PUBLIC_URL: https://listas.fenaki.tv
         LISTMONK_SMTP_HOST: email-smtp.eu-west-1.amazonaws.com
         LISTMONK_SMTP_PORT: 587
         LISTMONK_SMTP_AUTH: login
         LISTMONK_SMTP_TLS: STARTTLS
         UMAMI_URL: http://shortix-umami:3000
-        UMAMI_SCRIPT_URL: https://stats.shortix.film/script.js
+        UMAMI_SCRIPT_URL: https://stats.fenaki.tv/script.js
         UMAMI_WEBSITE_ID: 0b6c4f8e-2d7a-4e15-9a3c-7f2e1d5b8c64
-        UMAMI_WEBSITE_DOMAIN: shortix.film
+        UMAMI_WEBSITE_DOMAIN: fenaki.tv
         UMAMI_USERNAME: admin
       secret:
         - MEILISEARCH_SEARCH_KEY
@@ -229,7 +229,7 @@ accessories:
         - LISTMONK_db__password:LISTMONK_DB_PASSWORD
         - LISTMONK_ADMIN_PASSWORD
     proxy:
-      host: listas.shortix.film
+      host: listas.fenaki.tv
       app_port: 9000
       healthcheck:
         path: /health
@@ -246,7 +246,7 @@ accessories:
         - DATABASE_URL:UMAMI_DATABASE_URL
         - APP_SECRET:UMAMI_APP_SECRET
     proxy:
-      host: stats.shortix.film
+      host: stats.fenaki.tv
       app_port: 3000
       healthcheck:
         path: /api/heartbeat
