@@ -28,7 +28,8 @@ const meta = {
         ],
       },
     ],
-    tagline: 'Fenaki · El mejor cine, en cortos. Cada corto es de quien lo hizo.',
+    tagline: 'El mejor cine, en cortos.',
+    brand: 'Fenaki',
   },
 } satisfies Meta<typeof SiteFooter>
 
