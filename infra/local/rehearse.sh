@@ -18,7 +18,7 @@ state="$root/infra/local/.state"
 vps=fenaki-rehearsal-vps
 
 key="$state/id_ed25519"
-ssh_opts="-i $key -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR"
+ssh_opts="-i $key -o IdentitiesOnly=yes -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR"
 
 kamal() {
   # bin/kamal, on the host network (the stand-in's SSH and the local registry are on localhost).
