@@ -96,7 +96,7 @@ Accounts, purchases and anything that needs your identity or a card. Paste each 
    2. VPS-1 with **Ubuntu 26.04 LTS**, in an EU data centre, with **your own SSH public key**: Ed25519, or RSA of at least 3072 bits (`ssh-keygen -t ed25519` if you have none; give Claude the `.pub` file, never the private key). Note its IP address.
    3. Zimbra Starter mailbox `hola@fenaki.tv`. Note the MX and DKIM values its control panel shows.
 2. **Cloudflare** (free plan): create the account. In Zero Trust, choose a team name and the Free plan (it may ask for a card even for the free plan). Give Claude the **account ID** and an **API token** with:
-   - Account: Cloudflare Tunnel Edit, Access: Apps and Policies Edit, Workers R2 Storage Edit, Account Settings Read.
+   - Account: Cloudflare Tunnel Edit, Access: Apps and Policies Edit, Access: Service Tokens Edit, Workers R2 Storage Edit, Account Settings Read.
    - Zone (all zones of the account): Zone Edit, DNS Edit, Zone Settings Edit, Single Redirect Edit.
    - The **email addresses** that may open the CMS and listmonk's admin (Cloudflare Access).
 3. **Name servers and DNSSEC** (done for fenaki.tv on 25 oct 2026): create the zone in the Cloudflare dashboard (Add a domain, Free plan, no DNS import; account tokens cannot create zones) and import it (`tofu import cloudflare_zone.site <zone id>`). At OVHcloud, disable DNSSEC and wait until the registry drops the DS record and its TTL (1 h) passes, then switch to the Cloudflare name servers (`tofu output name_servers`). Once the zone is active, apply again (Access applications need an active zone) and publish the key from `tofu output dnssec` at OVHcloud (Domains → DNSSEC, or the API `POST /domain/<domain>/dsRecord`).

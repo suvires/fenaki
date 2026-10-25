@@ -31,3 +31,14 @@ output "dnssec" {
     ds         = cloudflare_zone_dnssec.site.ds
   }
 }
+
+output "agent_access_client_id" {
+  description = "CF-Access-Client-Id header for the AI coordinator's calls to the CMS API."
+  value       = try(cloudflare_zero_trust_access_service_token.agent[0].client_id, "")
+}
+
+output "agent_access_client_secret" {
+  description = "CF-Access-Client-Secret header for the AI coordinator's calls to the CMS API."
+  value       = try(cloudflare_zero_trust_access_service_token.agent[0].client_secret, "")
+  sensitive   = true
+}

@@ -302,7 +302,27 @@ resource "cloudflare_zero_trust_access_application" "admin" {
   type             = "self_hosted"
   session_duration = "24h"
   destinations     = [for uri in each.value : { type = "public", uri = uri }]
-  policies         = [{ id = cloudflare_zero_trust_access_policy.editors[0].id, precedence = 1 }]
+  # The CMS also lets in the AI coordinator's service token: it works through Payload's REST API
+  # with an agent user, which can draft but never approve or send (apps/cms, sales CRM).
+  policies = concat(
+    [{ id = cloudflare_zero_trust_access_policy.editors[0].id, precedence = 1 }],
+    each.key == "cms" ? [{ id = cloudflare_zero_trust_access_policy.agent[0].id, precedence = 2 }] : [],
+  )
+}
+
+resource "cloudflare_zero_trust_access_service_token" "agent" {
+  count      = length(var.access_emails) > 0 ? 1 : 0
+  account_id = var.account_id
+  name       = "Fenaki agent (CMS API)"
+  duration   = "8760h"
+}
+
+resource "cloudflare_zero_trust_access_policy" "agent" {
+  count      = length(var.access_emails) > 0 ? 1 : 0
+  account_id = var.account_id
+  name       = "Fenaki agent (service token)"
+  decision   = "non_identity"
+  include    = [{ service_token = { token_id = cloudflare_zero_trust_access_service_token.agent[0].id } }]
 }
 
 # Paths of the CMS that stay public: the health check (external uptime monitor) and uploaded media
