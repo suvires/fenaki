@@ -87,4 +87,4 @@ Monorepo (pnpm + Turborepo): `apps/web` (Astro), `apps/cms` (Payload), `packages
 
 ## Daily log
 
-At the end of each working session, update `private/diario/dia-NN.md` (template: `private/diario/plantilla.md`) and the index in `private/diario/README.md`: what was done, decisions, learnings, how AI helped, metrics, next steps and a social media draft. Write it in Spanish.
+Write the day's entry as work happens, not only at the end: update `private/diario/dia-NN.md` (template: `private/diario/plantilla.md`) and the index in `private/diario/README.md`: what was done, decisions, learnings, how AI helped, metrics, next steps and a social media draft. Write it in Spanish. Hours count from the user's start time for the day. The social post is published the next morning, or scheduled the same night, never in real time.
