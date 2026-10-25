@@ -1,0 +1,320 @@
+# Kamal: production deployment of Shortix to one OVHcloud VPS (Ubuntu 24.04, x86_64).
+# Runbook: docs/deploy.md. Secrets: .kamal/secrets.example.
+#
+# Traffic: visitor → Cloudflare (TLS, CDN) → Cloudflare Tunnel → `cloudflared` accessory →
+# kamal-proxy (routes by host, health checks, gapless deploys) → containers. The server publishes
+# no HTTP ports: kamal-proxy and every container live on the private `kamal` Docker network, and
+# the only inbound port is SSH.
+#
+# One image, three roles, so the site, the CMS and the worker always run the same commit:
+#   cms   Payload (admin and API). Primary role: it applies pending migrations before starting, and
+#         the other roles wait until it is healthy. A failed migration fails the deploy and leaves
+#         the previous version serving. Migrations must work with the previous version running.
+#   web   the Astro site.
+#   jobs  Payload's jobs worker (search sync, waitlist clean-up).
+service: shortix
+image: suvires/shortix
+
+# Environment shared by the CMS server and the jobs worker.
+x-cms-env: &cms-env
+  clear:
+    PAYLOAD_PUBLIC_SERVER_URL: https://cms.fenaki.tv
+    WEB_URL: https://fenaki.tv
+    SMTP_HOST: email-smtp.eu-west-1.amazonaws.com
+    SMTP_PORT: 587
+    SMTP_TLS: STARTTLS
+    EMAIL_FROM_ADDRESS: hola@fenaki.tv
+    EMAIL_FROM_NAME: Fenaki
+  secret:
+    - DATABASE_URL
+    - PAYLOAD_SECRET
+    - MEILISEARCH_ADMIN_KEY:MEILI_MASTER_KEY
+    - SMTP_USERNAME:SES_SMTP_USERNAME
+    - SMTP_PASSWORD:SES_SMTP_PASSWORD
+    # Optional metadata APIs for «Add from URL» and the nightly embed checker (03:00 UTC).
+    - YOUTUBE_API_KEY
+    - TMDB_API_KEY
+
+servers:
+  cms:
+    hosts:
+      - <%= ENV.fetch("SHORTIX_HOST", "set-SHORTIX_HOST") %>
+    cmd: cms
+    proxy:
+      host: cms.fenaki.tv
+      app_port: 3000
+      healthcheck:
+        path: /up
+        interval: 2
+        timeout: 5
+    options:
+      # The site reaches the API at http://shortix-cms:3000 on the Docker network. While a deploy
+      # overlaps old and new containers, both answer to the alias.
+      network-alias: shortix-cms
+      # Payload uploads, for the CMS and the worker only: signed license documents and media
+      # (organization logos).
+      volume:
+        - shortix-uploads:/app/apps/cms/documents
+        - shortix-media:/app/apps/cms/media
+      memory: 1200m
+    env: *cms-env
+  web:
+    hosts:
+      - <%= ENV.fetch("SHORTIX_HOST", "set-SHORTIX_HOST") %>
+    cmd: web
+    proxy:
+      host: fenaki.tv
+      app_port: 4321
+      healthcheck:
+        path: /up
+        interval: 2
+        timeout: 5
+    options:
+      memory: 600m
+    env:
+      clear:
+        SITE_URL: https://fenaki.tv
+        # `landing` until the public launch, then `catalog` (one deploy; see docs/deploy.md).
+        SITE_MODE: landing
+        LEGAL_DRAFT: true
+        # ISO 8601, set at the launch (e.g. 2026-11-20T09:00:00+01:00).
+        LAUNCH_DATE: ""
+        # Empty hides the links that write to it, until the mailbox exists.
+        CONTACT_EMAIL: ""
+        CMS_URL: http://shortix-cms:3000
+        # The CMS's public address: logos and other media load from it (Content Security Policy).
+        CMS_PUBLIC_URL: https://cms.fenaki.tv
+        SEARCH_INDEX_PREFIX: ""
+        LISTMONK_FROM_EMAIL: Fenaki <hola@fenaki.tv>
+        # Public address of listmonk: the unsubscribe links in emails point here.
+        LISTMONK_PUBLIC_URL: https://listas.fenaki.tv
+        LISTMONK_SMTP_HOST: email-smtp.eu-west-1.amazonaws.com
+        LISTMONK_SMTP_PORT: 587
+        LISTMONK_SMTP_AUTH: login
+        LISTMONK_SMTP_TLS: STARTTLS
+        UMAMI_URL: http://shortix-umami:3000
+        UMAMI_SCRIPT_URL: https://stats.fenaki.tv/script.js
+        UMAMI_WEBSITE_ID: 0b6c4f8e-2d7a-4e15-9a3c-7f2e1d5b8c64
+        UMAMI_WEBSITE_DOMAIN: fenaki.tv
+        UMAMI_USERNAME: admin
+      secret:
+        - MEILISEARCH_SEARCH_KEY
+        - LISTMONK_SMTP_USERNAME:SES_SMTP_USERNAME
+        - LISTMONK_SMTP_PASSWORD:SES_SMTP_PASSWORD
+        - UMAMI_PASSWORD:UMAMI_ADMIN_PASSWORD
+  jobs:
+    hosts:
+      - <%= ENV.fetch("SHORTIX_HOST", "set-SHORTIX_HOST") %>
+    # Payload's worker stops at once on SIGTERM; the next one requeues what it left half done.
+    cmd: jobs
+    options:
+      volume:
+        - shortix-uploads:/app/apps/cms/documents
+        - shortix-media:/app/apps/cms/media
+      memory: 800m
+    env: *cms-env
+
+primary_role: cms
+
+# How long the new CMS container may take to migrate and answer /up.
+deploy_timeout: 180
+drain_timeout: 30
+
+proxy:
+  ssl: false
+  # Cloudflare terminates TLS and sets X-Forwarded-For and X-Forwarded-Proto.
+  forward_headers: true
+  run:
+    # kamal-proxy is reached only by `cloudflared` on the Docker network.
+    publish: false
+
+registry:
+  server: ghcr.io
+  username: suvires
+  password:
+    - KAMAL_REGISTRY_PASSWORD
+
+builder:
+  arch: amd64
+<% unless ENV["KAMAL_REHEARSAL"] %>
+  # Layers shared between CI and local builds.
+  cache:
+    type: registry
+    image: suvires/shortix-build-cache
+    options: mode=max
+<% end %>
+
+env:
+  clear:
+    MEILISEARCH_HOST: http://shortix-meilisearch:7700
+    LISTMONK_URL: http://shortix-listmonk:9000
+    LISTMONK_API_USER: shortix-web
+    SENTRY_ENVIRONMENT: production
+  secret:
+    - LISTMONK_API_TOKEN
+    - SENTRY_DSN
+
+ssh:
+  user: ubuntu
+  forward_agent: false
+
+logging:
+  options:
+    max-size: 20m
+    max-file: 5
+
+# Accessories are not redeployed by `kamal deploy`. After changing one, run
+# `kamal accessory reboot <name>` (see docs/deploy.md). Data lives in named Docker volumes.
+accessories:
+  postgres:
+    image: postgres:18.6-alpine3.24
+    host: <%= ENV.fetch("SHORTIX_HOST", "set-SHORTIX_HOST") %>
+    # Sized for a 8 GB server shared with every other service.
+    cmd: >-
+      postgres -c shared_buffers=512MB -c effective_cache_size=2GB -c work_mem=16MB
+      -c maintenance_work_mem=128MB -c max_connections=100
+    env:
+      clear:
+        POSTGRES_USER: shortix
+        POSTGRES_DB: shortix
+      secret:
+        - POSTGRES_PASSWORD
+        - LISTMONK_DB_PASSWORD
+        - UMAMI_DB_PASSWORD
+        - LISTMONK_API_TOKEN
+    files:
+      # Creates the listmonk and Umami roles and databases on the first start.
+      - infra/postgres/init.sh:/docker-entrypoint-initdb.d/init.sh:ro
+      - infra/listmonk/api-token.sh:/usr/local/bin/listmonk-api-token.sh:ro
+    volumes:
+      - shortix-postgres:/var/lib/postgresql
+    options:
+      memory: 2g
+      shm-size: 256m
+
+  meilisearch:
+    image: getmeili/meilisearch:v1.55.0
+    host: <%= ENV.fetch("SHORTIX_HOST", "set-SHORTIX_HOST") %>
+    env:
+      clear:
+        MEILI_ENV: production
+        MEILI_NO_ANALYTICS: true
+        MEILI_DUMP_DIR: /meili_data/dumps
+        MEILI_MAX_INDEXING_MEMORY: 512Mb
+      secret:
+        - MEILI_MASTER_KEY
+        - MEILI_SEARCH_KEY_UID
+    files:
+      - infra/meilisearch/search-key.sh:/usr/local/bin/search-key.sh:ro
+      - infra/meilisearch/import-dump.sh:/usr/local/bin/import-dump.sh:ro
+    volumes:
+      - shortix-meilisearch:/meili_data
+    options:
+      memory: 1g
+
+  listmonk:
+    image: listmonk/listmonk:v6.2.0
+    host: <%= ENV.fetch("SHORTIX_HOST", "set-SHORTIX_HOST") %>
+    # Installs on the first start, upgrades the schema on every start, then serves.
+    cmd: >-
+      sh -c "./listmonk --install --idempotent --yes --config '' &&
+      ./listmonk --upgrade --yes --config '' && exec ./listmonk --config ''"
+    env:
+      clear:
+        TZ: Etc/UTC
+        LISTMONK_app__address: 0.0.0.0:9000
+        LISTMONK_db__host: shortix-postgres
+        LISTMONK_db__port: 5432
+        LISTMONK_db__user: listmonk
+        LISTMONK_db__database: listmonk
+        LISTMONK_db__ssl_mode: disable
+        LISTMONK_ADMIN_USER: admin
+        LISTMONK_ADMIN_API_USER: shortix-web
+      secret:
+        - LISTMONK_db__password:LISTMONK_DB_PASSWORD
+        - LISTMONK_ADMIN_PASSWORD
+    proxy:
+      host: listas.fenaki.tv
+      app_port: 9000
+      healthcheck:
+        path: /health
+    options:
+      memory: 256m
+
+  umami:
+    image: umamisoftware/umami:3.4.0
+    host: <%= ENV.fetch("SHORTIX_HOST", "set-SHORTIX_HOST") %>
+    env:
+      clear:
+        DISABLE_TELEMETRY: 1
+      secret:
+        - DATABASE_URL:UMAMI_DATABASE_URL
+        - APP_SECRET:UMAMI_APP_SECRET
+    proxy:
+      host: stats.fenaki.tv
+      app_port: 3000
+      healthcheck:
+        path: /api/heartbeat
+    options:
+      memory: 512m
+
+  # Connects the server to Cloudflare. Its routes (every hostname → http://kamal-proxy) are set
+  # with the tunnel in infra/cloudflare.
+  cloudflared:
+    image: cloudflare/cloudflared:2026.10.3
+    host: <%= ENV.fetch("SHORTIX_HOST", "set-SHORTIX_HOST") %>
+    cmd: tunnel --no-autoupdate --metrics 0.0.0.0:2000 run
+    env:
+      secret:
+        - TUNNEL_TOKEN:CLOUDFLARE_TUNNEL_TOKEN
+    options:
+      memory: 128m
+
+  # Daily encrypted off-site backups (infra/backup). The tag is git's hash of infra/backup as
+  # committed, so a change there means a new image: CI builds it, then
+  # `kamal accessory reboot backup`.
+  <% backup_tag = `git rev-parse --short=12 HEAD:infra/backup 2>/dev/null`.strip %>
+  backup:
+    image: ghcr.io/suvires/shortix-backup:<%= backup_tag.empty? ? "uncommitted" : backup_tag %>
+    host: <%= ENV.fetch("SHORTIX_HOST", "set-SHORTIX_HOST") %>
+    env:
+      clear:
+        BACKUP_TIME_UTC: "03:30"
+        BACKUP_RETENTION_DAYS: 30
+        BACKUP_S3_PROVIDER: Cloudflare
+        PGHOST: shortix-postgres
+        PGUSER: shortix
+        MEILISEARCH_HOST: http://shortix-meilisearch:7700
+      secret:
+        - PGPASSWORD:POSTGRES_PASSWORD
+        - MEILI_MASTER_KEY
+        - BACKUP_S3_ENDPOINT
+        - BACKUP_S3_BUCKET
+        - BACKUP_S3_ACCESS_KEY_ID
+        - BACKUP_S3_SECRET_ACCESS_KEY
+        - BACKUP_AGE_RECIPIENT
+        - BACKUP_HEARTBEAT_URL
+    volumes:
+      - shortix-meilisearch:/meili_data
+      # Read and write: `restore uploads` writes here.
+      - shortix-uploads:/uploads/documents
+      - shortix-media:/uploads/media
+    options:
+      memory: 512m
+
+aliases:
+  # kamal shell: a shell in a new CMS container (Payload CLI: `shortix migrate`, `payload ...`).
+  shell: app exec --interactive --roles cms "sh"
+  migrate: app exec --roles cms "shortix migrate"
+  # listmonk lists, SMTP and confirmation email, and the Umami website (idempotent).
+  setup-services: app exec --roles web "shortix setup-services"
+  # The search-only key the site uses, created from MEILI_SEARCH_KEY_UID (idempotent).
+  search-key: accessory exec meilisearch --reuse "sh /usr/local/bin/search-key.sh"
+  # The token of listmonk's API user, from LISTMONK_API_TOKEN (idempotent).
+  listmonk-token: accessory exec postgres --reuse "sh /usr/local/bin/listmonk-api-token.sh"
+  backup-now: accessory exec backup "backup"
+  backups: accessory exec backup "list-backups"
+  logs-cms: app logs --roles cms -f
+  logs-web: app logs --roles web -f
+  logs-jobs: app logs --roles jobs -f
+  psql: accessory exec postgres --interactive --reuse "psql -U shortix"

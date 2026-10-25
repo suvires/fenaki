@@ -1,0 +1,16 @@
+# Copy to terraform.tfvars (gitignored). Secrets go in the environment instead:
+#   TF_VAR_cloudflare_api_token, TF_VAR_state_passphrase
+account_id = "0123456789abcdef0123456789abcdef"
+
+# Domains that only redirect to fenaki.tv, once bought (none by default):
+# redirect_domains = ["fenaki.es", "fenakitv.es", "fenakitv.com"]
+
+# Once the mailbox exists at OVHcloud, check its MX values and add its DKIM records:
+# ovh_dkim = [{ name = "ovhmo1234567-selector1._domainkey", type = "CNAME", content = "..." }]
+
+# Once SES has verified the domain (Easy DKIM):
+# ses_dkim_tokens = ["abc...", "def...", "ghi..."]
+
+# dmarc_report_address = "dmarc@fenaki.tv"
+
+# access_emails = ["you@example.com"]

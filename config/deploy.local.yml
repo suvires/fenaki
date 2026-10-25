@@ -1,0 +1,96 @@
+# Destination `local`: a full deploy rehearsal against a stand-in VPS on this machine (Ubuntu with
+# SSH and Docker in a container, infra/local). Not for real servers. Run it through
+# infra/local/rehearse.sh, which starts the stand-in and sets SHORTIX_HOST, the SSH key and the
+# throwaway secrets (.kamal/secrets.local).
+#
+# What differs from production, and why:
+# - arm64 images: nested containers do not run under x86 emulation on Apple Silicon.
+# - A local registry instead of GHCR, and *.localhost hostnames on port 8480 instead of the
+#   tunnel: kamal-proxy publishes port 80 inside the stand-in, and `cloudflared` is a stub.
+# - Mailpit instead of Amazon SES, and `rclone serve s3` instead of the backup bucket.
+
+<% base = "http://%s.localhost:8480" %>
+
+ssh:
+  port: 2222
+  keys_only: true
+  keys:
+    - <%= ENV.fetch("REHEARSAL_SSH_KEY", "infra/local/id_ed25519") %>
+  config: false
+
+registry:
+  server: localhost:5555
+
+builder:
+  arch: arm64
+  # Builds the working tree, so a change can be rehearsed before it is committed. No registry
+  # cache (KAMAL_REHEARSAL drops it from deploy.yml): the local registry is not a cache.
+  context: .
+
+proxy:
+  run:
+    publish: true
+
+x-local-cms-env: &local-cms-env
+  clear:
+    PAYLOAD_PUBLIC_SERVER_URL: <%= base % "cms.fenaki" %>
+    WEB_URL: <%= base % "fenaki" %>
+    SMTP_HOST: shortix-mailpit
+    SMTP_PORT: 1025
+    SMTP_TLS: none
+    # The sample seed (`pnpm seed`) for the catalog tests.
+    SEED_ADMIN_EMAIL: admin@fenaki.localhost
+    SEED_ADMIN_PASSWORD: rehearsal-admin
+
+servers:
+  cms:
+    proxy:
+      host: cms.fenaki.localhost
+    env: *local-cms-env
+  web:
+    proxy:
+      host: fenaki.localhost
+    env:
+      clear:
+        SITE_URL: <%= base % "fenaki" %>
+        CMS_PUBLIC_URL: <%= base % "cms.fenaki" %>
+        SITE_MODE: <%= ENV.fetch("SITE_MODE", "landing") %>
+        # As the e2e tests expect (apps/web/e2e/serve.sh): a mailbox in landing mode, none in catalog.
+        CONTACT_EMAIL: <%= ENV.fetch("SITE_MODE", "landing") == "catalog" ? '""' : "hola@shortix.film" %>
+        LISTMONK_PUBLIC_URL: <%= base % "listas.fenaki" %>
+        LISTMONK_SMTP_HOST: shortix-mailpit
+        LISTMONK_SMTP_PORT: 1025
+        LISTMONK_SMTP_AUTH: none
+        LISTMONK_SMTP_TLS: none
+        UMAMI_SCRIPT_URL: ""
+        UMAMI_WEBSITE_DOMAIN: fenaki.localhost
+  jobs:
+    env: *local-cms-env
+
+accessories:
+  listmonk:
+    proxy:
+      host: listas.fenaki.localhost
+  umami:
+    proxy:
+      host: stats.fenaki.localhost
+  cloudflared:
+    image: alpine:3.24
+    cmd: sleep infinity
+  backup:
+    image: shortix-backup:rehearsal
+    env:
+      clear:
+        BACKUP_S3_PROVIDER: Rclone
+        BACKUP_S3_REGION: us-east-1
+        # The stand-in bucket is created on the first upload.
+        BACKUP_S3_NO_CHECK_BUCKET: false
+  mailpit:
+    image: axllent/mailpit:v1.31.4
+    host: <%= ENV.fetch("SHORTIX_HOST", "127.0.0.1") %>
+    port: 8025:8025
+  # The stand-in for the backup bucket (BACKUP_S3_ENDPOINT=http://shortix-s3:8080).
+  s3:
+    image: rclone/rclone:1.74.1
+    host: <%= ENV.fetch("SHORTIX_HOST", "127.0.0.1") %>
+    cmd: serve s3 /data --addr :8080 --auth-key rehearsal,rehearsal-secret

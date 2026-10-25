@@ -1,0 +1,24 @@
+# Build context of the production image (Dockerfile). Dependencies are installed inside the image;
+# local builds, secrets and private data never enter it.
+**/node_modules
+**/dist
+**/.next
+**/.next-e2e
+**/.astro
+**/.turbo
+**/storybook-static
+**/playwright-report
+**/test-results
+**/*.tsbuildinfo
+**/.env
+**/.env.*
+.git
+.github
+.kamal
+private
+design
+infra
+docs
+apps/cms/media
+apps/cms/documents
+packages/ui/visual

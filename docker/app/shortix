@@ -1,0 +1,47 @@
+#!/bin/sh
+# Entry point of the production image. Each Kamal role runs one command:
+#   web             the Astro site on $PORT (4321)
+#   cms             applies pending migrations, then serves Payload on port 3000
+#   jobs            the background jobs worker (same schedule as `pnpm --filter @shortix/cms jobs`)
+#   migrate         applies pending migrations and exits
+#   payload <args>  the Payload CLI, e.g. `payload migrate:status`
+#   setup-services  configures listmonk and Umami (`pnpm setup:services`)
+# Anything else runs as a plain command, e.g. `kamal app exec --roles cms "sh"`.
+set -e
+
+payload() {
+  cd /app/apps/cms
+  node node_modules/payload/bin.js "$@"
+}
+
+case "$1" in
+  web)
+    cd /app/apps/web
+    exec node dist/server/entry.mjs
+    ;;
+  cms)
+    # The primary Kamal role: the other roles wait until it is healthy, so they never start
+    # against a schema that is not migrated yet. A failed migration fails the deploy.
+    payload migrate
+    exec node node_modules/next/dist/bin/next start --port 3000
+    ;;
+  jobs)
+    # Jobs a stopped worker left half done go back to the queue first.
+    payload run src/jobs/releaseInterrupted.ts
+    exec node node_modules/payload/bin.js jobs:run --cron '*/10 * * * * *' --queue default --handle-schedules
+    ;;
+  migrate)
+    payload migrate
+    ;;
+  payload)
+    shift
+    payload "$@"
+    ;;
+  setup-services)
+    cd /app/apps/web
+    exec node scripts/setup-services.ts
+    ;;
+  *)
+    exec "$@"
+    ;;
+esac

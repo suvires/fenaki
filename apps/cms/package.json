@@ -28,9 +28,11 @@
   },
   "dependencies": {
     "@payloadcms/db-postgres": "3.92.0",
+    "@payloadcms/email-nodemailer": "3.92.0",
     "@payloadcms/next": "3.92.0",
     "@payloadcms/translations": "3.92.0",
     "@payloadcms/ui": "3.92.0",
+    "@sentry/node": "11.9.0",
     "@shortix/i18n": "workspace:*",
     "@shortix/waitlist": "workspace:*",
     "graphql": "16.14.2",

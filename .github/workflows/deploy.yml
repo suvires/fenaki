@@ -1,0 +1,124 @@
+# Builds the production image, pushes it to GitHub Container Registry and deploys it with Kamal
+# (config/deploy.yml) on every push to main.
+#
+# Off until the server and its secrets exist: every job runs only when the repository variable
+# DEPLOY_ENABLED is `true` (Settings → Secrets and variables → Actions → Variables). The secrets
+# it needs are listed in docs/deploy.md and .kamal/secrets.example.
+#
+# Manual runs (Actions → Deploy → Run workflow) choose the Kamal command: `deploy`, `setup` for the
+# first deploy, or `rollback` to an earlier version (the git commit of a previous deploy).
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      command:
+        description: Kamal command
+        type: choice
+        options: [deploy, setup, rollback]
+        default: deploy
+      version:
+        description: 'rollback only: the version to return to (a git commit from `bin/kamal app containers`)'
+        required: false
+
+permissions:
+  contents: read
+  packages: write
+
+# One deploy at a time, and never cancel one half way.
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  # The backup accessory's image, tagged with git's hash of infra/backup: built only when that
+  # directory changes. A new tag still needs `bin/kamal accessory reboot backup` (docs/deploy.md).
+  backup-image:
+    if: vars.DEPLOY_ENABLED == 'true' && inputs.command != 'rollback'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Build and push the backup image if it is new
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          image="ghcr.io/suvires/shortix-backup:$(git rev-parse --short=12 HEAD:infra/backup)"
+          echo "$GITHUB_TOKEN" | docker login ghcr.io --username "$GITHUB_ACTOR" --password-stdin
+          if docker manifest inspect "$image" >/dev/null 2>&1; then
+            echo "$image exists"
+          else
+            docker buildx build --platform linux/amd64 --push --tag "$image" infra/backup
+          fi
+
+  deploy:
+    needs: backup-image
+    if: always() && vars.DEPLOY_ENABLED == 'true' && needs.backup-image.result != 'failure'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    environment: production
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: SSH key and the server's host key
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+        run: |
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$RUNNER_TEMP/deploy_key"
+          chmod 600 "$RUNNER_TEMP/deploy_key"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          cp .kamal/secrets.example .kamal/secrets
+
+      - name: Kamal ${{ inputs.command || 'deploy' }}
+        env:
+          COMMAND: ${{ inputs.command || 'deploy' }}
+          VERSION: ${{ inputs.version }}
+          SHORTIX_SSH_KEY: ${{ runner.temp }}/deploy_key
+          SHORTIX_HOST: ${{ secrets.SHORTIX_HOST }}
+          KAMAL_REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          LISTMONK_DB_PASSWORD: ${{ secrets.LISTMONK_DB_PASSWORD }}
+          UMAMI_DB_PASSWORD: ${{ secrets.UMAMI_DB_PASSWORD }}
+          PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}
+          MEILI_MASTER_KEY: ${{ secrets.MEILI_MASTER_KEY }}
+          LISTMONK_ADMIN_PASSWORD: ${{ secrets.LISTMONK_ADMIN_PASSWORD }}
+          LISTMONK_API_TOKEN: ${{ secrets.LISTMONK_API_TOKEN }}
+          UMAMI_APP_SECRET: ${{ secrets.UMAMI_APP_SECRET }}
+          UMAMI_ADMIN_PASSWORD: ${{ secrets.UMAMI_ADMIN_PASSWORD }}
+          SES_SMTP_USERNAME: ${{ secrets.SES_SMTP_USERNAME }}
+          SES_SMTP_PASSWORD: ${{ secrets.SES_SMTP_PASSWORD }}
+          CLOUDFLARE_TUNNEL_TOKEN: ${{ secrets.CLOUDFLARE_TUNNEL_TOKEN }}
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
+          BACKUP_S3_ENDPOINT: ${{ secrets.BACKUP_S3_ENDPOINT }}
+          BACKUP_S3_BUCKET: ${{ secrets.BACKUP_S3_BUCKET }}
+          BACKUP_S3_ACCESS_KEY_ID: ${{ secrets.BACKUP_S3_ACCESS_KEY_ID }}
+          BACKUP_S3_SECRET_ACCESS_KEY: ${{ secrets.BACKUP_S3_SECRET_ACCESS_KEY }}
+          BACKUP_AGE_RECIPIENT: ${{ secrets.BACKUP_AGE_RECIPIENT }}
+          BACKUP_HEARTBEAT_URL: ${{ secrets.BACKUP_HEARTBEAT_URL }}
+        run: |
+          case "$COMMAND" in
+            rollback)
+              [ -n "$VERSION" ] || { echo "::error::rollback needs a version"; exit 1; }
+              bin/kamal rollback "$VERSION"
+              ;;
+            *) bin/kamal "$COMMAND" ;;
+          esac
+
+      - name: Release the deploy lock if the run was cancelled
+        if: cancelled()
+        run: bin/kamal lock release
+        env:
+          SHORTIX_SSH_KEY: ${{ runner.temp }}/deploy_key
+          SHORTIX_HOST: ${{ secrets.SHORTIX_HOST }}
+          KAMAL_REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Forget the SSH key and the secrets file
+        if: always()
+        run: rm -f "$RUNNER_TEMP/deploy_key" .kamal/secrets

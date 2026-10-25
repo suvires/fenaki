@@ -1,0 +1,18 @@
+#!/bin/sh
+# OpenTofu from its official image, pinned by version: nothing to install but Docker.
+#
+#   infra/cloudflare/tofu plan        (any OpenTofu command; docs/deploy.md, "Cloudflare")
+#
+# Needs TF_VAR_cloudflare_api_token and TF_VAR_state_passphrase in the environment, and
+# terraform.tfvars (from terraform.tfvars.example). The encrypted state goes to
+# private/infra/cloudflare.tfstate, in the private repository.
+set -eu
+root=$(cd "$(dirname "$0")/../.." && pwd)
+mkdir -p "$root/private/infra"
+tty=""
+[ -t 0 ] && [ -t 1 ] && tty="-it"
+# shellcheck disable=SC2086
+exec docker run --rm $tty \
+  -v "$root:$root" -w "$root/infra/cloudflare" \
+  -e TF_VAR_cloudflare_api_token -e TF_VAR_state_passphrase -e TF_IN_AUTOMATION \
+  ghcr.io/opentofu/opentofu:1.13.2 "$@"

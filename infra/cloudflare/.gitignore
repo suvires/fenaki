@@ -1,0 +1,6 @@
+# Provider downloads and local state (the real state lives in the private repository).
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+terraform.tfvars

@@ -1,7 +1,8 @@
 import { expect, test } from '@playwright/test'
 
-const MAILPIT = 'http://localhost:8025'
-const LISTMONK = 'http://localhost:9000'
+// The development services, or those of the deployment under test (playwright.config.ts).
+const MAILPIT = process.env.E2E_MAILPIT_URL ?? 'http://localhost:8025'
+const LISTMONK = process.env.E2E_LISTMONK_URL ?? 'http://localhost:9000'
 const LISTMONK_AUTH = `token shortix-web:${process.env.LISTMONK_API_TOKEN ?? 'shortix-dev-listmonk-token-change-me'}`
 
 interface MailpitMessage {

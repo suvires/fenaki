@@ -1,0 +1,19 @@
+#!/bin/sh
+# The accessory's main process: runs `backup` every day at BACKUP_TIME_UTC (HH:MM, UTC). A failed
+# backup is logged and reported to the heartbeat; the next day runs anyway.
+set -eu
+. /usr/local/bin/backup-common
+time="${BACKUP_TIME_UTC:-03:30}"
+hours=$(expr "${time%:*}" + 0)
+minutes=$(expr "${time#*:}" + 0)
+trap 'exit 0' TERM INT
+
+log "backups every day at $time UTC"
+while :; do
+  now=$(date -u +%s)
+  next=$((now - now % 86400 + hours * 3600 + minutes * 60))
+  [ "$next" -gt "$now" ] || next=$((next + 86400))
+  sleep $((next - now)) &
+  wait $!
+  backup || log "error: the backup failed"
+done

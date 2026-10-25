@@ -14,6 +14,7 @@ dist/
 .env.*
 !.env.example
 .kamal/secrets*
+!.kamal/secrets.example
 
 # Tooling
 .next/
@@ -27,3 +28,6 @@ next-env.d.ts
 apps/cms/media/
 apps/cms/documents/
 packages/ui/visual/__screenshots__/*.actual.png
+
+# Local deploy rehearsal (infra/local/rehearse.sh)
+infra/local/.state/

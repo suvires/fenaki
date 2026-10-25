@@ -61,7 +61,8 @@ async function configureListmonk(client: Listmonk) {
   const next = {
     ...settings,
     'app.site_name': 'Shortix',
-    'app.root_url': env('LISTMONK_URL', 'http://localhost:9000'),
+    // The public address (unsubscribe links in emails); LISTMONK_URL may be an internal one.
+    'app.root_url': env('LISTMONK_PUBLIC_URL', env('LISTMONK_URL', 'http://localhost:9000')),
     'app.from_email': env('LISTMONK_FROM_EMAIL', 'Shortix <hola@shortix.film>'),
     'app.lang': defaultLocale,
     // The web app sends its own confirmation email, and the only way in is its form.
@@ -135,6 +136,8 @@ async function configureListmonk(client: Listmonk) {
   }
 }
 
+const DEFAULT_UMAMI_PASSWORD = 'umami'
+
 async function configureUmami() {
   const url = env('UMAMI_URL', 'http://localhost:3001')
   const websiteId = process.env.UMAMI_WEBSITE_ID
@@ -142,22 +145,37 @@ async function configureUmami() {
     log('umami: UMAMI_WEBSITE_ID not set, skipping')
     return
   }
-  const login = async () => {
+  const username = env('UMAMI_USERNAME', 'admin')
+  const password = env('UMAMI_PASSWORD', DEFAULT_UMAMI_PASSWORD)
+  const login = async (attempt: string) => {
     const response = await fetch(new URL('/api/auth/login', url), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        username: env('UMAMI_USERNAME', 'admin'),
-        password: env('UMAMI_PASSWORD', 'umami'),
-      }),
+      body: JSON.stringify({ username, password: attempt }),
     })
+    if (response.status === 401) return undefined
     if (!response.ok) throw new Error(`Umami login failed (${response.status})`)
     return ((await response.json()) as { token: string }).token
   }
-  let token = ''
+  let token: string | undefined
   await waitFor('Umami', async () => {
-    token = await login()
+    token = await login(password)
   })
+  // A new Umami starts with admin / umami: replace it with UMAMI_PASSWORD the first time.
+  if (!token && password !== DEFAULT_UMAMI_PASSWORD) {
+    const initial = await login(DEFAULT_UMAMI_PASSWORD)
+    if (initial) {
+      const changed = await fetch(new URL('/api/me/password', url), {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${initial}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ currentPassword: DEFAULT_UMAMI_PASSWORD, newPassword: password }),
+      })
+      if (!changed.ok) throw new Error(`Umami: could not change the password (${changed.status})`)
+      log('umami: replaced the default admin password')
+      token = await login(password)
+    }
+  }
+  if (!token) throw new Error('Umami login failed: check UMAMI_USERNAME and UMAMI_PASSWORD')
   const headers = { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }
   // Umami answers 200 with `null` for an unknown website id.
   const found = await fetch(new URL(`/api/websites/${websiteId}`, url), { headers })
