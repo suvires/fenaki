@@ -82,7 +82,7 @@ test('the sponsorship page is public before launch, with the contact links', asy
       .getByRole('main')
       .getByRole('link', { name: 'Escaparates para festivales y escuelas' })
       .first(),
-  ).toHaveAttribute('href', /^mailto:hola@fenaki\.film\?subject=/)
+  ).toHaveAttribute('href', /^mailto:hola@fenaki\.tv\?subject=/)
   // Before launch the sitemap lists only the public pages.
   const sitemap = await (await request.get('/sitemap-es.xml')).text()
   expect(sitemap).toContain('/es/patrocina</loc>')

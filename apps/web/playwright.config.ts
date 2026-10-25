@@ -22,7 +22,9 @@ const CMS_URL = `http://localhost:${CMS_PORT}`
  */
 const external = { catalog: process.env.E2E_CATALOG_URL, landing: process.env.E2E_LANDING_URL }
 const test = {
-  DATABASE_URL: `postgres://fenaki:fenaki@127.0.0.1:5432/${process.env.E2E_DATABASE ?? 'fenaki_test'}`,
+  DATABASE_URL:
+    process.env.E2E_DATABASE_URL ??
+    `postgres://fenaki:fenaki@127.0.0.1:5432/${process.env.E2E_DATABASE ?? 'fenaki_test'}`,
   SEARCH_INDEX_PREFIX: process.env.E2E_INDEX_PREFIX ?? 'test_',
 }
 export default defineConfig({
