@@ -15,7 +15,7 @@ Fenaki is a curated catalog of free, legal short films with the browsing experie
 **Color.** The web and the apps are dark only (`dark`, «Sala»), with no theme switcher, like every streaming service: posters and video read best on dark. The light palette (`light`, «Vestíbulo») is not a product theme: use it only for the newsletter, the sponsor dossier and printed or PDF documents. Tokens are named by role, so a light product theme could be switched on later without touching components.
 
 - Pages sit on `sala-0`. Raised areas use `sala-1`; posters without art, secondary buttons and hover fills use `sala-2`.
-- `tungsteno` is projector light and the only action color: primary buttons, the active state, the focus ring. One primary button per view. Never use it as decoration or as a large background other than the `tungsteno` poster tone.
+- `tungsteno` is neon pink, like a cinema marquee (#ff1f8e on the dark theme, #c2005f on the light palette; the token keeps its first name), and the only action color: primary buttons, the active state, the focus ring. One primary button per view. Never use it as decoration or as a large background other than the `tungsteno` poster tone.
 - `telon` (the curtain) is reserved for sponsored collections: their hero and posters. If a screen is wine, someone paid for it, and the `SponsorCredit` says who.
 - `plata` (the silver screen) marks legal and informational facts: the license route, subtitle badges.
 - Text is `ink` or `ink-muted` on the `sala` surfaces, `on-tungsteno` on tungsteno, `on-telon` on telon. Never white or black literals.
