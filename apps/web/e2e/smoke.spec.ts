@@ -64,7 +64,8 @@ test('a short page loads no third-party player before the click', async ({ page 
 })
 
 test('search finds shorts by director as you type', async ({ page }) => {
-  await page.goto('/es/buscar')
+  // The search island must be hydrated before typing, or the keystrokes are lost.
+  await page.goto('/es/buscar', { waitUntil: 'networkidle' })
   await page.getByRole('searchbox', { name: 'Buscar cortos' }).fill('vigalondo')
   // The first search after the servers start can be slow (cold routes): allow it more time.
   await expect(page.getByText('1 corto encontrado')).toBeVisible({ timeout: 15_000 })

@@ -2,7 +2,6 @@ import { useEffect, useId, useRef, useState, type KeyboardEvent } from 'react'
 import { cx } from '../cx.ts'
 import { Button } from './Button.tsx'
 import { Icon } from './Icon.tsx'
-import { SearchField } from './SearchField.tsx'
 import { Wordmark } from './Wordmark.tsx'
 
 interface Link {
@@ -57,6 +56,8 @@ export function SiteHeader({
   const [genresOpen, setGenresOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  // No transition until the search is first used: on load it must not animate into its closed state.
+  const [searchUsed, setSearchUsed] = useState(false)
   const genresId = useId()
   const searchId = useId()
   const menuId = useId()
@@ -150,37 +151,52 @@ export function SiteHeader({
           {navigation('bar')}
         </nav>
         <div className="ml-auto flex flex-1 min-w-0 items-center justify-end gap-4">
+          {/* One magnifier: the left end of a pill that grows leftwards when opened. */}
           <form
             id={searchId}
-            inert={!searchOpen}
-            aria-hidden={!searchOpen}
             action={search.action}
             method="get"
             role="search"
             className={cx(
-              // Clipped while it slides open; the padding (offset by the margin) leaves room for the focus ring.
-              'w-full overflow-hidden p-1 -m-1 transition-[max-width,opacity] motion-reduce:transition-none',
-              searchOpen ? 'max-w-search opacity-100' : 'max-w-0 opacity-0',
+              'flex items-center h-(--size-control-md) rounded-control border overflow-hidden',
+              searchUsed &&
+                'transition-[width,background-color,border-color] motion-reduce:transition-none',
+              'has-[input:focus-visible]:focus-ring',
+              searchOpen
+                ? 'w-full max-w-search bg-sala-1 border-line-strong'
+                : 'w-(--size-control-md) bg-transparent border-transparent',
             )}
           >
-            <SearchField
+            <button
+              type="button"
+              aria-expanded={searchOpen}
+              aria-controls={`${searchId}-field`}
+              aria-label={search.toggleLabel}
+              onClick={() => {
+                setSearchUsed(true)
+                setSearchOpen((open) => !open)
+              }}
+              className="flex-none inline-flex items-center justify-center size-(--size-control-md) rounded-control bg-transparent border-0 text-ink hover:text-tungsteno-text cursor-pointer focus-visible:focus-ring"
+            >
+              <Icon name="search" size="lg" />
+            </button>
+            <label className="sr-only" htmlFor={`${searchId}-field`}>
+              {search.label}
+            </label>
+            <input
               ref={searchInput}
-              name={search.name}
               id={`${searchId}-field`}
-              label={search.label}
+              type="search"
+              name={search.name}
               placeholder={search.placeholder}
+              inert={!searchOpen}
+              aria-hidden={!searchOpen}
+              className={cx(
+                'flex-1 min-w-0 h-full pr-4 bg-transparent border-0 text-ink placeholder:text-ink-muted outline-none',
+                !searchOpen && 'invisible',
+              )}
             />
           </form>
-          <button
-            type="button"
-            aria-expanded={searchOpen}
-            aria-controls={searchId}
-            aria-label={search.toggleLabel}
-            onClick={() => setSearchOpen((open) => !open)}
-            className="inline-flex items-center justify-center size-(--size-control-md) rounded-sm bg-transparent border-0 text-ink hover:text-tungsteno-text cursor-pointer focus-visible:focus-ring"
-          >
-            <Icon name="search" size="xl" />
-          </button>
           <div className="hidden md:block">{accountLinks}</div>
           <button
             type="button"

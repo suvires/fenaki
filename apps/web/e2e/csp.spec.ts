@@ -39,7 +39,8 @@ test('the catalog pages run under the policy', async ({ page }, testInfo) => {
   await page.getByRole('button', { name: 'Ver ahora' }).click()
   await expect(page.getByRole('status')).toBeVisible()
 
-  await page.goto('/es/buscar')
+  // The search island must be hydrated before typing, or the keystrokes are lost.
+  await page.goto('/es/buscar', { waitUntil: 'networkidle' })
   await page.getByRole('searchbox', { name: 'Buscar cortos' }).fill('vigalondo')
   await expect(page.getByText('1 corto encontrado')).toBeVisible({ timeout: 15_000 })
 
