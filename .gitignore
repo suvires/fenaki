@@ -31,3 +31,6 @@ packages/ui/visual/__screenshots__/*.actual.png
 
 # Local deploy rehearsal (infra/local/rehearse.sh)
 infra/local/.state/
+
+# Local migration dumps (scripts/migrate-local-to-fenaki.sh)
+.migration-dump/

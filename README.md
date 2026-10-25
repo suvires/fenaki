@@ -139,7 +139,7 @@ Two GitHub Actions workflows run on every push and pull request, without secrets
 - `.github/workflows/checks.yml`: `pnpm lint`, `pnpm typecheck` and `pnpm test`.
 - `.github/workflows/visual.yml`: the visual regression tests.
 
-The e2e tests never touch the development data. Playwright starts a CMS on port 3100 against the `fenaki_test` database (migrated and seeded on every start, `test_` search indexes) and one production build of the site, served in catalog mode on port 4400 and in landing mode on port 4401. All of them stop when the run ends. To run a second copy at the same time (another checkout), move it aside with `E2E_CMS_PORT`, `E2E_CATALOG_PORT`, `E2E_LANDING_PORT`, `E2E_DATABASE` (create the database first) and `E2E_INDEX_PREFIX`. The waitlist test signs up a unique `e2e+…@example.com` address, reads the email from Mailpit and deletes the subscriber from listmonk afterwards.
+The e2e tests never touch the development data. Playwright starts a CMS on port 3100 against the `fenaki_test` database (migrated and seeded on every start, `test_` search indexes) and one production build of the site, served in catalog mode on port 4400 and in landing mode on port 4401. All of them stop when the run ends. To run a second copy at the same time (another checkout), move it aside with `E2E_CMS_PORT`, `E2E_CATALOG_PORT`, `E2E_LANDING_PORT`, `E2E_DATABASE` (create the database first) or `E2E_DATABASE_URL` (another PostgreSQL) and `E2E_INDEX_PREFIX`. The waitlist test signs up a unique `e2e+…@example.com` address, reads the email from Mailpit and deletes the subscriber from listmonk afterwards.
 
 The visual workflow runs the visual regression tests on every push and pull request, in the same Playwright image and on arm64 runners, the same architecture as Apple Silicon, so local baselines match CI exactly. It uses no secrets or paid services. When it fails, the job uploads the Playwright report with the expected, actual and diff images as an artifact.
 
@@ -172,6 +172,20 @@ The site reads all of them when the server starts, not at build time, so one bui
 The values in `docker-compose.yml` and the `.env.example` files are for local development only.
 
 To start from an empty database and index (this also empties listmonk and Umami): `docker compose down -v && docker compose up -d`, then `pnpm migrate`, `pnpm import:catalog` and `pnpm setup:services`.
+
+### Migrating a stack created before the rename (Shortix → Fenaki)
+
+The product used to be called Shortix, and the local services lived in the Compose project `shortix` (PostgreSQL role and databases `shortix`, `listmonk`, `umami`). They are now `fenaki`. A stack with data from before the rename moves over once, keeping the Payload content and users, the listmonk subscribers and lists and the Umami statistics:
+
+```sh
+# stop `pnpm dev` (Ctrl+C) first, then:
+scripts/migrate-local-to-fenaki.sh
+pnpm --filter @fenaki/cms reindex     # Meilisearch is derived data: it starts empty and is rebuilt
+pnpm setup:services
+pnpm dev
+```
+
+The script dumps the old databases to `.migration-dump/` (gitignored), stops the old containers without removing them, starts the `fenaki` project, restores into fresh databases, renames what carried the old name inside the data (listmonk API user, list tags, template names, a subscriber attribute; the seeded admin email `@shortix.local`; the Umami website name) and rewrites the old names in `apps/cms/.env` and `apps/web/.env` (keeping `.env.pre-fenaki` copies). It is safe to run again: a migrated database is recognised and left alone (`FORCE=1` redoes it). The e2e database is not migrated: the tests recreate it. When everything works, `docker compose -p shortix down -v` deletes the old containers and volumes. Anyone who has no data to keep just runs `docker compose up -d` and the setup above.
 
 ## How it fits together
 
