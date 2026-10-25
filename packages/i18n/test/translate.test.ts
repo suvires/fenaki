@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { createTranslator, type MessageKey } from '../src/index.ts'
+import { createRichTranslator, createTranslator, type MessageKey } from '../src/index.ts'
 
 const t = createTranslator('es')
 
@@ -32,5 +32,29 @@ describe('createTranslator', () => {
     const text = JSON.stringify(messages.es)
     expect(text).not.toMatch(/\b(vosotros|vuestr[oa]s?|os)\b/i)
     expect(text).not.toMatch(/vídeo|clip(?!s\b)/i)
+  })
+})
+
+describe('createRichTranslator', () => {
+  const rich = createRichTranslator('es')
+
+  it('splits a message around the placeholders given as parts', () => {
+    const link = { href: '/es/aviso-legal' }
+    const parts = rich('landing.faq.who.answer', { legalNotice: link })
+    expect(parts.at(-1)).toBe('.')
+    expect(parts.at(-2)).toBe(link)
+    expect(parts.filter((part) => typeof part !== 'string')).toHaveLength(1)
+  })
+
+  it('fills the other placeholders from params', () => {
+    expect(
+      rich('waitlist.pending.text', { email: 'EMAIL' }, {})
+        .join('')
+        .startsWith('Te hemos enviado un mensaje a EMAIL.'),
+    ).toBe(true)
+    expect(rich('email.confirm.fallback', {}, { url: 'https://x' })).toEqual([
+      'Si el botón no funciona, copia este enlace en el navegador: ',
+      'https://x',
+    ])
   })
 })

@@ -3,6 +3,7 @@ design/
 private/
 dist/
 .next/
+.next-e2e/
 .astro/
 storybook-static/
 playwright-report/

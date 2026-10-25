@@ -1,5 +1,6 @@
 import type { CollectionConfig, PayloadRequest } from 'payload'
 import { publishedOrAuthenticated } from '../access.ts'
+import { importKeyField } from '../fields/importKey.ts'
 import { slugField } from '../fields/slug.ts'
 import { statusField } from '../fields/status.ts'
 import { queueIndexShort } from '../jobs/queue.ts'
@@ -120,6 +121,36 @@ export const Shorts: CollectionConfig = {
       ],
     },
     {
+      type: 'row',
+      fields: [
+        {
+          name: 'brandedContent',
+          label: label('Branded content', 'Contenido de marca'),
+          type: 'checkbox',
+          defaultValue: false,
+          index: true,
+          admin: {
+            description: label(
+              'Made by or for a brand. Shown with a «Contenido de marca» badge, and never in a sponsored collection.',
+              'Hecho por o para una marca. Se muestra con la etiqueta «Contenido de marca» y nunca entra en una colección patrocinada.',
+            ),
+          },
+        },
+        {
+          name: 'brand',
+          label: label('Brand', 'Marca'),
+          type: 'text',
+          admin: {
+            condition: (data) => Boolean(data?.brandedContent),
+            description: label(
+              'The brand behind the short, e.g. Fundación Telefónica.',
+              'La marca que está detrás del corto, por ejemplo Fundación Telefónica.',
+            ),
+          },
+        },
+      ],
+    },
+    {
       name: 'credits',
       label: label('Credits', 'Créditos'),
       labels: { singular: label('Credit', 'Crédito'), plural: label('Credits', 'Créditos') },
@@ -193,6 +224,7 @@ export const Shorts: CollectionConfig = {
       index: true,
       admin: { position: 'sidebar', description: common.sampleHelp },
     },
+    importKeyField(),
   ],
   hooks: {
     beforeChange: [

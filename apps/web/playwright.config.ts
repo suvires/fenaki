@@ -1,29 +1,64 @@
 import { defineConfig, devices } from '@playwright/test'
 
 /**
- * Smoke tests against the running stack. Needs `docker compose up -d` and `pnpm seed` first;
- * starts the CMS and the web if they are not already running.
+ * End-to-end tests against their own stack, so they never touch the development data: a CMS on
+ * port 3100 with the `shortix_test` database (migrated and loaded with the sample seed on start)
+ * and the `test_` search indexes, and one build of the site served in catalog mode on 4400 and
+ * in landing mode on 4401.
+ * Needs `docker compose up -d` and `pnpm setup:services`; the waitlist test uses listmonk and
+ * reads the confirmation email from Mailpit.
  */
+const CMS_URL = 'http://localhost:3100'
+const test = {
+  DATABASE_URL: 'postgres://shortix:shortix@127.0.0.1:5432/shortix_test',
+  SEARCH_INDEX_PREFIX: 'test_',
+}
 export default defineConfig({
   testDir: 'e2e',
   fullyParallel: true,
   forbidOnly: Boolean(process.env.CI),
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? 'github' : 'list',
-  use: { baseURL: 'http://localhost:4321', trace: 'retain-on-failure' },
-  projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
-  webServer: [
+  use: { trace: 'retain-on-failure' },
+  projects: [
     {
-      command: 'pnpm --filter @shortix/cms dev:next',
-      url: 'http://localhost:3000/api/shorts?limit=1',
-      reuseExistingServer: true,
-      timeout: 180_000,
+      name: 'catalog',
+      testMatch: 'smoke.spec.ts',
+      use: { ...devices['Desktop Chrome'], baseURL: 'http://localhost:4400' },
     },
     {
-      command: 'pnpm --filter @shortix/web dev',
-      url: 'http://localhost:4321/es/',
-      reuseExistingServer: true,
-      timeout: 120_000,
+      name: 'landing',
+      testMatch: 'landing.spec.ts',
+      use: { ...devices['Desktop Chrome'], baseURL: 'http://localhost:4401' },
+    },
+  ],
+  webServer: [
+    {
+      command:
+        'pnpm --filter @shortix/cms migrate && pnpm --filter @shortix/cms seed && pnpm --filter @shortix/cms exec next dev --port 3100',
+      url: `${CMS_URL}/api/shorts?limit=1`,
+      env: {
+        ...test,
+        PAYLOAD_PUBLIC_SERVER_URL: CMS_URL,
+        NEXT_DIST_DIR: '.next-e2e',
+        NODE_OPTIONS: '--no-deprecation',
+      },
+      reuseExistingServer: !process.env.CI,
+      timeout: 240_000,
+    },
+    {
+      // A production build, served twice: catalog mode on 4400 and landing mode on 4401.
+      command: 'sh e2e/serve.sh',
+      url: 'http://localhost:4401/es/',
+      env: {
+        ...test,
+        CMS_URL,
+        HOST: 'localhost',
+        // Real visitors only: the tests never reach Umami.
+        UMAMI_SCRIPT_URL: '',
+      },
+      reuseExistingServer: !process.env.CI,
+      timeout: 240_000,
     },
   ],
 })

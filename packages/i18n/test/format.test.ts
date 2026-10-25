@@ -6,6 +6,7 @@ import {
   formatLanguage,
   formatList,
   formatNumber,
+  formatWeekday,
   formatYear,
 } from '../src/index.ts'
 
@@ -47,5 +48,13 @@ describe('display names and lists', () => {
     expect(formatList(['Daniel Martínez Lara', 'Rafa Cano Méndez'], 'es')).toBe(
       'Daniel Martínez Lara y Rafa Cano Méndez',
     )
+  })
+})
+
+describe('formatWeekday', () => {
+  it('names ISO weekdays in the locale', () => {
+    expect(formatWeekday(1, 'es')).toBe('lunes')
+    expect(formatWeekday(4, 'es')).toBe('jueves')
+    expect(formatWeekday(7, 'es')).toBe('domingo')
   })
 })

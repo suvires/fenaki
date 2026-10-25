@@ -1,7 +1,7 @@
 import { createTranslator, type Locale } from '@shortix/i18n'
 import { SearchField, ShortCard } from '@shortix/ui'
 import { useEffect, useRef, useState } from 'react'
-import { toCard } from '../lib/catalog.ts'
+import { toCard, type BadgeClock } from '../lib/catalog.ts'
 import { paths } from '../lib/i18n.ts'
 import type { SearchResult } from '../lib/search.ts'
 
@@ -11,7 +11,7 @@ interface SearchIslandProps {
   /** The server could not reach the search engine. */
   initialError: boolean
   /** Fixed by the server so the «Nuevo» badge matches between server and client renders. */
-  now: number
+  clock: BadgeClock
 }
 
 type State = { kind: 'idle' } | { kind: 'results'; result: SearchResult } | { kind: 'error' }
@@ -19,7 +19,7 @@ type State = { kind: 'idle' } | { kind: 'results'; result: SearchResult } | { ki
 const DEBOUNCE_MS = 150
 
 /** Search as you type: results update without a spinner, and the URL keeps the query. */
-export function SearchIsland({ locale, initial, initialError, now }: SearchIslandProps) {
+export function SearchIsland({ locale, initial, initialError, clock }: SearchIslandProps) {
   const t = createTranslator(locale)
   const [query, setQuery] = useState(initial?.query ?? '')
   const [state, setState] = useState<State>(
@@ -97,7 +97,10 @@ export function SearchIsland({ locale, initial, initialError, now }: SearchIslan
         <ul className="m-0 p-0 list-none grid grid-cols-[repeat(auto-fill,minmax(var(--size-card),1fr))] gap-4">
           {state.result.hits.map((hit) => (
             <li key={hit.slug}>
-              <ShortCard {...toCard(hit, locale, t, paths.short(locale, hit.slug), now)} stretch />
+              <ShortCard
+                {...toCard(hit, locale, t, paths.short(locale, hit.slug), clock)}
+                stretch
+              />
             </li>
           ))}
         </ul>

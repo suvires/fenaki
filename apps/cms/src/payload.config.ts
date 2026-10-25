@@ -15,6 +15,7 @@ import { Sources } from './collections/Sources.ts'
 import { Sponsors } from './collections/Sponsors.ts'
 import { Users } from './collections/Users.ts'
 import { indexShortTask } from './jobs/indexShort.ts'
+import { purgeWaitlistTask } from './jobs/purgeWaitlist.ts'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -38,12 +39,16 @@ export default buildConfig({
   },
   collections: [Shorts, Sources, People, Collections, Licenses, LicenseDocuments, Sponsors, Users],
   cors: [process.env.WEB_URL ?? 'http://localhost:4321'],
+  // The schema changes only through migrations (`pnpm migrate`), in development too, so the
+  // first deployment runs exactly what was tested locally.
   db: postgresAdapter({
     pool: { connectionString: process.env.DATABASE_URL ?? '' },
+    push: false,
+    migrationDir: path.resolve(dirname, 'migrations'),
   }),
   // Jobs run in a separate process (`pnpm --filter @shortix/cms jobs`), never inside the web server.
   jobs: {
-    tasks: [indexShortTask],
+    tasks: [indexShortTask, purgeWaitlistTask],
     deleteJobOnComplete: true,
   },
   typescript: { outputFile: path.resolve(dirname, 'payload-types.ts') },

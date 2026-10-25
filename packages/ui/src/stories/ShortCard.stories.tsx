@@ -15,6 +15,17 @@ export const WithBadge: Story = {}
 export const WithoutBadges: Story = { args: { ...SHORTS[2], title: 'Madre', href: '#' } }
 export const LongDirector: Story = { args: { ...SHORTS[3], title: 'Alike', href: '#' } }
 export const Accent: Story = { args: { ...SHORTS[5], title: 'Aquel no era yo', href: '#' } }
+export const Branded: Story = {
+  args: {
+    title: 'Servicio técnico',
+    director: 'Javier Fesser',
+    year: 2016,
+    seconds: 738,
+    tone: 'sala',
+    href: '#',
+    badges: [{ label: 'Contenido de marca', tone: 'branded' }],
+  },
+}
 export const NotALink: Story = { args: { href: undefined } }
 export const Stretched: Story = {
   args: { stretch: true },

@@ -7,9 +7,11 @@ export {
   type Messages,
 } from './messages.ts'
 export {
+  createRichTranslator,
   createTranslator,
   type MessageKey,
   type MessageParams,
+  type RichTranslate,
   type Translate,
 } from './translate.ts'
 export {
@@ -19,5 +21,6 @@ export {
   formatLanguage,
   formatList,
   formatNumber,
+  formatWeekday,
   formatYear,
 } from './format.ts'

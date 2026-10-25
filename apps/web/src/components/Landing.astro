@@ -1,0 +1,223 @@
+---
+import type { Locale } from '@shortix/i18n'
+import { Button, Rail, ShortCard } from '@shortix/ui'
+import { WaitlistForm } from '../islands/WaitlistForm.tsx'
+import { toCard } from '../lib/catalog.ts'
+import { listCollections, shortsOf, toCardSource } from '../lib/cms.ts'
+import { contactLinks } from '../lib/contact.ts'
+import { paths, translator } from '../lib/i18n.ts'
+import { badgeClock, contactEmail } from '../lib/services.ts'
+import RichText from './RichText.astro'
+
+interface Props {
+  locale: Locale
+}
+
+const { locale } = Astro.props
+const t = translator(locale)
+const clock = badgeClock()
+
+// A sample of one launch collection. Its shorts are not public yet: the cards are not links.
+let sample:
+  { title: string; description?: string | null; shorts: ReturnType<typeof shortsOf> } | undefined
+try {
+  const collections = await listCollections(locale)
+  const chosen = collections.find((c) => c.featured) ?? collections.find((c) => !c.sponsor)
+  if (chosen && shortsOf(chosen).length > 0)
+    sample = { title: chosen.title, description: chosen.description, shorts: shortsOf(chosen) }
+} catch {
+  // The landing page works without the CMS; it just shows no sample.
+}
+const shown = sample
+
+const legalNotice = {
+  href: paths.legal(locale, 'aviso-legal'),
+  label: t('legal.links.legalNotice'),
+}
+const privacyPolicy = {
+  href: paths.legal(locale, 'privacidad'),
+  label: t('legal.links.privacyPolicy'),
+}
+const takedown = {
+  href: paths.legal(locale, 'retirada-de-contenidos'),
+  label: t('landing.legal.takedownLink'),
+}
+
+const what = (['curated', 'details', 'filters', 'collections'] as const).map((key) => ({
+  title: t(`landing.what.${key}.title`),
+  text: t(`landing.what.${key}.text`),
+}))
+const routes = (['official', 'open', 'direct'] as const).map((key) => ({
+  title: t(`landing.legal.${key}.title`),
+  text: t(`landing.legal.${key}.text`),
+}))
+const contact = contactLinks(contactEmail, t)
+const audience = [
+  { key: 'viewers' as const },
+  {
+    key: 'filmmakers' as const,
+    lead: t('landing.audience.filmmakers.cta'),
+    link: contact?.propose,
+  },
+  { key: 'organizations' as const, link: contact?.sponsor },
+].map(({ key, lead, link }) => ({
+  title: t(`landing.audience.${key}.title`),
+  text: t(`landing.audience.${key}.text`),
+  // Without a contact mailbox there is nowhere to send a proposal yet: no question, no link.
+  lead: link ? lead : undefined,
+  link,
+}))
+const linkClass =
+  'text-tungsteno-text underline underline-offset-4 rounded-xs focus-visible:focus-ring'
+const faq = (['cost', 'funding', 'players', 'selection'] as const).map((key) => ({
+  question: t(`landing.faq.${key}.question`),
+  answer: t(`landing.faq.${key}.answer`),
+}))
+
+const section = 'grid gap-6 scroll-mt-8'
+const heading = 'm-0 font-display text-display-l uppercase text-balance'
+const lead = 'm-0 max-w-synopsis text-body-l text-ink-muted'
+const list = 'm-0 p-0 list-none grid gap-4 max-w-synopsis'
+---
+
+<section class="grid gap-6 py-8 md:py-12">
+  <p class="m-0 font-mono text-label uppercase text-tungsteno-text">{t('landing.hero.eyebrow')}</p>
+  <h1 class="m-0 font-display text-display-l md:text-display-xl uppercase text-balance">
+    {t('landing.hero.title')}
+  </h1>
+  <p class="m-0 max-w-hero-text text-body-l text-ink-muted">{t('landing.hero.lead')}</p>
+  <div class="grid gap-3 justify-items-start">
+    <Button size="lg" href={paths.landingSection(locale, 'waitlist')}>
+      {t('landing.hero.cta')}
+    </Button>
+    <p class="m-0 text-small text-ink-muted">{t('landing.hero.note')}</p>
+  </div>
+</section>
+
+{shown && (
+  <section class="grid gap-3" aria-labelledby="sample-label">
+    <p id="sample-label" class="m-0 font-mono text-label uppercase text-tungsteno-text">
+      {t('landing.sample.label')}
+    </p>
+    <Rail title={shown.title}>
+      {shown.shorts.map((short) => (
+        <ShortCard {...toCard(toCardSource(short), locale, t, undefined, clock)} />
+      ))}
+    </Rail>
+    {shown.description && <p class={lead}>{shown.description}</p>}
+  </section>
+)}
+
+<section id="what" class={section}>
+  <h2 class={heading}>{t('landing.what.title')}</h2>
+  <p class={lead}>{t('landing.what.intro')}</p>
+  <ul class={list}>
+    {what.map((item) => (
+      <li class="text-body">
+        <strong class="text-ink">{item.title}</strong>{' '}
+        <span class="text-ink-muted">{item.text}</span>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<section id="legal" class={section}>
+  <h2 class={heading}>{t('landing.legal.title')}</h2>
+  <p class={lead}>{t('landing.legal.intro')}</p>
+  <ol class="m-0 pl-6 grid gap-4 max-w-synopsis">
+    {routes.map((route) => (
+      <li class="text-body">
+        <strong class="text-ink">{route.title}</strong>{' '}
+        <span class="text-ink-muted">{route.text}</span>
+      </li>
+    ))}
+  </ol>
+  <p class="m-0 max-w-synopsis text-body">{t('landing.legal.atLaunch')}</p>
+  <p class="m-0 max-w-synopsis text-body text-ink-muted">
+    <RichText
+      locale={locale}
+      messageKey="landing.legal.takedown"
+      parts={{ yours: { strong: t('landing.legal.takedownYours') } }}
+    />{' '}
+    <a
+      href={takedown.href}
+      class="text-tungsteno-text underline underline-offset-4 rounded-xs focus-visible:focus-ring"
+    >
+      {takedown.label}
+    </a>
+  </p>
+</section>
+
+<section class={section} aria-labelledby="audience">
+  <h2 id="audience" class={heading}>
+    {t('landing.audience.title')}
+  </h2>
+  <ul class={list}>
+    {audience.map((item) => (
+      <li class="text-body">
+        <strong class="text-ink">{item.title}</strong>{' '}
+        <span class="text-ink-muted">{item.text}</span>
+        {item.lead && <span class="text-ink-muted"> {item.lead}</span>}
+        {item.link && (
+          <>
+            {' '}
+            <a href={item.link.href} class={linkClass}>
+              {item.link.label}
+            </a>
+          </>
+        )}
+      </li>
+    ))}
+  </ul>
+</section>
+
+<section id="waitlist" class={`${section} max-w-search`} aria-labelledby="waitlist-title">
+  <h2 id="waitlist-title" class={heading}>
+    {t('waitlist.title')}
+  </h2>
+  <p class="m-0 text-body-l text-ink-muted">{t('waitlist.lead')}</p>
+  <WaitlistForm client:load locale={locale} />
+  <p class="m-0 text-small text-ink-muted">
+    <RichText
+      locale={locale}
+      messageKey="waitlist.privacy"
+      parts={{ legalNotice, privacyPolicy }}
+    />
+  </p>
+</section>
+
+<section id="faq" class={section}>
+  <h2 class={heading}>{t('landing.faq.title')}</h2>
+  <dl class="m-0 grid gap-6 max-w-synopsis">
+    {faq.map((item) => (
+      <div class="grid gap-2">
+        <dt class="text-card-title text-ink">{item.question}</dt>
+        <dd class="m-0 text-body text-ink-muted">{item.answer}</dd>
+      </div>
+    ))}
+    <div class="grid gap-2">
+      <dt class="text-card-title text-ink">{t('landing.faq.filmmakers.question')}</dt>
+      <dd class="m-0 text-body text-ink-muted">
+        {contact ? (
+          <RichText
+            locale={locale}
+            messageKey="landing.faq.filmmakers.answerWithContact"
+            parts={{ propose: contact.propose, takedown }}
+          />
+        ) : (
+          <RichText
+            locale={locale}
+            messageKey="landing.faq.filmmakers.answer"
+            parts={{ takedown }}
+          />
+        )}
+      </dd>
+    </div>
+    <div class="grid gap-2">
+      <dt class="text-card-title text-ink">{t('landing.faq.who.question')}</dt>
+      <dd class="m-0 text-body text-ink-muted">
+        <RichText locale={locale} messageKey="landing.faq.who.answer" parts={{ legalNotice }} />
+      </dd>
+    </div>
+  </dl>
+</section>

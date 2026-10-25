@@ -1,6 +1,6 @@
 import type { Locale } from '@shortix/i18n'
 import { MEILISEARCH_HOST } from 'astro:env/server'
-import { getSecret } from 'astro:env/server'
+import { getSecret, SEARCH_INDEX_PREFIX } from 'astro:env/server'
 import { Meilisearch } from 'meilisearch'
 import type { CardSource } from './catalog.ts'
 
@@ -15,6 +15,7 @@ export interface ShortHit {
   posterTone: string
   type: string
   noDialogue: boolean
+  brandedContent?: boolean
   subtitles: string[]
   publishedAt: number | null
 }
@@ -32,7 +33,9 @@ export async function searchShorts(locale: Locale, query: string): Promise<Searc
     host: MEILISEARCH_HOST,
     apiKey: getSecret('MEILISEARCH_SEARCH_KEY'),
   })
-  const response = await client.index<ShortHit>(`shorts_${locale}`).search(query, { limit: 48 })
+  const response = await client
+    .index<ShortHit>(`${SEARCH_INDEX_PREFIX}shorts_${locale}`)
+    .search(query, { limit: 48 })
   return {
     query,
     total: response.estimatedTotalHits ?? response.hits.length,
@@ -45,6 +48,7 @@ export async function searchShorts(locale: Locale, query: string): Promise<Searc
       posterTone: hit.posterTone,
       type: hit.type,
       noDialogue: hit.noDialogue,
+      brandedContent: hit.brandedContent,
       subtitles: hit.subtitles,
       publishedAt: hit.publishedAt,
     })),

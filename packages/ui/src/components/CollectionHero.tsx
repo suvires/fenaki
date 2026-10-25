@@ -77,7 +77,7 @@ export function CollectionHero({
             </Button>
           ) : null}
         </div>
-        {sponsor ? <SponsorCredit label={sponsor.label} name={sponsor.name} /> : null}
+        {sponsor ? <SponsorCredit {...sponsor} /> : null}
       </div>
       <div aria-hidden="true" className="hidden md:grid grid-cols-3 items-end gap-3">
         {posters.slice(0, 3).map((poster, index) => (

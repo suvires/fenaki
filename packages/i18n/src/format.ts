@@ -45,3 +45,10 @@ export function formatLanguage(code: string, locale: Locale): string {
 export function formatList(items: string[], locale: Locale): string {
   return new Intl.ListFormat(locale, { style: 'long', type: 'conjunction' }).format(items)
 }
+
+/** The name of a weekday, ISO numbered (1 = Monday … 7 = Sunday): «jueves». */
+export function formatWeekday(isoDay: number, locale: Locale): string {
+  // 2024-01-01 was a Monday.
+  const date = new Date(Date.UTC(2024, 0, isoDay))
+  return new Intl.DateTimeFormat(locale, { weekday: 'long', timeZone: 'UTC' }).format(date)
+}

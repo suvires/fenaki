@@ -15,6 +15,8 @@ export interface PlayerGateProps {
   embedSrc?: string
   /** Accessible name of the player frame. */
   embedTitle?: string
+  /** Extra attributes for the play button, such as the analytics event (`data-umami-event`). */
+  playAttributes?: Record<`data-${string}`, string>
   className?: string
 }
 
@@ -28,6 +30,7 @@ export function PlayerGate({
   loadedLabel,
   embedSrc,
   embedTitle,
+  playAttributes,
   className,
 }: PlayerGateProps) {
   const [loaded, setLoaded] = useState(false)
@@ -66,7 +69,13 @@ export function PlayerGate({
           <p className="m-0 font-display text-display-l uppercase">{title}</p>
           <p className="m-0 max-w-player-text text-small text-ink-muted">{message}</p>
           <div className="flex flex-wrap items-center gap-3">
-            <Button variant="primary" size="lg" icon="play" onClick={() => setLoaded(true)}>
+            <Button
+              variant="primary"
+              size="lg"
+              icon="play"
+              onClick={() => setLoaded(true)}
+              {...playAttributes}
+            >
               {playLabel}
             </Button>
             {moreLabel ? (

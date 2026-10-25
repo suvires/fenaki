@@ -6,46 +6,22 @@ import config from '@payload-config'
 import { getPayload } from 'payload'
 import { slugify } from '../fields/slug.ts'
 import { SAMPLE_COLLECTION, SAMPLE_SHORTS, SAMPLE_SPONSOR } from './data.ts'
+import { ensureAdmin, removeSamples, runSearchSync } from './shared.ts'
 
 const payload = await getPayload({ config })
 const log = (message: string) => payload.logger.info(`seed: ${message}`)
 
-async function removeSamples() {
-  const shorts = await payload.find({
-    collection: 'shorts',
-    where: { sample: { equals: true } },
-    limit: 0,
-    pagination: false,
-    depth: 0,
-  })
-  const ids = shorts.docs.map((s) => s.id)
-  await payload.delete({ collection: 'collections', where: { sample: { equals: true } } })
-  if (ids.length > 0) {
-    await payload.delete({ collection: 'sources', where: { short: { in: ids } } })
-    await payload.delete({ collection: 'shorts', where: { id: { in: ids } } })
-  }
-  await payload.delete({ collection: 'licenses', where: { name: { like: '[sample]' } } })
-  await payload.delete({ collection: 'sponsors', where: { name: { equals: SAMPLE_SPONSOR.name } } })
-  const names = [...new Set(SAMPLE_SHORTS.flatMap((s) => s.directors))]
-  await payload.delete({ collection: 'people', where: { name: { in: names } } })
+// The sample shorts share slugs with real ones (Cuerdas, Alike): never mix them in one database.
+const real = await payload.count({ collection: 'shorts', where: { sample: { equals: false } } })
+if (real.totalDocs > 0) {
+  payload.logger.error(
+    `seed: this database has ${real.totalDocs} real shorts. The sample seed is for an empty or sample-only database (the e2e tests use their own).`,
+  )
+  process.exit(1)
 }
 
-async function ensureAdmin() {
-  const email = process.env.SEED_ADMIN_EMAIL
-  const password = process.env.SEED_ADMIN_PASSWORD
-  if (!email || !password) {
-    log('SEED_ADMIN_EMAIL or SEED_ADMIN_PASSWORD not set: skipping the admin user')
-    return
-  }
-  const existing = await payload.find({ collection: 'users', where: { email: { equals: email } } })
-  if (existing.totalDocs === 0) {
-    await payload.create({ collection: 'users', data: { email, password } })
-    log(`created admin user ${email}`)
-  }
-}
-
-await removeSamples()
-await ensureAdmin()
+await removeSamples(payload)
+await ensureAdmin(payload, log)
 
 const people = new Map<string, number>()
 for (const name of new Set(SAMPLE_SHORTS.flatMap((s) => s.directors))) {
@@ -125,8 +101,6 @@ await payload.create({
 })
 log('created the sponsored sample collection')
 
-// Index now so search works before the jobs worker picks anything up.
-const result = await payload.jobs.run({ queue: 'default', limit: 100 })
-log(`ran ${Object.keys(result.jobStatus ?? {}).length} search sync jobs`)
+await runSearchSync(payload, log)
 
 process.exit(0)

@@ -34,6 +34,116 @@ services:
       timeout: 5s
       retries: 10
 
+  # Creates the listmonk, Umami and e2e test databases in the PostgreSQL above, then exits.
+  postgres-init:
+    image: postgres:18.6-alpine3.24
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      PGPASSWORD: shortix
+    volumes:
+      - ./docker/postgres/databases.sql:/databases.sql:ro
+    command:
+      [
+        'psql',
+        '-h',
+        'postgres',
+        '-U',
+        'shortix',
+        '-d',
+        'shortix',
+        '-v',
+        'ON_ERROR_STOP=1',
+        '-f',
+        '/databases.sql',
+      ]
+    restart: 'no'
+
+  # Local SMTP server: catches every email listmonk sends. Inbox at http://localhost:8025.
+  mailpit:
+    image: axllent/mailpit:v1.31.4
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: 'true'
+      MP_SMTP_AUTH_ALLOW_INSECURE: 'true'
+    ports:
+      - '127.0.0.1:1025:1025'
+      - '127.0.0.1:8025:8025'
+
+  # listmonk: waitlist and newsletter, on its own database. Admin at http://localhost:9000/admin.
+  # Three steps: install (first run only), set the web app's API token and point SMTP at Mailpit,
+  # then serve. Lists, SMTP and templates are set by `pnpm setup:services`.
+  listmonk-install:
+    image: listmonk/listmonk:v6.2.0
+    depends_on:
+      postgres-init:
+        condition: service_completed_successfully
+    environment: &listmonk-env
+      TZ: Etc/UTC
+      LISTMONK_app__address: 0.0.0.0:9000
+      LISTMONK_db__host: postgres
+      LISTMONK_db__port: '5432'
+      LISTMONK_db__user: listmonk
+      LISTMONK_db__password: listmonk
+      LISTMONK_db__database: listmonk
+      LISTMONK_db__ssl_mode: disable
+      LISTMONK_ADMIN_USER: admin
+      LISTMONK_ADMIN_PASSWORD: shortix-dev-admin
+      LISTMONK_ADMIN_API_USER: shortix-web
+    command:
+      [
+        sh,
+        -c,
+        "./listmonk --install --idempotent --yes --config '' && ./listmonk --upgrade --yes --config ''",
+      ]
+    restart: 'no'
+
+  listmonk-config:
+    image: postgres:18.6-alpine3.24
+    depends_on:
+      listmonk-install:
+        condition: service_completed_successfully
+    environment:
+      PGPASSWORD: listmonk
+      # Must match LISTMONK_API_TOKEN in apps/web/.env.
+      LISTMONK_API_TOKEN: shortix-dev-listmonk-token-change-me
+    volumes:
+      - ./docker/listmonk/configure.sql:/configure.sql:ro
+    # psql expands :'token' only in scripts it reads, not in -c.
+    command:
+      [
+        sh,
+        -c,
+        'psql -h postgres -U listmonk -d listmonk -v ON_ERROR_STOP=1 -v token="$$LISTMONK_API_TOKEN" -f /configure.sql',
+      ]
+    restart: 'no'
+
+  listmonk:
+    image: listmonk/listmonk:v6.2.0
+    depends_on:
+      listmonk-config:
+        condition: service_completed_successfully
+      mailpit:
+        condition: service_started
+    environment: *listmonk-env
+    command: [sh, -c, "./listmonk --config ''"]
+    ports:
+      - '127.0.0.1:9000:9000'
+
+  # Umami: cookieless analytics on its own database. Dashboard at http://localhost:3001
+  # (admin / umami on first run).
+  umami:
+    image: umamisoftware/umami:3.4.0
+    depends_on:
+      postgres-init:
+        condition: service_completed_successfully
+    environment:
+      DATABASE_URL: postgresql://umami:umami@postgres:5432/umami
+      APP_SECRET: shortix-dev-umami-secret-change-me
+      DISABLE_TELEMETRY: '1'
+    ports:
+      - '127.0.0.1:3001:3000'
+
 volumes:
   postgres-data:
   meilisearch-data:

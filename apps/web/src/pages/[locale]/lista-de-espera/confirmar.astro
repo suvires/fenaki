@@ -1,0 +1,64 @@
+---
+import { Button, Notice } from '@shortix/ui'
+import Base from '../../../layouts/Base.astro'
+import { localeFrom, paths, translator } from '../../../lib/i18n.ts'
+import { listmonk } from '../../../lib/services.ts'
+import { formatWeekday } from '@shortix/i18n'
+import { confirm, NEWSLETTER_SCHEDULE, type ConfirmResult } from '@shortix/waitlist'
+
+const locale = localeFrom(Astro.params.locale)
+if (!locale) return Astro.rewrite('/404')
+
+const t = translator(locale)
+let result: ConfirmResult | { status: 'failed' }
+try {
+  result = await confirm(listmonk(), {
+    subscriberUuid: Astro.url.searchParams.get('s') ?? '',
+    clientIp: Astro.clientAddress,
+  })
+} catch (error) {
+  console.error('waitlist: confirmation failed', error)
+  result = { status: 'failed' }
+  Astro.response.status = 503
+}
+const title =
+  result.status === 'confirmed'
+    ? t('waitlist.confirmed.title')
+    : result.status === 'expired'
+      ? t('waitlist.expired.title')
+      : t('waitlist.title')
+---
+
+<Base locale={locale} title={title} noindex>
+  <section class="grid gap-4 max-w-synopsis py-8">
+    <h1 class="m-0 font-display text-display-l uppercase text-balance">{title}</h1>
+    {result.status === 'confirmed' && (
+      <>
+        <p class="m-0 text-body-l">{t('waitlist.confirmed.text')}</p>
+        {result.newsletter && (
+          <p class="m-0 text-body-l">
+            {t('waitlist.confirmed.newsletter', {
+              weekday: formatWeekday(NEWSLETTER_SCHEDULE.weekday, locale),
+            })}
+          </p>
+        )}
+        <p class="m-0 text-body text-ink-muted">{t('waitlist.confirmed.building')}</p>
+      </>
+    )}
+    {result.status === 'expired' && (
+      <>
+        <p class="m-0 text-body-l text-ink-muted">{t('waitlist.expired.text')}</p>
+        <div>
+          <Button variant="secondary" href={paths.landingSection(locale, 'waitlist')}>
+            {t('waitlist.expired.back')}
+          </Button>
+        </div>
+      </>
+    )}
+    {result.status === 'failed' && (
+      <Notice tone="danger" role="alert">
+        {t('waitlist.error.server')}
+      </Notice>
+    )}
+  </section>
+</Base>

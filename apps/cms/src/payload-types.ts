@@ -105,8 +105,12 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: ('false' | 'none' | 'null') | false | null | 'es' | 'es'[];
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'payload-jobs-stats': PayloadJobsStat;
+  };
+  globalsSelect: {
+    'payload-jobs-stats': PayloadJobsStatsSelect<false> | PayloadJobsStatsSelect<true>;
+  };
   locale: 'es';
   widgets: {
     collections: CollectionsWidget;
@@ -115,6 +119,7 @@ export interface Config {
   jobs: {
     tasks: {
       indexShort: TaskIndexShort;
+      purgeWaitlist: TaskPurgeWaitlist;
       inline: {
         input: unknown;
         output: unknown;
@@ -173,6 +178,14 @@ export interface Short {
    */
   posterTone?: ('sala' | 'tungsteno' | 'plata') | null;
   /**
+   * Made by or for a brand. Shown with a «Contenido de marca» badge, and never in a sponsored collection.
+   */
+  brandedContent?: boolean | null;
+  /**
+   * The brand behind the short, e.g. Fundación Telefónica.
+   */
+  brand?: string | null;
+  /**
    * People and their role on this short.
    */
   credits?:
@@ -199,6 +212,10 @@ export interface Short {
    * Sample data for development, not a catalog entry.
    */
   sample?: boolean | null;
+  /**
+   * Set by the catalog import. Re-running the import updates this document.
+   */
+  importKey?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -214,6 +231,10 @@ export interface Person {
    */
   slug: string;
   bio?: string | null;
+  /**
+   * Set by the catalog import. Re-running the import updates this document.
+   */
+  importKey?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -241,6 +262,10 @@ export interface Source {
   status: 'unchecked' | 'ok' | 'broken' | 'private';
   lastCheckedAt?: string | null;
   license: number | License;
+  /**
+   * Set by the catalog import. Re-running the import updates this document.
+   */
+  importKey?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -277,6 +302,10 @@ export interface License {
    * Internal. Never shown publicly.
    */
   notes?: string | null;
+  /**
+   * Set by the catalog import. Re-running the import updates this document.
+   */
+  importKey?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -321,7 +350,7 @@ export interface Collection {
   featured?: boolean | null;
   status: 'draft' | 'published';
   /**
-   * Shorts under a non-commercial license cannot be in a sponsored collection.
+   * Shorts under a non-commercial license and branded content cannot be in a sponsored collection.
    */
   sponsor?: (number | null) | Sponsor;
   sponsorshipStartsAt?: string | null;
@@ -330,6 +359,10 @@ export interface Collection {
    * Sample data for development, not a catalog entry.
    */
   sample?: boolean | null;
+  /**
+   * Set by the catalog import. Re-running the import updates this document.
+   */
+  importKey?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -446,7 +479,7 @@ export interface PayloadJob {
     | {
         executedAt: string;
         completedAt: string;
-        taskSlug: 'inline' | 'indexShort';
+        taskSlug: 'inline' | 'indexShort' | 'purgeWaitlist';
         taskID: string;
         input?:
           | {
@@ -479,10 +512,19 @@ export interface PayloadJob {
         id?: string | null;
       }[]
     | null;
-  taskSlug?: ('inline' | 'indexShort') | null;
+  taskSlug?: ('inline' | 'indexShort' | 'purgeWaitlist') | null;
   queue?: string | null;
   waitUntil?: string | null;
   processing?: boolean | null;
+  meta?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -582,6 +624,8 @@ export interface ShortsSelect<T extends boolean = true> {
   type?: T;
   noDialogue?: T;
   posterTone?: T;
+  brandedContent?: T;
+  brand?: T;
   credits?:
     | T
     | {
@@ -593,6 +637,7 @@ export interface ShortsSelect<T extends boolean = true> {
   status?: T;
   publishedAt?: T;
   sample?: T;
+  importKey?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -610,6 +655,7 @@ export interface SourcesSelect<T extends boolean = true> {
   status?: T;
   lastCheckedAt?: T;
   license?: T;
+  importKey?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -621,6 +667,7 @@ export interface PeopleSelect<T extends boolean = true> {
   name?: T;
   slug?: T;
   bio?: T;
+  importKey?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -639,6 +686,7 @@ export interface CollectionsSelect<T extends boolean = true> {
   sponsorshipStartsAt?: T;
   sponsorshipEndsAt?: T;
   sample?: T;
+  importKey?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -655,6 +703,7 @@ export interface LicensesSelect<T extends boolean = true> {
   startsAt?: T;
   endsAt?: T;
   notes?: T;
+  importKey?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -746,6 +795,7 @@ export interface PayloadJobsSelect<T extends boolean = true> {
   queue?: T;
   waitUntil?: T;
   processing?: T;
+  meta?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -783,6 +833,34 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-jobs-stats".
+ */
+export interface PayloadJobsStat {
+  id: number;
+  stats?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-jobs-stats_select".
+ */
+export interface PayloadJobsStatsSelect<T extends boolean = true> {
+  stats?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "collections_widget".
  */
 export interface CollectionsWidget {
@@ -801,6 +879,17 @@ export interface TaskIndexShort {
   };
   output: {
     action: string;
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskPurgeWaitlist".
+ */
+export interface TaskPurgeWaitlist {
+  input?: unknown;
+  output: {
+    deleted: number;
+    unsubscribed: number;
   };
 }
 /**

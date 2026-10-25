@@ -1,0 +1,28 @@
+---
+import { createRichTranslator, type Locale, type MessageKey } from '@shortix/i18n'
+
+/** A link or emphasis placed inside a message, at its `{name}` placeholder. */
+export type RichPart = { href: string; label: string } | { strong: string }
+
+interface Props {
+  locale: Locale
+  messageKey: MessageKey
+  parts: Record<string, RichPart>
+}
+
+const { locale, messageKey, parts } = Astro.props
+const pieces = createRichTranslator(locale)(messageKey, parts)
+const link = 'text-tungsteno-text underline underline-offset-4 rounded-xs focus-visible:focus-ring'
+---
+
+{pieces.map((piece) =>
+  typeof piece === 'string' ? (
+    piece
+  ) : 'href' in piece ? (
+    <a href={piece.href} class={link}>
+      {piece.label}
+    </a>
+  ) : (
+    <strong class="text-ink">{piece.strong}</strong>
+  ),
+)}
