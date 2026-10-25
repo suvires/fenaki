@@ -8,7 +8,7 @@ const dirname = path.dirname(fileURLToPath(import.meta.url))
 const nextConfig: NextConfig = {
   // The e2e tests run a second CMS next to the development one, in its own build directory.
   distDir: process.env.NEXT_DIST_DIR ?? '.next',
-  transpilePackages: ['@shortix/i18n'],
+  transpilePackages: ['@shortix/i18n', '@shortix/waitlist'],
   agentRules: false,
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {

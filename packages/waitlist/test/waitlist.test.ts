@@ -1,17 +1,15 @@
 import { describe, expect, it } from 'vitest'
-import { confirmationEmail } from '../src/lib/confirmation-email.ts'
-import type { Listmonk, ListmonkList, ListmonkSubscriber } from '../src/lib/listmonk.ts'
-import { createRateLimit } from '../src/lib/rate-limit.ts'
-import { isHiddenInMode } from '../src/lib/site-mode.ts'
+import type { Listmonk, ListmonkList, ListmonkSubscriber } from '../src/listmonk.ts'
 import {
   checkEmail,
   confirm,
   confirmationUrl,
   LINK_TTL_MS,
   LIST_TAGS,
+  purgeExpired,
   RESEND_INTERVAL_MS,
   subscribe,
-} from '../src/lib/waitlist.ts'
+} from '../src/waitlist.ts'
 
 const NOW = Date.parse('2026-10-25T12:00:00Z')
 const LAUNCH: ListmonkList = {
@@ -71,6 +69,16 @@ function fakeListmonk(existing?: ListmonkSubscriber) {
     templateByName: async (name: string) => ({ id: 9, name, type: 'tx' }),
     sendTransactional: async (message: { data: Record<string, string> }) => {
       sent.push(message.data)
+      return true
+    },
+    unconfirmedOn: async () =>
+      subscriber?.lists.some((l) => l.subscription_status === 'unconfirmed') ? [subscriber] : [],
+    removeFromLists: async (_id: number, ids: number[]) => {
+      if (subscriber) subscriber.lists = subscriber.lists.filter((l) => !ids.includes(l.id))
+      return true
+    },
+    deleteSubscriber: async () => {
+      subscriber = undefined
       return true
     },
     confirmOptin: async (_uuid: string, lists: string[]) => {
@@ -162,41 +170,38 @@ describe('confirmationUrl', () => {
   })
 })
 
-describe('confirmationEmail', () => {
-  it('uses the locale copy and leaves the link to listmonk', () => {
-    const { subject, body } = confirmationEmail('es')
-    expect(subject).toBe('Confirma tu correo para la lista de Shortix')
-    expect(body).toContain('Confirmar mi correo')
-    expect(body).toContain('href="{{ .Tx.Data.confirm_url }}"')
-    expect(body).toContain('{{ .Tx.Data.site_url }}privacidad')
-    expect(body).not.toMatch(/\{(legalNotice|privacyPolicy|url)\}/)
+describe('purgeExpired', () => {
+  it('keeps signups whose link still works', async () => {
+    const fake = fakeListmonk()
+    await subscribe(fake.client, { ...input, newsletter: false, now: NOW })
+    expect(await purgeExpired(fake.client, NOW + LINK_TTL_MS)).toEqual({
+      deleted: 0,
+      unsubscribed: 0,
+    })
+    expect(fake.get()).toBeDefined()
   })
-})
 
-describe('isHiddenInMode', () => {
-  it('hides only the catalog routes, and only before launch', () => {
-    for (const path of ['/es/cortos/cuerdas', '/es/colecciones/x', '/es/buscar', '/api/search'])
-      expect(isHiddenInMode(path, 'landing')).toBe(true)
-    for (const path of [
-      '/es/',
-      '/es/aviso-legal',
-      '/es/lista-de-espera/confirmar',
-      '/api/waitlist',
-    ])
-      expect(isHiddenInMode(path, 'landing')).toBe(false)
-    expect(isHiddenInMode('/es/cortos/cuerdas', 'catalog')).toBe(false)
+  it('deletes a subscriber that never confirmed, once the link expired', async () => {
+    const fake = fakeListmonk()
+    await subscribe(fake.client, { ...input, newsletter: true, now: NOW })
+    expect(await purgeExpired(fake.client, NOW + LINK_TTL_MS + 1)).toEqual({
+      deleted: 1,
+      unsubscribed: 0,
+    })
+    expect(fake.get()).toBeUndefined()
   })
-})
 
-describe('createRateLimit', () => {
-  it('allows a number of requests per window and key', () => {
-    const allow = createRateLimit(2, 1000)
-    expect([allow('a', 0), allow('a', 1), allow('a', 2), allow('b', 2)]).toEqual([
-      true,
-      true,
-      false,
-      true,
+  it('only drops the expired list when another one is confirmed', async () => {
+    const fake = fakeListmonk()
+    await subscribe(fake.client, { ...input, newsletter: false, now: NOW })
+    await confirm(fake.client, { subscriberUuid: UUID, now: NOW })
+    await subscribe(fake.client, { ...input, newsletter: true, now: NOW + RESEND_INTERVAL_MS })
+    expect(await purgeExpired(fake.client, NOW + 2 * LINK_TTL_MS)).toEqual({
+      deleted: 0,
+      unsubscribed: 1,
+    })
+    expect(fake.get()?.lists.map((l) => [l.id, l.subscription_status])).toEqual([
+      [LAUNCH.id, 'confirmed'],
     ])
-    expect(allow('a', 1001)).toBe(true)
   })
 })

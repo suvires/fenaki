@@ -251,6 +251,9 @@ importers:
       '@shortix/i18n':
         specifier: workspace:*
         version: link:../../packages/i18n
+      '@shortix/waitlist':
+        specifier: workspace:*
+        version: link:../../packages/waitlist
       graphql:
         specifier: 16.14.2
         version: 16.14.2
@@ -306,6 +309,9 @@ importers:
       '@shortix/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      '@shortix/waitlist':
+        specifier: workspace:*
+        version: link:../../packages/waitlist
       '@tailwindcss/vite':
         specifier: 4.3.3
         version: 4.3.3(vite@8.3.5(@types/node@26.6.5)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.77.4)(tsx@4.23.15)(yaml@2.9.1))
@@ -420,6 +426,16 @@ importers:
       vite:
         specifier: 8.3.5
         version: 8.3.5(@types/node@26.6.5)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.77.4)(tsx@4.23.15)(yaml@2.9.1)
+
+  packages/waitlist:
+    dependencies:
+      '@shortix/i18n':
+        specifier: workspace:*
+        version: link:../i18n
+    devDependencies:
+      vitest:
+        specifier: 5.0.5
+        version: 5.0.5(@types/node@26.6.5)(vite@8.3.5(@types/node@26.6.5)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.77.4)(tsx@4.23.15)(yaml@2.9.1))
 
 packages:
 

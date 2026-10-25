@@ -3,7 +3,7 @@ import { Button, Notice } from '@shortix/ui'
 import Base from '../../../layouts/Base.astro'
 import { localeFrom, paths, translator } from '../../../lib/i18n.ts'
 import { listmonk } from '../../../lib/services.ts'
-import { confirm, type ConfirmResult } from '../../../lib/waitlist.ts'
+import { confirm, type ConfirmResult } from '@shortix/waitlist'
 
 const locale = localeFrom(Astro.params.locale)
 if (!locale) return Astro.rewrite('/404')

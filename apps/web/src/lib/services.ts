@@ -10,7 +10,7 @@ import {
   UMAMI_SCRIPT_URL,
   UMAMI_WEBSITE_ID,
 } from 'astro:env/server'
-import { createListmonk, type Listmonk } from './listmonk.ts'
+import { createListmonk, type Listmonk } from '@shortix/waitlist'
 import type { SiteMode } from './site-mode.ts'
 
 export const siteMode: SiteMode = SITE_MODE

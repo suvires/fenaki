@@ -143,11 +143,7 @@ export async function confirm(
   )
   if (pending.length === 0) return { status: 'expired' }
 
-  const sent = sentAt(subscriber)
-  const issuedAt = Number.isNaN(sent)
-    ? Math.max(...pending.map((list) => Date.parse(list.subscription_created_at)))
-    : sent
-  if (now - issuedAt > LINK_TTL_MS) return { status: 'expired' }
+  if (now > linkExpiresAt(subscriber, pending)) return { status: 'expired' }
 
   await client.confirmOptin(
     subscriber.uuid,
@@ -155,4 +151,51 @@ export async function confirm(
     input.clientIp,
   )
   return { status: 'confirmed', newsletter: pending.some((list) => list.id === lists.weekly.id) }
+}
+
+/** When the subscriber's current confirmation link stops working. */
+function linkExpiresAt(
+  subscriber: ListmonkSubscriber,
+  pending: { subscription_created_at: string }[],
+) {
+  const sent = sentAt(subscriber)
+  const issuedAt = Number.isNaN(sent)
+    ? Math.max(...pending.map((list) => Date.parse(list.subscription_created_at)))
+    : sent
+  return issuedAt + LINK_TTL_MS
+}
+
+/**
+ * Keeps the promise of the confirmation email: «sin confirmar, ... borraremos este correo de la
+ * lista». Once a link has expired, the unconfirmed waitlist subscriptions are removed, and the
+ * subscriber too when nothing else is confirmed. Runs daily as a job in the CMS worker.
+ */
+export async function purgeExpired(
+  client: Listmonk,
+  now = Date.now(),
+): Promise<{ deleted: number; unsubscribed: number }> {
+  const lists = await waitlistLists(client)
+  const ours = new Set([lists.launch.id, lists.weekly.id])
+  let deleted = 0
+  let unsubscribed = 0
+  for (const subscriber of await client.unconfirmedOn([...ours])) {
+    const pending = subscriber.lists.filter(
+      (list) => ours.has(list.id) && list.subscription_status === 'unconfirmed',
+    )
+    if (pending.length === 0 || now <= linkExpiresAt(subscriber, pending)) continue
+    const keeps = subscriber.lists.some(
+      (list) => !pending.includes(list) && list.subscription_status !== 'unsubscribed',
+    )
+    if (keeps) {
+      await client.removeFromLists(
+        subscriber.id,
+        pending.map((list) => list.id),
+      )
+      unsubscribed += 1
+    } else {
+      await client.deleteSubscriber(subscriber.id)
+      deleted += 1
+    }
+  }
+  return { deleted, unsubscribed }
 }

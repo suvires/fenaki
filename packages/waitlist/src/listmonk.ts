@@ -1,7 +1,6 @@
 /**
  * A small client for listmonk's API: the waitlist and the newsletter live there, never in the
- * web app's own storage. Server-side only (it carries the API token). No Astro imports, so the
- * setup script can use it too.
+ * web app's own storage. Server-side only: it carries the API token.
  */
 
 export interface ListmonkConfig {
@@ -131,6 +130,34 @@ export function createListmonk(config: ListmonkConfig) {
       return request<ListmonkSubscriber>('PATCH', `/api/subscribers/${subscriber.id}`, {
         body: { attribs },
       })
+    },
+
+    /** Subscribers with an unconfirmed subscription to any of these lists, all pages. */
+    async unconfirmedOn(listIds: number[]): Promise<ListmonkSubscriber[]> {
+      const all: ListmonkSubscriber[] = []
+      for (let page = 1; ; page++) {
+        const url = new URL('/api/subscribers', config.url)
+        for (const id of listIds) url.searchParams.append('list_id', String(id))
+        url.searchParams.set('subscription_status', 'unconfirmed')
+        url.searchParams.set('per_page', '100')
+        url.searchParams.set('page', String(page))
+        const result = await request<{ results: ListmonkSubscriber[]; total: number }>(
+          'GET',
+          url.pathname + url.search,
+        )
+        all.push(...result.results)
+        if (result.results.length === 0 || all.length >= result.total) return all
+      }
+    },
+
+    removeFromLists(subscriberId: number, listIds: number[]) {
+      return request<boolean>('PUT', '/api/subscribers/lists', {
+        body: { ids: [subscriberId], action: 'remove', target_list_ids: listIds },
+      })
+    },
+
+    deleteSubscriber(subscriberId: number) {
+      return request<boolean>('DELETE', `/api/subscribers/${subscriberId}`)
     },
 
     async templateByName(name: string): Promise<ListmonkTemplate | undefined> {

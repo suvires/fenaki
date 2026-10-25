@@ -19,6 +19,7 @@
     "@shortix/i18n": "workspace:*",
     "@shortix/tokens": "workspace:*",
     "@shortix/ui": "workspace:*",
+    "@shortix/waitlist": "workspace:*",
     "@tailwindcss/vite": "4.3.3",
     "astro": "7.4.2",
     "meilisearch": "0.62.0",

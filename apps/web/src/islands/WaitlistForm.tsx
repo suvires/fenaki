@@ -2,7 +2,7 @@ import { createRichTranslator, createTranslator, type Locale } from '@shortix/i1
 import { Button, Checkbox, Notice, TextField } from '@shortix/ui'
 import { Fragment, useState, type SubmitEvent } from 'react'
 import { EVENTS } from '../lib/analytics.ts'
-import { checkEmail } from '../lib/waitlist.ts'
+import { checkEmail } from '@shortix/waitlist'
 
 interface WaitlistFormProps {
   locale: Locale

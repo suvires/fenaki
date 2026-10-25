@@ -3,7 +3,7 @@ import type { APIRoute } from 'astro'
 import { localeFrom } from '../../lib/i18n.ts'
 import { createRateLimit } from '../../lib/rate-limit.ts'
 import { fromEmail, listmonk, siteUrl } from '../../lib/services.ts'
-import { checkEmail, subscribe } from '../../lib/waitlist.ts'
+import { checkEmail, subscribe } from '@shortix/waitlist'
 
 const allow = createRateLimit(10, 10 * 60 * 1000)
 

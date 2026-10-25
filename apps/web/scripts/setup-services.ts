@@ -10,8 +10,13 @@
  */
 import { defaultLocale, locales } from '@shortix/i18n'
 import { confirmationEmail } from '../src/lib/confirmation-email.ts'
-import { createListmonk, type Listmonk, type ListmonkTemplate } from '../src/lib/listmonk.ts'
-import { confirmationTemplateName, LIST_TAGS } from '../src/lib/waitlist.ts'
+import {
+  confirmationTemplateName,
+  createListmonk,
+  LIST_TAGS,
+  type Listmonk,
+  type ListmonkTemplate,
+} from '@shortix/waitlist'
 
 function env(name: string, fallback?: string): string {
   const value = process.env[name] || fallback
