@@ -25,14 +25,14 @@ export function Rail({ title, actionLabel, actionHref, className, children }: Ra
           {actionHref ? (
             <a
               href={actionHref}
-              className="group inline-flex items-center gap-1 rounded-xs text-ink no-underline focus-visible:focus-ring"
+              className="group inline-flex items-center gap-2 rounded-xs text-ink no-underline focus-visible:focus-ring"
             >
               {title}
               {actionLabel ? <span className="sr-only">, {actionLabel}</span> : null}
               <Icon
                 name="chevron"
-                size="lg"
-                className="text-tungsteno transition-transform group-hover:translate-x-1 group-focus-visible:translate-x-1 motion-reduce:transition-none"
+                weight="heavy"
+                className="size-6 text-tungsteno transition-transform group-hover:translate-x-1 group-focus-visible:translate-x-1 motion-reduce:transition-none"
               />
             </a>
           ) : (

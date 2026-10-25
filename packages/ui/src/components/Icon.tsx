@@ -5,7 +5,8 @@ const PATHS = {
   plus: 'M12 5v14M5 12h14',
   search: 'M10.5 17a6.5 6.5 0 1 1 0-13 6.5 6.5 0 0 1 0 13zM15.5 15.5 20 20',
   arrow: 'M5 12h14M13 6l6 6-6 6',
-  chevron: 'M9 6l6 6-6 6',
+  // Tall, to sit at the cap height of a display title (Rail).
+  chevron: 'M8.5 3.5 17 12l-8.5 8.5',
 } as const
 
 export type IconName = keyof typeof PATHS
@@ -20,11 +21,13 @@ const SIZES = {
 export interface IconProps {
   name: IconName
   size?: keyof typeof SIZES
+  /** `heavy` matches bold display type (a rail title's chevron). */
+  weight?: 'regular' | 'heavy'
   className?: string
 }
 
-/** Inline SVG on a 24px grid, 1.75 stroke, drawn in currentColor. Decorative: hidden from screen readers. */
-export function Icon({ name, size = 'md', className }: IconProps) {
+/** Inline SVG on a 24px grid, 1.75 stroke (3 when heavy), drawn in currentColor. Decorative: hidden from screen readers. */
+export function Icon({ name, size = 'md', weight = 'regular', className }: IconProps) {
   const filled = name === 'play'
   return (
     <svg
@@ -33,7 +36,7 @@ export function Icon({ name, size = 'md', className }: IconProps) {
       aria-hidden="true"
       fill={filled ? 'currentColor' : 'none'}
       stroke={filled ? 'none' : 'currentColor'}
-      strokeWidth={1.75}
+      strokeWidth={weight === 'heavy' ? 3 : 1.75}
       strokeLinecap="round"
       strokeLinejoin="round"
     >
