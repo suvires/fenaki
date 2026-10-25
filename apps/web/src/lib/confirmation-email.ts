@@ -4,8 +4,8 @@
  * template: listmonk fills `{{ .Tx.Data.confirm_url }}` and `{{ .Tx.Data.site_url }}` when the web
  * app sends it. `pnpm setup:services` uploads it.
  */
-import { createRichTranslator, createTranslator, type Locale } from '@shortix/i18n'
-import { palettes, tokens, type TypeStyle } from '@shortix/tokens'
+import { createRichTranslator, createTranslator, type Locale } from '@fenaki/i18n'
+import { palettes, tokens, type TypeStyle } from '@fenaki/tokens'
 
 const CONFIRM_URL = '{{ .Tx.Data.confirm_url }}'
 const SITE_URL = '{{ .Tx.Data.site_url }}'

@@ -1,4 +1,4 @@
-import { createTranslator } from '@shortix/i18n'
+import { createTranslator } from '@fenaki/i18n'
 import { describe, expect, it } from 'vitest'
 import {
   badgesFor,

@@ -4,8 +4,8 @@ log() { echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) $*"; }
 fail() { log "error: $*" >&2; exit 1; }
 require() { for name in "$@"; do eval "[ -n \"\${$name:-}\" ]" || fail "$name is not set"; done; }
 
-# The databases in the PostgreSQL accessory: Shortix, listmonk (waitlist and newsletter), Umami.
-DATABASES="${BACKUP_DATABASES:-shortix listmonk umami}"
+# The databases in the PostgreSQL accessory: Fenaki, listmonk (waitlist and newsletter), Umami.
+DATABASES="${BACKUP_DATABASES:-fenaki listmonk umami}"
 
 # rclone remote `offsite:` from the environment. BACKUP_S3_PROVIDER is rclone's S3 provider:
 # `Cloudflare` for R2, `Other` for Backblaze B2's S3 API, `Rclone` for the local rehearsal.

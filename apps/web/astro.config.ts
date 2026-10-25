@@ -1,6 +1,6 @@
 import node from '@astrojs/node'
 import react from '@astrojs/react'
-import { defaultLocale, locales } from '@shortix/i18n'
+import { defaultLocale, locales } from '@fenaki/i18n'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig, envField } from 'astro/config'
 import { STATIC_DIRECTIVES, STYLE_ATTRIBUTES } from './src/lib/csp.ts'
@@ -70,7 +70,7 @@ export default defineConfig({
       LISTMONK_API_USER: envField.string({
         context: 'server',
         access: 'secret',
-        default: 'shortix-web',
+        default: 'fenaki-web',
       }),
       LISTMONK_API_TOKEN: envField.string({ context: 'server', access: 'secret', optional: true }),
       LISTMONK_FROM_EMAIL: envField.string({ context: 'server', access: 'secret', optional: true }),

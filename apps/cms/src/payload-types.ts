@@ -304,7 +304,7 @@ export interface Source {
    */
   checkNote?: string | null;
   /**
-   * Reference only: Shortix shows typographic posters, never film stills.
+   * Reference only: Fenaki shows typographic posters, never film stills.
    */
   thumbnailUrl?: string | null;
   uploadedAt?: string | null;

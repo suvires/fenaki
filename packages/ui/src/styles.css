@@ -1,9 +1,9 @@
 /*
- * Shortix UI styles. Apps import this after Tailwind and the token theme:
+ * Fenaki UI styles. Apps import this after Tailwind and the token theme:
  *   @import 'tailwindcss';
- *   @import '@shortix/tokens/theme.css';
- *   @import '@shortix/tokens/fonts.css';
- *   @import '@shortix/ui/styles.css';
+ *   @import '@fenaki/tokens/theme.css';
+ *   @import '@fenaki/tokens/fonts.css';
+ *   @import '@fenaki/ui/styles.css';
  */
 @source './';
 

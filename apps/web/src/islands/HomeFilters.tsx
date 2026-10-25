@@ -1,4 +1,4 @@
-import { FilterChips, type FilterChipsProps } from '@shortix/ui'
+import { FilterChips, type FilterChipsProps } from '@fenaki/ui'
 import { useState } from 'react'
 
 interface HomeFiltersProps {

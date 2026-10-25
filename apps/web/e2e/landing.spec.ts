@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test'
 // The development services, or those of the deployment under test (playwright.config.ts).
 const MAILPIT = process.env.E2E_MAILPIT_URL ?? 'http://localhost:8025'
 const LISTMONK = process.env.E2E_LISTMONK_URL ?? 'http://localhost:9000'
-const LISTMONK_AUTH = `token shortix-web:${process.env.LISTMONK_API_TOKEN ?? 'shortix-dev-listmonk-token-change-me'}`
+const LISTMONK_AUTH = `token fenaki-web:${process.env.LISTMONK_API_TOKEN ?? 'fenaki-dev-listmonk-token-change-me'}`
 
 interface MailpitMessage {
   ID: string
@@ -48,7 +48,7 @@ test('the landing page replaces the home and shows a launch collection', async (
   // These tests run with a contact mailbox: proposals and sponsorship write to it.
   await expect(page.getByRole('link', { name: 'Proponer un corto' }).first()).toHaveAttribute(
     'href',
-    'mailto:hola@shortix.film?subject=Propuesta%20de%20corto',
+    'mailto:hola@fenaki.tv?subject=Propuesta%20de%20corto',
   )
   await expect(
     page.getByRole('navigation', { name: 'Pie de página' }).getByRole('link', {
@@ -76,13 +76,13 @@ test('the sponsorship page is public before launch, with the contact links', asy
   request,
 }) => {
   await page.goto('/es/patrocina')
-  await expect(page.getByRole('heading', { level: 1, name: 'Patrocina Shortix' })).toBeVisible()
+  await expect(page.getByRole('heading', { level: 1, name: 'Patrocina Fenaki' })).toBeVisible()
   await expect(
     page
       .getByRole('main')
       .getByRole('link', { name: 'Escaparates para festivales y escuelas' })
       .first(),
-  ).toHaveAttribute('href', /^mailto:hola@shortix\.film\?subject=/)
+  ).toHaveAttribute('href', /^mailto:hola@fenaki\.tv\?subject=/)
   // Before launch the sitemap lists only the public pages.
   const sitemap = await (await request.get('/sitemap-es.xml')).text()
   expect(sitemap).toContain('/es/patrocina</loc>')
@@ -111,7 +111,7 @@ test('signing up sends a confirmation email that confirms the subscription in li
   await expect(page.getByText(email)).toBeVisible()
 
   const message = await waitForEmail(email)
-  expect(message.Subject).toBe('Confirma tu correo para la lista de Shortix')
+  expect(message.Subject).toBe('Confirma tu correo para la lista de Fenaki')
   const origin = new URL(page.url()).origin.replace(/[./]/g, '\\$&')
   const link = new RegExp(`href="(${origin}/es/lista-de-espera/confirmar\\?s=[^"]+)"`).exec(
     message.HTML,

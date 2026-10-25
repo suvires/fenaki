@@ -42,7 +42,7 @@ read_identity() {
 
 fetch() {
   if [ "$archive" = latest ]; then
-    archive=$(rclone lsf --include 'shortix-*.tar.age' "$OFFSITE" | sort | tail -n 1)
+    archive=$(rclone lsf --include 'fenaki-*.tar.age' "$OFFSITE" | sort | tail -n 1)
     [ -n "$archive" ] || fail "no archives in $OFFSITE"
   fi
   rm -rf /restore && mkdir -p /restore
@@ -77,7 +77,7 @@ case $command in
     for file in /restore/postgres/*.dump; do
       db=$(basename "$file" .dump)
       log "postgres: $db"
-      # listmonk and umami own their databases; Shortix's belongs to the main user.
+      # listmonk and umami own their databases; Fenaki's belongs to the main user.
       owner=$PGUSER
       if psql --dbname=postgres -tAc "SELECT 1 FROM pg_roles WHERE rolname = '$db'" | grep -q 1; then
         owner=$db

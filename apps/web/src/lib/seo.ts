@@ -2,7 +2,7 @@
  * Search engine and social metadata: canonical and alternate URLs, schema.org structured data,
  * sitemaps. Pure functions over plain data, no Astro imports, so tests can use them.
  */
-import { defaultLocale, locales, type Locale } from '@shortix/i18n'
+import { defaultLocale, locales, type Locale } from '@fenaki/i18n'
 
 export const absoluteUrl = (siteUrl: string, path: string) => new URL(path, siteUrl).toString()
 
@@ -52,9 +52,9 @@ export interface VideoInput {
   name: string
   description?: string | null
   url: string
-  /** The generated poster image: Shortix never uses film stills. */
+  /** The generated poster image: Fenaki never uses film stills. */
   thumbnailUrl: string
-  /** When the video was first published, on the provider or in Shortix. */
+  /** When the video was first published, on the provider or in Fenaki. */
   uploadDate?: string | null
   durationSeconds: number
   embedUrl?: string

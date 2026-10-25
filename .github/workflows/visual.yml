@@ -35,11 +35,11 @@ jobs:
 
       - name: Build tokens and Storybook
         run: |
-          pnpm --filter @shortix/tokens build
-          pnpm --filter @shortix/ui build-storybook --quiet
+          pnpm --filter @fenaki/tokens build
+          pnpm --filter @fenaki/ui build-storybook --quiet
 
       - name: Compare screenshots
-        run: pnpm --filter @shortix/ui exec playwright test
+        run: pnpm --filter @fenaki/ui exec playwright test
         env:
           CI: 'true'
 

@@ -1,6 +1,6 @@
 import type { ThemeId, TokenFile } from './types.ts'
 
-const HEADER = '/* Shortix: generated from packages/tokens/tokens.json. Do not edit by hand. */'
+const HEADER = '/* Fenaki: generated from packages/tokens/tokens.json. Do not edit by hand. */'
 const ALIAS = /^\{([a-z0-9-]+)\}$/
 
 /** Resolves one theme's colors, following `{name}` aliases to other color tokens. */
@@ -35,7 +35,7 @@ function colorValue(tokens: TokenFile, name: string, theme: ThemeId): string {
 
 /**
  * The product theme for Tailwind v4: the dark palette and every scale, with Tailwind's
- * default theme cleared so only Shortix tokens produce utilities.
+ * default theme cleared so only Fenaki tokens produce utilities.
  */
 export function buildThemeCss(tokens: TokenFile): string {
   const lines: string[] = []

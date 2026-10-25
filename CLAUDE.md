@@ -2,9 +2,9 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-# Shortix
+# Fenaki
 
-Curated catalog of free, legally available short films with a streaming-style UX (shortix.film). Independent brand. Built in public as a 30-day challenge ("Día N de 30") with Claude Code.
+Curated catalog of free, legally available short films with a streaming-style UX (fenaki.tv). Independent brand. Built in public as a 30-day challenge ("Día N de 30") with Claude Code.
 
 - Product plan (Spanish): `private/plan/plan-de-desarrollo.md`
 - Daily challenge log (Spanish): `private/diario/`
@@ -34,7 +34,7 @@ The monorepo is scaffolded and runs locally. Deployment is configured and rehear
 - `pnpm test:visual` (`:update` to accept changes): screenshots of every story compared with committed baselines, in the Playwright Docker image; CI runs the same on every push and pull request. Any UI change needs updated baselines in the same commit, generated on arm64 only (no pixel tolerance). CI also runs lint, typecheck and test on every push and pull request.
 - One test: `pnpm --filter <package> exec vitest run <file>` or `-t "<name>"`.
 
-After changing a Payload collection, run `pnpm --filter @shortix/cms migrate:create <name>` and `pnpm --filter @shortix/cms generate:types`, and commit the migration and `payload-types.ts`; the site imports those types.
+After changing a Payload collection, run `pnpm --filter @fenaki/cms migrate:create <name>` and `pnpm --filter @fenaki/cms generate:types`, and commit the migration and `payload-types.ts`; the site imports those types.
 
 ## Planned architecture
 

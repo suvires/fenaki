@@ -1,6 +1,6 @@
 # Destination `local`: a full deploy rehearsal against a stand-in VPS on this machine (Ubuntu with
 # SSH and Docker in a container, infra/local). Not for real servers. Run it through
-# infra/local/rehearse.sh, which starts the stand-in and sets SHORTIX_HOST, the SSH key and the
+# infra/local/rehearse.sh, which starts the stand-in and sets FENAKI_HOST, the SSH key and the
 # throwaway secrets (.kamal/secrets.local).
 #
 # What differs from production, and why:
@@ -35,7 +35,7 @@ x-local-cms-env: &local-cms-env
   clear:
     PAYLOAD_PUBLIC_SERVER_URL: <%= base % "cms.fenaki" %>
     WEB_URL: <%= base % "fenaki" %>
-    SMTP_HOST: shortix-mailpit
+    SMTP_HOST: fenaki-mailpit
     SMTP_PORT: 1025
     SMTP_TLS: none
     # The sample seed (`pnpm seed`) for the catalog tests.
@@ -56,9 +56,9 @@ servers:
         CMS_PUBLIC_URL: <%= base % "cms.fenaki" %>
         SITE_MODE: <%= ENV.fetch("SITE_MODE", "landing") %>
         # As the e2e tests expect (apps/web/e2e/serve.sh): a mailbox in landing mode, none in catalog.
-        CONTACT_EMAIL: <%= ENV.fetch("SITE_MODE", "landing") == "catalog" ? '""' : "hola@shortix.film" %>
+        CONTACT_EMAIL: <%= ENV.fetch("SITE_MODE", "landing") == "catalog" ? '""' : "hola@fenaki.tv" %>
         LISTMONK_PUBLIC_URL: <%= base % "listas.fenaki" %>
-        LISTMONK_SMTP_HOST: shortix-mailpit
+        LISTMONK_SMTP_HOST: fenaki-mailpit
         LISTMONK_SMTP_PORT: 1025
         LISTMONK_SMTP_AUTH: none
         LISTMONK_SMTP_TLS: none
@@ -78,7 +78,7 @@ accessories:
     image: alpine:3.24
     cmd: sleep infinity
   backup:
-    image: shortix-backup:rehearsal
+    image: fenaki-backup:rehearsal
     env:
       clear:
         BACKUP_S3_PROVIDER: Rclone
@@ -87,10 +87,10 @@ accessories:
         BACKUP_S3_NO_CHECK_BUCKET: false
   mailpit:
     image: axllent/mailpit:v1.31.4
-    host: <%= ENV.fetch("SHORTIX_HOST", "127.0.0.1") %>
+    host: <%= ENV.fetch("FENAKI_HOST", "127.0.0.1") %>
     port: 8025:8025
-  # The stand-in for the backup bucket (BACKUP_S3_ENDPOINT=http://shortix-s3:8080).
+  # The stand-in for the backup bucket (BACKUP_S3_ENDPOINT=http://fenaki-s3:8080).
   s3:
     image: rclone/rclone:1.74.1
-    host: <%= ENV.fetch("SHORTIX_HOST", "127.0.0.1") %>
+    host: <%= ENV.fetch("FENAKI_HOST", "127.0.0.1") %>
     cmd: serve s3 /data --addr :8080 --auth-key rehearsal,rehearsal-secret

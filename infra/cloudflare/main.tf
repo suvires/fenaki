@@ -1,4 +1,4 @@
-# Cloudflare for Shortix, as code: the zones, the tunnel to the server and its routes, the DNS
+# Cloudflare for Fenaki, as code: the zones, the tunnel to the server and its routes, the DNS
 # records (site, OVHcloud mailbox, Amazon SES), the redirects (www and any redirect domains) and, optionally,
 # Cloudflare Access in front of the admin panels. Runbook: docs/deploy.md.
 
@@ -53,7 +53,7 @@ resource "cloudflare_zone_setting" "all" {
 # Managed here, not on the server: the `cloudflared` accessory only needs its token.
 resource "cloudflare_zero_trust_tunnel_cloudflared" "server" {
   account_id = var.account_id
-  name       = "shortix-vps"
+  name       = "fenaki-vps"
   config_src = "cloudflare"
 }
 
@@ -249,7 +249,7 @@ resource "cloudflare_dns_record" "redirect_dmarc" {
 resource "cloudflare_zero_trust_access_policy" "editors" {
   count      = length(var.access_emails) > 0 ? 1 : 0
   account_id = var.account_id
-  name       = "Shortix editors"
+  name       = "Fenaki editors"
   decision   = "allow"
   include    = [for email in var.access_emails : { email = { email = email } }]
 }
@@ -262,7 +262,7 @@ resource "cloudflare_zero_trust_access_application" "admin" {
     listmonk = ["listas.${var.domain}/admin", "listas.${var.domain}/api"]
   } : {}
   account_id       = var.account_id
-  name             = "Shortix ${each.key}"
+  name             = "Fenaki ${each.key}"
   type             = "self_hosted"
   session_duration = "24h"
   destinations     = [for uri in each.value : { type = "public", uri = uri }]
@@ -282,7 +282,7 @@ resource "cloudflare_zero_trust_access_policy" "everyone" {
 resource "cloudflare_zero_trust_access_application" "cms_public" {
   count      = length(var.access_emails) > 0 ? 1 : 0
   account_id = var.account_id
-  name       = "Shortix CMS public paths"
+  name       = "Fenaki CMS public paths"
   type       = "self_hosted"
   destinations = [
     { type = "public", uri = "cms.${var.domain}/up" },

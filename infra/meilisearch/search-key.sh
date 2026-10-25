@@ -12,6 +12,6 @@ if curl -sf -H "$auth" "$host/keys/$MEILI_SEARCH_KEY_UID" >/dev/null; then
   exit 0
 fi
 curl -sf -X POST "$host/keys" -H "$auth" -H 'Content-Type: application/json' \
-  --data "{\"uid\":\"$MEILI_SEARCH_KEY_UID\",\"name\":\"shortix-web-search\",\"description\":\"Search only, for the site\",\"actions\":[\"search\"],\"indexes\":[\"*\"],\"expiresAt\":null}" \
+  --data "{\"uid\":\"$MEILI_SEARCH_KEY_UID\",\"name\":\"fenaki-web-search\",\"description\":\"Search only, for the site\",\"actions\":[\"search\"],\"indexes\":[\"*\"],\"expiresAt\":null}" \
   >/dev/null
 echo "meilisearch: search key created"

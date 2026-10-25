@@ -13,5 +13,5 @@ SELECT 'CREATE DATABASE umami OWNER umami'
 WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'umami')\gexec
 
 -- The e2e tests run the CMS against their own database, with only the sample seed.
-SELECT 'CREATE DATABASE shortix_test OWNER shortix'
-WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'shortix_test')\gexec
+SELECT 'CREATE DATABASE fenaki_test OWNER fenaki'
+WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'fenaki_test')\gexec

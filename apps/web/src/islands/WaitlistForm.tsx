@@ -1,8 +1,8 @@
-import { createRichTranslator, createTranslator, type Locale } from '@shortix/i18n'
-import { Button, Checkbox, Notice, TextField } from '@shortix/ui'
+import { createRichTranslator, createTranslator, type Locale } from '@fenaki/i18n'
+import { Button, Checkbox, Notice, TextField } from '@fenaki/ui'
 import { Fragment, useState, type SubmitEvent } from 'react'
 import { EVENTS } from '../lib/analytics.ts'
-import { checkEmail } from '@shortix/waitlist'
+import { checkEmail } from '@fenaki/waitlist'
 
 interface WaitlistFormProps {
   locale: Locale

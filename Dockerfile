@@ -1,13 +1,13 @@
 # syntax=docker/dockerfile:1.10
 #
-# Production image of Shortix: the Astro site, Payload CMS and the jobs worker in one image, so
-# the three Kamal roles always run the same commit. `docker/app/shortix` picks the process:
-#   docker run ghcr.io/suvires/shortix web|cms|jobs|migrate|setup-services
+# Production image of Fenaki: the Astro site, Payload CMS and the jobs worker in one image, so
+# the three Kamal roles always run the same commit. `docker/app/fenaki` picks the process:
+#   docker run ghcr.io/suvires/fenaki web|cms|jobs|migrate|setup-services
 #
 # Built for linux/amd64 (the VPS) from any machine: JavaScript is compiled on the build machine's
 # own architecture, and only the production dependencies (native modules such as sharp) are
 # installed for the target one.
-#   docker buildx build --platform linux/amd64 -t shortix .
+#   docker buildx build --platform linux/amd64 -t fenaki .
 
 ARG NODE_IMAGE=node:26.11.1-trixie-slim
 ARG PNPM_VERSION=12.15.0
@@ -38,14 +38,14 @@ COPY --from=manifests /app ./
 RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store pnpm install --frozen-lockfile
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1 ASTRO_TELEMETRY_DISABLED=1 NODE_OPTIONS=--no-deprecation
-RUN pnpm turbo run build --filter=@shortix/web --filter=@shortix/cms \
+RUN pnpm turbo run build --filter=@fenaki/web --filter=@fenaki/cms \
   && rm -rf apps/cms/.next/cache
 
 # --- Production dependencies, for the target architecture --------------------------------------
 FROM pnpm-target AS prod-deps
 COPY --from=manifests /app ./
 RUN --mount=type=cache,id=pnpm-store-target,target=/pnpm/store \
-  pnpm install --frozen-lockfile --prod --filter=@shortix/web... --filter=@shortix/cms...
+  pnpm install --frozen-lockfile --prod --filter=@fenaki/web... --filter=@fenaki/cms...
 
 # --- Runtime ------------------------------------------------------------------------------------
 FROM ${NODE_IMAGE} AS runtime
@@ -73,7 +73,7 @@ COPY --from=prod-deps /app ./
 COPY --from=build /app/packages/tokens/dist packages/tokens/dist
 COPY --from=build /app/apps/web/dist apps/web/dist
 COPY --from=build /app/apps/cms/.next apps/cms/.next
-COPY docker/app/shortix /usr/local/bin/shortix
+COPY docker/app/fenaki /usr/local/bin/fenaki
 
 # The application files stay owned by root and read only; the processes run as `node` and write
 # only to Next's cache and Payload's upload directories (volumes in production): `documents`
@@ -83,5 +83,5 @@ RUN mkdir -p apps/cms/.next/cache apps/cms/documents apps/cms/media \
 USER node
 
 EXPOSE 3000 4321
-ENTRYPOINT ["/usr/bin/tini", "--", "/usr/local/bin/shortix"]
+ENTRYPOINT ["/usr/bin/tini", "--", "/usr/local/bin/fenaki"]
 CMD ["web"]

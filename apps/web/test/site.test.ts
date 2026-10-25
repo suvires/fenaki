@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { createTranslator } from '@shortix/i18n'
+import { createTranslator } from '@fenaki/i18n'
 import { confirmationEmail } from '../src/lib/confirmation-email.ts'
 import { contactLinks } from '../src/lib/contact.ts'
 import { createRateLimit } from '../src/lib/rate-limit.ts'
@@ -8,7 +8,7 @@ import { isHiddenInMode } from '../src/lib/site-mode.ts'
 describe('confirmationEmail', () => {
   it('uses the locale copy and leaves the link to listmonk', () => {
     const { subject, body } = confirmationEmail('es')
-    expect(subject).toBe('Confirma tu correo para la lista de Shortix')
+    expect(subject).toBe('Confirma tu correo para la lista de Fenaki')
     expect(body).toContain('Confirmar mi correo')
     expect(body).toContain('href="{{ .Tx.Data.confirm_url }}"')
     expect(body).toContain('{{ .Tx.Data.site_url }}privacidad')
@@ -62,8 +62,8 @@ describe('contactLinks', () => {
   })
 
   it('writes to the mailbox with one subject per topic', () => {
-    expect(contactLinks('hola@shortix.film', t)?.propose).toEqual({
-      href: 'mailto:hola@shortix.film?subject=Propuesta%20de%20corto',
+    expect(contactLinks('hola@fenaki.tv', t)?.propose).toEqual({
+      href: 'mailto:hola@fenaki.tv?subject=Propuesta%20de%20corto',
       label: 'Proponer un corto',
     })
   })

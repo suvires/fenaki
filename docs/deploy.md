@@ -1,6 +1,6 @@
 # Deployment
 
-Shortix runs on one OVHcloud VPS-2 (4 vCores, 8 GB, x86_64, Ubuntu 24.04) behind Cloudflare, deployed with [Kamal](https://kamal-deploy.org). This document is the first-deploy runbook, the day-to-day operations, monitoring and the restore drill.
+Fenaki runs on one OVHcloud VPS-2 (4 vCores, 8 GB, x86_64, Ubuntu 24.04) behind Cloudflare, deployed with [Kamal](https://kamal-deploy.org). This document is the first-deploy runbook, the day-to-day operations, monitoring and the restore drill.
 
 - [How it is built](#how-it-is-built)
 - [Secrets](#secrets)
@@ -23,13 +23,13 @@ VPS ── cloudflared ─▶ kamal-proxy ─┬─ fenaki.tv         → web   
        jobs (Payload worker) · PostgreSQL · Meilisearch · backup ─▶ Cloudflare R2, EU (encrypted)
 ```
 
-- **One image, three roles.** `Dockerfile` builds the site, the CMS and the jobs worker into one image (`ghcr.io/suvires/shortix`), so the three always run the same commit. `docker/app/shortix` picks the process (`web`, `cms`, `jobs`, `migrate`, `payload <args>`, `setup-services`). It is built for linux/amd64 from any machine and runs as the `node` user.
+- **One image, three roles.** `Dockerfile` builds the site, the CMS and the jobs worker into one image (`ghcr.io/suvires/fenaki`), so the three always run the same commit. `docker/app/fenaki` picks the process (`web`, `cms`, `jobs`, `migrate`, `payload <args>`, `setup-services`). It is built for linux/amd64 from any machine and runs as the `node` user.
 - **Migrations on deploy.** `cms` is Kamal's primary role: its container applies pending migrations, then starts. Kamal boots `web` and `jobs` only once the new CMS answers `/up`, so they never run against an unmigrated schema, and a failed migration fails the deploy while the previous version keeps serving. During the switch the old site still runs against the new schema for a few seconds, so **migrations must work with the previous version** (add columns before using them, drop them a release later).
 - **Zero downtime.** kamal-proxy starts the new container, waits for `/up`, moves traffic and drains the old one. Measured in the rehearsal: 2,194 requests during a deploy, all 200.
 - **No inbound ports but SSH.** TLS ends at Cloudflare; the tunnel is an outbound connection from the `cloudflared` accessory to Cloudflare, for HTTP only, and kamal-proxy publishes no ports (`proxy.run.publish: false`). The firewall lets in only SSH, on port 22, which Kamal needs. kamal-proxy still does what it is there for (host routing, health checks, gapless deploys) but not Let's Encrypt: there is nothing to certify behind the tunnel.
 - **SSH, hardened** (`infra/server/sshd.conf`, installed by the bootstrap): public keys only (no passwords, no keyboard-interactive, no root), only the user `ubuntu`, Ed25519 keys or RSA keys of at least 3072 bits with SHA-2 signatures (`rsa-sha2-512`, `rsa-sha2-256`; never `ssh-rsa`, which is SHA-1), modern key exchange, ciphers and MACs, no forwarding, 3 tries per connection. Exactly two keys may log in: the human's own (Ed25519 or RSA ≥ 3072), for interactive access, and the CI deploy key (Ed25519). fail2ban bans for an hour (longer if it repeats) any address that fails 5 times in 10 minutes. Kamal's SSH library has no curve25519, so `ecdh-sha2-nistp256` closes the key-exchange list; OpenSSH clients pick the stronger ones first. With an SSH agent holding several keys, set `IdentitiesOnly yes` and the key in `~/.ssh/config` for the server, or the three tries run out.
-- **Accessories** (not touched by `kamal deploy`): PostgreSQL 18 (Shortix, listmonk and Umami databases), Meilisearch, listmonk, Umami, `cloudflared` and `backup`. Data lives in named Docker volumes: `shortix-postgres`, `shortix-meilisearch`, `shortix-uploads` (signed license documents) and `shortix-media` (logos and other images).
-- **The site reaches the CMS** at `http://shortix-cms:3000` on the Docker network, never through Cloudflare.
+- **Accessories** (not touched by `kamal deploy`): PostgreSQL 18 (Fenaki, listmonk and Umami databases), Meilisearch, listmonk, Umami, `cloudflared` and `backup`. Data lives in named Docker volumes: `fenaki-postgres`, `fenaki-meilisearch`, `fenaki-uploads` (signed license documents) and `fenaki-media` (logos and other images).
+- **The site reaches the CMS** at `http://fenaki-cms:3000` on the Docker network, never through Cloudflare.
 - **Memory** (limits in `config/deploy.yml`, about 7 GB with everything at its limit): PostgreSQL 2 GB, CMS 1.2 GB, Meilisearch 1 GB, worker 800 MB, site 600 MB, Umami 512 MB, backup 512 MB, listmonk 256 MB, cloudflared 128 MB, plus 2 GB of swap.
 - **Content Security Policy.** Every page carries Astro's CSP header with the hashes of its scripts and styles (`apps/web/src/lib/csp.ts`): no `unsafe-inline`; frames only from the YouTube and Vimeo players; images from the site and `cms.fenaki.tv` (logos); connections to the site and `stats.fenaki.tv`. A new third-party resource needs a change there, or the browser blocks it (`e2e/csp.spec.ts` catches it).
 - **Cloudflare as code** with OpenTofu (`infra/cloudflare`): a plan shows every change before it is applied, the state is encrypted natively, and the official provider covers everything needed (zones, DNS, the tunnel and its routes, redirect rules, Access). A script against the API would have to re-implement idempotency and drift detection. OpenTofu over Terraform for its open-source licence and built-in state encryption.
@@ -38,7 +38,7 @@ What lives where:
 
 | Path                                                            | What                                                                            |
 | --------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| `Dockerfile`, `docker/app/shortix`                              | The production image and its entry point                                        |
+| `Dockerfile`, `docker/app/fenaki`                               | The production image and its entry point                                        |
 | `config/deploy.yml`                                             | Kamal: roles, accessories, proxy, aliases                                       |
 | `.kamal/secrets.example`                                        | Every secret, read from the environment (copy to `.kamal/secrets`)              |
 | `bin/kamal`                                                     | Kamal from its official image, pinned by digest: the same on a laptop and in CI |
@@ -55,7 +55,7 @@ What lives where:
 Never in the repository. **GitHub Actions secrets** (environment `production`) are the source for CI; a copy of every value goes into the **password manager**, which is also where the values that never reach GitHub live (the backup private key, the OpenTofu state passphrase, the Cloudflare API token). For a deploy from a laptop, export them from a file outside any repository (`chmod 600`), e.g.:
 
 ```sh
-set -a; . ~/.config/shortix/production.env; set +a     # never inside the repository
+set -a; . ~/.config/fenaki/production.env; set +a     # never inside the repository
 cp .kamal/secrets.example .kamal/secrets              # gitignored; it only references variables
 bin/kamal deploy
 ```
@@ -64,13 +64,13 @@ Generate every password, secret and token with `openssl rand -hex 32` (hexadecim
 
 | Secret                                                                                             | What it is                                                                                                | Comes from                                                                      |
 | -------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| `SHORTIX_HOST`                                                                                     | The server's IP address (kept out of the public repo: it is the origin behind Cloudflare)                 | OVHcloud                                                                        |
+| `FENAKI_HOST`                                                                                      | The server's IP address (kept out of the public repo: it is the origin behind Cloudflare)                 | OVHcloud                                                                        |
 | `SSH_PRIVATE_KEY`, `SSH_KNOWN_HOSTS`                                                               | CI's deploy key (ed25519, no passphrase) and the server's host key                                        | Claude generates; `ssh-keyscan`, checked against the OVHcloud console           |
 | `KAMAL_REGISTRY_PASSWORD`                                                                          | GHCR: CI uses its own `GITHUB_TOKEN`; a laptop needs a classic PAT with `read:packages`, `write:packages` | GitHub (human)                                                                  |
 | `POSTGRES_PASSWORD`, `LISTMONK_DB_PASSWORD`, `UMAMI_DB_PASSWORD`                                   | Database users                                                                                            | generated                                                                       |
 | `PAYLOAD_SECRET`                                                                                   | Payload sessions and tokens                                                                               | generated                                                                       |
 | `MEILI_MASTER_KEY`                                                                                 | Meilisearch master key (the CMS uses it; the site's search-only key is derived from it)                   | generated                                                                       |
-| `LISTMONK_ADMIN_PASSWORD`, `LISTMONK_API_TOKEN`                                                    | listmonk's `admin` user and the API token of `shortix-web`                                                | generated                                                                       |
+| `LISTMONK_ADMIN_PASSWORD`, `LISTMONK_API_TOKEN`                                                    | listmonk's `admin` user and the API token of `fenaki-web`                                                 | generated                                                                       |
 | `UMAMI_APP_SECRET`, `UMAMI_ADMIN_PASSWORD`                                                         | Umami                                                                                                     | generated                                                                       |
 | `SES_SMTP_USERNAME`, `SES_SMTP_PASSWORD`                                                           | Amazon SES SMTP credentials (not AWS access keys)                                                         | AWS console (human)                                                             |
 | `CLOUDFLARE_TUNNEL_TOKEN`                                                                          | The tunnel's token                                                                                        | `infra/cloudflare/tofu output -raw tunnel_token`                                |
@@ -102,10 +102,10 @@ Accounts, purchases and anything that needs your identity or a card. Paste each 
    1. Create the identity `fenaki.tv` with Easy DKIM (RSA 2048) and custom MAIL FROM `bounce.fenaki.tv`. Give Claude the three DKIM tokens.
    2. Request production access (leave the sandbox). Claude drafts the text: transactional and newsletter email with double opt-in, low volume, bounce and complaint handling by listmonk.
    3. Create **SMTP credentials** (SES → SMTP settings) and give them to Claude.
-5. **Backup bucket access** (Cloudflare R2, EU jurisdiction; OpenTofu creates the bucket `shortix-backups`): once it exists, R2 → Manage API tokens → create a token with **Object Read & Write** on that bucket only, and give Claude its access key ID and secret. The endpoint is `tofu output backup_s3_endpoint`. Free up to 10 GB.
+5. **Backup bucket access** (Cloudflare R2, EU jurisdiction; OpenTofu creates the bucket `fenaki-backups`): once it exists, R2 → Manage API tokens → create a token with **Object Read & Write** on that bucket only, and give Claude its access key ID and secret. The endpoint is `tofu output backup_s3_endpoint`. Free up to 10 GB.
    - Alternative, if R2 is ever dropped: **Backblaze B2**, bucket in EU Central, private, an application key for that bucket only, endpoint `https://s3.eu-central-003.backblazeb2.com`, `BACKUP_S3_PROVIDER: Other` in `config/deploy.yml` and `backup_bucket = ""` in `terraform.tfvars`.
 6. **Metadata APIs** (optional, can come later): a YouTube Data API v3 key in a Google Cloud project (restrict it to that API) and a TMDB API key.
-7. **Sentry**: account with the data region **EU** (`de.sentry.io`), free plan, one project `shortix` (platform Node.js). Give Claude its DSN.
+7. **Sentry**: account with the data region **EU** (`de.sentry.io`), free plan, one project `fenaki` (platform Node.js). Give Claude its DSN.
 8. **Better Stack** (uptime monitoring, EU company, free plan): account; give Claude an API token (or create the monitors listed in [Monitoring](#monitoring) by hand).
 9. **GitHub**: create the environment `production` in the repository settings (optionally with yourself as required reviewer, so each deploy waits for a click). Claude sets the secrets with `gh secret set`; you can also paste them.
 
@@ -113,7 +113,7 @@ Accounts, purchases and anything that needs your identity or a card. Paste each 
 
 From the main checkout (where `private/` exists), with the values above in the environment.
 
-1. **Generate the secrets** (`openssl rand -hex 32` for each generated one in the table), the deploy SSH key pair (`ssh-keygen -t ed25519 -C shortix-deploy`) and the backup key pair (`age-keygen`, from the backup image: `docker run --rm --entrypoint age-keygen ghcr.io/suvires/shortix-backup:<tag>`). The private backup key and every value go to the human for the password manager.
+1. **Generate the secrets** (`openssl rand -hex 32` for each generated one in the table), the deploy SSH key pair (`ssh-keygen -t ed25519 -C fenaki-deploy`) and the backup key pair (`age-keygen`, from the backup image: `docker run --rm --entrypoint age-keygen ghcr.io/suvires/fenaki-backup:<tag>`). The private backup key and every value go to the human for the password manager.
 2. **Cloudflare**:
 
    ```sh
@@ -131,7 +131,7 @@ From the main checkout (where `private/` exists), with the values above in the e
 
    ```sh
    ssh-keyscan -t ed25519 <ip>                              # → SSH_KNOWN_HOSTS (and your ~/.ssh/known_hosts)
-   ssh-keygen -t ed25519 -N '' -C shortix-deploy -f deploy_key   # the CI key: private half → SSH_PRIVATE_KEY
+   ssh-keygen -t ed25519 -N '' -C fenaki-deploy -f deploy_key   # the CI key: private half → SSH_PRIVATE_KEY
    infra/server/bootstrap.sh <ip> <human's key .pub> deploy_key.pub
    ```
 
@@ -145,7 +145,7 @@ From the main checkout (where `private/` exists), with the values above in the e
    bin/kamal listmonk-token && bin/kamal accessory restart listmonk   # listmonk caches tokens
    bin/kamal search-key         # the site's search-only Meilisearch key
    bin/kamal setup-services     # listmonk lists, SMTP (SES), email template; Umami website and password
-   SEED_ADMIN_EMAIL=… SEED_ADMIN_PASSWORD=… SHORTIX_HOST=<ip> \
+   SEED_ADMIN_EMAIL=… SEED_ADMIN_PASSWORD=… FENAKI_HOST=<ip> \
      infra/server/import-catalog.sh /path/to/private/catalogo/import.json
    bin/kamal backup-now         # the first backup, and a test of the bucket and the heartbeat
    ```
@@ -164,7 +164,7 @@ From the main checkout (where `private/` exists), with the values above in the e
 If nobody can log in by SSH (keys lost, an address banned, a broken SSH configuration):
 
 1. **Wait or switch network**: a fail2ban ban ends after an hour; another network has another address.
-2. **OVHcloud rescue mode**: in the OVHcloud control panel, VPS → Boot → Reboot in rescue mode. OVHcloud emails root credentials for a temporary rescue system; log in to it by SSH, mount the server's disk (`lsblk`, then `mount /dev/sda1 /mnt`) and fix `/mnt/home/ubuntu/.ssh/authorized_keys` or `/mnt/etc/ssh/sshd_config.d/90-shortix.conf`. Then reboot normally from the panel. The site stays down while in rescue mode.
+2. **OVHcloud rescue mode**: in the OVHcloud control panel, VPS → Boot → Reboot in rescue mode. OVHcloud emails root credentials for a temporary rescue system; log in to it by SSH, mount the server's disk (`lsblk`, then `mount /dev/sda1 /mnt`) and fix `/mnt/home/ubuntu/.ssh/authorized_keys` or `/mnt/etc/ssh/sshd_config.d/90-fenaki.conf`. Then reboot normally from the panel. The site stays down while in rescue mode.
 3. **KVM console** (VPS → KVM in the panel) shows the server's screen, but logging in needs a local password and `ubuntu` has none: use rescue mode to set one (`chroot /mnt passwd ubuntu`) if console access is ever needed. SSH never accepts it.
 
 The site itself does not depend on SSH: it keeps running while SSH is unreachable; only deploys wait.
@@ -176,7 +176,7 @@ The site itself does not depend on SSH: it keeps running while SSH is unreachabl
 | Deploy                                          | Push to `main` (CI), or `bin/kamal deploy`                                                                                                                                                                                                                                                  |
 | Roll back                                       | Actions → Deploy → Run workflow → `rollback` with the version, or `bin/kamal rollback <version>`. Versions are git commits: `bin/kamal app containers` lists the ones still kept on the server. Migrations are not reverted: roll back only to a version that works with the current schema |
 | Logs                                            | `bin/kamal logs-web`, `logs-cms`, `logs-jobs`; `bin/kamal accessory logs <name>`                                                                                                                                                                                                            |
-| Shell, Payload CLI                              | `bin/kamal shell`; `bin/kamal app exec --roles cms "shortix payload migrate:status"`                                                                                                                                                                                                        |
+| Shell, Payload CLI                              | `bin/kamal shell`; `bin/kamal app exec --roles cms "fenaki payload migrate:status"`                                                                                                                                                                                                         |
 | PostgreSQL console                              | `bin/kamal psql`                                                                                                                                                                                                                                                                            |
 | Change an accessory (image version, env, files) | Edit `config/deploy.yml`, then `bin/kamal accessory reboot <name>` (a few seconds of downtime for that service)                                                                                                                                                                             |
 | Change the backup image (`infra/backup`)        | Push to `main` (CI builds the new tag), then `bin/kamal accessory reboot backup`                                                                                                                                                                                                            |
@@ -203,7 +203,7 @@ Other domains that only redirect to `fenaki.tv` (planned: `fenaki.es`, `fenakitv
 
 ## Backups and restore
 
-Every day at 03:30 UTC the `backup` accessory dumps every PostgreSQL database (`pg_dump`, custom format) and the roles, asks Meilisearch for a dump, and archives the uploads (documents and media). It encrypts everything with [age](https://age-encryption.org) for `BACKUP_AGE_RECIPIENT` (the server only has the public key), uploads it to the bucket as `daily/shortix-<timestamp>.tar.age`, deletes archives older than 30 days (`BACKUP_RETENTION_DAYS`) and pings the heartbeat. `bin/kamal backup-now` runs one at any time; `bin/kamal backups` lists them.
+Every day at 03:30 UTC the `backup` accessory dumps every PostgreSQL database (`pg_dump`, custom format) and the roles, asks Meilisearch for a dump, and archives the uploads (documents and media). It encrypts everything with [age](https://age-encryption.org) for `BACKUP_AGE_RECIPIENT` (the server only has the public key), uploads it to the bucket as `daily/fenaki-<timestamp>.tar.age`, deletes archives older than 30 days (`BACKUP_RETENTION_DAYS`) and pings the heartbeat. `bin/kamal backup-now` runs one at any time; `bin/kamal backups` lists them.
 
 Without the private key no backup can be read: keep it in the password manager and nowhere else.
 
@@ -233,9 +233,9 @@ Meilisearch is also derived data: re-importing the catalog (`infra/server/import
 
 **Uploads** (documents and media): `bin/kamal accessory exec backup --interactive "restore uploads latest"`.
 
-**To inspect an archive** without touching anything: `restore fetch <archive>` decrypts it into `/restore` in the backup container; delete it afterwards. Or on a laptop: download it from the bucket and `age -d -i key.txt shortix-….tar.age | tar -t`.
+**To inspect an archive** without touching anything: `restore fetch <archive>` decrypts it into `/restore` in the backup container; delete it afterwards. Or on a laptop: download it from the bucket and `age -d -i key.txt fenaki-….tar.age | tar -t`.
 
-**A new server** (the old one is gone): order the VPS, run steps B.3 to B.5 of the first deploy up to `bin/kamal setup` (with `SHORTIX_HOST` and `SSH_KNOWN_HOSTS` updated), then restore PostgreSQL, Meilisearch and the uploads as above, and run `bin/kamal listmonk-token && bin/kamal accessory restart listmonk`. The tunnel token does not change, so Cloudflare needs nothing.
+**A new server** (the old one is gone): order the VPS, run steps B.3 to B.5 of the first deploy up to `bin/kamal setup` (with `FENAKI_HOST` and `SSH_KNOWN_HOSTS` updated), then restore PostgreSQL, Meilisearch and the uploads as above, and run `bin/kamal listmonk-token && bin/kamal accessory restart listmonk`. The tunnel token does not change, so Cloudflare needs nothing.
 
 ### The restore drill
 
@@ -250,9 +250,9 @@ The drill was run in the rehearsal on 25 Oct 2026: backup, then the PostgreSQL a
 ```sh
 infra/local/rehearse.sh up                 # stand-in server + `kamal setup`
 infra/local/rehearse.sh kamal setup-services
-infra/local/rehearse.sh kamal app exec --roles cms "shortix payload run src/seed/index.ts"   # sample data
+infra/local/rehearse.sh kamal app exec --roles cms "fenaki payload run src/seed/index.ts"   # sample data
 SITE_MODE=catalog infra/local/rehearse.sh kamal deploy
-E2E_CATALOG_URL=http://fenaki.localhost:8480 pnpm --filter @shortix/web exec playwright test --project catalog
+E2E_CATALOG_URL=http://fenaki.localhost:8480 pnpm --filter @fenaki/web exec playwright test --project catalog
 infra/local/rehearse.sh down               # removes everything
 ```
 

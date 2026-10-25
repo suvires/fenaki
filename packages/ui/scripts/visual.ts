@@ -29,8 +29,8 @@ try {
   process.exit(1)
 }
 
-execFileSync('pnpm', ['--filter', '@shortix/tokens', 'build'], { cwd: repo, stdio: 'inherit' })
-execFileSync('pnpm', ['--filter', '@shortix/ui', 'build-storybook', '--quiet'], {
+execFileSync('pnpm', ['--filter', '@fenaki/tokens', 'build'], { cwd: repo, stdio: 'inherit' })
+execFileSync('pnpm', ['--filter', '@fenaki/ui', 'build-storybook', '--quiet'], {
   cwd: repo,
   stdio: 'inherit',
 })

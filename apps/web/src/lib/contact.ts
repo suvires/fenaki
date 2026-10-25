@@ -1,4 +1,4 @@
-import type { Translate } from '@shortix/i18n'
+import type { Translate } from '@fenaki/i18n'
 
 export type ContactTopic = 'propose' | 'sponsor' | 'showcase'
 export type ContactLinks = Record<ContactTopic, { href: string; label: string }>

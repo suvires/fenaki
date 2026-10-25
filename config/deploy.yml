@@ -1,4 +1,4 @@
-# Kamal: production deployment of Shortix to one OVHcloud VPS (Ubuntu 24.04, x86_64).
+# Kamal: production deployment of Fenaki to one OVHcloud VPS (Ubuntu 24.04, x86_64).
 # Runbook: docs/deploy.md. Secrets: .kamal/secrets.example.
 #
 # Traffic: visitor → Cloudflare (TLS, CDN) → Cloudflare Tunnel → `cloudflared` accessory →
@@ -12,8 +12,8 @@
 #         the previous version serving. Migrations must work with the previous version running.
 #   web   the Astro site.
 #   jobs  Payload's jobs worker (search sync, waitlist clean-up).
-service: shortix
-image: suvires/shortix
+service: fenaki
+image: suvires/fenaki
 
 # Environment shared by the CMS server and the jobs worker.
 x-cms-env: &cms-env
@@ -38,7 +38,7 @@ x-cms-env: &cms-env
 servers:
   cms:
     hosts:
-      - <%= ENV.fetch("SHORTIX_HOST", "set-SHORTIX_HOST") %>
+      - <%= ENV.fetch("FENAKI_HOST", "set-FENAKI_HOST") %>
     cmd: cms
     proxy:
       host: cms.fenaki.tv
@@ -48,19 +48,19 @@ servers:
         interval: 2
         timeout: 5
     options:
-      # The site reaches the API at http://shortix-cms:3000 on the Docker network. While a deploy
+      # The site reaches the API at http://fenaki-cms:3000 on the Docker network. While a deploy
       # overlaps old and new containers, both answer to the alias.
-      network-alias: shortix-cms
+      network-alias: fenaki-cms
       # Payload uploads, for the CMS and the worker only: signed license documents and media
       # (organization logos).
       volume:
-        - shortix-uploads:/app/apps/cms/documents
-        - shortix-media:/app/apps/cms/media
+        - fenaki-uploads:/app/apps/cms/documents
+        - fenaki-media:/app/apps/cms/media
       memory: 1200m
     env: *cms-env
   web:
     hosts:
-      - <%= ENV.fetch("SHORTIX_HOST", "set-SHORTIX_HOST") %>
+      - <%= ENV.fetch("FENAKI_HOST", "set-FENAKI_HOST") %>
     cmd: web
     proxy:
       host: fenaki.tv
@@ -81,7 +81,7 @@ servers:
         LAUNCH_DATE: ""
         # Empty hides the links that write to it, until the mailbox exists.
         CONTACT_EMAIL: ""
-        CMS_URL: http://shortix-cms:3000
+        CMS_URL: http://fenaki-cms:3000
         # The CMS's public address: logos and other media load from it (Content Security Policy).
         CMS_PUBLIC_URL: https://cms.fenaki.tv
         SEARCH_INDEX_PREFIX: ""
@@ -92,7 +92,7 @@ servers:
         LISTMONK_SMTP_PORT: 587
         LISTMONK_SMTP_AUTH: login
         LISTMONK_SMTP_TLS: STARTTLS
-        UMAMI_URL: http://shortix-umami:3000
+        UMAMI_URL: http://fenaki-umami:3000
         UMAMI_SCRIPT_URL: https://stats.fenaki.tv/script.js
         UMAMI_WEBSITE_ID: 0b6c4f8e-2d7a-4e15-9a3c-7f2e1d5b8c64
         UMAMI_WEBSITE_DOMAIN: fenaki.tv
@@ -104,13 +104,13 @@ servers:
         - UMAMI_PASSWORD:UMAMI_ADMIN_PASSWORD
   jobs:
     hosts:
-      - <%= ENV.fetch("SHORTIX_HOST", "set-SHORTIX_HOST") %>
+      - <%= ENV.fetch("FENAKI_HOST", "set-FENAKI_HOST") %>
     # Payload's worker stops at once on SIGTERM; the next one requeues what it left half done.
     cmd: jobs
     options:
       volume:
-        - shortix-uploads:/app/apps/cms/documents
-        - shortix-media:/app/apps/cms/media
+        - fenaki-uploads:/app/apps/cms/documents
+        - fenaki-media:/app/apps/cms/media
       memory: 800m
     env: *cms-env
 
@@ -140,15 +140,15 @@ builder:
   # Layers shared between CI and local builds.
   cache:
     type: registry
-    image: suvires/shortix-build-cache
+    image: suvires/fenaki-build-cache
     options: mode=max
 <% end %>
 
 env:
   clear:
-    MEILISEARCH_HOST: http://shortix-meilisearch:7700
-    LISTMONK_URL: http://shortix-listmonk:9000
-    LISTMONK_API_USER: shortix-web
+    MEILISEARCH_HOST: http://fenaki-meilisearch:7700
+    LISTMONK_URL: http://fenaki-listmonk:9000
+    LISTMONK_API_USER: fenaki-web
     SENTRY_ENVIRONMENT: production
   secret:
     - LISTMONK_API_TOKEN
@@ -168,15 +168,15 @@ logging:
 accessories:
   postgres:
     image: postgres:18.6-alpine3.24
-    host: <%= ENV.fetch("SHORTIX_HOST", "set-SHORTIX_HOST") %>
+    host: <%= ENV.fetch("FENAKI_HOST", "set-FENAKI_HOST") %>
     # Sized for a 8 GB server shared with every other service.
     cmd: >-
       postgres -c shared_buffers=512MB -c effective_cache_size=2GB -c work_mem=16MB
       -c maintenance_work_mem=128MB -c max_connections=100
     env:
       clear:
-        POSTGRES_USER: shortix
-        POSTGRES_DB: shortix
+        POSTGRES_USER: fenaki
+        POSTGRES_DB: fenaki
       secret:
         - POSTGRES_PASSWORD
         - LISTMONK_DB_PASSWORD
@@ -187,14 +187,14 @@ accessories:
       - infra/postgres/init.sh:/docker-entrypoint-initdb.d/init.sh:ro
       - infra/listmonk/api-token.sh:/usr/local/bin/listmonk-api-token.sh:ro
     volumes:
-      - shortix-postgres:/var/lib/postgresql
+      - fenaki-postgres:/var/lib/postgresql
     options:
       memory: 2g
       shm-size: 256m
 
   meilisearch:
     image: getmeili/meilisearch:v1.55.0
-    host: <%= ENV.fetch("SHORTIX_HOST", "set-SHORTIX_HOST") %>
+    host: <%= ENV.fetch("FENAKI_HOST", "set-FENAKI_HOST") %>
     env:
       clear:
         MEILI_ENV: production
@@ -208,13 +208,13 @@ accessories:
       - infra/meilisearch/search-key.sh:/usr/local/bin/search-key.sh:ro
       - infra/meilisearch/import-dump.sh:/usr/local/bin/import-dump.sh:ro
     volumes:
-      - shortix-meilisearch:/meili_data
+      - fenaki-meilisearch:/meili_data
     options:
       memory: 1g
 
   listmonk:
     image: listmonk/listmonk:v6.2.0
-    host: <%= ENV.fetch("SHORTIX_HOST", "set-SHORTIX_HOST") %>
+    host: <%= ENV.fetch("FENAKI_HOST", "set-FENAKI_HOST") %>
     # Installs on the first start, upgrades the schema on every start, then serves.
     cmd: >-
       sh -c "./listmonk --install --idempotent --yes --config '' &&
@@ -223,13 +223,13 @@ accessories:
       clear:
         TZ: Etc/UTC
         LISTMONK_app__address: 0.0.0.0:9000
-        LISTMONK_db__host: shortix-postgres
+        LISTMONK_db__host: fenaki-postgres
         LISTMONK_db__port: 5432
         LISTMONK_db__user: listmonk
         LISTMONK_db__database: listmonk
         LISTMONK_db__ssl_mode: disable
         LISTMONK_ADMIN_USER: admin
-        LISTMONK_ADMIN_API_USER: shortix-web
+        LISTMONK_ADMIN_API_USER: fenaki-web
       secret:
         - LISTMONK_db__password:LISTMONK_DB_PASSWORD
         - LISTMONK_ADMIN_PASSWORD
@@ -243,7 +243,7 @@ accessories:
 
   umami:
     image: umamisoftware/umami:3.4.0
-    host: <%= ENV.fetch("SHORTIX_HOST", "set-SHORTIX_HOST") %>
+    host: <%= ENV.fetch("FENAKI_HOST", "set-FENAKI_HOST") %>
     env:
       clear:
         DISABLE_TELEMETRY: 1
@@ -262,7 +262,7 @@ accessories:
   # with the tunnel in infra/cloudflare.
   cloudflared:
     image: cloudflare/cloudflared:2026.10.3
-    host: <%= ENV.fetch("SHORTIX_HOST", "set-SHORTIX_HOST") %>
+    host: <%= ENV.fetch("FENAKI_HOST", "set-FENAKI_HOST") %>
     cmd: tunnel --no-autoupdate --metrics 0.0.0.0:2000 run
     env:
       secret:
@@ -275,16 +275,16 @@ accessories:
   # `kamal accessory reboot backup`.
   <% backup_tag = `git rev-parse --short=12 HEAD:infra/backup 2>/dev/null`.strip %>
   backup:
-    image: ghcr.io/suvires/shortix-backup:<%= backup_tag.empty? ? "uncommitted" : backup_tag %>
-    host: <%= ENV.fetch("SHORTIX_HOST", "set-SHORTIX_HOST") %>
+    image: ghcr.io/suvires/fenaki-backup:<%= backup_tag.empty? ? "uncommitted" : backup_tag %>
+    host: <%= ENV.fetch("FENAKI_HOST", "set-FENAKI_HOST") %>
     env:
       clear:
         BACKUP_TIME_UTC: "03:30"
         BACKUP_RETENTION_DAYS: 30
         BACKUP_S3_PROVIDER: Cloudflare
-        PGHOST: shortix-postgres
-        PGUSER: shortix
-        MEILISEARCH_HOST: http://shortix-meilisearch:7700
+        PGHOST: fenaki-postgres
+        PGUSER: fenaki
+        MEILISEARCH_HOST: http://fenaki-meilisearch:7700
       secret:
         - PGPASSWORD:POSTGRES_PASSWORD
         - MEILI_MASTER_KEY
@@ -295,19 +295,19 @@ accessories:
         - BACKUP_AGE_RECIPIENT
         - BACKUP_HEARTBEAT_URL
     volumes:
-      - shortix-meilisearch:/meili_data
+      - fenaki-meilisearch:/meili_data
       # Read and write: `restore uploads` writes here.
-      - shortix-uploads:/uploads/documents
-      - shortix-media:/uploads/media
+      - fenaki-uploads:/uploads/documents
+      - fenaki-media:/uploads/media
     options:
       memory: 512m
 
 aliases:
-  # kamal shell: a shell in a new CMS container (Payload CLI: `shortix migrate`, `payload ...`).
+  # kamal shell: a shell in a new CMS container (Payload CLI: `fenaki migrate`, `payload ...`).
   shell: app exec --interactive --roles cms "sh"
-  migrate: app exec --roles cms "shortix migrate"
+  migrate: app exec --roles cms "fenaki migrate"
   # listmonk lists, SMTP and confirmation email, and the Umami website (idempotent).
-  setup-services: app exec --roles web "shortix setup-services"
+  setup-services: app exec --roles web "fenaki setup-services"
   # The search-only key the site uses, created from MEILI_SEARCH_KEY_UID (idempotent).
   search-key: accessory exec meilisearch --reuse "sh /usr/local/bin/search-key.sh"
   # The token of listmonk's API user, from LISTMONK_API_TOKEN (idempotent).
@@ -317,4 +317,4 @@ aliases:
   logs-cms: app logs --roles cms -f
   logs-web: app logs --roles web -f
   logs-jobs: app logs --roles jobs -f
-  psql: accessory exec postgres --interactive --reuse "psql -U shortix"
+  psql: accessory exec postgres --interactive --reuse "psql -U fenaki"

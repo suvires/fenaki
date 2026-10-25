@@ -49,13 +49,13 @@ install -d -m 700 /home/ubuntu/.ssh
 printf '%s\n%s\n' "$human_key" "$deploy_key" >/home/ubuntu/.ssh/authorized_keys.new
 chmod 600 /home/ubuntu/.ssh/authorized_keys.new
 mv /home/ubuntu/.ssh/authorized_keys.new /home/ubuntu/.ssh/authorized_keys
-sudo install -m 644 "$here/sshd.conf" /etc/ssh/sshd_config.d/90-shortix.conf
+sudo install -m 644 "$here/sshd.conf" /etc/ssh/sshd_config.d/90-fenaki.conf
 sudo sshd -t
 # Open sessions survive the restart.
 sudo systemctl restart ssh
 
 log "fail2ban: ban addresses that keep failing to log in"
-sudo tee /etc/fail2ban/jail.d/shortix.conf >/dev/null <<'CONF'
+sudo tee /etc/fail2ban/jail.d/fenaki.conf >/dev/null <<'CONF'
 [sshd]
 enabled = true
 backend = systemd
@@ -72,7 +72,7 @@ sudo systemctl enable --now fail2ban
 sudo systemctl restart fail2ban
 
 log "automatic security updates, rebooting at 04:30 UTC when needed"
-sudo tee /etc/apt/apt.conf.d/52shortix-unattended >/dev/null <<'CONF'
+sudo tee /etc/apt/apt.conf.d/52fenaki-unattended >/dev/null <<'CONF'
 Unattended-Upgrade::Automatic-Reboot "true";
 Unattended-Upgrade::Automatic-Reboot-Time "04:30";
 CONF
@@ -91,8 +91,8 @@ if [ ! -f /swapfile ]; then
   sudo mkswap /swapfile >/dev/null
   sudo swapon /swapfile
   echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab >/dev/null
-  echo 'vm.swappiness=10' | sudo tee /etc/sysctl.d/90-shortix.conf >/dev/null
-  sudo sysctl -q -p /etc/sysctl.d/90-shortix.conf
+  echo 'vm.swappiness=10' | sudo tee /etc/sysctl.d/90-fenaki.conf >/dev/null
+  sudo sysctl -q -p /etc/sysctl.d/90-fenaki.conf
 fi
 
 log "done. Log out and back in for the docker group to apply."

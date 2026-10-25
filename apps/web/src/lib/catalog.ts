@@ -1,5 +1,5 @@
-import { formatList, type Locale, type Translate } from '@shortix/i18n'
-import type { BadgeTone, PosterTone, ShortCardProps } from '@shortix/ui'
+import { formatList, type Locale, type Translate } from '@fenaki/i18n'
+import type { BadgeTone, PosterTone, ShortCardProps } from '@fenaki/ui'
 
 /** The catalog fields the cards, filters and badges need, from the CMS or the search index. */
 export interface CardSource {

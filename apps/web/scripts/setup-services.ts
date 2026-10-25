@@ -8,7 +8,7 @@
  * settings, the two waitlist lists and the confirmation email template.
  * Umami: the website the tracking script reports to, with the id in UMAMI_WEBSITE_ID.
  */
-import { defaultLocale, locales } from '@shortix/i18n'
+import { defaultLocale, locales } from '@fenaki/i18n'
 import { confirmationEmail } from '../src/lib/confirmation-email.ts'
 import {
   confirmationTemplateName,
@@ -16,7 +16,7 @@ import {
   LIST_TAGS,
   type Listmonk,
   type ListmonkTemplate,
-} from '@shortix/waitlist'
+} from '@fenaki/waitlist'
 
 function env(name: string, fallback?: string): string {
   const value = process.env[name] || fallback
@@ -60,10 +60,10 @@ async function configureListmonk(client: Listmonk) {
   const smtpAuth = env('LISTMONK_SMTP_AUTH', 'none')
   const next = {
     ...settings,
-    'app.site_name': 'Shortix',
+    'app.site_name': 'Fenaki',
     // The public address (unsubscribe links in emails); LISTMONK_URL may be an internal one.
     'app.root_url': env('LISTMONK_PUBLIC_URL', env('LISTMONK_URL', 'http://localhost:9000')),
-    'app.from_email': env('LISTMONK_FROM_EMAIL', 'Shortix <hola@shortix.film>'),
+    'app.from_email': env('LISTMONK_FROM_EMAIL', 'Fenaki <hola@fenaki.tv>'),
     'app.lang': defaultLocale,
     // The web app sends its own confirmation email, and the only way in is its form.
     'app.send_optin_confirmation': false,
@@ -77,7 +77,7 @@ async function configureListmonk(client: Listmonk) {
     'privacy.unsubscribe_header': true,
     smtp: [
       {
-        name: 'shortix',
+        name: 'fenaki',
         uuid: '',
         enabled: true,
         host: env('LISTMONK_SMTP_HOST', 'mailpit'),
@@ -188,7 +188,7 @@ async function configureUmami() {
     headers,
     body: JSON.stringify({
       id: websiteId,
-      name: 'Shortix',
+      name: 'Fenaki',
       domain: env('UMAMI_WEBSITE_DOMAIN', 'localhost'),
     }),
   })
@@ -199,7 +199,7 @@ async function configureUmami() {
 await configureListmonk(
   createListmonk({
     url: env('LISTMONK_URL', 'http://localhost:9000'),
-    user: env('LISTMONK_API_USER', 'shortix-web'),
+    user: env('LISTMONK_API_USER', 'fenaki-web'),
     token: env('LISTMONK_API_TOKEN'),
   }),
 )

@@ -235,8 +235,8 @@ export const Sources: CollectionConfig = {
           access: { read: isAuthenticatedField },
           admin: {
             description: label(
-              'Reference only: Shortix shows typographic posters, never film stills.',
-              'Solo de referencia: Shortix muestra pósteres tipográficos, nunca fotogramas.',
+              'Reference only: Fenaki shows typographic posters, never film stills.',
+              'Solo de referencia: Fenaki muestra pósteres tipográficos, nunca fotogramas.',
             ),
           },
         },

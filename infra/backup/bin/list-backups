@@ -3,4 +3,4 @@
 set -eu
 . /usr/local/bin/backup-common
 offsite_setup
-rclone lsl --include 'shortix-*.tar.age' "$OFFSITE" | sort -k4
+rclone lsl --include 'fenaki-*.tar.age' "$OFFSITE" | sort -k4

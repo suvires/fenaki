@@ -2,15 +2,15 @@
 
 Última actualización: [FECHA DE PUBLICACIÓN]
 
-Shortix solo incluye cortometrajes publicados por sus titulares en canales oficiales, con licencia abierta o con cesión firmada. Aun así, nos podemos equivocar. Si crees que un contenido de Shortix infringe tus derechos o es ilegal, avísanos: **respondemos en un plazo máximo de 48 horas**.
+Fenaki solo incluye cortometrajes publicados por sus titulares en canales oficiales, con licencia abierta o con cesión firmada. Aun así, nos podemos equivocar. Si crees que un contenido de Fenaki infringe tus derechos o es ilegal, avísanos: **respondemos en un plazo máximo de 48 horas**.
 
 Este procedimiento sigue el mecanismo de notificación y acción del Reglamento (UE) 2022/2065 de Servicios Digitales (DSA, art. 16), el art. 16 y 17 de la Ley 34/2002 (LSSI-CE) y el Texto Refundido de la Ley de Propiedad Intelectual (TRLPI, Real Decreto Legislativo 1/1996).
 
 ## 1. Qué contenidos puedes notificar
 
-- **Obras protegidas** incluidas sin autorización: un corto embebido desde un canal que no es el oficial, un corto alojado por Shortix sin licencia válida, o carteles, fotogramas o textos usados sin permiso.
+- **Obras protegidas** incluidas sin autorización: un corto embebido desde un canal que no es el oficial, un corto alojado por Fenaki sin licencia válida, o carteles, fotogramas o textos usados sin permiso.
 - **Uso que no respeta una licencia**: falta de atribución, uso comercial de una obra con licencia NC, modificación de una obra con licencia ND.
-- **Embeds que el titular ya no permite**: el titular ha desactivado la inserción o quiere que su obra no aparezca en Shortix.
+- **Embeds que el titular ya no permite**: el titular ha desactivado la inserción o quiere que su obra no aparezca en Fenaki.
 - **Otros contenidos ilegales**: por ejemplo, que vulneren el honor, la intimidad o la propia imagen, que incluyan datos personales sin base legal o que afecten a menores.
 - **Errores en una ficha** (autoría, créditos, licencia) que te afecten.
 
@@ -18,13 +18,13 @@ Este procedimiento sigue el mecanismo de notificación y acción del Reglamento 
 
 Cualquier persona o entidad. Para infracciones de propiedad intelectual, lo habitual es que notifique el titular de los derechos (autor, productora, distribuidora) o alguien autorizado para actuar en su nombre (agente, entidad de gestión, abogado). Si actúas en nombre de otra persona, indícalo.
 
-Si eres el autor de un corto y simplemente prefieres que no aparezca en Shortix, aunque esté embebido desde tu canal oficial, también lo retiramos: no hace falta que haya infracción.
+Si eres el autor de un corto y simplemente prefieres que no aparezca en Fenaki, aunque esté embebido desde tu canal oficial, también lo retiramos: no hace falta que haya infracción.
 
 ## 3. Qué debe incluir el aviso
 
 Para que podamos actuar con rapidez, el aviso debe incluir (art. 16.2 DSA):
 
-1. **Dónde está el contenido**: la dirección (URL) exacta de la página de Shortix y, si se trata de un embed, la URL del vídeo en YouTube o Vimeo.
+1. **Dónde está el contenido**: la dirección (URL) exacta de la página de Fenaki y, si se trata de un embed, la URL del vídeo en YouTube o Vimeo.
 2. **Por qué crees que es ilegal o infringe tus derechos**: una explicación suficiente. En propiedad intelectual: qué obra es, quién es su titular y por qué el uso no está autorizado.
 3. **Tus datos**: nombre y correo electrónico. Si actúas en nombre de otra persona, en nombre de quién y en qué condición.
 4. **Una declaración** de que crees de buena fe que la información y las alegaciones del aviso son exactas y completas.
@@ -35,7 +35,7 @@ Si el aviso no incluye estos datos, te pediremos que lo completes. Un aviso comp
 
 ## 4. Cómo enviarlo
 
-- **Formulario**: [URL DEL FORMULARIO, por ejemplo shortix.film/es/retirada] [COMPLETAR: crear el formulario electrónico, exigido por el art. 16.1 DSA para que el aviso se pueda enviar de forma sencilla]
+- **Formulario**: [URL DEL FORMULARIO, por ejemplo fenaki.tv/es/retirada] [COMPLETAR: crear el formulario electrónico, exigido por el art. 16.1 DSA para que el aviso se pueda enviar de forma sencilla]
 - **Correo electrónico**: [CORREO DE CONTACTO], con el asunto «Retirada de contenido».
 - Idiomas: español o inglés.
 
@@ -51,11 +51,11 @@ Tus datos se tratan según la [política de privacidad](/es/privacidad) (apartad
 | Revisión y respuesta | **Máximo 48 horas** desde la recepción del aviso completo                                    | Revisamos el aviso de forma diligente, objetiva y no arbitraria. Si es fundado, o si tenemos dudas razonables, **desactivamos el contenido de forma cautelar** (ocultamos la ficha o el reproductor) mientras se resuelve |
 | Decisión             | Te la comunicamos en ese mismo plazo o, si hace falta más información, en cuanto la tengamos | Te informamos de lo que hemos decidido y de las vías de recurso. Si hemos usado medios automatizados, te lo decimos (art. 16.6 DSA)                                                                                       |
 
-**Qué puede hacer Shortix y qué no.** Shortix puede retirar o desactivar lo que publica: la ficha, el reproductor embebido, imágenes y textos. **No puede retirar el vídeo de YouTube o Vimeo**: si el vídeo infringe tus derechos en la propia plataforma, también debes notificarlo allí ([YouTube](https://support.google.com/youtube/answer/2807622?hl=es), [Vimeo](https://vimeo.com/dmca)).
+**Qué puede hacer Fenaki y qué no.** Fenaki puede retirar o desactivar lo que publica: la ficha, el reproductor embebido, imágenes y textos. **No puede retirar el vídeo de YouTube o Vimeo**: si el vídeo infringe tus derechos en la propia plataforma, también debes notificarlo allí ([YouTube](https://support.google.com/youtube/answer/2807622?hl=es), [Vimeo](https://vimeo.com/dmca)).
 
 ## 6. Si tu contenido se ha retirado: contranotificación
 
-Si el contenido retirado lo aportaste tú (por ejemplo, un corto que enviaste a Shortix como autor) o eres el titular de un corto embebido que se ha desactivado, te informaremos de la retirada y de sus motivos, siempre que tengamos tus datos de contacto (declaración de motivos, art. 17 DSA).
+Si el contenido retirado lo aportaste tú (por ejemplo, un corto que enviaste a Fenaki como autor) o eres el titular de un corto embebido que se ha desactivado, te informaremos de la retirada y de sus motivos, siempre que tengamos tus datos de contacto (declaración de motivos, art. 17 DSA).
 
 Puedes responder con una **contranotificación** en un plazo de [6 meses] desde que te informemos, por los mismos canales, indicando:
 

@@ -1,4 +1,4 @@
-import type { Locale } from '@shortix/i18n'
+import type { Locale } from '@fenaki/i18n'
 import { cx } from '../cx.ts'
 import { Badge, type BadgeTone } from './Badge.tsx'
 import { Duration } from './Duration.tsx'

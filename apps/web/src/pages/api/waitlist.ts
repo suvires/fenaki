@@ -1,9 +1,9 @@
-import { defaultLocale } from '@shortix/i18n'
+import { defaultLocale } from '@fenaki/i18n'
 import type { APIRoute } from 'astro'
 import { localeFrom } from '../../lib/i18n.ts'
 import { createRateLimit } from '../../lib/rate-limit.ts'
 import { fromEmail, listmonk, siteUrl } from '../../lib/services.ts'
-import { checkEmail, subscribe } from '@shortix/waitlist'
+import { checkEmail, subscribe } from '@fenaki/waitlist'
 
 const allow = createRateLimit(10, 10 * 60 * 1000)
 

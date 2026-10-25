@@ -1,5 +1,5 @@
-import { createTranslator, type Locale } from '@shortix/i18n'
-import { SearchField, ShortCard } from '@shortix/ui'
+import { createTranslator, type Locale } from '@fenaki/i18n'
+import { SearchField, ShortCard } from '@fenaki/ui'
 import { useEffect, useRef, useState } from 'react'
 import { toCard, type BadgeClock } from '../lib/catalog.ts'
 import { paths } from '../lib/i18n.ts'

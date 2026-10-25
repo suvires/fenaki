@@ -1,6 +1,6 @@
 {
   "site": {
-    "name": "Shortix",
+    "name": "Fenaki",
     "tagline": "Cortometrajes, no clips",
     "description": "Cortometrajes gratis y legales, elegidos uno a uno y vistos desde los canales de sus autores.",
     "skipToContent": "Saltar al contenido",
@@ -85,9 +85,9 @@
       "direct": "Licencia directa"
     },
     "text": {
-      "embed": "Se reproduce desde el canal oficial en {provider}. Shortix no aloja ni modifica el corto.",
+      "embed": "Se reproduce desde el canal oficial en {provider}. Fenaki no aloja ni modifica el corto.",
       "open": "Se publica con una licencia abierta que permite verlo y compartirlo.",
-      "direct": "Se publica en Shortix con permiso directo de sus autores."
+      "direct": "Se publica en Fenaki con permiso directo de sus autores."
     }
   },
   "badges": {
@@ -99,7 +99,7 @@
   "providers": {
     "youtube": "YouTube",
     "vimeo": "Vimeo",
-    "bunny": "Shortix"
+    "bunny": "Fenaki"
   },
   "errors": {
     "notFoundTitle": "No encontramos este corto",
@@ -117,7 +117,7 @@
     },
     "what": {
       "title": "Un catálogo de cortos con la comodidad de una plataforma de streaming",
-      "intro": "Hay mucho cine corto publicado en abierto por quienes lo hicieron, pero está repartido entre canales, festivales y escuelas. Shortix lo reúne en un solo sitio:",
+      "intro": "Hay mucho cine corto publicado en abierto por quienes lo hicieron, pero está repartido entre canales, festivales y escuelas. Fenaki lo reúne en un solo sitio:",
       "curated": {
         "title": "Elegidos uno a uno.",
         "text": "Antes de entrar, cada corto se revisa: quién lo publica, si se puede ver legalmente, cuánto dura, en qué idioma está y quién lo hizo."
@@ -140,7 +140,7 @@
     },
     "legal": {
       "title": "Gratis de ver no es libre de copiar",
-      "intro": "Shortix no copia ni sube cortos de nadie. Cada corto llega por una de estas tres vías, y su ficha dice cuál:",
+      "intro": "Fenaki no copia ni sube cortos de nadie. Cada corto llega por una de estas tres vías, y su ficha dice cuál:",
       "official": {
         "title": "Reproductor oficial.",
         "text": "El corto se ve desde el canal oficial de quien tiene los derechos (autor, productora, distribuidora, festival o escuela), con su propio reproductor de YouTube o Vimeo. Las visitas cuentan para ese canal."
@@ -154,7 +154,7 @@
         "text": "Cortos que sus autores nos ceden por escrito."
       },
       "atLaunch": "Al abrir, todos los cortos llegan por la primera vía.",
-      "takedown": "{yours} y prefieres que no esté en Shortix, lo retiramos en un máximo de 48 horas, aunque venga de tu canal oficial.",
+      "takedown": "{yours} y prefieres que no esté en Fenaki, lo retiramos en un máximo de 48 horas, aunque venga de tu canal oficial.",
       "takedownYours": "Si un corto es tuyo",
       "takedownLink": "Pedir la retirada de un corto"
     },
@@ -178,15 +178,15 @@
       "title": "Preguntas frecuentes",
       "cost": {
         "question": "¿Cuánto cuesta?",
-        "answer": "Nada. Ver cortos en Shortix es gratis y no hace falta cuenta."
+        "answer": "Nada. Ver cortos en Fenaki es gratis y no hace falta cuenta."
       },
       "funding": {
         "question": "¿Cómo se financia?",
-        "answer": "Con colecciones patrocinadas por festivales, escuelas e instituciones culturales, que siempre se identifican como tales, y con los apoyos de quien quiera contribuir. Shortix no vende publicidad dentro de los cortos ni junto al reproductor."
+        "answer": "Con colecciones patrocinadas por festivales, escuelas e instituciones culturales, que siempre se identifican como tales, y con los apoyos de quien quiera contribuir. Fenaki no vende publicidad dentro de los cortos ni junto al reproductor."
       },
       "players": {
         "question": "¿Por qué los cortos se ven con el reproductor de YouTube o Vimeo?",
-        "answer": "Porque así se ven desde el canal oficial de quien tiene los derechos, y las visitas cuentan para ese canal. Esos reproductores usan cookies: antes de cargar uno, Shortix te pregunta y te explica qué hace."
+        "answer": "Porque así se ven desde el canal oficial de quien tiene los derechos, y las visitas cuentan para ese canal. Esos reproductores usan cookies: antes de cargar uno, Fenaki te pregunta y te explica qué hace."
       },
       "selection": {
         "question": "¿Qué cortos entran?",
@@ -199,13 +199,13 @@
       },
       "who": {
         "question": "¿Quién está detrás?",
-        "answer": "Shortix es un proyecto independiente que se construye en público, con inteligencia artificial como herramienta de trabajo. Los datos del titular están en el {legalNotice}."
+        "answer": "Fenaki es un proyecto independiente que se construye en público, con inteligencia artificial como herramienta de trabajo. Los datos del titular están en el {legalNotice}."
       }
     }
   },
   "waitlist": {
     "title": "Te avisamos cuando abra",
-    "lead": "Déjanos tu correo. Te mandamos un mensaje para confirmarlo y, cuando Shortix abra, otro para avisarte.",
+    "lead": "Déjanos tu correo. Te mandamos un mensaje para confirmarlo y, cuando Fenaki abra, otro para avisarte.",
     "email": {
       "label": "Correo electrónico",
       "placeholder": "nombre@ejemplo.com"
@@ -215,7 +215,7 @@
     },
     "submit": "Apuntarme",
     "submitting": "Enviando…",
-    "privacy": "Responsable: el titular de Shortix (datos en el {legalNotice}). Finalidad: avisarte del lanzamiento y, si lo marcas, enviarte la selección semanal. Base: tu consentimiento. No cedemos tus datos; los correos salen por Amazon SES desde la UE. Puedes darte de baja en cada correo y ejercer tus derechos como explica la {privacyPolicy}.",
+    "privacy": "Responsable: el titular de Fenaki (datos en el {legalNotice}). Finalidad: avisarte del lanzamiento y, si lo marcas, enviarte la selección semanal. Base: tu consentimiento. No cedemos tus datos; los correos salen por Amazon SES desde la UE. Puedes darte de baja en cada correo y ejercer tus derechos como explica la {privacyPolicy}.",
     "error": {
       "empty": "Escribe tu correo para apuntarte.",
       "invalid": "Ese correo no parece completo. Revisa que tenga @ y un dominio, por ejemplo nombre@ejemplo.com.",
@@ -229,7 +229,7 @@
     },
     "confirmed": {
       "title": "Ya estás en la lista",
-      "text": "Te escribiremos cuando Shortix abra.",
+      "text": "Te escribiremos cuando Fenaki abra.",
       "newsletter": "Si marcaste la selección semanal, la recibirás los {weekday} por la mañana cuando empiece.",
       "building": "Mientras tanto, lo estamos construyendo en público, un día cada vez."
     },
@@ -241,17 +241,17 @@
   },
   "email": {
     "confirm": {
-      "subject": "Confirma tu correo para la lista de Shortix",
+      "subject": "Confirma tu correo para la lista de Fenaki",
       "preview": "Un clic y te avisamos cuando abra.",
       "greeting": "Hola:",
-      "intro": "Alguien, seguramente tú, ha apuntado este correo a la lista de espera de Shortix, un catálogo de cortometrajes gratis y legales en español.",
+      "intro": "Alguien, seguramente tú, ha apuntado este correo a la lista de espera de Fenaki, un catálogo de cortometrajes gratis y legales en español.",
       "action": "Para confirmarlo, pulsa el botón:",
       "button": "Confirmar mi correo",
       "fallback": "Si el botón no funciona, copia este enlace en el navegador: {url}",
       "expiry": "El enlace caduca en 7 días. Si no has sido tú, no hagas nada: sin confirmar, no te volveremos a escribir y borraremos este correo de la lista.",
-      "signature": "Shortix",
+      "signature": "Fenaki",
       "motto": "Cortometrajes, no clips.",
-      "footer": "Recibes este mensaje porque alguien escribió esta dirección en shortix.film. Responsable del tratamiento y datos de contacto en el {legalNotice}. {privacyPolicy}"
+      "footer": "Recibes este mensaje porque alguien escribió esta dirección en fenaki.tv. Responsable del tratamiento y datos de contacto en el {legalNotice}. {privacyPolicy}"
     }
   },
   "legal": {
@@ -268,13 +268,13 @@
   "footer": {
     "label": "Pie de página",
     "groups": {
-      "shortix": "Shortix",
+      "fenaki": "Fenaki",
       "filmmakers": "Para cineastas",
       "legal": "Legal",
       "organizations": "Para organizaciones"
     },
     "links": {
-      "what": "Qué es Shortix",
+      "what": "Qué es Fenaki",
       "legal": "Cómo es legal",
       "faq": "Preguntas frecuentes",
       "takedown": "Pedir la retirada de un corto",
@@ -285,7 +285,7 @@
       "showcase": "Escaparates para festivales y escuelas",
       "browse": "Todos los cortos"
     },
-    "tagline": "Shortix · Cortometrajes, no clips. Cada corto es de quien lo hizo."
+    "tagline": "Fenaki · Cortometrajes, no clips. Cada corto es de quien lo hizo."
   },
   "contact": {
     "propose": {
@@ -303,13 +303,13 @@
   },
   "person": {
     "shorts": {
-      "one": "{count} corto en Shortix",
-      "other": "{count} cortos en Shortix"
+      "one": "{count} corto en Fenaki",
+      "other": "{count} cortos en Fenaki"
     },
     "shortsTitle": "Sus cortos",
     "description": {
-      "one": "{name}: {roles}. {count} corto gratis y legal en Shortix.",
-      "other": "{name}: {roles}. {count} cortos gratis y legales en Shortix."
+      "one": "{name}: {roles}. {count} corto gratis y legal en Fenaki.",
+      "other": "{name}: {roles}. {count} cortos gratis y legales en Fenaki."
     }
   },
   "browse": {
@@ -366,12 +366,12 @@
       "one": "Su selección · {count} corto",
       "other": "Su selección · {count} cortos"
     },
-    "description": "El escaparate de {name} en Shortix: su selección de cortometrajes, gratis y legales."
+    "description": "El escaparate de {name} en Fenaki: su selección de cortometrajes, gratis y legales."
   },
   "sponsor": {
-    "title": "Patrocina Shortix",
+    "title": "Patrocina Fenaki",
     "eyebrow": "Para organizaciones",
-    "lead": "Shortix es un catálogo curado de cortometrajes gratuitos y legales, con la experiencia de una plataforma de streaming. Reúne en un solo sitio cortos en español que hoy están dispersos entre canales oficiales, webs de festivales y archivos.",
+    "lead": "Fenaki es un catálogo curado de cortometrajes gratuitos y legales, con la experiencia de una plataforma de streaming. Reúne en un solo sitio cortos en español que hoy están dispersos entre canales oficiales, webs de festivales y archivos.",
     "pillars": {
       "curated": {
         "title": "Curado.",
@@ -394,15 +394,15 @@
     },
     "founders": {
       "title": "Por qué ahora",
-      "text": "Shortix se construye en público: cada día contamos en redes cómo avanza. Hoy partimos de cero en audiencia, y lo decimos así. Lo que ofrecemos a las primeras organizaciones es ser fundadoras del proyecto, aparecer en su lanzamiento, asociar su nombre a una selección editorial cuidada y recibir cifras medidas, no estimadas. Por eso el precio de fundador es la mitad del precio de lista y solo está disponible para las tres primeras organizaciones de cada producto."
+      "text": "Fenaki se construye en público: cada día contamos en redes cómo avanza. Hoy partimos de cero en audiencia, y lo decimos así. Lo que ofrecemos a las primeras organizaciones es ser fundadoras del proyecto, aparecer en su lanzamiento, asociar su nombre a una selección editorial cuidada y recibir cifras medidas, no estimadas. Por eso el precio de fundador es la mitad del precio de lista y solo está disponible para las tres primeras organizaciones de cada producto."
     },
-    "offersTitle": "Dos formas de estar en Shortix",
+    "offersTitle": "Dos formas de estar en Fenaki",
     "includes": "Incluye",
     "founderNote": "Precio de fundador · tres primeras organizaciones",
     "collection": {
       "audience": "Para marcas e instituciones culturales",
       "title": "Colección patrocinada",
-      "description": "Una colección editorial de Shortix con tu nombre durante un mes.",
+      "description": "Una colección editorial de Fenaki con tu nombre durante un mes.",
       "includes": {
         "header": "Cabecera en la colección y en la portada",
         "newsletter": "2 menciones en la newsletter",
@@ -437,7 +437,7 @@
       "placement": "El patrocinio aparece en la página de la colección, en la cabecera de la portada, en la newsletter y en redes.",
       "player": "Nunca aparece dentro del reproductor ni junto a él, ni se presenta como «este corto lo patrocina…». Así lo exigen las condiciones de YouTube y Vimeo, y así lo preferimos.",
       "nonCommercial": "Las colecciones patrocinadas no incluyen cortos con licencia no comercial (NC).",
-      "selection": "La selección de una colección patrocinada la hace el equipo editorial de Shortix; puedes proponer el tema. En un escaparate, la selección es tuya, siempre que los cortos estén publicados en canales oficiales.",
+      "selection": "La selección de una colección patrocinada la hace el equipo editorial de Fenaki; puedes proponer el tema. En un escaparate, la selección es tuya, siempre que los cortos estén publicados en canales oficiales.",
       "festivals": "Los festivales muestran cortos que ya han terminado su recorrido (ediciones anteriores o palmarés), nunca cortos aún en circuito."
     },
     "contact": {
@@ -445,7 +445,7 @@
       "text": "Escríbenos con el producto que te interesa y te proponemos una llamada de 20 minutos. Si te encaja, reservamos tu plaza de fundador con un acuerdo de una página y una factura.",
       "soon": "Muy pronto tendrás aquí una dirección de contacto."
     },
-    "description": "Colecciones patrocinadas y escaparates para festivales, escuelas de cine e instituciones culturales en Shortix, el catálogo de cortometrajes gratis y legales."
+    "description": "Colecciones patrocinadas y escaparates para festivales, escuelas de cine e instituciones culturales en Fenaki, el catálogo de cortometrajes gratis y legales."
   },
   "seo": {
     "ogShort": "Cortometraje · {duration}",
