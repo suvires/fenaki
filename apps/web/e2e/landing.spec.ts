@@ -1,7 +1,8 @@
 import { expect, test } from '@playwright/test'
 
-const MAILPIT = 'http://localhost:8025'
-const LISTMONK = 'http://localhost:9000'
+// The development services, or those of the deployment under test (playwright.config.ts).
+const MAILPIT = process.env.E2E_MAILPIT_URL ?? 'http://localhost:8025'
+const LISTMONK = process.env.E2E_LISTMONK_URL ?? 'http://localhost:9000'
 const LISTMONK_AUTH = `token shortix-web:${process.env.LISTMONK_API_TOKEN ?? 'shortix-dev-listmonk-token-change-me'}`
 
 interface MailpitMessage {
@@ -78,6 +79,7 @@ test('the waitlist form explains what is wrong with the address', async ({ page 
 
 test('signing up sends a confirmation email that confirms the subscription in listmonk', async ({
   page,
+  baseURL,
 }) => {
   const email = `e2e+${Date.now()}@example.com`
   await page.goto('/es/')
@@ -89,9 +91,8 @@ test('signing up sends a confirmation email that confirms the subscription in li
 
   const message = await waitForEmail(email)
   expect(message.Subject).toBe('Confirma tu correo para la lista de Shortix')
-  const link = /href="(http:\/\/localhost:4401\/es\/lista-de-espera\/confirmar\?s=[^"]+)"/.exec(
-    message.HTML,
-  )?.[1]
+  const confirmUrl = `${baseURL}/es/lista-de-espera/confirmar?s=`.replace(/[.?/]/g, '\\$&')
+  const link = new RegExp(`href="(${confirmUrl}[^"]+)"`).exec(message.HTML)?.[1]
   expect(link).toBeDefined()
 
   try {
