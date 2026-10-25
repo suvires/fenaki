@@ -14,9 +14,9 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const VARIANTS = {
-  primary: 'bg-tungsteno text-on-tungsteno hover:bg-tungsteno-hover',
+  primary: 'bg-tungsteno text-on-tungsteno border-transparent hover:bg-tungsteno-hover',
   secondary: 'bg-sala-2 text-ink border-line-strong hover:bg-sala-1',
-  ghost: 'bg-transparent text-ink underline underline-offset-4',
+  ghost: 'bg-transparent text-ink border-transparent underline underline-offset-4',
 } as const
 
 /** The one way to trigger an action. One primary button per view. */
@@ -32,7 +32,7 @@ export function Button({
   ...rest
 }: ButtonProps) {
   const classes = cx(
-    'inline-flex items-center gap-2 rounded-sm border border-transparent cursor-pointer no-underline',
+    'inline-flex items-center gap-2 rounded-sm border cursor-pointer no-underline',
     'transition-[background-color,transform] duration-(--duration-press) ease-standard',
     'active:translate-y-(--size-press) focus-visible:focus-ring motion-reduce:transition-none',
     size === 'lg' ? 'h-(--size-control-lg) text-button-lg' : 'h-(--size-control-md) text-button',
