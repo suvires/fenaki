@@ -23,15 +23,18 @@ The repo is public on GitHub (free Actions minutes, build-in-public). Never comm
 
 The monorepo is scaffolded and runs locally (nothing is deployed yet). Setup and every command are in `README.md`. From the root:
 
-- `docker compose up -d`: PostgreSQL and Meilisearch for development.
-- `pnpm dev`: site (<http://localhost:4321/es/>), CMS admin (<http://localhost:3000/admin>) and the jobs worker.
-- `pnpm seed`: admin user, six sample shorts and one sponsored collection, all flagged as sample data.
+- `docker compose up -d`: PostgreSQL, Meilisearch, listmonk, Mailpit (local SMTP) and Umami for development.
+- `pnpm migrate`: applies the Payload migrations (the schema never changes by push, in development either).
+- `pnpm import:catalog`: the real catalog from `CATALOG_IMPORT_PATH` (outside this repo), idempotent.
+- `pnpm setup:services`: listmonk lists, SMTP and confirmation email, and the Umami website.
+- `pnpm dev`: site (<http://localhost:4321/es/>), CMS admin (<http://localhost:3000/admin>) and the jobs worker. `SITE_MODE` in `apps/web/.env` switches between the pre-launch `landing` and the full `catalog`.
+- `pnpm seed`: admin user, six sample shorts and one sponsored collection, all flagged as sample data (empty databases only; the e2e tests use it on their own database).
 - `pnpm lint`, `pnpm typecheck`, `pnpm test` (Vitest), `pnpm test:e2e` (Playwright smoke test), `pnpm build`.
 - `pnpm storybook`: the component catalog.
 - `pnpm test:visual` (`:update` to accept changes): screenshots of every story compared with committed baselines, in the Playwright Docker image; CI runs the same on every push and pull request. Any UI change needs updated baselines in the same commit, generated on arm64 only (no pixel tolerance). CI also runs lint, typecheck and test on every push and pull request.
 - One test: `pnpm --filter <package> exec vitest run <file>` or `-t "<name>"`.
 
-After changing a Payload collection, run `pnpm --filter @shortix/cms generate:types` and commit `payload-types.ts`; the site imports those types.
+After changing a Payload collection, run `pnpm --filter @shortix/cms migrate:create <name>` and `pnpm --filter @shortix/cms generate:types`, and commit the migration and `payload-types.ts`; the site imports those types.
 
 ## Planned architecture
 
