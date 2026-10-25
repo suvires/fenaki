@@ -145,7 +145,7 @@ export function SiteHeader({
         <a href={home.href} className="inline-flex text-ink rounded-xs focus-visible:focus-ring">
           <Wordmark label={home.label} className="h-6 w-auto" />
         </a>
-        <nav aria-label={navLabel} className="hidden md:block">
+        <nav aria-label={navLabel} className="hidden md:block md:ml-6">
           {navigation('bar')}
         </nav>
         <div className="ml-auto flex items-center gap-4">
