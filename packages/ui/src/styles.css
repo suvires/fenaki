@@ -16,6 +16,8 @@
     line-height: var(--text-body--line-height);
     word-spacing: var(--word-spacing);
     -webkit-font-smoothing: antialiased;
+    /* The site header stays fixed at the top: anchors land below it. */
+    scroll-padding-top: var(--size-header);
   }
 }
 
