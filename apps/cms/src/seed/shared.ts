@@ -1,4 +1,5 @@
 import type { Payload } from 'payload'
+import { searchClient } from '../search/client.ts'
 import { SAMPLE_SHORTS, SAMPLE_SPONSOR } from './data.ts'
 
 /**
@@ -67,4 +68,17 @@ export async function runSearchSync(payload: Payload, log: (message: string) => 
     if (ran === 0 || result.noJobsRemaining) break
   }
   log(`ran ${total} search sync jobs`)
+  // The jobs only enqueue the documents: Meilisearch indexes them on its own afterwards. Wait for
+  // it, so whatever runs next (the e2e tests, a first search) finds every short.
+  const pending = await searchClient().tasks.getTasks({
+    statuses: ['enqueued', 'processing'],
+    limit: 1000,
+  })
+  if (pending.results.length > 0) {
+    await searchClient().tasks.waitForTasks(
+      pending.results.map((task) => task.uid),
+      { timeout: 60_000 },
+    )
+    log(`search indexes ready (${pending.results.length} tasks)`)
+  }
 }

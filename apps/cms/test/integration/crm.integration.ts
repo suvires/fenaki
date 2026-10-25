@@ -27,6 +27,8 @@ Object.assign(process.env, {
   MAILBOX_SMTP_HOST: '127.0.0.1',
   MAILBOX_SMTP_PORT: '1025',
   WEB_URL: 'https://fenaki.tv',
+  // Its own search indexes, so it never touches the development ones.
+  SEARCH_INDEX_PREFIX: 'crm_test_',
 })
 delete process.env.CRM_DAILY_SEND_LIMIT
 

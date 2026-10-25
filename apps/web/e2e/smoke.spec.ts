@@ -66,7 +66,8 @@ test('a short page loads no third-party player before the click', async ({ page 
 test('search finds shorts by director as you type', async ({ page }) => {
   await page.goto('/es/buscar')
   await page.getByRole('searchbox', { name: 'Buscar cortos' }).fill('vigalondo')
-  await expect(page.getByText('1 corto encontrado')).toBeVisible()
+  // The first search after the servers start can be slow (cold routes): allow it more time.
+  await expect(page.getByText('1 corto encontrado')).toBeVisible({ timeout: 15_000 })
   await expect(page.getByRole('link', { name: /7:35 de la mañana/ })).toBeVisible()
   await expect(page).toHaveURL(/\/es\/buscar\?q=vigalondo$/)
 })
