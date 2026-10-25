@@ -21,7 +21,7 @@ export interface RankedItemProps {
 /** A rank number with the card overlapping its right side. */
 export function RankedItem({ rank, rankLabel, className, children }: RankedItemProps) {
   return (
-    <div className={cx('flex items-start', className)}>
+    <div className={cx('flex items-end', className)}>
       <RankNumber rank={rank} className="-mr-(--size-rank-overlap)" />
       <div className="relative">
         <span className="sr-only">{rankLabel}. </span>
