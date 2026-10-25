@@ -77,9 +77,16 @@ The site imports the CMS types from `apps/cms/src/payload-types.ts`, so regenera
 
 ## Continuous integration
 
-`.github/workflows/visual.yml` runs the visual regression tests on every push and pull request, in the same Playwright image and on arm64 runners, the same architecture as Apple Silicon, so local baselines match CI exactly. It uses no secrets or paid services. When it fails, the job uploads the Playwright report with the expected, actual and diff images as an artifact.
+Two GitHub Actions workflows run on every push and pull request, without secrets or paid services:
+
+- `.github/workflows/checks.yml`: `pnpm lint`, `pnpm typecheck` and `pnpm test`.
+- `.github/workflows/visual.yml`: the visual regression tests.
+
+The visual workflow runs the visual regression tests on every push and pull request, in the same Playwright image and on arm64 runners, the same architecture as Apple Silicon, so local baselines match CI exactly. It uses no secrets or paid services. When it fails, the job uploads the Playwright report with the expected, actual and diff images as an artifact.
 
 When a visual change is intended, run `pnpm test:visual:update`, check the changed images, and commit them with the change.
+
+Baselines are only accepted when generated on arm64 (Apple Silicon), the same architecture as the CI runner. The comparison has no pixel tolerance, and text renders slightly differently on x86, so `pnpm test:visual:update` refuses to run on other architectures.
 
 ## Configuration
 
