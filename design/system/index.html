@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shortix — sistema de diseño</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+  body { margin:0; padding:24px; background:var(--sala-0); color:var(--ink); font-family:var(--font-text); }
+  header { display:flex; gap:16px; align-items:center; justify-content:space-between; flex-wrap:wrap; margin-bottom:24px; }
+  h1 { margin:0; font-family:var(--font-display); text-transform:uppercase; font-size:40px; }
+  h2 { font-family:var(--font-display); text-transform:uppercase; font-size:24px; margin:32px 0 8px; }
+  small { font-family:var(--font-mono); font-size:12px; color:var(--ink-muted); letter-spacing:.06em; margin-left:8px; }
+  iframe { width:100%; border:1px solid var(--line); border-radius:var(--radius-sm); background:var(--sala-0); }
+  button { font:inherit; padding:8px 16px; border-radius:var(--radius-sm); border:1px solid var(--line-strong); background:var(--sala-2); color:var(--ink); cursor:pointer; }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@500&family=Atkinson+Hyperlegible+Next:wght@400&family=Big+Shoulders:wght@800&display=swap">
+</head>
+<body>
+<header><h1>Shortix · sistema de diseño</h1><button id="theme" type="button">Cambiar a tema claro</button></header>
+<p>Referencia visual validada el 25 oct 2026. Guía de uso en <code>README.md</code>, tokens en <code>tokens.json</code>. Se porta a <code>packages/tokens</code> y <code>packages/ui</code> al montar el monorepo.</p>
+<section><h2>Cover <small>Cover</small></h2><iframe title="Cover" src="components/Cover/preview.html" style="height:304px" loading="lazy"></iframe></section>
+<section><h2>HomePage <small>Pages</small></h2><iframe title="HomePage" src="components/HomePage/preview.html" style="height:1166px" loading="lazy"></iframe></section>
+<section><h2>ShortPage <small>Pages</small></h2><iframe title="ShortPage" src="components/ShortPage/preview.html" style="height:916px" loading="lazy"></iframe></section>
+<section><h2>Button <small>Actions</small></h2><iframe title="Button" src="components/Button/preview.html" style="height:112px" loading="lazy"></iframe></section>
+<section><h2>Badge <small>Metadata</small></h2><iframe title="Badge" src="components/Badge/preview.html" style="height:96px" loading="lazy"></iframe></section>
+<section><h2>Duration <small>Metadata</small></h2><iframe title="Duration" src="components/Duration/preview.html" style="height:88px" loading="lazy"></iframe></section>
+<section><h2>Poster <small>Media</small></h2><iframe title="Poster" src="components/Poster/preview.html" style="height:316px" loading="lazy"></iframe></section>
+<section><h2>ShortCard <small>Media</small></h2><iframe title="ShortCard" src="components/ShortCard/preview.html" style="height:396px" loading="lazy"></iframe></section>
+<section><h2>Rail <small>Layout</small></h2><iframe title="Rail" src="components/Rail/preview.html" style="height:436px" loading="lazy"></iframe></section>
+<section><h2>FilterChips <small>Navigation</small></h2><iframe title="FilterChips" src="components/FilterChips/preview.html" style="height:104px" loading="lazy"></iframe></section>
+<section><h2>SearchField <small>Navigation</small></h2><iframe title="SearchField" src="components/SearchField/preview.html" style="height:112px" loading="lazy"></iframe></section>
+<section><h2>CollectionHero <small>Sponsorship</small></h2><iframe title="CollectionHero" src="components/CollectionHero/preview.html" style="height:476px" loading="lazy"></iframe></section>
+<section><h2>SponsorCredit <small>Sponsorship</small></h2><iframe title="SponsorCredit" src="components/SponsorCredit/preview.html" style="height:88px" loading="lazy"></iframe></section>
+<section><h2>LicenseNote <small>Legal</small></h2><iframe title="LicenseNote" src="components/LicenseNote/preview.html" style="height:246px" loading="lazy"></iframe></section>
+<section><h2>PlayerGate <small>Legal</small></h2><iframe title="PlayerGate" src="components/PlayerGate/preview.html" style="height:436px" loading="lazy"></iframe></section>
+<script>
+var light=false;document.getElementById("theme").onclick=function(){light=!light;document.documentElement.setAttribute("data-theme",light?"light":"dark");this.textContent=light?"Cambiar a tema oscuro":"Cambiar a tema claro";document.querySelectorAll("iframe").forEach(function(f){f.src=f.src.split("?")[0]+"?theme="+(light?"light":"dark");});};
+</script>
+</body>
+</html>

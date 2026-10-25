@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>Shortix preview</title><link rel="stylesheet" href="../../tokens.css">
+<link rel="stylesheet" href="../bundle.css">
+<script>var t=new URLSearchParams(location.search).get("theme");if(t)document.documentElement.setAttribute("data-theme",t);</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="../bundle.js"></script>
+</head>
+<body>
+<div id="root" class="sx-pad"></div>
+<script>
+var S = window.Shortix, h = React.createElement;
+var SHORTS = [
+  { title: 'Timecode', director: 'Juanjo Giménez', year: 2016, seconds: 900, tone: 'tungsteno', badges: [{ label: 'Sub ES', tone: 'info' }] },
+  { title: 'Cuerdas', director: 'Pedro Solís García', year: 2013, seconds: 660, tone: 'sala', badges: [{ label: 'Animación' }] },
+  { title: 'Madre', director: 'Rodrigo Sorogoyen', year: 2017, seconds: 1080, tone: 'plata' },
+  { title: 'Alike', director: 'Daniel Martínez Lara y Rafa Cano Méndez', year: 2015, seconds: 480, tone: 'sala', badges: [{ label: 'Sin diálogos' }] },
+  { title: '7:35 de la mañana', director: 'Nacho Vigalondo', year: 2003, seconds: 480, tone: 'tungsteno' },
+  { title: 'Aquel no era yo', director: 'Esteban Crespo', year: 2012, seconds: 1440, tone: 'plata', badges: [{ label: 'Nuevo', tone: 'accent' }] }
+];
+ReactDOM.createRoot(document.getElementById('root')).render(h(S.SearchField, { label: 'Buscar cortos', placeholder: 'Título, director o tema' }));
+</script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Shortix</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders:wght@800&family=Atkinson+Hyperlegible+Next:wght@400&display=swap">
+<style>
+  html, body { margin:0; height:100%; }
+  body { background:var(--sala-0); color:var(--ink); font-family:var(--font-text); overflow:hidden; }
+  .cover { position:relative; height:288px; overflow:hidden; }
+  .art { position:absolute; top:0; left:480px; width:480px; height:288px; overflow:hidden; }
+  .art svg { display:block; width:640px; height:288px; }
+  .tung { fill:var(--tungsteno); }
+  .telon { fill:var(--telon); }
+  .soft { fill:var(--tungsteno-soft); }
+  .plata { fill:var(--plata); }
+  .ink { fill:var(--ink); }
+  .hole { fill:var(--sala-0); }
+  .r-sm { rx:var(--radius-sm); }
+  .r-xs { rx:var(--radius-xs); }
+  .words { position:absolute; left:var(--space-8); right:var(--space-8); bottom:var(--space-8); max-width:440px; }
+  .name { margin:0; font-family:var(--font-display); font-size:104px; line-height:.92; font-weight:800; text-transform:uppercase; letter-spacing:.01em; color:var(--ink); }
+  .tag { margin:var(--space-2) 0 0 4px; font-size:14px; line-height:20px; color:var(--ink-muted); }
+</style>
+<link rel="stylesheet" href="../../tokens.css">
+<script>var t=new URLSearchParams(location.search).get("theme");if(t)document.documentElement.setAttribute("data-theme",t);</script>
+</head>
+<body>
+<div class="cover">
+<div class="art" aria-hidden="true">
+<svg viewBox="0 0 640 288" width="640" height="288">
+<!--
+  blocks      tungsteno 160x248 bled off the top (projector light, the identity color) · telon 144x184 beside it (sponsored curtain) · tungsteno-soft 96x96 relief · plata 64x24 once (legal/info) · ink film strip 56 wide, full height
+  arrangement one tall tungsteno slab with satellites, bottoms on one line space-6 above the edge, space-4 gutters; the strip runs the full height on the right like film through a gate
+  pattern     film perforations, from "a film-perforation strip on the left edge" of every Poster: 8x12 holes cut in sala-0 at a space-6 pitch, two columns
+  scales      sides in space-2 multiples; gutters space-4; pitch space-6; corners radius-sm, holes radius-xs
+-->
+<rect class="tung r-sm" x="16" y="-16" width="160" height="280" rx="4"/>
+<rect class="telon r-sm" x="192" y="80" width="144" height="184" rx="4"/>
+<rect class="soft r-sm" x="192" y="-24" width="96" height="88" rx="4"/>
+<rect class="plata r-xs" x="304" y="40" width="64" height="24" rx="2"/>
+<rect class="ink" x="400" y="0" width="56" height="288"/>
+<rect class="hole r-xs" x="408" y="8" width="8" height="12" rx="2"/>
+<rect class="hole r-xs" x="440" y="8" width="8" height="12" rx="2"/>
+<rect class="hole r-xs" x="408" y="32" width="8" height="12" rx="2"/>
+<rect class="hole r-xs" x="440" y="32" width="8" height="12" rx="2"/>
+<rect class="hole r-xs" x="408" y="56" width="8" height="12" rx="2"/>
+<rect class="hole r-xs" x="440" y="56" width="8" height="12" rx="2"/>
+<rect class="hole r-xs" x="408" y="80" width="8" height="12" rx="2"/>
+<rect class="hole r-xs" x="440" y="80" width="8" height="12" rx="2"/>
+<rect class="hole r-xs" x="408" y="104" width="8" height="12" rx="2"/>
+<rect class="hole r-xs" x="440" y="104" width="8" height="12" rx="2"/>
+<rect class="hole r-xs" x="408" y="128" width="8" height="12" rx="2"/>
+<rect class="hole r-xs" x="440" y="128" width="8" height="12" rx="2"/>
+<rect class="hole r-xs" x="408" y="152" width="8" height="12" rx="2"/>
+<rect class="hole r-xs" x="440" y="152" width="8" height="12" rx="2"/>
+<rect class="hole r-xs" x="408" y="176" width="8" height="12" rx="2"/>
+<rect class="hole r-xs" x="440" y="176" width="8" height="12" rx="2"/>
+<rect class="hole r-xs" x="408" y="200" width="8" height="12" rx="2"/>
+<rect class="hole r-xs" x="440" y="200" width="8" height="12" rx="2"/>
+<rect class="hole r-xs" x="408" y="224" width="8" height="12" rx="2"/>
+<rect class="hole r-xs" x="440" y="224" width="8" height="12" rx="2"/>
+<rect class="hole r-xs" x="408" y="248" width="8" height="12" rx="2"/>
+<rect class="hole r-xs" x="440" y="248" width="8" height="12" rx="2"/>
+<rect class="hole r-xs" x="408" y="272" width="8" height="12" rx="2"/>
+<rect class="hole r-xs" x="440" y="272" width="8" height="12" rx="2"/>
+</svg>
+</div>
+<div class="words">
+<h1 class="name">Shortix</h1>
+<p class="tag">Cortometrajes, no clips.</p>
+</div>
+</div>
+</body>
+</html>
