@@ -1,8 +1,9 @@
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig, PayloadRequest } from 'payload'
 import { publishedOrAuthenticated } from '../access.ts'
 import { slugField } from '../fields/slug.ts'
 import { statusField } from '../fields/status.ts'
 import { queueIndexShort } from '../jobs/queue.ts'
+import { common, groups, inLanguage, label, messages, options } from '../labels.ts'
 
 export const SHORT_TYPES = ['fiction', 'documentary', 'animation', 'experimental'] as const
 export const CREDIT_ROLES = [
@@ -17,41 +18,64 @@ export const CREDIT_ROLES = [
 
 export const Shorts: CollectionConfig = {
   slug: 'shorts',
+  labels: { singular: label('Short', 'Corto'), plural: label('Shorts', 'Cortos') },
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'year', 'durationSeconds', 'status', 'sample'],
-    group: 'Catalog',
+    group: groups.catalog,
   },
   access: { read: publishedOrAuthenticated },
   defaultSort: '-publishedAt',
   fields: [
-    { name: 'title', type: 'text', required: true, localized: true },
+    { name: 'title', label: common.title, type: 'text', required: true, localized: true },
     slugField('title', { localized: true }),
-    { name: 'synopsis', type: 'textarea', localized: true },
+    {
+      name: 'synopsis',
+      label: label('Synopsis', 'Sinopsis'),
+      type: 'textarea',
+      localized: true,
+    },
     {
       type: 'row',
       fields: [
         {
           name: 'durationSeconds',
+          label: label('Duration (seconds)', 'Duración (segundos)'),
           type: 'number',
           required: true,
           min: 1,
-          admin: { description: 'Running time in seconds.' },
+          admin: { description: label('Running time in seconds.', 'Duración en segundos.') },
         },
-        { name: 'year', type: 'number', min: 1888, max: 2100 },
+        { name: 'year', label: label('Year', 'Año'), type: 'number', min: 1888, max: 2100 },
         {
           name: 'country',
+          label: label('Country', 'País'),
           type: 'text',
-          admin: { description: 'ISO 3166-1 alpha-2 code, e.g. ES.' },
-          validate: (value: string | null | undefined) =>
-            !value || /^[A-Z]{2}$/.test(value) || 'Use a two-letter uppercase country code.',
+          admin: {
+            description: label(
+              'ISO 3166-1 alpha-2 code, e.g. ES.',
+              'Código ISO 3166-1 alfa-2, por ejemplo ES.',
+            ),
+          },
+          validate: (value: string | null | undefined, { req }: { req: PayloadRequest }) =>
+            !value ||
+            /^[A-Z]{2}$/.test(value) ||
+            inLanguage(messages.countryCode, req.i18n?.language),
         },
         {
           name: 'originalLanguage',
+          label: label('Original language', 'Idioma original'),
           type: 'text',
-          admin: { description: 'BCP 47 code, e.g. es. Use zxx for no dialogue.' },
-          validate: (value: string | null | undefined) =>
-            !value || /^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$/.test(value) || 'Use a BCP 47 code.',
+          admin: {
+            description: label(
+              'BCP 47 code, e.g. es. Use zxx for no dialogue.',
+              'Código BCP 47, por ejemplo es. Usa zxx si no tiene diálogos.',
+            ),
+          },
+          validate: (value: string | null | undefined, { req }: { req: PayloadRequest }) =>
+            !value ||
+            /^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$/.test(value) ||
+            inLanguage(messages.languageCode, req.i18n?.language),
         },
       ],
     },
@@ -60,35 +84,78 @@ export const Shorts: CollectionConfig = {
       fields: [
         {
           name: 'type',
+          label: label('Type', 'Tipo'),
           type: 'select',
           required: true,
-          options: SHORT_TYPES.map((value) => ({ value, label: value })),
+          options: options({
+            fiction: label('Fiction', 'Ficción'),
+            documentary: label('Documentary', 'Documental'),
+            animation: label('Animation', 'Animación'),
+            experimental: label('Experimental', 'Experimental'),
+          }),
         },
-        { name: 'noDialogue', type: 'checkbox', defaultValue: false },
+        {
+          name: 'noDialogue',
+          label: label('No dialogue', 'Sin diálogos'),
+          type: 'checkbox',
+          defaultValue: false,
+        },
         {
           name: 'posterTone',
+          label: label('Poster tone', 'Tono del póster'),
           type: 'select',
           defaultValue: 'sala',
-          options: ['sala', 'tungsteno', 'plata'].map((value) => ({ value, label: value })),
-          admin: { description: 'Typographic poster tone until the short has cleared art.' },
+          options: options({
+            sala: label('Sala (dark)', 'Sala (oscuro)'),
+            tungsteno: label('Tungsteno (amber)', 'Tungsteno (ámbar)'),
+            plata: label('Plata (silver)', 'Plata (plateado)'),
+          }),
+          admin: {
+            description: label(
+              'Typographic poster tone until the short has cleared art.',
+              'Tono del póster tipográfico hasta que el corto tenga arte con derechos.',
+            ),
+          },
         },
       ],
     },
     {
       name: 'credits',
+      label: label('Credits', 'Créditos'),
+      labels: { singular: label('Credit', 'Crédito'), plural: label('Credits', 'Créditos') },
       type: 'array',
-      admin: { description: 'People and their role on this short.' },
+      admin: {
+        description: label(
+          'People and their role on this short.',
+          'Personas y su función en este corto.',
+        ),
+      },
       fields: [
         {
           type: 'row',
           fields: [
-            { name: 'person', type: 'relationship', relationTo: 'people', required: true },
+            {
+              name: 'person',
+              label: label('Person', 'Persona'),
+              type: 'relationship',
+              relationTo: 'people',
+              required: true,
+            },
             {
               name: 'role',
+              label: label('Role', 'Función'),
               type: 'select',
               required: true,
               defaultValue: 'director',
-              options: CREDIT_ROLES.map((value) => ({ value, label: value })),
+              options: options({
+                director: label('Director', 'Dirección'),
+                writer: label('Writer', 'Guion'),
+                producer: label('Producer', 'Producción'),
+                cinematographer: label('Cinematographer', 'Fotografía'),
+                editor: label('Editor', 'Montaje'),
+                composer: label('Composer', 'Música'),
+                cast: label('Cast', 'Reparto'),
+              }),
             },
           ],
         },
@@ -96,27 +163,35 @@ export const Shorts: CollectionConfig = {
     },
     {
       name: 'sources',
+      label: label('Sources', 'Fuentes'),
       type: 'join',
       collection: 'sources',
       on: 'short',
-      admin: { description: 'Where the short plays from. Each source has its own license.' },
+      admin: {
+        description: label(
+          'Where the short plays from. Each source has its own license.',
+          'Desde dónde se reproduce el corto. Cada fuente tiene su propia licencia.',
+        ),
+      },
     },
     statusField(['draft', 'published', 'withdrawn']),
     {
       name: 'publishedAt',
+      label: label('Published at', 'Fecha de publicación'),
       type: 'date',
-      index: true,
-      admin: { position: 'sidebar', description: 'Set when first published.' },
-    },
-    {
-      name: 'sample',
-      type: 'checkbox',
-      defaultValue: false,
       index: true,
       admin: {
         position: 'sidebar',
-        description: 'Sample data for development, not a catalog entry.',
+        description: label('Set when first published.', 'Se fija al publicarlo por primera vez.'),
       },
+    },
+    {
+      name: 'sample',
+      label: common.sample,
+      type: 'checkbox',
+      defaultValue: false,
+      index: true,
+      admin: { position: 'sidebar', description: common.sampleHelp },
     },
   ],
   hooks: {

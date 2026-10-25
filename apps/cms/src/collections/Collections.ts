@@ -2,6 +2,7 @@ import { ValidationError, type CollectionConfig, type Payload, type PayloadReque
 import { publishedOrAuthenticated } from '../access.ts'
 import { slugField } from '../fields/slug.ts'
 import { statusField } from '../fields/status.ts'
+import { common, groups, inLanguage, label, messages } from '../labels.ts'
 import { isNonCommercial } from './Licenses.ts'
 
 type Relation = number | { id: number }
@@ -42,38 +43,60 @@ export async function nonCommercialShorts(
 
 export const Collections: CollectionConfig = {
   slug: 'collections',
-  labels: { singular: 'Collection', plural: 'Collections' },
+  labels: {
+    singular: label('Collection', 'Colección'),
+    plural: label('Collections', 'Colecciones'),
+  },
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'featured', 'sponsor', 'status'],
-    group: 'Catalog',
+    group: groups.catalog,
   },
   access: { read: publishedOrAuthenticated },
   fields: [
-    { name: 'title', type: 'text', required: true, localized: true },
+    { name: 'title', label: common.title, type: 'text', required: true, localized: true },
     slugField('title', { localized: true }),
-    { name: 'description', type: 'textarea', localized: true },
+    {
+      name: 'description',
+      label: label('Description', 'Descripción'),
+      type: 'textarea',
+      localized: true,
+    },
     {
       name: 'shorts',
+      label: label('Shorts', 'Cortos'),
       type: 'relationship',
       relationTo: 'shorts',
       hasMany: true,
-      admin: { description: 'In display order. Drag to reorder.' },
+      admin: {
+        description: label(
+          'In display order. Drag to reorder.',
+          'En el orden en que se muestran. Arrastra para reordenar.',
+        ),
+      },
     },
     {
       name: 'featured',
+      label: label('Featured', 'Destacada'),
       type: 'checkbox',
       defaultValue: false,
       index: true,
-      admin: { position: 'sidebar', description: 'Shown as the hero on the home page.' },
+      admin: {
+        position: 'sidebar',
+        description: label(
+          'Shown as the hero on the home page.',
+          'Se muestra como cabecera en la página de inicio.',
+        ),
+      },
     },
     statusField(),
     {
       type: 'collapsible',
-      label: 'Sponsorship',
+      label: groups.sponsorship,
       fields: [
         {
           name: 'sponsor',
+          label: label('Sponsor', 'Patrocinador'),
           type: 'relationship',
           relationTo: 'sponsors',
           admin: {
@@ -85,17 +108,26 @@ export const Collections: CollectionConfig = {
           type: 'row',
           admin: { condition: (data) => Boolean(data?.sponsor) },
           fields: [
-            { name: 'sponsorshipStartsAt', type: 'date' },
-            { name: 'sponsorshipEndsAt', type: 'date' },
+            {
+              name: 'sponsorshipStartsAt',
+              label: label('Sponsorship starts', 'Inicio del patrocinio'),
+              type: 'date',
+            },
+            {
+              name: 'sponsorshipEndsAt',
+              label: label('Sponsorship ends', 'Fin del patrocinio'),
+              type: 'date',
+            },
           ],
         },
       ],
     },
     {
       name: 'sample',
+      label: common.sample,
       type: 'checkbox',
       defaultValue: false,
-      admin: { position: 'sidebar', description: 'Sample data for development.' },
+      admin: { position: 'sidebar', description: common.sampleHelp },
     },
   ],
   hooks: {
@@ -113,7 +145,7 @@ export const Collections: CollectionConfig = {
             errors: [
               {
                 path: 'shorts',
-                message: `A sponsored collection cannot include non-commercial (NC) shorts: ${blocked.join(', ')}`,
+                message: `${inLanguage(messages.nonCommercialInSponsored, req.i18n?.language)} ${blocked.join(', ')}`,
               },
             ],
           })

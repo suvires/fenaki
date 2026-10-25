@@ -1,9 +1,14 @@
 import type { CollectionConfig } from 'payload'
 import { isAuthenticated, isAuthenticatedField } from '../access.ts'
+import { common, groups, label } from '../labels.ts'
 
 export const Sponsors: CollectionConfig = {
   slug: 'sponsors',
-  admin: { useAsTitle: 'name', group: 'Sponsorship' },
+  labels: {
+    singular: label('Sponsor', 'Patrocinador'),
+    plural: label('Sponsors', 'Patrocinadores'),
+  },
+  admin: { useAsTitle: 'name', group: groups.sponsorship },
   access: {
     read: () => true,
     create: isAuthenticated,
@@ -11,13 +16,20 @@ export const Sponsors: CollectionConfig = {
     delete: isAuthenticated,
   },
   fields: [
-    { name: 'name', type: 'text', required: true, admin: { description: 'As credited publicly.' } },
-    { name: 'website', type: 'text' },
+    {
+      name: 'name',
+      label: common.name,
+      type: 'text',
+      required: true,
+      admin: { description: label('As credited publicly.', 'Tal como aparece en los créditos.') },
+    },
+    { name: 'website', label: label('Website', 'Sitio web'), type: 'text' },
     {
       name: 'notes',
+      label: common.notes,
       type: 'textarea',
       access: { read: isAuthenticatedField },
-      admin: { description: 'Internal. Never shown publicly.' },
+      admin: { description: common.notesHelp },
     },
   ],
 }

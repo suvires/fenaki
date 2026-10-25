@@ -1,13 +1,23 @@
 import type { SelectField } from 'payload'
+import { common, label, options, type AdminLabel } from '../labels.ts'
 
-export function statusField(options: string[] = ['draft', 'published']): SelectField {
+const STATUSES = {
+  draft: label('Draft', 'Borrador'),
+  published: label('Published', 'Publicado'),
+  withdrawn: label('Withdrawn', 'Retirado'),
+} satisfies Record<string, AdminLabel>
+
+export function statusField(
+  values: (keyof typeof STATUSES)[] = ['draft', 'published'],
+): SelectField {
   return {
     name: 'status',
+    label: common.status,
     type: 'select',
     required: true,
     defaultValue: 'draft',
     index: true,
-    options: options.map((value) => ({ value, label: value[0]?.toUpperCase() + value.slice(1) })),
+    options: options(Object.fromEntries(values.map((v) => [v, STATUSES[v]]))),
     admin: { position: 'sidebar' },
   }
 }

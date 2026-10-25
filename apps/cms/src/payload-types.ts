@@ -149,7 +149,7 @@ export interface Short {
   id: number;
   title: string;
   /**
-   * Generated from the title when left empty.
+   * Part of the URL. Generated from the title when left empty.
    */
   slug: string;
   synopsis?: string | null;
@@ -210,7 +210,7 @@ export interface Person {
   id: number;
   name: string;
   /**
-   * Generated from the title when left empty.
+   * Part of the URL. Generated from the title when left empty.
    */
   slug: string;
   bio?: string | null;
@@ -273,6 +273,9 @@ export interface License {
   signedDocument?: (number | null) | LicenseDocument;
   startsAt?: string | null;
   endsAt?: string | null;
+  /**
+   * Internal. Never shown publicly.
+   */
   notes?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -304,7 +307,7 @@ export interface Collection {
   id: number;
   title: string;
   /**
-   * Generated from the title when left empty.
+   * Part of the URL. Generated from the title when left empty.
    */
   slug: string;
   description?: string | null;
@@ -324,7 +327,7 @@ export interface Collection {
   sponsorshipStartsAt?: string | null;
   sponsorshipEndsAt?: string | null;
   /**
-   * Sample data for development.
+   * Sample data for development, not a catalog entry.
    */
   sample?: boolean | null;
   updatedAt: string;

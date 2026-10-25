@@ -1,4 +1,5 @@
 import type { TextField } from 'payload'
+import { common } from '../labels.ts'
 
 /** Lowercase ASCII words joined by hyphens: «7:35 de la mañana» → «7-35-de-la-manana». */
 export function slugify(value: string): string {
@@ -14,12 +15,13 @@ export function slugify(value: string): string {
 export function slugField(from: string, options: { localized?: boolean } = {}): TextField {
   return {
     name: 'slug',
+    label: common.slug,
     type: 'text',
     required: true,
     unique: true,
     index: true,
     localized: options.localized ?? false,
-    admin: { position: 'sidebar', description: 'Generated from the title when left empty.' },
+    admin: { position: 'sidebar', description: common.slugHelp },
     hooks: {
       beforeValidate: [
         ({ value, data }) => {

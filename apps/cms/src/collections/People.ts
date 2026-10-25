@@ -2,10 +2,12 @@ import type { CollectionConfig } from 'payload'
 import { isAuthenticated } from '../access.ts'
 import { slugField } from '../fields/slug.ts'
 import { queueIndexShort } from '../jobs/queue.ts'
+import { common, groups, label } from '../labels.ts'
 
 export const People: CollectionConfig = {
   slug: 'people',
-  admin: { useAsTitle: 'name', group: 'Catalog' },
+  labels: { singular: label('Person', 'Persona'), plural: label('People', 'Personas') },
+  admin: { useAsTitle: 'name', group: groups.catalog },
   access: {
     read: () => true,
     create: isAuthenticated,
@@ -13,9 +15,9 @@ export const People: CollectionConfig = {
     delete: isAuthenticated,
   },
   fields: [
-    { name: 'name', type: 'text', required: true },
+    { name: 'name', label: common.name, type: 'text', required: true },
     slugField('name'),
-    { name: 'bio', type: 'textarea', localized: true },
+    { name: 'bio', label: label('Bio', 'Biografía'), type: 'textarea', localized: true },
   ],
   hooks: {
     afterChange: [
