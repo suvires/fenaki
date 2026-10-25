@@ -31,6 +31,9 @@ x-cms-env: &cms-env
     - MEILISEARCH_ADMIN_KEY:MEILI_MASTER_KEY
     - SMTP_USERNAME:SES_SMTP_USERNAME
     - SMTP_PASSWORD:SES_SMTP_PASSWORD
+    # Optional metadata APIs for «Add from URL» and the nightly embed checker (03:00 UTC).
+    - YOUTUBE_API_KEY
+    - TMDB_API_KEY
 
 servers:
   cms:
