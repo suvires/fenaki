@@ -206,17 +206,27 @@ export function sourceData(
   }
 }
 
+/**
+ * The collection featured on the home hero and the landing page. When the file features none,
+ * the first collection in the file (the editors' order) is featured when it is created; after
+ * that, the admin panel decides.
+ */
+export function featuredKey(collections: ImportCollection[]): string | undefined {
+  return collections.find((c) => c.featured)?.key ?? collections[0]?.key
+}
+
 export function collectionData(
   collection: ImportCollection,
   shortId: (key: string) => number,
   status: 'draft' | 'published',
+  featured = collection.featured ?? false,
 ) {
   return {
     title: collection.es.title,
     slug: collection.es.slug,
     description: collection.es.description ?? null,
     shorts: collection.shortKeys.map(shortId),
-    featured: collection.featured ?? false,
+    featured,
     status,
     sample: false,
     importKey: collection.key,

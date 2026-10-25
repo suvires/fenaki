@@ -13,6 +13,7 @@ import { ensureAdmin, removeSamples, runSearchSync } from '../seed/shared.ts'
 import {
   collectionData,
   collectionStatus,
+  featuredKey,
   licenseData,
   parseImportFile,
   personData,
@@ -44,12 +45,14 @@ const counts = new Map<CollectionSlug, Counts>()
 /**
  * Creates or updates the document with this import key. When none has it yet, `adopt` finds an
  * existing document to take over (people added by hand before the import, matched by slug).
+ * `createOnly` fields are editorial decisions taken in the admin panel: set when the document is
+ * created, never overwritten afterwards.
  */
 async function upsert(
   collection: CollectionSlug,
   importKey: string,
   data: Record<string, unknown>,
-  adopt?: Where,
+  { adopt, createOnly = [] }: { adopt?: Where; createOnly?: string[] } = {},
 ): Promise<{ id: number; status?: unknown }> {
   const tally = counts.get(collection) ?? { created: 0, updated: 0 }
   counts.set(collection, tally)
@@ -63,7 +66,7 @@ async function upsert(
     return (await payload.update({
       collection,
       id: existing.id,
-      data,
+      data: Object.fromEntries(Object.entries(data).filter(([key]) => !createOnly.includes(key))),
       depth: 0,
       locale: defaultLocale,
     })) as { id: number }
@@ -88,7 +91,7 @@ await ensureAdmin(payload, log)
 const people = new Map<string, number>()
 for (const person of file.people) {
   const doc = await upsert('people', person.key, personData(person), {
-    slug: { equals: person.slug },
+    adopt: { slug: { equals: person.slug } },
   })
   people.set(person.key, doc.id)
 }
@@ -123,11 +126,18 @@ for (const source of file.sources) {
   )
 }
 
+const featured = featuredKey(file.collections)
 for (const collection of file.collections) {
   await upsert(
     'collections',
     collection.key,
-    collectionData(collection, lookup(shorts, 'short'), collectionStatus(collection, launched)),
+    collectionData(
+      collection,
+      lookup(shorts, 'short'),
+      collectionStatus(collection, launched),
+      collection.key === featured,
+    ),
+    { createOnly: ['featured'] },
   )
 }
 

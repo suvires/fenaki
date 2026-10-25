@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   collectionData,
   collectionStatus,
+  featuredKey,
   parseImportFile,
   shortData,
   shortStatus,
@@ -143,5 +144,24 @@ describe('collections', () => {
   it('keep the display order of their shorts', () => {
     const ids = (key: string) => ({ 'la-espera': 1, 'el-anuncio': 2 })[key] ?? 0
     expect(collectionData(collection, ids, 'published').shorts).toEqual([1, 2])
+  })
+})
+
+describe('featuredKey', () => {
+  const base = { es: { title: 'T', slug: 't' }, shortKeys: [] }
+  it("keeps the file's choice, or features the first collection", () => {
+    expect(
+      featuredKey([
+        { ...base, key: 'a' },
+        { ...base, key: 'b', featured: true },
+      ]),
+    ).toBe('b')
+    expect(
+      featuredKey([
+        { ...base, key: 'a' },
+        { ...base, key: 'b' },
+      ]),
+    ).toBe('a')
+    expect(featuredKey([])).toBeUndefined()
   })
 })
