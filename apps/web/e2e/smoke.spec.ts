@@ -83,6 +83,15 @@ test('the header opens the genres and the search in place', async ({ page }) => 
   await page.getByRole('button', { name: 'Buscar', exact: true }).click()
   const search = page.getByRole('searchbox', { name: 'Buscar cortos' })
   await expect(search).toBeFocused()
+  await search.fill('algo')
+  await page.getByRole('button', { name: 'Borrar búsqueda' }).click()
+  await expect(search).toHaveValue('')
+  await expect(search).toBeFocused()
+  // Empty, a click outside folds it back.
+  await page.getByRole('heading', { level: 2 }).first().click()
+  await expect(search).toBeHidden()
+
+  await page.getByRole('button', { name: 'Buscar', exact: true }).click()
   await search.fill('vigalondo')
   await search.press('Enter')
   await expect(page).toHaveURL(/\/es\/buscar\?q=vigalondo$/)

@@ -28,6 +28,7 @@ const meta = {
       label: 'Buscar cortos',
       placeholder: 'Título, director o tema',
       toggleLabel: 'Buscar',
+      clearLabel: 'Borrar búsqueda',
     },
     account: {
       signIn: { label: 'Iniciar sesión', href: '#sign-in' },
@@ -53,5 +54,13 @@ export const GenresOpen: Story = {
 export const SearchOpen: Story = {
   play: async ({ canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button', { name: 'Buscar' }))
+  },
+}
+
+/** Text typed: the cross clears it. */
+export const SearchWithText: Story = {
+  play: async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Buscar' }))
+    await userEvent.type(canvas.getByRole('searchbox', { name: 'Buscar cortos' }), 'vigalondo')
   },
 }

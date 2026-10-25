@@ -492,6 +492,7 @@
     "signIn": "Iniciar sesión",
     "signUp": "Crear cuenta",
     "menu": "Menú",
-    "searchToggle": "Buscar"
+    "searchToggle": "Buscar",
+    "searchClear": "Borrar búsqueda"
   }
 }

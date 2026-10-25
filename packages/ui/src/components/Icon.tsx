@@ -7,6 +7,7 @@ const PATHS = {
   arrow: 'M5 12h14M13 6l6 6-6 6',
   // Tall, to sit at the cap height of a display title (Rail).
   chevron: 'M8.5 3.5 17 12l-8.5 8.5',
+  close: 'M6 6l12 12M18 6 6 18',
 } as const
 
 export type IconName = keyof typeof PATHS

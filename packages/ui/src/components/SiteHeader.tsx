@@ -26,6 +26,8 @@ export interface SiteHeaderProps {
     placeholder: string
     /** Accessible name of the magnifier button. */
     toggleLabel: string
+    /** Accessible name of the button that clears the text. */
+    clearLabel: string
   }
   /** «Iniciar sesión» (a link) and «Crear cuenta» (a primary button). */
   account: { signIn: Link; signUp: Link }
@@ -39,8 +41,8 @@ const linkClass =
 
 /**
  * The site's top bar: logo, main navigation (genres, links), a search that slides open to the left
- * of the magnifier in the same bar, taking the free space without hiding anything, and the account
- * links. Disclosure buttons (aria-expanded), not menu roles: Escape closes what is open.
+ * of the magnifier in the same bar, taking the free space without hiding anything (a cross clears it;
+ * empty, a click outside folds it back), and the account links. Disclosure buttons (aria-expanded), not menu roles: Escape closes what is open.
  * On small screens the navigation and account links fold into a menu; the magnifier stays.
  */
 export function SiteHeader({
@@ -58,15 +60,27 @@ export function SiteHeader({
   const [menuOpen, setMenuOpen] = useState(false)
   // No transition until the search is first used: on load it must not animate into its closed state.
   const [searchUsed, setSearchUsed] = useState(false)
+  const [query, setQuery] = useState('')
   const genresId = useId()
   const searchId = useId()
   const menuId = useId()
   const searchInput = useRef<HTMLInputElement | null>(null)
+  const searchForm = useRef<HTMLFormElement | null>(null)
   const root = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
     if (searchOpen) searchInput.current?.focus()
   }, [searchOpen])
+
+  // An empty search folds back when the click lands outside it; with text, it stays open.
+  useEffect(() => {
+    if (!searchOpen) return
+    const fold = (event: PointerEvent) => {
+      if (query === '' && !searchForm.current?.contains(event.target as Node)) setSearchOpen(false)
+    }
+    document.addEventListener('pointerdown', fold)
+    return () => document.removeEventListener('pointerdown', fold)
+  }, [searchOpen, query])
 
   // A click outside closes the genres list.
   useEffect(() => {
@@ -153,6 +167,7 @@ export function SiteHeader({
         <div className="ml-auto flex flex-1 min-w-0 items-center justify-end gap-4">
           {/* One magnifier: the left end of a pill that grows leftwards when opened. */}
           <form
+            ref={searchForm}
             id={searchId}
             action={search.action}
             method="get"
@@ -189,13 +204,31 @@ export function SiteHeader({
               type="search"
               name={search.name}
               placeholder={search.placeholder}
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
               inert={!searchOpen}
               aria-hidden={!searchOpen}
               className={cx(
-                'flex-1 min-w-0 h-full pr-4 bg-transparent border-0 text-ink placeholder:text-ink-muted outline-none',
+                'flex-1 min-w-0 h-full bg-transparent border-0 text-ink placeholder:text-ink-muted outline-none',
+                // The browser's own clear button: ours replaces it.
+                '[&::-webkit-search-cancel-button]:appearance-none',
+                query ? 'pr-1' : 'pr-4',
                 !searchOpen && 'invisible',
               )}
             />
+            {searchOpen && query ? (
+              <button
+                type="button"
+                aria-label={search.clearLabel}
+                onClick={() => {
+                  setQuery('')
+                  searchInput.current?.focus()
+                }}
+                className="flex-none inline-flex items-center justify-center size-(--size-control-md) rounded-control bg-transparent border-0 text-ink-muted hover:text-ink cursor-pointer focus-visible:focus-ring"
+              >
+                <Icon name="close" size="sm" />
+              </button>
+            ) : null}
           </form>
           <div className="hidden md:block">{accountLinks}</div>
           <button
