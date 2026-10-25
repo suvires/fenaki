@@ -1,16 +1,16 @@
-import { Children, type ReactNode } from 'react'
 import { cx } from '../cx.ts'
+import { ShortCard, type ShortCardProps } from './ShortCard.tsx'
 
 export interface ShortGridProps {
   /** Accessible name of the list, when the page has more than one. */
   label?: string
-  /** Short cards, each with `stretch`. */
-  children: ReactNode
+  /** The cards, as data: Astro passes children to React as one block, so the grid renders them. */
+  items: Omit<ShortCardProps, 'stretch'>[]
   className?: string
 }
 
 /** Short cards in a responsive grid: a collection, a showcase, a person's shorts, results. */
-export function ShortGrid({ label, children, className }: ShortGridProps) {
+export function ShortGrid({ label, items, className }: ShortGridProps) {
   return (
     <ul
       aria-label={label}
@@ -19,7 +19,11 @@ export function ShortGrid({ label, children, className }: ShortGridProps) {
         className,
       )}
     >
-      {Children.map(children, (child) => (child ? <li>{child}</li> : null))}
+      {items.map((item) => (
+        <li key={item.href ?? item.title}>
+          <ShortCard {...item} stretch />
+        </li>
+      ))}
     </ul>
   )
 }

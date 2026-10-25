@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { ShortCard } from '../components/ShortCard.tsx'
 import { ShortGrid } from '../components/ShortGrid.tsx'
 import { SHORTS } from './fixtures.ts'
 
@@ -8,7 +7,7 @@ const meta = {
   component: ShortGrid,
   args: {
     label: 'Cortos',
-    children: SHORTS.map((short) => <ShortCard key={short.title} {...short} href="#" stretch />),
+    items: SHORTS.map((short) => ({ ...short, href: `#${short.title}` })),
   },
 } satisfies Meta<typeof ShortGrid>
 
@@ -17,9 +16,5 @@ type Story = StoryObj<typeof meta>
 
 export const Default: Story = {}
 export const FewShorts: Story = {
-  args: {
-    children: SHORTS.slice(0, 2).map((short) => (
-      <ShortCard key={short.title} {...short} href="#" stretch />
-    )),
-  },
+  args: { items: SHORTS.slice(0, 2).map((short) => ({ ...short, href: `#${short.title}` })) },
 }
