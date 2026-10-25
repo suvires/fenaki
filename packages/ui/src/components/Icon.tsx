@@ -16,6 +16,7 @@ const SIZES = {
   sm: 'size-(--size-icon-sm)',
   md: 'size-(--size-icon-md)',
   lg: 'size-(--size-icon-lg)',
+  xl: 'size-(--size-icon-xl)',
 } as const
 
 export interface IconProps {
