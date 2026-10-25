@@ -25,6 +25,8 @@ const nextConfig: NextConfig = {
   agentRules: false,
   poweredByHeader: false,
   headers: async () => [{ source: '/:path*', headers: securityHeaders }],
+  // The CMS host has no home page: send it to the admin panel.
+  redirects: async () => [{ source: '/', destination: '/admin', permanent: false }],
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {
       '.cjs': ['.cts', '.cjs'],
