@@ -40,7 +40,8 @@ const linkClass =
 
 /**
  * The site's top bar: logo, main navigation (genres, links), a search that slides open to the left
- * of the magnifier in the same bar (the menu steps aside meanwhile), and the account links. Disclosure buttons (aria-expanded), not menu roles: Escape closes what is open.
+ * of the magnifier in the same bar, taking the free space without hiding anything, and the account
+ * links. Disclosure buttons (aria-expanded), not menu roles: Escape closes what is open.
  * On small screens the navigation and account links fold into a menu; the magnifier stays.
  */
 export function SiteHeader({
@@ -145,7 +146,7 @@ export function SiteHeader({
         <a href={home.href} className="inline-flex text-ink rounded-xs focus-visible:focus-ring">
           <Wordmark label={home.label} className="h-6 w-auto" />
         </a>
-        <nav aria-label={navLabel} className={cx('hidden md:ml-6', !searchOpen && 'md:block')}>
+        <nav aria-label={navLabel} className="hidden md:block md:ml-6 flex-none">
           {navigation('bar')}
         </nav>
         <div className="ml-auto flex flex-1 min-w-0 items-center justify-end gap-4">
