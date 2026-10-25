@@ -46,6 +46,22 @@ export interface ImportSource {
   status?: 'unchecked' | 'ok' | 'broken' | 'private'
   lastCheckedAt?: string | null
   licenseKey: string
+  /** The official channel and the evidence the catalog team recorded for it, in Spanish. */
+  _import?: {
+    channel?: string | null
+    channelType?: string | null
+    officialChannelEvidence?: string | null
+  }
+}
+
+/** The catalog file names who runs a channel in Spanish. */
+const CHANNEL_KINDS: Record<string, string> = {
+  autor: 'author',
+  productora: 'producer',
+  distribuidora: 'distributor',
+  festival: 'festival',
+  escuela: 'school',
+  institución: 'institution',
 }
 
 export interface ImportCollection {
@@ -201,6 +217,11 @@ export function sourceData(
     embeddable: source.embeddable ?? true,
     status: source.status ?? 'unchecked',
     lastCheckedAt: source.lastCheckedAt ?? null,
+    channel: {
+      name: source._import?.channel ?? null,
+      kind: CHANNEL_KINDS[source._import?.channelType ?? ''] ?? null,
+    },
+    officialEvidence: source._import?.officialChannelEvidence ?? null,
     license: licenseId(source.licenseKey),
     importKey: source.key,
   }

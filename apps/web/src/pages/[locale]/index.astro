@@ -15,7 +15,7 @@ import {
 import { sponsorCredit } from '../../lib/analytics.ts'
 import { localeFrom, paths, translator } from '../../lib/i18n.ts'
 import { badgeClock, siteMode } from '../../lib/services.ts'
-import type { Short } from '@shortix/cms/types'
+import type { PublishedShort } from '../../lib/cms.ts'
 
 const locale = localeFrom(Astro.params.locale)
 if (!locale) return Astro.rewrite('/404')
@@ -31,7 +31,7 @@ const featured = collections.find((c) => c.featured) ?? collections[0]
 const featuredShorts = featured ? shortsOf(featured) : []
 const sponsor = featured ? sponsorOf(featured) : undefined
 
-const rails: { key: string; title: string; href?: string; shorts: Short[] }[] = [
+const rails: { key: string; title: string; href?: string; shorts: PublishedShort[] }[] = [
   { key: 'latest', title: t('home.rails.latest'), shorts },
   {
     key: 'animation',

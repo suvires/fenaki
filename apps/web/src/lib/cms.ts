@@ -12,6 +12,9 @@ async function get<T>(path: string, params: Record<string, string | number>): Pr
   return (await response.json()) as T
 }
 
+/** A published short always has a running time and a type: the CMS requires them to publish. */
+export type PublishedShort = Short & { durationSeconds: number; type: NonNullable<Short['type']> }
+
 interface List<T> {
   docs: T[]
   totalDocs: number
@@ -20,8 +23,8 @@ interface List<T> {
 /** Populates credits (people) and the join field of sources. */
 const SHORT_DEPTH = 1
 
-export async function listShorts(locale: Locale, limit = 100): Promise<Short[]> {
-  const list = await get<List<Short>>('shorts', {
+export async function listShorts(locale: Locale, limit = 100): Promise<PublishedShort[]> {
+  const list = await get<List<PublishedShort>>('shorts', {
     locale,
     depth: SHORT_DEPTH,
     limit,
@@ -31,8 +34,8 @@ export async function listShorts(locale: Locale, limit = 100): Promise<Short[]> 
   return list.docs
 }
 
-export async function getShort(locale: Locale, slug: string): Promise<Short | undefined> {
-  const list = await get<List<Short>>('shorts', {
+export async function getShort(locale: Locale, slug: string): Promise<PublishedShort | undefined> {
+  const list = await get<List<PublishedShort>>('shorts', {
     locale,
     depth: SHORT_DEPTH,
     limit: 1,
@@ -96,8 +99,10 @@ export function peopleOf(short: Short, role?: string): string[] {
     .map((person) => person.name)
 }
 
-export function shortsOf(collection: Collection): Short[] {
-  return (collection.shorts ?? []).filter(isObject<Short>).filter((s) => s.status === 'published')
+export function shortsOf(collection: { shorts?: (number | Short)[] | null }): PublishedShort[] {
+  return (collection.shorts ?? [])
+    .filter(isObject<Short>)
+    .filter((s): s is PublishedShort => s.status === 'published')
 }
 
 export function sponsorOf(collection: Collection, now = new Date()): Sponsor | undefined {
@@ -113,11 +118,15 @@ export function sponsorOf(collection: Collection, now = new Date()): Sponsor | u
 /** The source a short plays from: the first embeddable one that the checker has not flagged. */
 export function playableSource(sources: Source[]): Source | undefined {
   return sources.find(
-    (source) => source.embeddable && source.status !== 'broken' && source.status !== 'private',
+    (source) =>
+      source.embeddable &&
+      !source.ageRestricted &&
+      source.status !== 'broken' &&
+      source.status !== 'private',
   )
 }
 
-export function toCardSource(short: Short): CardSource {
+export function toCardSource(short: PublishedShort): CardSource {
   return {
     slug: short.slug,
     title: short.title,

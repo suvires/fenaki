@@ -161,7 +161,7 @@ export interface Short {
   /**
    * Running time in seconds.
    */
-  durationSeconds: number;
+  durationSeconds?: number | null;
   year?: number | null;
   /**
    * ISO 3166-1 alpha-2 code, e.g. ES.
@@ -171,7 +171,7 @@ export interface Short {
    * BCP 47 code, e.g. es. Use zxx for no dialogue.
    */
   originalLanguage?: string | null;
-  type: 'fiction' | 'documentary' | 'animation' | 'experimental';
+  type?: ('fiction' | 'documentary' | 'animation' | 'experimental') | null;
   noDialogue?: boolean | null;
   /**
    * Typographic poster tone until the short has cleared art.
@@ -203,11 +203,20 @@ export interface Short {
     hasNextPage?: boolean;
     totalDocs?: number;
   };
-  status: 'draft' | 'published' | 'withdrawn';
+  status: 'draft' | 'review' | 'published' | 'withdrawn';
+  /**
+   * Set by the nightly embed checker, which withdrew the short. Clear it and publish again once a source plays.
+   */
+  hiddenReason?: ('broken' | 'private' | 'not-embeddable' | 'age-restricted') | null;
+  hiddenAt?: string | null;
   /**
    * Set when first published.
    */
   publishedAt?: string | null;
+  /**
+   * The film on The Movie Database, when it is there.
+   */
+  tmdbId?: number | null;
   /**
    * Sample data for development, not a catalog entry.
    */
@@ -252,6 +261,22 @@ export interface Source {
    */
   url?: string | null;
   /**
+   * Only official channels (author, producer, distributor, festival, school or institution) enter the catalog. The legal route of an embed depends on it.
+   */
+  channel?: {
+    name?: string | null;
+    kind?: ('author' | 'producer' | 'distributor' | 'festival' | 'school' | 'institution') | null;
+    url?: string | null;
+    /**
+     * Filled from the provider when available.
+     */
+    externalId?: string | null;
+  };
+  /**
+   * What shows the channel belongs to the rights holder (links from the official website, the festival or the credits), and when it was checked. Required to publish the short.
+   */
+  officialEvidence?: string | null;
+  /**
    * BCP 47 codes of the available subtitles, e.g. es, en.
    */
   subtitles?: string[] | null;
@@ -261,6 +286,23 @@ export interface Source {
    */
   status: 'unchecked' | 'ok' | 'broken' | 'private';
   lastCheckedAt?: string | null;
+  /**
+   * Age-restricted videos do not play embedded.
+   */
+  ageRestricted?: boolean | null;
+  /**
+   * When the checker first found it unplayable.
+   */
+  problemSince?: string | null;
+  /**
+   * What the last check found, in the checker’s words.
+   */
+  checkNote?: string | null;
+  /**
+   * Reference only: Shortix shows typographic posters, never film stills.
+   */
+  thumbnailUrl?: string | null;
+  uploadedAt?: string | null;
   license: number | License;
   /**
    * Set by the catalog import. Re-running the import updates this document.
@@ -635,7 +677,10 @@ export interface ShortsSelect<T extends boolean = true> {
       };
   sources?: T;
   status?: T;
+  hiddenReason?: T;
+  hiddenAt?: T;
   publishedAt?: T;
+  tmdbId?: T;
   sample?: T;
   importKey?: T;
   updatedAt?: T;
@@ -650,10 +695,24 @@ export interface SourcesSelect<T extends boolean = true> {
   provider?: T;
   externalId?: T;
   url?: T;
+  channel?:
+    | T
+    | {
+        name?: T;
+        kind?: T;
+        url?: T;
+        externalId?: T;
+      };
+  officialEvidence?: T;
   subtitles?: T;
   embeddable?: T;
   status?: T;
   lastCheckedAt?: T;
+  ageRestricted?: T;
+  problemSince?: T;
+  checkNote?: T;
+  thumbnailUrl?: T;
+  uploadedAt?: T;
   license?: T;
   importKey?: T;
   updatedAt?: T;

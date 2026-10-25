@@ -59,6 +59,11 @@ export const messages = {
     'A sponsored collection cannot include non-commercial (NC) shorts:',
     'Una colección patrocinada no puede incluir cortos con licencia no comercial (NC):',
   ),
+  requiredToPublish: label('Required to publish the short.', 'Hace falta para publicar el corto.'),
+  noOfficialEvidence: label(
+    'To publish a short, at least one of its sources needs its official channel and the evidence that it is official.',
+    'Para publicar un corto, al menos una de sus fuentes necesita su canal oficial y la prueba de que es oficial.',
+  ),
   brandedInSponsored: label(
     'A sponsored collection cannot include branded content:',
     'Una colección patrocinada no puede incluir contenido de marca:',

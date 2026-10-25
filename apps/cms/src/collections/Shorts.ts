@@ -1,12 +1,17 @@
-import type { CollectionConfig, PayloadRequest } from 'payload'
-import { publishedOrAuthenticated } from '../access.ts'
+import { ValidationError, type CollectionConfig, type PayloadRequest } from 'payload'
+import { isAuthenticatedField, publishedOrAuthenticated } from '../access.ts'
 import { importKeyField } from '../fields/importKey.ts'
+import { requiredToPublish } from '../fields/requiredToPublish.ts'
 import { slugField } from '../fields/slug.ts'
 import { statusField } from '../fields/status.ts'
 import { queueIndexShort } from '../jobs/queue.ts'
 import { common, groups, inLanguage, label, messages, options } from '../labels.ts'
 
 export const SHORT_TYPES = ['fiction', 'documentary', 'animation', 'experimental'] as const
+/** Why the embed checker hid a short. */
+export const HIDDEN_REASONS = ['broken', 'private', 'not-embeddable', 'age-restricted'] as const
+export type HiddenReason = (typeof HIDDEN_REASONS)[number]
+
 export const CREDIT_ROLES = [
   'director',
   'writer',
@@ -43,8 +48,8 @@ export const Shorts: CollectionConfig = {
           name: 'durationSeconds',
           label: label('Duration (seconds)', 'Duración (segundos)'),
           type: 'number',
-          required: true,
           min: 1,
+          validate: requiredToPublish,
           admin: { description: label('Running time in seconds.', 'Duración en segundos.') },
         },
         { name: 'year', label: label('Year', 'Año'), type: 'number', min: 1888, max: 2100 },
@@ -87,7 +92,7 @@ export const Shorts: CollectionConfig = {
           name: 'type',
           label: label('Type', 'Tipo'),
           type: 'select',
-          required: true,
+          validate: requiredToPublish,
           options: options({
             fiction: label('Fiction', 'Ficción'),
             documentary: label('Documentary', 'Documental'),
@@ -205,7 +210,38 @@ export const Shorts: CollectionConfig = {
         ),
       },
     },
-    statusField(['draft', 'published', 'withdrawn']),
+    statusField(['draft', 'review', 'published', 'withdrawn']),
+    {
+      type: 'collapsible',
+      label: label('Hidden by the embed checker', 'Oculto por la comprobación de embeds'),
+      admin: { position: 'sidebar', condition: (data) => Boolean(data?.hiddenReason) },
+      fields: [
+        {
+          name: 'hiddenReason',
+          label: label('Reason', 'Motivo'),
+          type: 'select',
+          access: { read: isAuthenticatedField },
+          options: options({
+            broken: label('The video no longer exists', 'El vídeo ya no existe'),
+            private: label('The video is private', 'El vídeo es privado'),
+            'not-embeddable': label('Embedding is disabled', 'Ha desactivado la inserción'),
+            'age-restricted': label('Age restricted', 'Restringido por edad'),
+          }),
+          admin: {
+            description: label(
+              'Set by the nightly embed checker, which withdrew the short. Clear it and publish again once a source plays.',
+              'Lo fija la comprobación nocturna, que retiró el corto. Bórralo y vuelve a publicarlo cuando una fuente se reproduzca.',
+            ),
+          },
+        },
+        {
+          name: 'hiddenAt',
+          label: label('Hidden on', 'Oculto el'),
+          type: 'date',
+          access: { read: isAuthenticatedField },
+        },
+      ],
+    },
     {
       name: 'publishedAt',
       label: label('Published at', 'Fecha de publicación'),
@@ -214,6 +250,18 @@ export const Shorts: CollectionConfig = {
       admin: {
         position: 'sidebar',
         description: label('Set when first published.', 'Se fija al publicarlo por primera vez.'),
+      },
+    },
+    {
+      name: 'tmdbId',
+      label: label('TMDB ID', 'ID de TMDB'),
+      type: 'number',
+      admin: {
+        position: 'sidebar',
+        description: label(
+          'The film on The Movie Database, when it is there.',
+          'La película en The Movie Database, si está.',
+        ),
       },
     },
     {
@@ -228,7 +276,35 @@ export const Shorts: CollectionConfig = {
   ],
   hooks: {
     beforeChange: [
-      ({ data }) => {
+      async ({ data, originalDoc, req }) => {
+        const publishing = data.status === 'published' && originalDoc?.status !== 'published'
+        // Editors publish only shorts whose channel is on record as official. The catalog
+        // import (no user) carries its own evidence and writes sources after shorts.
+        if (publishing && req.user && originalDoc?.id && !data.sample) {
+          const official = await req.payload.count({
+            collection: 'sources',
+            where: {
+              short: { equals: originalDoc.id },
+              'channel.name': { exists: true, not_equals: '' },
+              officialEvidence: { exists: true, not_equals: '' },
+            },
+            req,
+          })
+          if (official.totalDocs === 0)
+            throw new ValidationError({
+              collection: 'shorts',
+              errors: [
+                {
+                  path: 'status',
+                  message: inLanguage(messages.noOfficialEvidence, req.i18n?.language),
+                },
+              ],
+            })
+        }
+        if (publishing) {
+          data.hiddenReason = null
+          data.hiddenAt = null
+        }
         if (data.status === 'published' && !data.publishedAt)
           data.publishedAt = new Date().toISOString()
         return data
