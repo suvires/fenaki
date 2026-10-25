@@ -16,15 +16,17 @@ export default defineConfig({
     routing: { prefixDefaultLocale: true, redirectToDefaultLocale: true },
   },
   env: {
+    // Every variable is `secret` so it is read when the server starts, not fixed at build time:
+    // one build serves the landing or the catalog, against any CMS, with or without the draft notice.
     schema: {
       CMS_URL: envField.string({
         context: 'server',
-        access: 'public',
+        access: 'secret',
         default: 'http://localhost:3000',
       }),
       MEILISEARCH_HOST: envField.string({
         context: 'server',
-        access: 'public',
+        access: 'secret',
         default: 'http://127.0.0.1:7700',
       }),
       MEILISEARCH_SEARCH_KEY: envField.string({
@@ -32,8 +34,6 @@ export default defineConfig({
         access: 'secret',
         optional: true,
       }),
-      // The variables below are `secret` so they are read when the server starts, not fixed at
-      // build time: one image serves the landing or the catalog, with or without the draft notice.
       SEARCH_INDEX_PREFIX: envField.string({ context: 'server', access: 'secret', default: '' }),
       SITE_MODE: envField.enum({
         context: 'server',

@@ -13,6 +13,7 @@ export default tseslint.config(
       '**/node_modules/',
       '**/dist/',
       '**/.next/',
+      '**/.next-e2e/',
       '**/.astro/',
       '**/.turbo/',
       '**/storybook-static/',
