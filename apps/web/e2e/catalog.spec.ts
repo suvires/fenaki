@@ -96,7 +96,11 @@ test('a short added to «Mi lista» appears in the rail and the list page, and s
   await expect(rail.getByText(/Guarda cortos con/)).toBeVisible()
 
   const hero = page.locator('section').first()
-  await hero.getByRole('button', { name: 'Añadir a mi lista' }).click()
+  // The island may not be hydrated yet: click again until the state changes.
+  await expect(async () => {
+    await hero.getByRole('button', { name: 'Añadir a mi lista' }).click({ timeout: 1000 })
+    await expect(hero.getByRole('button', { name: 'En mi lista' })).toBeVisible({ timeout: 1000 })
+  }).toPass()
   const saved = hero.getByRole('button', { name: 'En mi lista' })
   await expect(saved).toHaveAttribute('aria-pressed', 'true')
   await expect(rail.getByRole('link')).toHaveCount(2) // the title link and one card

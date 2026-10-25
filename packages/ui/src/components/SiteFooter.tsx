@@ -15,7 +15,7 @@ export interface SiteFooterProps {
 /** The footer on every page: the monogram and the motto, and grouped links (legal pages and credits always among them). */
 export function SiteFooter({ label, groups, tagline, brand, className }: SiteFooterProps) {
   return (
-    <footer className={cx('grid gap-8 pt-8 border-t border-line', className)}>
+    <footer className={cx('grid gap-8 pt-8', className)}>
       <div className="grid gap-8 md:grid-cols-[var(--size-column)_1fr]">
         <div className="grid content-start gap-3">
           <Monogram
