@@ -48,6 +48,13 @@ resource "cloudflare_zone_setting" "all" {
   value      = local.zone_settings[each.value.setting]
 }
 
+# DNSSEC, signed by Cloudflare. The registrar (OVHcloud) publishes the DS record built from the key in
+# the outputs: docs/deploy.md.
+resource "cloudflare_zone_dnssec" "site" {
+  zone_id = cloudflare_zone.site.id
+  status  = "active"
+}
+
 # --- Tunnel --------------------------------------------------------------------------------------
 
 # Managed here, not on the server: the `cloudflared` accessory only needs its token.

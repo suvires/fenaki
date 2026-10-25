@@ -97,7 +97,7 @@ Accounts, purchases and anything that needs your identity or a card. Paste each 
    - Account: Cloudflare Tunnel Edit, Access: Apps and Policies Edit, Workers R2 Storage Edit, Account Settings Read.
    - Zone (all zones of the account): Zone Edit, DNS Edit, Zone Settings Edit, Single Redirect Edit.
    - The **email addresses** that may open the CMS and listmonk's admin (Cloudflare Access).
-3. **Name servers**: once Claude has created the zone, set the two Cloudflare name servers it gives you for the domain in the OVHcloud control panel (Domains → DNS servers → Modify). DNSSEC: off at OVHcloud first; Claude enables it in Cloudflare afterwards and gives you the DS record.
+3. **Name servers and DNSSEC** (done for fenaki.tv on 25 oct 2026): create the zone in the Cloudflare dashboard (Add a domain, Free plan, no DNS import; account tokens cannot create zones) and import it (`tofu import cloudflare_zone.site <zone id>`). At OVHcloud, disable DNSSEC and wait until the registry drops the DS record and its TTL (1 h) passes, then switch to the Cloudflare name servers (`tofu output name_servers`). Once the zone is active, apply again (Access applications need an active zone) and publish the key from `tofu output dnssec` at OVHcloud (Domains → DNSSEC, or the API `POST /domain/<domain>/dsRecord`).
 4. **Amazon Web Services**: account, then in **SES, region eu-west-1 (Ireland)**:
    1. Create the identity `fenaki.tv` with Easy DKIM (RSA 2048) and custom MAIL FROM `bounce.fenaki.tv`. Give Claude the three DKIM tokens.
    2. Request production access (leave the sandbox). Claude drafts the text: transactional and newsletter email with double opt-in, low volume, bounce and complaint handling by listmonk.

@@ -20,3 +20,14 @@ output "backup_s3_endpoint" {
   description = "BACKUP_S3_ENDPOINT for the R2 bucket (EU jurisdiction)."
   value       = var.backup_bucket == "" ? null : "https://${var.account_id}.eu.r2.cloudflarestorage.com"
 }
+
+output "dnssec" {
+  description = "What the registrar needs for the DS record: key tag, algorithm, flags and public key (and the DS itself)."
+  value = {
+    key_tag    = cloudflare_zone_dnssec.site.key_tag
+    algorithm  = cloudflare_zone_dnssec.site.algorithm
+    flags      = cloudflare_zone_dnssec.site.flags
+    public_key = cloudflare_zone_dnssec.site.public_key
+    ds         = cloudflare_zone_dnssec.site.ds
+  }
+}
