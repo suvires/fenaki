@@ -5,6 +5,7 @@ const PATHS = {
   plus: 'M12 5v14M5 12h14',
   search: 'M10.5 17a6.5 6.5 0 1 1 0-13 6.5 6.5 0 0 1 0 13zM15.5 15.5 20 20',
   arrow: 'M5 12h14M13 6l6 6-6 6',
+  chevron: 'M9 6l6 6-6 6',
 } as const
 
 export type IconName = keyof typeof PATHS
