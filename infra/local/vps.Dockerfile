@@ -1,13 +1,18 @@
 # A stand-in for the production VPS, to rehearse deploys locally (infra/local/rehearse.sh):
-# Ubuntu 24.04 with SSH and Docker, in the state infra/server/bootstrap.sh leaves a real server.
+# Ubuntu 24.04 with SSH and Docker, in the state infra/server/bootstrap.sh leaves a real server
+# (built from infra/, for the SSH configuration).
 # Runs privileged, with its own Docker daemon inside.
 FROM ubuntu:24.04
 RUN apt-get update \
   && apt-get install --yes --no-install-recommends openssh-server docker.io iptables ca-certificates curl \
   && rm -rf /var/lib/apt/lists/* \
   && usermod -aG docker ubuntu \
-  && mkdir -p /run/sshd /home/ubuntu/.ssh \
-  && sed -i 's/^#\?PasswordAuthentication .*/PasswordAuthentication no/' /etc/ssh/sshd_config
+  && mkdir -p /run/sshd /home/ubuntu/.ssh
+# The production SSH hardening, so the rehearsal proves Kamal connects with it.
+COPY server/sshd.conf /etc/ssh/sshd_config.d/90-shortix.conf
+# Rehearsal only: Kamal reaches its local registry through a remote port forward (production pulls
+# from GHCR). sshd keeps the first value it reads, so this file goes first.
+RUN echo 'AllowTcpForwarding remote' > /etc/ssh/sshd_config.d/10-rehearsal.conf
 COPY --chmod=755 <<'SH' /usr/local/bin/vps
 #!/bin/sh
 set -e

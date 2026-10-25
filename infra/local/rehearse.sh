@@ -72,7 +72,7 @@ case "${1:-}" in
   up)
     mkdir -p "$state"
     [ -f "$key" ] || ssh-keygen -q -t ed25519 -N '' -C shortix-rehearsal -f "$key"
-    docker build -q -t shortix-rehearsal-vps:local -f "$root/infra/local/vps.Dockerfile" "$root/infra/local" >/dev/null
+    docker build -q -t shortix-rehearsal-vps:local -f "$root/infra/local/vps.Dockerfile" "$root/infra" >/dev/null
     docker build -q -t shortix-backup:rehearsal "$root/infra/backup" >/dev/null
     if ! docker inspect "$vps" >/dev/null 2>&1; then
       docker run -d --name "$vps" --privileged \

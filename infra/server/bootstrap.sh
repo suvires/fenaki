@@ -1,66 +1,45 @@
 #!/bin/sh
-# Prepares a fresh OVHcloud VPS (Ubuntu 24.04) for Kamal. Run once, as the `ubuntu` user OVHcloud
-# creates with your SSH key, before the first `bin/kamal setup`:
+# Prepares a fresh OVHcloud VPS (Ubuntu 24.04) for Kamal, from your machine. Run once, before the
+# first `bin/kamal setup`, while you can still log in as `ubuntu` with the key you gave OVHcloud:
 #
-#   ssh ubuntu@<server> 'sh -s' < infra/server/bootstrap.sh
+#   infra/server/bootstrap.sh <server ip> <your public key file> <CI deploy public key file>
 #
-# Idempotent. Leaves: Docker, with `ubuntu` in the docker group (Kamal's SSH user); a firewall
-# that only lets SSH in (the web arrives through the Cloudflare Tunnel, an outbound connection);
-# SSH by key only; automatic security updates with a reboot window after the nightly backup; UTC;
-# and 2 GB of swap as a cushion for memory peaks.
+# BOOTSTRAP_SSH_OPTS adds options to ssh and scp (e.g. -o Port=2223 for a local test).
+# Both keys must be Ed25519. They are passed to the server here and never stored in the repository.
+# Copies sshd.conf and bootstrap-remote.sh to the server and runs it (docs/deploy.md), then checks
+# that you can still log in. Idempotent: run it again to change a key.
 set -eu
-sudo() { if [ "$(id -u)" -eq 0 ]; then "$@"; else command sudo "$@"; fi; }
-log() { echo "bootstrap: $*"; }
+host=${1:?usage: bootstrap.sh <server ip> <your public key file> <CI deploy public key file>}
+human_file=${2:?your public key file, e.g. ~/.ssh/id_ed25519.pub}
+deploy_file=${3:?the CI deploy public key file}
+here=$(cd "$(dirname "$0")" && pwd)
 
-log "packages"
-sudo apt-get update -q
-sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y -q
-sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -q docker.io ufw unattended-upgrades curl
+key() {
+  ssh-keygen -l -f "$1" >/dev/null 2>&1 || { echo "Not a public key: $1" >&2; exit 1; }
+  read -r type rest <"$1"
+  case $type in
+    ssh-ed25519 | sk-ssh-ed25519@openssh.com) printf '%s %s' "$type" "$rest" ;;
+    *) echo "$1 is $type: use an Ed25519 key (ssh-keygen -t ed25519)" >&2; exit 1 ;;
+  esac
+}
+human_key=$(key "$human_file")
+deploy_key=$(key "$deploy_file")
 
-log "docker"
-sudo install -d /etc/docker
-# Containers keep running while the Docker daemon itself is upgraded.
-echo '{ "live-restore": true }' | sudo tee /etc/docker/daemon.json >/dev/null
-sudo systemctl enable --now docker
-sudo systemctl restart docker
-sudo usermod -aG docker ubuntu
+target="ubuntu@$host"
+opts=${BOOTSTRAP_SSH_OPTS:-}
+# shellcheck disable=SC2086
+ssh $opts "$target" 'mkdir -p /tmp/shortix-bootstrap'
+# shellcheck disable=SC2086
+scp -q $opts "$here/bootstrap-remote.sh" "$here/sshd.conf" "$target:/tmp/shortix-bootstrap/"
+# shellcheck disable=SC2086
+ssh $opts "$target" "sh /tmp/shortix-bootstrap/bootstrap-remote.sh '$human_key' '$deploy_key' && rm -rf /tmp/shortix-bootstrap"
 
-log "firewall: SSH only"
-sudo ufw default deny incoming
-sudo ufw default allow outgoing
-sudo ufw allow OpenSSH
-sudo ufw --force enable
-
-log "ssh: keys only, no root"
-sudo tee /etc/ssh/sshd_config.d/90-shortix.conf >/dev/null <<'CONF'
-PasswordAuthentication no
-KbdInteractiveAuthentication no
-PermitRootLogin no
-CONF
-sudo systemctl reload ssh
-
-log "automatic security updates, rebooting at 04:30 UTC when needed"
-sudo tee /etc/apt/apt.conf.d/52shortix-unattended >/dev/null <<'CONF'
-Unattended-Upgrade::Automatic-Reboot "true";
-Unattended-Upgrade::Automatic-Reboot-Time "04:30";
-CONF
-sudo tee /etc/apt/apt.conf.d/20auto-upgrades >/dev/null <<'CONF'
-APT::Periodic::Update-Package-Lists "1";
-APT::Periodic::Unattended-Upgrade "1";
-CONF
-
-log "time zone UTC"
-sudo timedatectl set-timezone Etc/UTC
-
-if [ ! -f /swapfile ]; then
-  log "swap: 2 GB"
-  sudo fallocate -l 2G /swapfile
-  sudo chmod 600 /swapfile
-  sudo mkswap /swapfile >/dev/null
-  sudo swapon /swapfile
-  echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab >/dev/null
-  echo 'vm.swappiness=10' | sudo tee /etc/sysctl.d/90-shortix.conf >/dev/null
-  sudo sysctl -q -p /etc/sysctl.d/90-shortix.conf
+# A new connection, with the new configuration: if this fails, keep the session you have open
+# elsewhere, or use the OVHcloud rescue mode (docs/deploy.md, "Break glass").
+# shellcheck disable=SC2086
+if ssh $opts -o ConnectTimeout=10 "$target" true; then
+  echo "bootstrap: done; you can log in. Log out and back in for the docker group to apply."
+else
+  echo "bootstrap: could not log in again: see docs/deploy.md, \"Break glass\"" >&2
+  exit 1
 fi
-
-log "done. Log out and back in for the docker group to apply."
