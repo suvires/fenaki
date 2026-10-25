@@ -285,7 +285,11 @@
       "showcase": "Escaparates para festivales y escuelas",
       "browse": "Todos los cortos"
     },
-    "tagline": "Fenaki · Cortometrajes, no clips. Cada corto es de quien lo hizo."
+    "tagline": "Fenaki · Cortometrajes, no clips. Cada corto es de quien lo hizo.",
+    "tmdb": {
+      "text": "Este producto usa la API de TMDB, pero TMDB no lo respalda ni lo certifica.",
+      "logo": "The Movie Database (TMDB)"
+    }
   },
   "contact": {
     "propose": {
