@@ -73,7 +73,7 @@ pnpm migrate                                       # apply pending migrations
 pnpm --filter @shortix/cms generate:types          # and regenerate payload-types.ts
 ```
 
-Commit the migration with the change. A database created before migrations existed (by the schema push) has to start again: `docker compose down -v && docker compose up -d`, then the setup above from `pnpm migrate`.
+Payload writes `import { MigrateUpArgs, MigrateDownArgs, sql }` at the top of a new migration; mark the two types `type` (`import { sql, type MigrateDownArgs, type MigrateUpArgs }`) or `pnpm migrate` fails under Node's type stripping. Commit the migration with the change. A database created before migrations existed (by the schema push) has to start again: `docker compose down -v && docker compose up -d`, then the setup above from `pnpm migrate`.
 
 ## Commands
 
