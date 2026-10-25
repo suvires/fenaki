@@ -8,9 +8,9 @@ const meta = {
     label: 'Pie de página',
     groups: [
       {
-        title: 'Shortix',
+        title: 'Fenaki',
         links: [
-          { label: 'Qué es Shortix', href: '#what' },
+          { label: 'Qué es Fenaki', href: '#what' },
           { label: 'Cómo es legal', href: '#legal' },
           { label: 'Preguntas frecuentes', href: '#faq' },
         ],
@@ -28,7 +28,7 @@ const meta = {
         ],
       },
     ],
-    tagline: 'Shortix · Cortometrajes, no clips. Cada corto es de quien lo hizo.',
+    tagline: 'Fenaki · Cortometrajes, no clips. Cada corto es de quien lo hizo.',
   },
 } satisfies Meta<typeof SiteFooter>
 

@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="es">
-<head><meta charset="utf-8"><title>Shortix preview</title><link rel="stylesheet" href="../../tokens.css">
+<head><meta charset="utf-8"><title>Fenaki preview</title><link rel="stylesheet" href="../../tokens.css">
 <link rel="stylesheet" href="../bundle.css">
 <script>var t=new URLSearchParams(location.search).get("theme");if(t)document.documentElement.setAttribute("data-theme",t);</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
@@ -10,7 +10,7 @@
 <body>
 <div id="root" class="sx-pad" style="display:grid;gap:24px;max-width:880px"></div>
 <script>
-var S = window.Shortix, h = React.createElement;
+var S = window.Fenaki, h = React.createElement;
 var SHORTS = [
   { title: 'Timecode', director: 'Juanjo Giménez', year: 2016, seconds: 900, tone: 'tungsteno', badges: [{ label: 'Sub ES', tone: 'info' }] },
   { title: 'Cuerdas', director: 'Pedro Solís García', year: 2013, seconds: 660, tone: 'sala', badges: [{ label: 'Animación' }] },
@@ -25,7 +25,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(h(React.Fragment, nu
   h('p', { style: { margin: 0, fontSize: 17, lineHeight: '26px', maxWidth: '62ch' } }, 'Luna y Diego son los vigilantes de un aparcamiento. Ella trabaja de día y él de noche, y solo se cruzan en el cambio de turno.'),
   h('p', { style: { margin: 0, color: 'var(--ink-muted)' } }, 'Dirigido por Juanjo Giménez'),
   h('div', { className: 'sx-row' }, h(S.Button, { variant: 'secondary', icon: 'plus' }, 'Añadir a mi lista')),
-  h(S.LicenseNote, { route: 'embed', routeLabel: 'Embed oficial' }, 'Se reproduce desde el canal de YouTube de su productora. Shortix no aloja ni modifica el vídeo.'),
+  h(S.LicenseNote, { route: 'embed', routeLabel: 'Embed oficial' }, 'Se reproduce desde el canal de YouTube de su productora. Fenaki no aloja ni modifica el vídeo.'),
   h(S.Rail, { title: 'Si te ha gustado', actionLabel: 'Ver todo' }, SHORTS.slice(1).map(function (s, i) { return h(S.ShortCard, Object.assign({ key: i, href: '#' }, s)); }))
 ));
 </script>

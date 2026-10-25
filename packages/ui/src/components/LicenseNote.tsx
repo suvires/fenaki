@@ -11,7 +11,7 @@ export interface LicenseNoteProps {
   className?: string
 }
 
-/** How a short reaches Shortix and what its license asks for. On every short's page. */
+/** How a short reaches Fenaki and what its license asks for. On every short's page. */
 export function LicenseNote({ route, routeLabel, children, className }: LicenseNoteProps) {
   return (
     <aside

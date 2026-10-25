@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="es">
-<head><meta charset="utf-8"><title>Shortix preview</title><link rel="stylesheet" href="../../tokens.css">
+<head><meta charset="utf-8"><title>Fenaki preview</title><link rel="stylesheet" href="../../tokens.css">
 <link rel="stylesheet" href="../bundle.css">
 <script>var t=new URLSearchParams(location.search).get("theme");if(t)document.documentElement.setAttribute("data-theme",t);</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
@@ -10,7 +10,7 @@
 <body>
 <div id="root" class="sx-pad" style="display:grid;gap:48px"></div>
 <script>
-var S = window.Shortix, h = React.createElement;
+var S = window.Fenaki, h = React.createElement;
 var SHORTS = [
   { title: 'Timecode', director: 'Juanjo Giménez', year: 2016, seconds: 900, tone: 'tungsteno', badges: [{ label: 'Sub ES', tone: 'info' }] },
   { title: 'Cuerdas', director: 'Pedro Solís García', year: 2013, seconds: 660, tone: 'sala', badges: [{ label: 'Animación' }] },
@@ -21,7 +21,7 @@ var SHORTS = [
 ];
 ReactDOM.createRoot(document.getElementById('root')).render(h(React.Fragment, null,
   h('div', { className: 'sx-row', style: { justifyContent: 'space-between' } },
-    h('strong', { style: { fontFamily: 'var(--font-display)', fontSize: 32, letterSpacing: '0.02em', textTransform: 'uppercase' } }, 'Shortix'),
+    h('strong', { style: { fontFamily: 'var(--font-display)', fontSize: 32, letterSpacing: '0.02em', textTransform: 'uppercase' } }, 'Fenaki'),
     h(S.SearchField, { label: 'Buscar cortos', placeholder: 'Título, director o tema' })),
   h(S.CollectionHero, { eyebrow: 'Colección · 6 cortos', title: 'Imprescindibles del corto español', description: 'Seis cortos que marcaron una época, en los canales de sus autores.', ctaLabel: 'Ver la colección', secondaryLabel: 'Añadir a mi lista', sponsor: { label: 'Presentada por', name: 'Festival de Cine Breve' }, posters: [SHORTS[0], SHORTS[1], SHORTS[2]] }),
   h(S.FilterChips, { label: 'Duración', options: [{ value: 'short', label: 'Menos de 5 min' }, { value: 'mid', label: 'De 5 a 15 min' }, { value: 'long', label: 'Más de 15 min' }, { value: 'subs', label: 'Con subtítulos en español' }] }),

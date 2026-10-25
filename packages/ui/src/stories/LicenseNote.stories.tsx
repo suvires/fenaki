@@ -8,7 +8,7 @@ const meta = {
     route: 'embed',
     routeLabel: 'Embed oficial',
     children:
-      'Se reproduce desde el canal de YouTube de su productora. Shortix no aloja ni modifica el corto.',
+      'Se reproduce desde el canal de YouTube de su productora. Fenaki no aloja ni modifica el corto.',
   },
 } satisfies Meta<typeof LicenseNote>
 
@@ -27,6 +27,6 @@ export const Direct: Story = {
   args: {
     route: 'direct',
     routeLabel: 'Licencia directa',
-    children: 'Se publica en Shortix con permiso directo de sus autores.',
+    children: 'Se publica en Fenaki con permiso directo de sus autores.',
   },
 }

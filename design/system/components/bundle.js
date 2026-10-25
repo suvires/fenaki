@@ -1,4 +1,4 @@
-/* @ds-bundle: {"format":4,"namespace":"Shortix","components":[{"name":"Button"},{"name":"Badge"},{"name":"Duration"},{"name":"Poster"},{"name":"ShortCard"},{"name":"Rail"},{"name":"FilterChips"},{"name":"SearchField"},{"name":"SponsorCredit"},{"name":"CollectionHero"},{"name":"LicenseNote"},{"name":"PlayerGate"}]} */
+/* @ds-bundle: {"format":4,"namespace":"Fenaki","components":[{"name":"Button"},{"name":"Badge"},{"name":"Duration"},{"name":"Poster"},{"name":"ShortCard"},{"name":"Rail"},{"name":"FilterChips"},{"name":"SearchField"},{"name":"SponsorCredit"},{"name":"CollectionHero"},{"name":"LicenseNote"},{"name":"PlayerGate"}]} */
 (function () {
   var React = window.React;
   var h = React.createElement;
@@ -173,7 +173,7 @@
     );
   }
 
-  window.Shortix = Object.assign(window.Shortix || {}, {
+  window.Fenaki = Object.assign(window.Fenaki || {}, {
     Button: Button, Badge: Badge, Duration: Duration, Poster: Poster, ShortCard: ShortCard, Rail: Rail,
     FilterChips: FilterChips, SearchField: SearchField, SponsorCredit: SponsorCredit,
     CollectionHero: CollectionHero, LicenseNote: LicenseNote, PlayerGate: PlayerGate, Icon: Icon

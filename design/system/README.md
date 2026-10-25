@@ -1,4 +1,4 @@
-Shortix is a curated catalog of free, legal short films with the browsing experience of a streaming service. The look is a darkened screening room: warm black walls, one projector-light accent, poster capitals for titles. Everything a viewer sees is built from these tokens and components; pages only compose them.
+Fenaki is a curated catalog of free, legal short films with the browsing experience of a streaming service. The look is a darkened screening room: warm black walls, one projector-light accent, poster capitals for titles. Everything a viewer sees is built from these tokens and components; pages only compose them.
 
 ## Content fundamentals
 
@@ -42,7 +42,7 @@ Shortix is a curated catalog of free, legal short films with the browsing experi
 
 - Third-party players load only after consent. Show `PlayerGate` first; it names the provider and what it does with cookies.
 - Sponsorship lives on the collection page, the home hero and the newsletter, never on or near the player. A short's page shows no sponsor credit inside the player area.
-- Every short's page shows its `LicenseNote`: how it reaches Shortix (official embed, open license, direct license) and the credit the license asks for.
+- Every short's page shows its `LicenseNote`: how it reaches Fenaki (official embed, open license, direct license) and the credit the license asks for.
 
 ## Iconography
 

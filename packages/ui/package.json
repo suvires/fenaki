@@ -1,9 +1,9 @@
 {
-  "name": "@shortix/ui",
+  "name": "@fenaki/ui",
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Shortix React components, built on design tokens and accessible primitives.",
+  "description": "Fenaki React components, built on design tokens and accessible primitives.",
   "exports": {
     ".": "./src/index.ts",
     "./styles.css": "./src/styles.css"
@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "@radix-ui/react-toggle-group": "1.2.1",
-    "@shortix/i18n": "workspace:*",
-    "@shortix/tokens": "workspace:*"
+    "@fenaki/i18n": "workspace:*",
+    "@fenaki/tokens": "workspace:*"
   }
 }

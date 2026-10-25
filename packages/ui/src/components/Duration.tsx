@@ -1,4 +1,4 @@
-import { defaultLocale, formatDuration, type Locale } from '@shortix/i18n'
+import { defaultLocale, formatDuration, type Locale } from '@fenaki/i18n'
 import { cx } from '../cx.ts'
 
 export interface DurationProps {

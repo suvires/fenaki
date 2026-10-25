@@ -9,9 +9,9 @@ const meta = {
       <>
         <h1>Aviso legal</h1>
         <p>Última actualización: [FECHA DE PUBLICACIÓN]</p>
-        <h2>1. Quién está detrás de Shortix</h2>
+        <h2>1. Quién está detrás de Fenaki</h2>
         <p>
-          El sitio web <strong>shortix.film</strong> es titularidad de:
+          El sitio web <strong>fenaki.tv</strong> es titularidad de:
         </p>
         <table>
           <thead>
