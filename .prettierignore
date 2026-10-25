@@ -13,3 +13,5 @@ apps/cms/src/app/(payload)/
 apps/cms/src/migrations/
 # Kamal configuration: YAML with ERB tags
 config/deploy*.yml
+# OpenTofu provider downloads and local state
+.terraform/

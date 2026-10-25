@@ -193,3 +193,30 @@ export function sitemapIndexXml(siteUrl: string): string {
     .join('')
   return `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${maps}</sitemapindex>\n`
 }
+
+/**
+ * Crawlers that only gather training data for AI models. Search engines and the assistants that
+ * fetch a page to answer someone (and link back) stay allowed; Cloudflare blocks these too.
+ */
+export const AI_TRAINING_CRAWLERS = [
+  'GPTBot',
+  'ClaudeBot',
+  'Google-Extended',
+  'Applebot-Extended',
+  'CCBot',
+  'meta-externalagent',
+  'Bytespider',
+  'cohere-training-data-crawler',
+] as const
+
+/** Everything is crawlable except the APIs, and nothing for AI training; the sitemap index lists the pages. */
+export function robotsTxt(siteUrl: string): string {
+  return [
+    ...AI_TRAINING_CRAWLERS.flatMap((agent) => [`User-agent: ${agent}`, 'Disallow: /', '']),
+    'User-agent: *',
+    'Disallow: /api/',
+    '',
+    `Sitemap: ${absoluteUrl(siteUrl, '/sitemap.xml')}`,
+    '',
+  ].join('\n')
+}

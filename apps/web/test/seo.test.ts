@@ -5,6 +5,7 @@ import {
   isoDuration,
   jsonLdScript,
   profilePage,
+  robotsTxt,
   sitemapIndexXml,
   sitemapXml,
   swapLocale,
@@ -111,5 +112,20 @@ describe('sitemaps', () => {
 
   it('point the index at one sitemap per locale', () => {
     expect(sitemapIndexXml(SITE)).toContain('<loc>https://fenaki.tv/sitemap-es.xml</loc>')
+  })
+})
+
+describe('robots.txt', () => {
+  const robots = robotsTxt(SITE)
+
+  it('keeps AI training crawlers out of the whole site', () => {
+    expect(robots).toContain('User-agent: GPTBot\nDisallow: /\n')
+    expect(robots).toContain('User-agent: Google-Extended\nDisallow: /\n')
+  })
+
+  it('lets every other crawler in, except the APIs, and points to the sitemap index', () => {
+    expect(robots).toContain('User-agent: *\nDisallow: /api/\n')
+    expect(robots).toContain('Sitemap: https://fenaki.tv/sitemap.xml')
+    expect(robots).not.toMatch(/User-agent: (Googlebot|OAI-SearchBot|ChatGPT-User|Claude-User)/)
   })
 })
