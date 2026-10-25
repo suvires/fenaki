@@ -15,6 +15,7 @@
     "start": "NODE_OPTIONS=--no-deprecation next start --port 3000",
     "jobs": "NODE_OPTIONS=--no-deprecation payload jobs:run --cron \"*/10 * * * * *\" --queue default",
     "seed": "NODE_OPTIONS=--no-deprecation payload run src/seed/index.ts",
+    "import:catalog": "NODE_OPTIONS=--no-deprecation payload run src/import/index.ts",
     "payload": "NODE_OPTIONS=--no-deprecation payload",
     "generate:types": "NODE_OPTIONS=--no-deprecation payload generate:types",
     "generate:importmap": "NODE_OPTIONS=--no-deprecation payload generate:importmap",
