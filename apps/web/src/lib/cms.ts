@@ -127,6 +127,7 @@ export function toCardSource(short: Short): CardSource {
     posterTone: short.posterTone,
     type: short.type,
     noDialogue: short.noDialogue,
+    brandedContent: short.brandedContent,
     subtitles: [...new Set(sourcesOf(short).flatMap((source) => source.subtitles ?? []))],
     publishedAt: short.publishedAt,
   }

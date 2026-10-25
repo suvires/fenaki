@@ -93,7 +93,8 @@
   "badges": {
     "new": "Nuevo",
     "subtitles": "Sub {language}",
-    "noDialogue": "Sin diálogos"
+    "noDialogue": "Sin diálogos",
+    "branded": "Contenido de marca"
   },
   "providers": {
     "youtube": "YouTube",

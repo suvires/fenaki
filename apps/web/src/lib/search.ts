@@ -15,6 +15,7 @@ export interface ShortHit {
   posterTone: string
   type: string
   noDialogue: boolean
+  brandedContent?: boolean
   subtitles: string[]
   publishedAt: number | null
 }
@@ -45,6 +46,7 @@ export async function searchShorts(locale: Locale, query: string): Promise<Searc
       posterTone: hit.posterTone,
       type: hit.type,
       noDialogue: hit.noDialogue,
+      brandedContent: hit.brandedContent,
       subtitles: hit.subtitles,
       publishedAt: hit.publishedAt,
     })),

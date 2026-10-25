@@ -58,6 +58,25 @@ describe('badgesFor', () => {
     ])
   })
 
+  it('always puts branded content first, even with three other badges', () => {
+    const badges = badgesFor(
+      {
+        ...short,
+        brandedContent: true,
+        publishedAt: '2026-10-20T10:00:00Z',
+        subtitles: ['es'],
+      },
+      'es',
+      t,
+      NOW,
+    )
+    expect(badges).toEqual([
+      { label: 'Contenido de marca', tone: 'branded' },
+      { label: 'Nuevo', tone: 'accent' },
+      { label: 'Sub ES', tone: 'info' },
+    ])
+  })
+
   it('falls back to the animation badge when the short has dialogue', () => {
     expect(badgesFor({ ...short, noDialogue: false }, 'es', t, NOW)).toEqual([
       { label: 'Animación' },

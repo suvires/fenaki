@@ -11,6 +11,7 @@ export interface CardSource {
   posterTone?: string | null
   type: string
   noDialogue?: boolean | null
+  brandedContent?: boolean | null
   subtitles: string[]
   publishedAt?: string | number | null
 }
@@ -33,7 +34,10 @@ export function isNew(publishedAt: CardSource['publishedAt'], now = Date.now()):
   return now - time < NEW_FOR_DAYS * DAY
 }
 
-/** Up to three badges, most useful first: new, subtitles in the viewer's language, then form. */
+/**
+ * Up to three badges. Branded content always comes first (advertising must be identifiable), then
+ * the most useful: new, subtitles in the viewer's language, then form.
+ */
 export function badgesFor(
   short: CardSource,
   locale: Locale,
@@ -41,6 +45,7 @@ export function badgesFor(
   now = Date.now(),
 ): { label: string; tone?: BadgeTone }[] {
   const badges: { label: string; tone?: BadgeTone }[] = []
+  if (short.brandedContent) badges.push({ label: t('badges.branded'), tone: 'branded' })
   if (isNew(short.publishedAt, now)) badges.push({ label: t('badges.new'), tone: 'accent' })
   if (short.subtitles.includes(locale))
     badges.push({ label: t('badges.subtitles', { language: locale.toUpperCase() }), tone: 'info' })
