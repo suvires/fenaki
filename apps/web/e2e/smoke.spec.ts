@@ -7,6 +7,23 @@ test('the root redirects to the Spanish home page', async ({ page }) => {
   await expect(page).toHaveURL(/\/es\/$/)
 })
 
+test('every page links the site icon, and it is served', async ({ page, request }) => {
+  await page.goto('/es/')
+  await expect(page.locator('link[rel="icon"][type="image/svg+xml"]')).toHaveAttribute(
+    'href',
+    '/favicon.svg',
+  )
+  for (const [path, type] of [
+    ['/favicon.svg', 'image/svg+xml'],
+    ['/favicon.ico', 'image/png'],
+    ['/apple-touch-icon.png', 'image/png'],
+  ]) {
+    const response = await request.get(path)
+    expect(response.status()).toBe(200)
+    expect(response.headers()['content-type']).toBe(type)
+  }
+})
+
 test('the home page shows the sponsored collection and the rails', async ({ page }) => {
   await page.goto('/es/')
   await expect(

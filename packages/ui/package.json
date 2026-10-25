@@ -7,7 +7,8 @@
   "exports": {
     ".": "./src/index.ts",
     "./styles.css": "./src/styles.css",
-    "./wordmark.svg": "./src/assets/wordmark.svg"
+    "./wordmark.svg": "./src/assets/wordmark.svg",
+    "./favicon.svg": "./src/assets/favicon.svg"
   },
   "scripts": {
     "typecheck": "tsc",
