@@ -1,7 +1,7 @@
 ---
 import '../styles/global.css'
 import type { Locale } from '@fenaki/i18n'
-import { SearchField, SiteFooter, Wordmark } from '@fenaki/ui'
+import { SiteFooter, SiteHeader, Wordmark } from '@fenaki/ui'
 import { paths, translator } from '../lib/i18n.ts'
 import { contactLinks } from '../lib/contact.ts'
 import { contactEmail, csp, siteMode, siteUrl, umami } from '../lib/services.ts'
@@ -11,8 +11,6 @@ interface Props {
   locale: Locale
   title?: string
   description?: string
-  /** The search page has its own field. */
-  showSearch?: boolean
   /** Pages that only make sense from a link, such as the waitlist confirmation. */
   noindex?: boolean
   /** The canonical path, when it is not the requested one (filtered or paged lists). */
@@ -30,7 +28,6 @@ const {
   locale,
   title,
   description,
-  showSearch = true,
   noindex = false,
   canonicalPath = Astro.url.pathname,
   alternates,
@@ -45,6 +42,7 @@ for (const directive of csp.directives) Astro.csp?.insertDirective(directive)
 
 const t = translator(locale)
 const landing = siteMode === 'landing'
+const GENRES = ['fiction', 'documentary', 'animation', 'experimental'] as const
 const pageTitle = title
   ? `${title} · ${t('site.name')}`
   : `${t('site.name')} · ${t('site.tagline')}`
@@ -148,21 +146,47 @@ const footerGroups = [
     >
       {t('site.skipToContent')}
     </a>
-    <header class="mx-auto max-w-page flex flex-wrap items-center justify-between gap-3 px-4 md:px-8 pt-6">
-      <a href={paths.home(locale)} class="inline-flex text-ink rounded-xs focus-visible:focus-ring">
-        <Wordmark label={t('site.name')} className="h-6 w-auto" />
-      </a>
-      {showSearch && !landing && (
-        <form action={paths.search(locale)} method="get" role="search" class="w-full max-w-search">
-          <SearchField
-            name="q"
-            id="site-search"
-            label={t('search.label')}
-            placeholder={t('search.placeholder')}
-          />
-        </form>
-      )}
-    </header>
+    {landing ? (
+      <header class="mx-auto max-w-page flex items-center px-4 md:px-8 pt-6">
+        <a
+          href={paths.home(locale)}
+          class="inline-flex text-ink rounded-xs focus-visible:focus-ring"
+        >
+          <Wordmark label={t('site.name')} className="h-6 w-auto" />
+        </a>
+      </header>
+    ) : (
+      <SiteHeader
+        client:load
+        className="mx-auto max-w-page px-4 md:px-8 pt-6"
+        home={{ href: paths.home(locale), label: t('site.name') }}
+        navLabel={t('header.nav')}
+        genres={{
+          label: t('header.genres'),
+          items: GENRES.map((type) => ({
+            label: t(`short.types.${type}`),
+            href: paths.genre(locale, type),
+          })),
+        }}
+        links={[
+          { label: t('header.latest'), href: paths.latest(locale) },
+          // Accounts arrive later: the links are in place, without a page yet.
+          { label: t('header.myList'), href: '#' },
+        ]}
+        search={{
+          action: paths.search(locale),
+          name: 'q',
+          label: t('search.label'),
+          placeholder: t('search.placeholder'),
+          toggleLabel: t('header.searchToggle'),
+        }}
+        account={{
+          signIn: { label: t('header.signIn'), href: '#' },
+          signUp: { label: t('header.signUp'), href: '#' },
+        }}
+        menuLabel={t('header.menu')}
+      />
+    )}
     <main id="main" class="mx-auto max-w-page grid gap-12 px-4 md:px-8 py-8">
       <slot />
     </main>

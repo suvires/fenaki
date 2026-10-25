@@ -16,6 +16,11 @@ export const paths = {
   collection: (locale: Locale, slug: string) => `/${locale}/colecciones/${slug}`,
   person: (locale: Locale, slug: string) => `/${locale}/personas/${slug}`,
   browse: (locale: Locale) => `/${locale}/cortos`,
+  /** The browse page filtered by type (a «genre» in the header). */
+  genre: (locale: Locale, type: 'fiction' | 'documentary' | 'animation' | 'experimental') =>
+    `/${locale}/cortos?type=${type}`,
+  /** The latest shorts: one rail on the home page, not a full list. */
+  latest: (locale: Locale) => `/${locale}/#novedades`,
   showcase: (locale: Locale, slug: string) => `/${locale}/escaparates/${slug}`,
   sponsor: (locale: Locale, section?: 'collection' | 'showcase') =>
     `/${locale}/patrocina${section ? `#${section === 'collection' ? 'coleccion' : 'escaparate'}` : ''}`,

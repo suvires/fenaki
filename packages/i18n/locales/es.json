@@ -483,5 +483,15 @@
       "title": "Tipografías",
       "text": "La web usa Archivo, de Omnibus-Type, y el logotipo, Big Shoulders, de Patric King. Las dos tienen licencia SIL Open Font License."
     }
+  },
+  "header": {
+    "nav": "Principal",
+    "genres": "Géneros",
+    "latest": "Novedades",
+    "myList": "Mi lista",
+    "signIn": "Iniciar sesión",
+    "signUp": "Crear cuenta",
+    "menu": "Menú",
+    "searchToggle": "Buscar"
   }
 }

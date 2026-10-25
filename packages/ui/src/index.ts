@@ -25,3 +25,4 @@ export { SponsorCredit, type SponsorCreditProps } from './components/SponsorCred
 export { TextField, type TextFieldProps } from './components/TextField.tsx'
 export { Wordmark, type WordmarkProps } from './components/Wordmark.tsx'
 export { Monogram, type MonogramProps } from './components/Monogram.tsx'
+export { SiteHeader, type SiteHeaderProps } from './components/SiteHeader.tsx'

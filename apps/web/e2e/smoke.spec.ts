@@ -71,3 +71,18 @@ test('search finds shorts by director as you type', async ({ page }) => {
   await expect(page.getByRole('link', { name: /7:35 de la mañana/ })).toBeVisible()
   await expect(page).toHaveURL(/\/es\/buscar\?q=vigalondo$/)
 })
+
+test('the header opens the genres and the search in place', async ({ page }) => {
+  await page.goto('/es/')
+  const nav = page.getByRole('navigation', { name: 'Principal' })
+  await nav.getByRole('button', { name: 'Géneros' }).click()
+  await nav.getByRole('link', { name: 'Animación' }).click()
+  await expect(page).toHaveURL(/\/es\/cortos\?type=animation$/)
+
+  await page.getByRole('button', { name: 'Buscar', exact: true }).click()
+  const search = page.getByRole('searchbox', { name: 'Buscar cortos' })
+  await expect(search).toBeFocused()
+  await search.fill('vigalondo')
+  await search.press('Enter')
+  await expect(page).toHaveURL(/\/es\/buscar\?q=vigalondo$/)
+})
