@@ -1,0 +1,36 @@
+{
+  "name": "shortix",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.15.0",
+  "engines": {
+    "node": ">=26.11.0 <27"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "eslint . && prettier --check .",
+    "format": "prettier --write .",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "test:e2e": "turbo run test:e2e",
+    "seed": "pnpm --filter @shortix/cms seed",
+    "storybook": "pnpm --filter @shortix/ui storybook"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@next/eslint-plugin-next": "16.4.3",
+    "@types/node": "26.6.5",
+    "eslint": "10.13.0",
+    "eslint-config-prettier": "10.1.8",
+    "eslint-plugin-astro": "3.2.1",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "eslint-plugin-storybook": "10.6.3",
+    "globals": "17.13.0",
+    "prettier": "3.9.10",
+    "prettier-plugin-astro": "1.1.2",
+    "turbo": "2.11.10",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.72.0"
+  }
+}

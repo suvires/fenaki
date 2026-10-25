@@ -1,0 +1,25 @@
+{
+  "$schema": "https://turborepo.com/schema.json",
+  "ui": "stream",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**", "storybook-static/**"]
+    },
+    "dev": {
+      "dependsOn": ["^build"],
+      "cache": false,
+      "persistent": true
+    },
+    "typecheck": {
+      "dependsOn": ["^build"]
+    },
+    "test": {
+      "dependsOn": ["^build"]
+    },
+    "test:e2e": {
+      "dependsOn": ["^build"],
+      "cache": false
+    }
+  }
+}
