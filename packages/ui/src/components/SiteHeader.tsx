@@ -158,7 +158,8 @@ export function SiteHeader({
             method="get"
             role="search"
             className={cx(
-              'w-full overflow-hidden transition-[max-width,opacity] motion-reduce:transition-none',
+              // Clipped while it slides open; the padding (offset by the margin) leaves room for the focus ring.
+              'w-full overflow-hidden p-1 -m-1 transition-[max-width,opacity] motion-reduce:transition-none',
               searchOpen ? 'max-w-search opacity-100' : 'max-w-0 opacity-0',
             )}
           >
