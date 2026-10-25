@@ -1,5 +1,6 @@
 /** Server-side configuration read when the server starts (see astro.config.ts). */
 import {
+  CONTACT_EMAIL,
   LEGAL_DRAFT,
   LISTMONK_API_TOKEN,
   LISTMONK_API_USER,
@@ -24,6 +25,9 @@ export const umami =
     : undefined
 
 export const fromEmail = LISTMONK_FROM_EMAIL
+
+/** The public contact mailbox. Until it exists, the links that would write to it are hidden. */
+export const contactEmail = CONTACT_EMAIL
 
 let client: Listmonk | undefined
 

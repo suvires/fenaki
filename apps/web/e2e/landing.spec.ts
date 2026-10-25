@@ -44,6 +44,16 @@ test('the landing page replaces the home and shows a launch collection', async (
   // Before launch the shorts are not public: the sample cards are not links.
   await expect(page.getByRole('link', { name: /Timecode/ })).toHaveCount(0)
   await expect(page.getByRole('searchbox')).toHaveCount(0)
+  // These tests run with a contact mailbox: proposals and sponsorship write to it.
+  await expect(page.getByRole('link', { name: 'Proponer un corto' }).first()).toHaveAttribute(
+    'href',
+    'mailto:hola@shortix.film?subject=Propuesta%20de%20corto',
+  )
+  await expect(
+    page.getByRole('navigation', { name: 'Pie de página' }).getByRole('link', {
+      name: 'Patrocinar una colección',
+    }),
+  ).toBeVisible()
 })
 
 test('the catalog routes are not public before launch', async ({ request }) => {

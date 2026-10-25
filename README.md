@@ -51,6 +51,8 @@ Then open:
 - `landing`: the pre-launch page. `/es/` is the landing page with the waitlist and a sample of one launch collection; the short, collection and search routes answer 404.
 - `catalog`: the full site.
 
+`CONTACT_EMAIL` is the public contact mailbox. While it is empty, the links that would write to it («Proponer un corto», the sponsorship links in the footer) are hidden, so the site never points to an address that does not receive mail.
+
 Both modes serve the legal pages (`/es/aviso-legal`, `/es/privacidad`, `/es/cookies`, `/es/retirada-de-contenidos`), linked from the footer. While `LEGAL_DRAFT=true` they show a «Borrador» notice: the texts are pending a lawyer's review.
 
 To try the waitlist: with `SITE_MODE=landing`, sign up at <http://localhost:4321/es/#waitlist>, open the confirmation email in Mailpit, follow its link, and check in listmonk that the subscriber's lists are «confirmed».
@@ -59,7 +61,7 @@ To try the waitlist: with `SITE_MODE=landing`, sign up at <http://localhost:4321
 
 ### Catalog data
 
-`pnpm import:catalog` loads the real catalog from the JSON file at `CATALOG_IMPORT_PATH`, which lives outside this public repository. It creates or updates people, licenses, shorts, sources and collections, matched by the stable keys of the file (`importKey`), so running it again updates and never duplicates. Only shorts marked for launch are published; the rest stay drafts, and a short withdrawn in the admin panel stays withdrawn. Collections with at least one launch short are published. The import removes the sample data first.
+`pnpm import:catalog` loads the real catalog from the JSON file at `CATALOG_IMPORT_PATH`, which lives outside this public repository. It creates or updates people, licenses, shorts, sources and collections, matched by the stable keys of the file (`importKey`), so running it again updates and never duplicates. Only shorts marked for launch are published; the rest stay drafts, and a short withdrawn in the admin panel stays withdrawn. Collections with at least one launch short are published. Which collection is featured (the home hero and the landing sample) is an editorial choice: the import features the first collection of the file when it creates them, unless the file says otherwise, and never changes it afterwards. The import removes the sample data first.
 
 `pnpm seed` loads sample data instead, for an empty database: real Spanish shorts so layouts read true, with placeholder video ids and a fictional sponsor, all marked `sample: true`. Sample shorts show a placeholder instead of a player. The sample and real catalogs share slugs, so the seed refuses to run on a database with real shorts; the e2e tests use their own database with the seed.
 

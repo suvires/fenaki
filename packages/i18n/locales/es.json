@@ -166,7 +166,8 @@
       },
       "filmmakers": {
         "title": "Para quien hace cine.",
-        "text": "Para que tu corto siga viéndose cuando termina su recorrido por festivales, con tu nombre completo en la ficha y las visitas en tu canal."
+        "text": "Para que tu corto siga viéndose cuando termina su recorrido por festivales, con tu nombre completo en la ficha y las visitas en tu canal.",
+        "cta": "¿Quieres proponer un corto?"
       },
       "organizations": {
         "title": "Para festivales, escuelas e instituciones.",
@@ -193,7 +194,8 @@
       },
       "filmmakers": {
         "question": "Hice un corto. ¿Cómo lo propongo o lo retiro?",
-        "answer": "Para retirarlo, usa {takedown}: respondemos en un máximo de 48 horas."
+        "answer": "Para retirarlo, usa {takedown}: respondemos en un máximo de 48 horas.",
+        "answerWithContact": "Para proponerlo, escríbenos desde {propose}. Para retirarlo, usa {takedown}: respondemos en un máximo de 48 horas."
       },
       "who": {
         "question": "¿Quién está detrás?",
@@ -268,7 +270,8 @@
     "groups": {
       "shortix": "Shortix",
       "filmmakers": "Para cineastas",
-      "legal": "Legal"
+      "legal": "Legal",
+      "organizations": "Para organizaciones"
     },
     "links": {
       "what": "Qué es Shortix",
@@ -280,5 +283,19 @@
       "cookies": "Cookies"
     },
     "tagline": "Shortix · Cortometrajes, no clips. Cada corto es de quien lo hizo."
+  },
+  "contact": {
+    "propose": {
+      "label": "Proponer un corto",
+      "subject": "Propuesta de corto"
+    },
+    "sponsor": {
+      "label": "Patrocinar una colección",
+      "subject": "Patrocinar una colección"
+    },
+    "showcase": {
+      "label": "Escaparates para festivales y escuelas",
+      "subject": "Escaparate para festivales y escuelas"
+    }
   }
 }

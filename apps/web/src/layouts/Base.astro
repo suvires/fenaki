@@ -3,7 +3,8 @@ import '../styles/global.css'
 import type { Locale } from '@shortix/i18n'
 import { SearchField, SiteFooter } from '@shortix/ui'
 import { paths, translator } from '../lib/i18n.ts'
-import { siteMode, umami } from '../lib/services.ts'
+import { contactLinks } from '../lib/contact.ts'
+import { contactEmail, siteMode, umami } from '../lib/services.ts'
 
 interface Props {
   locale: Locale
@@ -22,6 +23,7 @@ const pageTitle = title
   ? `${title} · ${t('site.name')}`
   : `${t('site.name')} · ${t('site.tagline')}`
 
+const contact = contactLinks(contactEmail, t)
 const footerGroups = [
   ...(landing
     ? [
@@ -38,9 +40,13 @@ const footerGroups = [
   {
     title: t('footer.groups.filmmakers'),
     links: [
+      ...(contact ? [contact.propose] : []),
       { label: t('footer.links.takedown'), href: paths.legal(locale, 'retirada-de-contenidos') },
     ],
   },
+  ...(contact
+    ? [{ title: t('footer.groups.organizations'), links: [contact.sponsor, contact.showcase] }]
+    : []),
   {
     title: t('footer.groups.legal'),
     links: [

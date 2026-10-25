@@ -4,7 +4,9 @@ import { Button, Rail, ShortCard } from '@shortix/ui'
 import { WaitlistForm } from '../islands/WaitlistForm.tsx'
 import { toCard } from '../lib/catalog.ts'
 import { listCollections, shortsOf, toCardSource } from '../lib/cms.ts'
+import { contactLinks } from '../lib/contact.ts'
 import { paths, translator } from '../lib/i18n.ts'
+import { contactEmail } from '../lib/services.ts'
 import RichText from './RichText.astro'
 
 interface Props {
@@ -49,10 +51,24 @@ const routes = (['official', 'open', 'direct'] as const).map((key) => ({
   title: t(`landing.legal.${key}.title`),
   text: t(`landing.legal.${key}.text`),
 }))
-const audience = (['viewers', 'filmmakers', 'organizations'] as const).map((key) => ({
+const contact = contactLinks(contactEmail, t)
+const audience = [
+  { key: 'viewers' as const },
+  {
+    key: 'filmmakers' as const,
+    lead: t('landing.audience.filmmakers.cta'),
+    link: contact?.propose,
+  },
+  { key: 'organizations' as const, link: contact?.sponsor },
+].map(({ key, lead, link }) => ({
   title: t(`landing.audience.${key}.title`),
   text: t(`landing.audience.${key}.text`),
+  // Without a contact mailbox there is nowhere to send a proposal yet: no question, no link.
+  lead: link ? lead : undefined,
+  link,
 }))
+const linkClass =
+  'text-tungsteno-text underline underline-offset-4 rounded-xs focus-visible:focus-ring'
 const faq = (['cost', 'funding', 'players', 'selection'] as const).map((key) => ({
   question: t(`landing.faq.${key}.question`),
   answer: t(`landing.faq.${key}.answer`),
@@ -141,6 +157,15 @@ const list = 'm-0 p-0 list-none grid gap-4 max-w-synopsis'
       <li class="text-body">
         <strong class="text-ink">{item.title}</strong>{' '}
         <span class="text-ink-muted">{item.text}</span>
+        {item.lead && <span class="text-ink-muted"> {item.lead}</span>}
+        {item.link && (
+          <>
+            {' '}
+            <a href={item.link.href} class={linkClass}>
+              {item.link.label}
+            </a>
+          </>
+        )}
       </li>
     ))}
   </ul>
@@ -173,7 +198,19 @@ const list = 'm-0 p-0 list-none grid gap-4 max-w-synopsis'
     <div class="grid gap-2">
       <dt class="text-card-title text-ink">{t('landing.faq.filmmakers.question')}</dt>
       <dd class="m-0 text-body text-ink-muted">
-        <RichText locale={locale} messageKey="landing.faq.filmmakers.answer" parts={{ takedown }} />
+        {contact ? (
+          <RichText
+            locale={locale}
+            messageKey="landing.faq.filmmakers.answerWithContact"
+            parts={{ propose: contact.propose, takedown }}
+          />
+        ) : (
+          <RichText
+            locale={locale}
+            messageKey="landing.faq.filmmakers.answer"
+            parts={{ takedown }}
+          />
+        )}
       </dd>
     </div>
     <div class="grid gap-2">

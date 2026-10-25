@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest'
+import { createTranslator } from '@shortix/i18n'
 import { confirmationEmail } from '../src/lib/confirmation-email.ts'
+import { contactLinks } from '../src/lib/contact.ts'
 import { createRateLimit } from '../src/lib/rate-limit.ts'
 import { isHiddenInMode } from '../src/lib/site-mode.ts'
 
@@ -39,5 +41,21 @@ describe('createRateLimit', () => {
       true,
     ])
     expect(allow('a', 1001)).toBe(true)
+  })
+})
+
+describe('contactLinks', () => {
+  const t = createTranslator('es')
+
+  it('hides every contact link while there is no mailbox', () => {
+    expect(contactLinks(undefined, t)).toBeUndefined()
+    expect(contactLinks('', t)).toBeUndefined()
+  })
+
+  it('writes to the mailbox with one subject per topic', () => {
+    expect(contactLinks('hola@shortix.film', t)?.propose).toEqual({
+      href: 'mailto:hola@shortix.film?subject=Propuesta%20de%20corto',
+      label: 'Proponer un corto',
+    })
   })
 })
