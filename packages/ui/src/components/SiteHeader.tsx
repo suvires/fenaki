@@ -157,7 +157,7 @@ export function SiteHeader({
             onClick={() => setSearchOpen((open) => !open)}
             className="inline-flex items-center justify-center size-(--size-control-sm) rounded-sm bg-transparent border-0 text-ink hover:text-tungsteno-text cursor-pointer focus-visible:focus-ring"
           >
-            <Icon name="search" />
+            <Icon name="search" size="lg" />
           </button>
           <div className="hidden md:block">{accountLinks}</div>
           <button
