@@ -1,4 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
-  "include": ["src", ".storybook"]
+  "include": ["src", ".storybook", "scripts", "visual", "playwright.config.ts"],
+  "compilerOptions": {
+    "types": ["node"]
+  }
 }
