@@ -1,4 +1,13 @@
-import type { Collection, License, Person, Short, Source, Sponsor } from '@shortix/cms/types'
+import type {
+  Collection,
+  License,
+  Media,
+  Person,
+  Short,
+  Showcase,
+  Source,
+  Sponsor,
+} from '@shortix/cms/types'
 import type { Locale } from '@shortix/i18n'
 import { CMS_URL } from 'astro:env/server'
 import type { CardSource } from './catalog.ts'
@@ -105,6 +114,55 @@ export async function getCollection(locale: Locale, slug: string): Promise<Colle
   return list.docs[0]
 }
 
+export async function getShowcase(locale: Locale, slug: string): Promise<Showcase | undefined> {
+  const list = await get<List<Showcase>>('showcases', {
+    locale,
+    depth: 2,
+    limit: 1,
+    'where[slug][equals]': slug,
+    'where[status][equals]': 'published',
+  })
+  return list.docs[0]
+}
+
+export async function listShowcases(locale: Locale): Promise<Showcase[]> {
+  const list = await get<List<Showcase>>('showcases', {
+    locale,
+    depth: 0,
+    limit: 100,
+    'where[status][equals]': 'published',
+  })
+  return list.docs
+}
+
+/** Every published short and person, for the sitemap: slugs and dates only. */
+export async function listSitemapDocs(locale: Locale) {
+  const [shorts, collections] = await Promise.all([
+    get<List<Pick<Short, 'slug' | 'updatedAt' | 'credits'>>>('shorts', {
+      locale,
+      depth: 1,
+      limit: 1000,
+      'where[status][equals]': 'published',
+      'select[slug]': 'true',
+      'select[updatedAt]': 'true',
+      'select[credits]': 'true',
+    }),
+    get<List<Pick<Collection, 'slug' | 'updatedAt'>>>('collections', {
+      locale,
+      depth: 0,
+      limit: 200,
+      'where[status][equals]': 'published',
+      'select[slug]': 'true',
+      'select[updatedAt]': 'true',
+    }),
+  ])
+  const people = new Map<string, string>()
+  for (const short of shorts.docs)
+    for (const credit of short.credits ?? [])
+      if (isObject<Person>(credit.person)) people.set(credit.person.slug, credit.person.updatedAt)
+  return { shorts: shorts.docs, collections: collections.docs, people }
+}
+
 const isObject = <T>(value: number | T | null | undefined): value is T =>
   typeof value === 'object' && value !== null
 
@@ -145,6 +203,15 @@ export function shortsOf(collection: { shorts?: (number | Short)[] | null }): Pu
   return (collection.shorts ?? [])
     .filter(isObject<Short>)
     .filter((s): s is PublishedShort => s.status === 'published')
+}
+
+/** The organization's logo, when it has one. */
+export function logoOf(showcase: Showcase): Media | undefined {
+  return isObject<Media>(showcase.logo) ? showcase.logo : undefined
+}
+
+export function presenterOf(showcase: Showcase): Sponsor | undefined {
+  return isObject<Sponsor>(showcase.presentedBy) ? showcase.presentedBy : undefined
 }
 
 export function sponsorOf(collection: Collection, now = new Date()): Sponsor | undefined {

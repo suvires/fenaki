@@ -16,7 +16,9 @@ import {
   toCardSource,
 } from '../../../lib/cms.ts'
 import { EVENTS, eventAttributes } from '../../../lib/analytics.ts'
-import { embedUrl } from '../../../lib/embed.ts'
+import { embedPageUrl, embedUrl } from '../../../lib/embed.ts'
+import { videoObject } from '../../../lib/seo.ts'
+import { siteUrl } from '../../../lib/services.ts'
 import { localeFrom, paths, translator } from '../../../lib/i18n.ts'
 
 const locale = localeFrom(Astro.params.locale)
@@ -48,6 +50,24 @@ const related = short
       .slice(0, 6)
   : []
 
+const jsonLd = short
+  ? videoObject(siteUrl, {
+      name: short.title,
+      description: short.synopsis,
+      url: paths.short(locale, short.slug),
+      thumbnailUrl: paths.og(locale, 'cortos', short.slug),
+      uploadDate: source?.uploadedAt ?? short.publishedAt,
+      durationSeconds: short.durationSeconds,
+      embedUrl:
+        source && !short.sample ? embedPageUrl(source.provider, source.externalId) : undefined,
+      inLanguage: short.originalLanguage,
+      countryOfOrigin: short.country ? formatCountry(short.country, locale) : undefined,
+      year: short.year,
+      genre: t(`short.types.${short.type}`),
+      directors: directors.map((d) => ({ name: d.name, url: paths.person(locale, d.slug) })),
+    })
+  : undefined
+
 const origin = [
   short?.country ? formatCountry(short.country, locale) : undefined,
   short?.year ? formatYear(short.year, locale) : undefined,
@@ -60,6 +80,9 @@ const origin = [
   locale={locale}
   title={short?.title ?? t('errors.notFoundTitle')}
   description={short?.synopsis ?? undefined}
+  ogType={short ? 'video.other' : undefined}
+  ogImage={short ? paths.og(locale, 'cortos', short.slug) : undefined}
+  jsonLd={jsonLd}
 >
   {!short || !card ? (
     <NotFound locale={locale} />

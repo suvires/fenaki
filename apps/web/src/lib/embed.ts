@@ -10,3 +10,12 @@ export function embedUrl(provider: string, externalId: string): string | undefin
       return undefined
   }
 }
+
+/** The player URL without autoplay, for structured data (`embedUrl`). */
+export function embedPageUrl(provider: string, externalId: string): string | undefined {
+  const src = embedUrl(provider, externalId)
+  if (!src) return undefined
+  const url = new URL(src)
+  url.searchParams.delete('autoplay')
+  return url.toString()
+}

@@ -6,6 +6,8 @@ const CATALOG_ROUTES = [
   /^\/[a-z]{2}\/escaparates(\/|$)/,
   /^\/[a-z]{2}\/buscar\/?$/,
   /^\/api\/search\/?$/,
+  /^\/og\/[a-z]{2}\/(cortos|colecciones|personas|escaparates)\//,
+  /^\/og\/[a-z]{2}\/browse\.png$/,
 ]
 
 export type SiteMode = 'landing' | 'catalog'

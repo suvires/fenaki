@@ -26,6 +26,10 @@ export const paths = {
     `/${locale}/#${section}`,
   waitlistConfirm: (locale: Locale) => `/${locale}/lista-de-espera/confirmar`,
   legal: (locale: Locale, page: LegalPage) => `/${locale}/${page}`,
+  /** The generated Open Graph image of a document or page (see src/pages/og). */
+  og: (locale: Locale, kind: 'cortos' | 'personas' | 'colecciones' | 'escaparates', slug: string) =>
+    `/og/${locale}/${kind}/${slug}.png`,
+  ogPage: (locale: Locale, page: 'site' | 'browse' | 'sponsor') => `/og/${locale}/${page}.png`,
 }
 
 /** The legal pages, by slug. Their text lives in packages/i18n/legal/<locale>/<slug>.md. */
