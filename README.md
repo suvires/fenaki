@@ -75,6 +75,12 @@ pnpm --filter @shortix/cms generate:importmap
 
 The site imports the CMS types from `apps/cms/src/payload-types.ts`, so regenerate and commit them when collections change.
 
+## Continuous integration
+
+`.github/workflows/visual.yml` runs the visual regression tests on every push and pull request, in the same Playwright image and on arm64 runners, the same architecture as Apple Silicon, so local baselines match CI exactly. It uses no secrets or paid services. When it fails, the job uploads the Playwright report with the expected, actual and diff images as an artifact.
+
+When a visual change is intended, run `pnpm test:visual:update`, check the changed images, and commit them with the change.
+
 ## Configuration
 
 Each app reads its own `.env` (never committed; `.env.example` lists every variable):

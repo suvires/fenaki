@@ -28,6 +28,7 @@ The monorepo is scaffolded and runs locally (nothing is deployed yet). Setup and
 - `pnpm seed`: admin user, six sample shorts and one sponsored collection, all flagged as sample data.
 - `pnpm lint`, `pnpm typecheck`, `pnpm test` (Vitest), `pnpm test:e2e` (Playwright smoke test), `pnpm build`.
 - `pnpm storybook`: the component catalog.
+- `pnpm test:visual` (`:update` to accept changes): screenshots of every story compared with committed baselines, in the Playwright Docker image; CI runs the same on every push and pull request. Any UI change needs updated baselines in the same commit.
 - One test: `pnpm --filter <package> exec vitest run <file>` or `-t "<name>"`.
 
 After changing a Payload collection, run `pnpm --filter @shortix/cms generate:types` and commit `payload-types.ts`; the site imports those types.
