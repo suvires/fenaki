@@ -86,7 +86,7 @@ describe('mapping', () => {
       recommendedProduct: 'collection',
       priority: 'B',
     })
-    expect(c).toMatchObject({ type: 'other', country: 'Atlantis', priority: 'B' })
+    expect(c).toMatchObject({ type: 'distributor', country: 'Atlantis', priority: 'B' })
     expect(a?.proposalsChannel).toBe('propuestas@festival.example.org')
     expect(b?.proposalsChannel).toBe('https://escuela.example.org/contacto')
   })

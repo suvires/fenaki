@@ -341,6 +341,8 @@ describe('the sales CRM, end to end', () => {
     const contact = await payload.findByID({ collection: 'contacts', id: contactId })
     expect(contact.doNotContact).toBe(true)
     expect(contact.doNotContactDate).toBeTruthy()
+    const organization = await payload.findByID({ collection: 'organizations', id: organizationId })
+    expect(organization.status).toBe('not_interested')
 
     await expect(
       payload.create({

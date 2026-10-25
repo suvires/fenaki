@@ -208,6 +208,7 @@ async function storeReply(
     overrideAccess: true,
   })
 
+  const optOut = isOptOut(body)
   const organization = await payload.findByID({
     collection: 'organizations',
     id: match.organization,
@@ -220,14 +221,16 @@ async function storeReply(
     data: {
       lastContactDate: receivedAt,
       nextFollowUpDate: null,
-      ...(organization.status === 'contacted' || organization.status === 'to_contact'
-        ? { status: 'replied' as const }
-        : {}),
+      ...(optOut
+        ? { status: 'not_interested' as const }
+        : organization.status === 'contacted' || organization.status === 'to_contact'
+          ? { status: 'replied' as const }
+          : {}),
     },
     overrideAccess: true,
   })
   // «Reply "no" to never hear from us again»: kept as a promise, not as a to-do for a person.
-  if (match.contact && isOptOut(body))
+  if (match.contact && optOut)
     await payload.update({
       collection: 'contacts',
       id: match.contact,

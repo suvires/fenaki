@@ -4,6 +4,7 @@ export const ORGANIZATION_TYPES = {
   festival: label('Festival', 'Festival'),
   school: label('School', 'Escuela'),
   brand: label('Brand', 'Marca'),
+  distributor: label('Distributor', 'Distribuidora'),
   institution: label('Institution', 'Institución'),
   other: label('Other', 'Otro'),
 } satisfies Record<string, AdminLabel>

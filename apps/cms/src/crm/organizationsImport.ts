@@ -78,6 +78,7 @@ const TYPES: Record<string, string> = {
   institucion: 'institution',
   'marca cultural': 'brand',
   marca: 'brand',
+  distribuidora: 'distributor',
 }
 const PRODUCTS: Record<string, string> = {
   escaparate: 'showcase',
