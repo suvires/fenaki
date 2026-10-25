@@ -87,7 +87,7 @@ servers:
         SEARCH_INDEX_PREFIX: ""
         LISTMONK_FROM_EMAIL: Fenaki <hola@fenaki.tv>
         # Public address of listmonk: the unsubscribe links in emails point here.
-        LISTMONK_PUBLIC_URL: https://listas.fenaki.tv
+        LISTMONK_PUBLIC_URL: https://lists.fenaki.tv
         LISTMONK_SMTP_HOST: email-smtp.eu-west-1.amazonaws.com
         LISTMONK_SMTP_PORT: 587
         LISTMONK_SMTP_AUTH: login
@@ -234,7 +234,7 @@ accessories:
         - LISTMONK_db__password:LISTMONK_DB_PASSWORD
         - LISTMONK_ADMIN_PASSWORD
     proxy:
-      host: listas.fenaki.tv
+      host: lists.fenaki.tv
       app_port: 9000
       healthcheck:
         path: /health

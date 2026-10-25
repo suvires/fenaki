@@ -276,7 +276,7 @@ resource "cloudflare_zero_trust_access_policy" "editors" {
 resource "cloudflare_zero_trust_access_application" "admin" {
   for_each = length(var.access_emails) > 0 ? {
     cms      = ["cms.${var.domain}"]
-    listmonk = ["listas.${var.domain}/admin", "listas.${var.domain}/api"]
+    listmonk = ["lists.${var.domain}/admin", "lists.${var.domain}/api"]
   } : {}
   account_id       = var.account_id
   name             = "Fenaki ${each.key}"

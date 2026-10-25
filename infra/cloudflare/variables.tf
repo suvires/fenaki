@@ -36,7 +36,7 @@ variable "redirect_domains" {
 variable "subdomains" {
   description = "Hostnames served through the tunnel besides the apex: the CMS, listmonk and Umami."
   type        = list(string)
-  default     = ["cms", "listas", "stats"]
+  default     = ["cms", "lists", "stats"]
 }
 
 # --- Email ---------------------------------------------------------------------------------------

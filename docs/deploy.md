@@ -18,7 +18,7 @@ visitor ─HTTPS─▶ Cloudflare (TLS, CDN, redirects, Access)
                     ▼
 VPS ── cloudflared ─▶ kamal-proxy ─┬─ fenaki.tv         → web   (Astro, :4321)
        (accessory)   (routes by    ├─ cms.fenaki.tv     → cms   (Payload, :3000)
-                      host)        ├─ listas.fenaki.tv  → listmonk
+                      host)        ├─ lists.fenaki.tv  → listmonk
                                    └─ stats.fenaki.tv   → Umami
        jobs (Payload worker) · PostgreSQL · Meilisearch · backup ─▶ Cloudflare R2, EU (encrypted)
 ```
@@ -153,7 +153,7 @@ From the main checkout (where `private/` exists), with the values above in the e
 6. **Check**:
    - <https://fenaki.tv/es/> shows the landing page; <https://fenaki.tv/es/cortos/…> answers 404; <https://www.fenaki.tv/x> redirects to `https://fenaki.tv/x`.
    - <https://cms.fenaki.tv/admin> asks for the Cloudflare Access code, then Payload's login.
-   - Sign up for the waitlist with a real address: the confirmation email arrives (SES), its link confirms it in listmonk (<https://listas.fenaki.tv/admin>).
+   - Sign up for the waitlist with a real address: the confirmation email arrives (SES), its link confirms it in listmonk (<https://lists.fenaki.tv/admin>).
    - Umami (<https://stats.fenaki.tv>) shows the visit; `curl -sI https://fenaki.tv/es/` shows the security headers.
    - `bin/kamal backups` lists the first archive; the heartbeat is green in Better Stack.
    - Sentry: the project shows the deployed release once the first error arrives; `bin/kamal app exec --roles cms "printenv SENTRY_DSN"` confirms the DSN reached the containers.
@@ -195,7 +195,7 @@ Other domains that only redirect to `fenaki.tv` (planned: `fenaki.es`, `fenakitv
 - **Better Stack** (free: 10 monitors, 3-minute checks, email and app alerts):
   - HTTP keyword monitor `https://fenaki.tv/es/`, keyword: the site's name (the page renders data from the CMS).
   - HTTP status monitor `https://cms.fenaki.tv/up` (Payload and PostgreSQL; kept outside Cloudflare Access).
-  - HTTP status monitors `https://listas.fenaki.tv/health` and `https://stats.fenaki.tv/api/heartbeat`.
+  - HTTP status monitors `https://lists.fenaki.tv/health` and `https://stats.fenaki.tv/api/heartbeat`.
   - Heartbeat "Daily backup", period 1 day, grace 2 hours: its URL is `BACKUP_HEARTBEAT_URL`. The backup pings it on success and `…/fail` on failure.
 - **Sentry**: errors from the site, the CMS server, the jobs worker and the Payload CLI, tagged with the deployed commit. Server side only, without request bodies, cookies, query strings or user data. Set an alert for new issues to email.
 - **Cloudflare**: Notifications → "Tunnel health" alert (the tunnel going down means the site is down even if the server is fine).
@@ -256,4 +256,4 @@ E2E_CATALOG_URL=http://fenaki.localhost:8480 pnpm --filter @fenaki/web exec play
 infra/local/rehearse.sh down               # removes everything
 ```
 
-For the landing tests, deploy with the default `SITE_MODE` and run the `landing` project with `E2E_LANDING_URL=http://fenaki.localhost:8480`, `E2E_MAILPIT_URL=http://localhost:8125`, `E2E_LISTMONK_URL=http://listas.fenaki.localhost:8480` and `LISTMONK_API_TOKEN` from `.kamal/secrets.local`. Before running `setup-services` the first time, run `listmonk-token`, `accessory restart listmonk` and `search-key`, as in production.
+For the landing tests, deploy with the default `SITE_MODE` and run the `landing` project with `E2E_LANDING_URL=http://fenaki.localhost:8480`, `E2E_MAILPIT_URL=http://localhost:8125`, `E2E_LISTMONK_URL=http://lists.fenaki.localhost:8480` and `LISTMONK_API_TOKEN` from `.kamal/secrets.local`. Before running `setup-services` the first time, run `listmonk-token`, `accessory restart listmonk` and `search-key`, as in production.
