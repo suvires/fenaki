@@ -21,7 +21,16 @@ The repo is public on GitHub (free Actions minutes, build-in-public). Never comm
 
 ## Status
 
-No code yet: the repo holds only the plan and the daily log, and is not yet a git repository. There are no build, lint or test commands. Add them here once the project is scaffolded.
+The monorepo is scaffolded and runs locally (nothing is deployed yet). Setup and every command are in `README.md`. From the root:
+
+- `docker compose up -d`: PostgreSQL and Meilisearch for development.
+- `pnpm dev`: site (<http://localhost:4321/es/>), CMS admin (<http://localhost:3000/admin>) and the jobs worker.
+- `pnpm seed`: admin user, six sample shorts and one sponsored collection, all flagged as sample data.
+- `pnpm lint`, `pnpm typecheck`, `pnpm test` (Vitest), `pnpm test:e2e` (Playwright smoke test), `pnpm build`.
+- `pnpm storybook`: the component catalog.
+- One test: `pnpm --filter <package> exec vitest run <file>` or `-t "<name>"`.
+
+After changing a Payload collection, run `pnpm --filter @shortix/cms generate:types` and commit `payload-types.ts`; the site imports those types.
 
 ## Planned architecture
 
@@ -69,12 +78,12 @@ Monorepo (pnpm + Turborepo): `apps/web` (Astro), `apps/cms` (Payload), `packages
 
 ## Language conventions
 
-| Area | Language |
-| --- | --- |
-| Code, identifiers, commits, code comments | English |
-| Technical docs (READMEs, architecture, API, this file) | English |
-| Planning, daily log, user-facing docs | Spanish |
-| UI | Spanish at launch, English added later |
+| Area                                                   | Language                               |
+| ------------------------------------------------------ | -------------------------------------- |
+| Code, identifiers, commits, code comments              | English                                |
+| Technical docs (READMEs, architecture, API, this file) | English                                |
+| Planning, daily log, user-facing docs                  | Spanish                                |
+| UI                                                     | Spanish at launch, English added later |
 
 ## i18n rules (from the first commit)
 
