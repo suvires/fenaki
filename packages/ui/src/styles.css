@@ -14,6 +14,7 @@
     font-family: var(--font-text);
     font-size: var(--text-body);
     line-height: var(--text-body--line-height);
+    word-spacing: var(--word-spacing);
     -webkit-font-smoothing: antialiased;
   }
 }

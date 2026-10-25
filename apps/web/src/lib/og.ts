@@ -5,7 +5,6 @@
  */
 import { palettes } from '@fenaki/tokens'
 import { readFile } from 'node:fs/promises'
-import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import satori from 'satori'
 import sharp from 'sharp'
@@ -72,24 +71,17 @@ export function titleSize(title: string): number {
   return 56
 }
 
-async function fontFile(pkg: string, file: string): Promise<Buffer> {
-  const entry = fileURLToPath(import.meta.resolve(pkg))
-  return readFile(path.join(path.dirname(entry), 'files', file))
-}
+/** Static Archivo instances cut from the site's variable font (packages/tokens/scripts/og-fonts.py): satori reads no variable fonts. */
+const fontFile = (name: string) =>
+  readFile(fileURLToPath(import.meta.resolve(`@fenaki/tokens/og-fonts/${name}`)))
 
 let fonts: Promise<Parameters<typeof satori>[1]['fonts']> | undefined
 
 function loadFonts() {
   fonts ??= Promise.all([
-    fontFile('@fontsource/big-shoulders', 'big-shoulders-latin-800-normal.woff'),
-    fontFile(
-      '@fontsource/atkinson-hyperlegible-next',
-      'atkinson-hyperlegible-next-latin-600-normal.woff',
-    ),
-    fontFile(
-      '@fontsource/atkinson-hyperlegible-mono',
-      'atkinson-hyperlegible-mono-latin-500-normal.woff',
-    ),
+    fontFile('archivo-display-75-800.woff'),
+    fontFile('archivo-text-100-600.woff'),
+    fontFile('archivo-label-100-500.woff'),
   ]).then(([display, text, mono]) => [
     { name: 'display', data: display, weight: 800 as const, style: 'normal' as const },
     { name: 'text', data: text, weight: 600 as const, style: 'normal' as const },

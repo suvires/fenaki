@@ -30,6 +30,12 @@ export interface TokenFile {
   }
   type: {
     families: Record<'display' | 'text' | 'mono', string>
+    /** Per family: variable-axis settings (e.g. a narrow width) and OpenType features. */
+    familySettings?: Partial<
+      Record<'display' | 'text' | 'mono', { variation?: string; features?: string }>
+    >
+    /** Extra space between words: Archivo sets its spaces tight. */
+    wordSpacing?: string
     groups: { name: string; family: string; note?: string; styles: TypeStyle[] }[]
   }
   spacing: TokenGroup

@@ -1,12 +1,12 @@
 /* Fenaki — generated from tokens.json. Do not edit by hand. */
 
 :root, [data-theme="dark"] {
-  --sala-0: #100e0c;
+  --sala-0: #0a0908;
   --sala-1: #1a1714;
   --sala-2: #262119;
   --line: #3d362e;
   --line-strong: #7a6f62;
-  --ink: #f4eee6;
+  --ink: #faf7f2;
   --ink-muted: #b3a899;
   --tungsteno: #ff1f8e;
   --tungsteno-hover: #ff4fa6;
@@ -20,7 +20,7 @@
   --danger: #ff8f80;
   --shadow-card: 0 2px 6px #000000b3;
   --shadow-hover: 0 14px 32px -6px #000000e6;
-  --focus-ring: 0 0 0 2px #100e0c, 0 0 0 4px #ff1f8e;
+  --focus-ring: 0 0 0 2px #0a0908, 0 0 0 4px #ff1f8e;
   color-scheme: dark;
 }
 

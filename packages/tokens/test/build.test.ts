@@ -7,7 +7,7 @@ describe('resolveColors', () => {
   it('follows aliases to their target value', () => {
     const dark = resolveColors(tokens, 'dark')
     expect(dark['tungsteno-text']).toBe(dark.tungsteno)
-    expect(dark['sala-0']).toBe('#100e0c')
+    expect(dark['sala-0']).toBe('#0a0908')
   })
 
   it('rejects unknown and circular aliases', () => {
@@ -50,7 +50,7 @@ describe('buildThemeCss', () => {
   })
 
   it('is dark only: no light value reaches the product theme', () => {
-    expect(css).toContain('--color-sala-0: #100e0c;')
+    expect(css).toContain('--color-sala-0: #0a0908;')
     expect(css).not.toContain('#f6f2ec')
     expect(css).not.toContain('data-theme')
   })

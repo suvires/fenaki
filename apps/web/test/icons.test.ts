@@ -5,7 +5,7 @@ import { FAVICON_SVG, iconPng } from '../src/lib/icons.ts'
 describe('site icon', () => {
   it('is the pink F on the darkest surface', () => {
     expect(FAVICON_SVG).toContain('fill="#ff1f8e"')
-    expect(FAVICON_SVG).toContain('fill="#100e0c"')
+    expect(FAVICON_SVG).toContain('fill="#0a0908"')
   })
 
   it('renders square PNGs at the requested size', async () => {

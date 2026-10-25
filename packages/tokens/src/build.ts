@@ -44,6 +44,10 @@ export function buildThemeCss(tokens: TokenFile): string {
   lines.push('  --*: initial;')
   for (const t of tokens.color.tokens) add(`color-${t.name}`, colorValue(tokens, t.name, 'dark'))
   for (const [family, stack] of Object.entries(tokens.type.families)) add(`font-${family}`, stack)
+  for (const [family, settings] of Object.entries(tokens.type.familySettings ?? {})) {
+    if (settings.variation) add(`font-${family}--font-variation-settings`, settings.variation)
+    if (settings.features) add(`font-${family}--font-feature-settings`, settings.features)
+  }
   for (const group of tokens.type.groups) {
     for (const s of group.styles) {
       add(`text-${s.name}`, s.fontSize)
@@ -62,6 +66,7 @@ export function buildThemeCss(tokens: TokenFile): string {
   for (const t of tokens.breakpoint.tokens) add(`breakpoint-${t.name}`, t.value)
   for (const t of tokens.motion.tokens) add(t.name, t.value)
   for (const t of tokens.opacity.tokens) add(`opacity-${t.name}`, t.value)
+  if (tokens.type.wordSpacing) add('word-spacing', tokens.type.wordSpacing)
   add('default-font-family', 'var(--font-text)')
   add('default-mono-font-family', 'var(--font-mono)')
   add('default-transition-duration', 'var(--duration-press)')

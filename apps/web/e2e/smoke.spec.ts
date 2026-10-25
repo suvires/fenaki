@@ -17,7 +17,7 @@ test('every page links the site icon, and it is served', async ({ page, request 
     ['/favicon.svg', 'image/svg+xml'],
     ['/favicon.ico', 'image/png'],
     ['/apple-touch-icon.png', 'image/png'],
-  ]) {
+  ] as const) {
     const response = await request.get(path)
     expect(response.status()).toBe(200)
     expect(response.headers()['content-type']).toBe(type)
