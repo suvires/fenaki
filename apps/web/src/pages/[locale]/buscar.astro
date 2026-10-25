@@ -1,0 +1,35 @@
+---
+import { SearchIsland } from '../../islands/SearchIsland.tsx'
+import Base from '../../layouts/Base.astro'
+import { localeFrom, translator } from '../../lib/i18n.ts'
+import { searchShorts, type SearchResult } from '../../lib/search.ts'
+
+const locale = localeFrom(Astro.params.locale)
+if (!locale) return Astro.rewrite('/404')
+
+const t = translator(locale)
+const query = (Astro.url.searchParams.get('q') ?? '').trim().slice(0, 200)
+
+let initial: SearchResult | null = null
+let initialError = false
+if (query) {
+  try {
+    initial = await searchShorts(locale, query)
+  } catch {
+    initialError = true
+  }
+}
+---
+
+<Base locale={locale} title={t('search.title')} showSearch={false}>
+  <section class="grid gap-6">
+    <h1 class="m-0 font-display text-display-l uppercase">{t('search.title')}</h1>
+    <SearchIsland
+      client:load
+      locale={locale}
+      initial={initial}
+      initialError={initialError}
+      now={Date.now()}
+    />
+  </section>
+</Base>

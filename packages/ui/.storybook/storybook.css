@@ -1,0 +1,4 @@
+@import 'tailwindcss';
+@import '@shortix/tokens/theme.css';
+@import '@shortix/tokens/fonts.css';
+@import '../src/styles.css';

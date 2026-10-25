@@ -14,3 +14,15 @@ dist/
 .env.*
 !.env.example
 .kamal/secrets*
+
+# Tooling
+.next/
+.astro/
+storybook-static/
+playwright-report/
+test-results/
+*.tsbuildinfo
+next-env.d.ts
+apps/cms/media/
+apps/cms/documents/
+packages/ui/visual/__screenshots__/*.actual.png

@@ -1,0 +1,12 @@
+pnpm-lock.yaml
+design/
+private/
+dist/
+.next/
+.astro/
+storybook-static/
+playwright-report/
+test-results/
+apps/cms/src/payload-types.ts
+apps/cms/src/app/(payload)/
+apps/cms/src/migrations/

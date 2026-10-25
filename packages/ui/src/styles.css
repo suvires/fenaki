@@ -1,0 +1,34 @@
+/*
+ * Shortix UI styles. Apps import this after Tailwind and the token theme:
+ *   @import 'tailwindcss';
+ *   @import '@shortix/tokens/theme.css';
+ *   @import '@shortix/tokens/fonts.css';
+ *   @import '@shortix/ui/styles.css';
+ */
+@source './';
+
+@layer base {
+  html {
+    background-color: var(--color-sala-0);
+    color: var(--color-ink);
+    font-family: var(--font-text);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* Keyboard and TV-remote focus: a sala-0 gap, then a 2px tungsteno ring. Never removed. */
+@utility focus-ring {
+  outline: 2px solid transparent;
+  box-shadow: var(--shadow-focus-ring);
+}
+
+/* Film-perforation strip on the left edge of a typographic poster, drawn in --perf. */
+@utility perforation {
+  background-image: linear-gradient(
+    var(--perf) 0 var(--size-perforation-hole),
+    transparent var(--size-perforation-hole) calc(2 * var(--size-perforation-hole))
+  );
+  background-size: var(--size-perforation) calc(2 * var(--size-perforation-hole));
+}

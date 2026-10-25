@@ -1,0 +1,54 @@
+# Visual regression of every Storybook story. Runs in the same Playwright image and on the same
+# CPU architecture (arm64, like Apple Silicon) as `pnpm test:visual` locally, so screenshots
+# match the committed baselines pixel for pixel. Arm64 runners are free for public repositories.
+name: Visual regression
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: visual-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  storybook:
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 20
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.1-noble
+      options: --ipc=host
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build tokens and Storybook
+        run: |
+          pnpm --filter @shortix/tokens build
+          pnpm --filter @shortix/ui build-storybook --quiet
+
+      - name: Compare screenshots
+        run: pnpm --filter @shortix/ui exec playwright test
+        env:
+          CI: 'true'
+
+      - name: Upload the report and the diffs
+        if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: visual-regression-report
+          path: |
+            packages/ui/playwright-report/
+            packages/ui/test-results/
+          retention-days: 14

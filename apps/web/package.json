@@ -1,0 +1,36 @@
+{
+  "name": "@shortix/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "The public Shortix site: Astro with SSR, reading the catalog from Payload's REST API.",
+  "scripts": {
+    "dev": "astro dev --port 4321",
+    "build": "astro build",
+    "start": "node dist/server/entry.mjs",
+    "typecheck": "astro check",
+    "test": "vitest run",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@astrojs/node": "11.1.9",
+    "@astrojs/react": "7.1.1",
+    "@shortix/i18n": "workspace:*",
+    "@shortix/tokens": "workspace:*",
+    "@shortix/ui": "workspace:*",
+    "@tailwindcss/vite": "4.3.3",
+    "astro": "7.4.2",
+    "meilisearch": "0.62.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "tailwindcss": "4.3.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.12",
+    "@playwright/test": "1.64.1",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "typescript": "6.0.3",
+    "vitest": "5.0.5"
+  }
+}

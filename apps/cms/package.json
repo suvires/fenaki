@@ -1,0 +1,45 @@
+{
+  "name": "@shortix/cms",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Payload CMS: admin panel, REST API and background jobs for the Shortix catalog.",
+  "exports": {
+    "./types": "./src/payload-types.ts"
+  },
+  "scripts": {
+    "dev": "pnpm run --parallel \"/^dev:.*/\"",
+    "dev:next": "NODE_OPTIONS=--no-deprecation next dev --port 3000",
+    "dev:jobs": "pnpm run jobs",
+    "build": "NODE_OPTIONS=--no-deprecation next build",
+    "start": "NODE_OPTIONS=--no-deprecation next start --port 3000",
+    "jobs": "NODE_OPTIONS=--no-deprecation payload jobs:run --cron \"*/10 * * * * *\" --queue default",
+    "seed": "NODE_OPTIONS=--no-deprecation payload run src/seed/index.ts",
+    "payload": "NODE_OPTIONS=--no-deprecation payload",
+    "generate:types": "NODE_OPTIONS=--no-deprecation payload generate:types",
+    "generate:importmap": "NODE_OPTIONS=--no-deprecation payload generate:importmap",
+    "typecheck": "tsc",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@payloadcms/db-postgres": "3.92.0",
+    "@payloadcms/next": "3.92.0",
+    "@payloadcms/translations": "3.92.0",
+    "@payloadcms/ui": "3.92.0",
+    "@shortix/i18n": "workspace:*",
+    "graphql": "16.14.2",
+    "meilisearch": "0.62.0",
+    "next": "16.4.3",
+    "payload": "3.92.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "sharp": "0.35.5"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.5",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "typescript": "6.0.3",
+    "vitest": "5.0.5"
+  }
+}
