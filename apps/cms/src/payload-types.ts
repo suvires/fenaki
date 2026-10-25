@@ -120,6 +120,7 @@ export interface Config {
     tasks: {
       indexShort: TaskIndexShort;
       purgeWaitlist: TaskPurgeWaitlist;
+      checkEmbeds: TaskCheckEmbeds;
       inline: {
         input: unknown;
         output: unknown;
@@ -521,7 +522,7 @@ export interface PayloadJob {
     | {
         executedAt: string;
         completedAt: string;
-        taskSlug: 'inline' | 'indexShort' | 'purgeWaitlist';
+        taskSlug: 'inline' | 'indexShort' | 'purgeWaitlist' | 'checkEmbeds';
         taskID: string;
         input?:
           | {
@@ -554,7 +555,7 @@ export interface PayloadJob {
         id?: string | null;
       }[]
     | null;
-  taskSlug?: ('inline' | 'indexShort' | 'purgeWaitlist') | null;
+  taskSlug?: ('inline' | 'indexShort' | 'purgeWaitlist' | 'checkEmbeds') | null;
   queue?: string | null;
   waitUntil?: string | null;
   processing?: boolean | null;
@@ -949,6 +950,19 @@ export interface TaskPurgeWaitlist {
   output: {
     deleted: number;
     unsubscribed: number;
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskCheckEmbeds".
+ */
+export interface TaskCheckEmbeds {
+  input?: unknown;
+  output: {
+    checked: number;
+    problems: number;
+    inconclusive: number;
+    hidden: number;
   };
 }
 /**

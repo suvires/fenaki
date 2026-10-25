@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { isAuthenticated, isAuthenticatedField } from '../access.ts'
 import { importKeyField } from '../fields/importKey.ts'
+import { checkEmbedsEndpoint } from '../jobs/checkEmbedsEndpoint.ts'
 import { queueIndexShort } from '../jobs/queue.ts'
 import { groups, label, options } from '../labels.ts'
 
@@ -25,6 +26,7 @@ export const Sources: CollectionConfig = {
     defaultColumns: ['short', 'provider', 'externalId', 'status', 'lastCheckedAt'],
     group: groups.catalog,
   },
+  endpoints: [checkEmbedsEndpoint],
   access: {
     read: ({ req }) => (req.user ? true : { 'short.status': { equals: 'published' } }),
     create: isAuthenticated,

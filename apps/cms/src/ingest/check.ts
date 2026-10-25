@@ -75,3 +75,16 @@ export function unplayableReason(assessment: Assessment): HiddenReason | undefin
   if (assessment.ageRestricted) return 'age-restricted'
   return undefined
 }
+
+/**
+ * Whether the checker hides a short, and why: only when every source of it was checked
+ * conclusively and none can play. A source the provider did not answer for keeps it visible.
+ */
+export function hideReason(
+  sources: { assessment?: Assessment; reason?: HiddenReason }[],
+): HiddenReason | undefined {
+  if (sources.length === 0) return undefined
+  const reasons = sources.map((source) => source.reason)
+  if (reasons.some((reason) => reason === undefined)) return undefined
+  return reasons[0]
+}
