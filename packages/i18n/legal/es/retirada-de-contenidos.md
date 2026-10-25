@@ -1,6 +1,6 @@
 # Procedimiento de retirada de contenidos
 
-Última actualización: [FECHA DE PUBLICACIÓN]
+Última actualización: 25 de octubre de 2026
 
 Fenaki solo incluye cortometrajes publicados por sus titulares en canales oficiales, con licencia abierta o con cesión firmada. Aun así, nos podemos equivocar. Si crees que un contenido de Fenaki infringe tus derechos o es ilegal, avísanos: **respondemos en un plazo máximo de 48 horas**.
 
@@ -36,7 +36,7 @@ Si el aviso no incluye estos datos, te pediremos que lo completes. Un aviso comp
 ## 4. Cómo enviarlo
 
 - **Formulario**: [URL DEL FORMULARIO, por ejemplo fenaki.tv/es/retirada] [COMPLETAR: crear el formulario electrónico, exigido por el art. 16.1 DSA para que el aviso se pueda enviar de forma sencilla]
-- **Correo electrónico**: [CORREO DE CONTACTO], con el asunto «Retirada de contenido».
+- **Correo electrónico**: hola@fenaki.tv, con el asunto «Retirada de contenido».
 - Idiomas: español o inglés.
 
 Al recibirlo, te enviaremos un acuse de recibo (art. 16.4 DSA).
@@ -84,6 +84,6 @@ Guardamos un registro de los avisos recibidos, las decisiones tomadas y los plaz
 
 Para autoridades de los Estados miembros, la Comisión Europea, el Comité Europeo de Servicios Digitales (art. 11 DSA) y los usuarios (art. 12 DSA):
 
-- Correo electrónico: [CORREO DE CONTACTO]
+- Correo electrónico: hola@fenaki.tv
 - Idiomas: español e inglés
-- Titular: [NOMBRE Y APELLIDOS], [DOMICILIO] (ver el [aviso legal](/es/aviso-legal))
+- Titular: Miguel Ángel Suvires García, Calle Decano López Arjona, 18, 29140 Málaga (España) (ver el [aviso legal](/es/aviso-legal))

@@ -80,7 +80,7 @@ servers:
         # ISO 8601, set at the launch (e.g. 2026-11-20T09:00:00+01:00).
         LAUNCH_DATE: ""
         # Empty hides the links that write to it, until the mailbox exists.
-        CONTACT_EMAIL: ""
+        CONTACT_EMAIL: hola@fenaki.tv
         CMS_URL: http://fenaki-cms:3000
         # The CMS's public address: logos and other media load from it (Content Security Policy).
         CMS_PUBLIC_URL: https://cms.fenaki.tv

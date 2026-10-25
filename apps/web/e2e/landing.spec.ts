@@ -158,6 +158,6 @@ test('the legal pages are linked from the footer and marked as drafts', async ({
   await expect(page).toHaveURL(/\/es\/aviso-legal$/)
   await expect(page.getByRole('heading', { level: 1, name: 'Aviso legal' })).toBeVisible()
   await expect(page.getByText('Borrador', { exact: true })).toBeVisible()
-  await expect(page.getByText('[NOMBRE Y APELLIDOS]').first()).toBeVisible()
+  await expect(page.getByText('hola@fenaki.tv').first()).toBeVisible()
   await expect(page.getByText('REVISAR')).toHaveCount(0)
 })

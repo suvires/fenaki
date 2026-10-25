@@ -1,6 +1,6 @@
 # Política de privacidad
 
-Última actualización: [FECHA DE PUBLICACIÓN]
+Última actualización: 25 de octubre de 2026
 
 En Fenaki tratamos los mínimos datos posibles. Puedes ver el catálogo sin registrarte, la analítica no usa cookies y los reproductores de YouTube y Vimeo solo se cargan si das tu consentimiento. Esta política explica qué datos tratamos, para qué, durante cuánto tiempo y qué derechos tienes, según el Reglamento (UE) 2016/679 (RGPD) y la Ley Orgánica 3/2018 de Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD).
 
@@ -8,10 +8,10 @@ En Fenaki tratamos los mínimos datos posibles. Puedes ver el catálogo sin regi
 
 | Dato                            | Valor                                                                               |
 | ------------------------------- | ----------------------------------------------------------------------------------- |
-| Responsable                     | [NOMBRE Y APELLIDOS], autónomo, que opera con la marca Fenaki                       |
-| NIF                             | [NIF]                                                                               |
-| Domicilio                       | [DOMICILIO]                                                                         |
-| Correo para temas de privacidad | [CORREO DE CONTACTO]                                                                |
+| Responsable                     | Miguel Ángel Suvires García, autónomo, que opera con la marca Fenaki                |
+| NIF                             | 25729485Y                                                                           |
+| Domicilio                       | Calle Decano López Arjona, 18, 29140 Málaga (España)                                |
+| Correo para temas de privacidad | hola@fenaki.tv                                                                      |
 | Delegado de protección de datos | No designado: Fenaki no está obligado a designarlo (art. 37 RGPD y art. 34 LOPDGDD) |
 
 ## 2. Qué datos tratamos y para qué
@@ -144,7 +144,7 @@ Puedes ejercer en cualquier momento tus derechos de:
 - **Portabilidad:** recibir tus datos en un formato estructurado.
 - **Retirar tu consentimiento**, sin que afecte a lo tratado antes.
 
-**Cómo ejercerlos.** Escribe a [CORREO DE CONTACTO] o por carta a [DOMICILIO], indicando qué derecho quieres ejercer. Si tenemos dudas razonables sobre tu identidad, podemos pedirte información adicional para confirmarla. Te responderemos en el plazo de un mes, ampliable dos meses más en casos complejos (art. 12 RGPD). Para darte de baja de la newsletter, basta con el enlace de cada correo.
+**Cómo ejercerlos.** Escribe a hola@fenaki.tv o por carta a Calle Decano López Arjona, 18, 29140 Málaga (España), indicando qué derecho quieres ejercer. Si tenemos dudas razonables sobre tu identidad, podemos pedirte información adicional para confirmarla. Te responderemos en el plazo de un mes, ampliable dos meses más en casos complejos (art. 12 RGPD). Para darte de baja de la newsletter, basta con el enlace de cada correo.
 
 **Reclamación ante la autoridad.** Si crees que no hemos tratado bien tus datos, puedes reclamar ante la Agencia Española de Protección de Datos (AEPD), C/ Jorge Juan 6, 28001 Madrid, en su sede electrónica: [sedeagpd.gob.es](https://sedeagpd.gob.es). Te agradeceremos que antes nos escribas, para intentar resolverlo.
 

@@ -1,6 +1,6 @@
 # Política de cookies
 
-Última actualización: [FECHA DE PUBLICACIÓN]
+Última actualización: 25 de octubre de 2026
 
 ## 1. Qué son las cookies y tecnologías similares
 
@@ -83,4 +83,4 @@ Además del banner, puedes bloquear o borrar las cookies desde la configuración
 
 ## 6. Más información
 
-Responsable y derechos: consulta la [política de privacidad](/es/privacidad). Contacto: [CORREO DE CONTACTO].
+Responsable y derechos: consulta la [política de privacidad](/es/privacidad). Contacto: hola@fenaki.tv.

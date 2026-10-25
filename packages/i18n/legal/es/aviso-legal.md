@@ -1,6 +1,6 @@
 # Aviso legal
 
-Última actualización: [FECHA DE PUBLICACIÓN]
+Última actualización: 25 de octubre de 2026
 
 ## 1. Quién está detrás de Fenaki
 
@@ -8,10 +8,10 @@ En cumplimiento del artículo 10 de la Ley 34/2002, de 11 de julio, de servicios
 
 | Dato                               | Valor                                                                                                                                                                                                    |
 | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Titular                            | [NOMBRE Y APELLIDOS], persona física que actúa como trabajador autónomo                                                                                                                                  |
-| NIF                                | [NIF]                                                                                                                                                                                                    |
-| Domicilio                          | [DOMICILIO]                                                                                                                                                                                              |
-| Correo electrónico de contacto     | [CORREO DE CONTACTO]                                                                                                                                                                                     |
+| Titular                            | Miguel Ángel Suvires García, persona física que actúa como trabajador autónomo                                                                                                                           |
+| NIF                                | 25729485Y                                                                                                                                                                                                |
+| Domicilio                          | Calle Decano López Arjona, 18, 29140 Málaga (España)                                                                                                                                                     |
+| Correo electrónico de contacto     | hola@fenaki.tv                                                                                                                                                                                           |
 | Marca comercial                    | Fenaki (marca de uso; no es una sociedad mercantil)                                                                                                                                                      |
 | Inscripción registral              | No aplica: el titular es una persona física no inscrita en el Registro Mercantil                                                                                                                         |
 | Autorización administrativa previa | No se requiere para esta actividad                                                                                                                                                                       |
@@ -84,7 +84,7 @@ Nada de lo anterior limita la responsabilidad que no pueda limitarse según la l
 
 En cumplimiento de los artículos 11 y 12 del Reglamento (UE) 2022/2065 de Servicios Digitales (DSA), el punto único de contacto para autoridades de los Estados miembros, la Comisión Europea, el Comité Europeo de Servicios Digitales y los usuarios es:
 
-- Correo electrónico: [CORREO DE CONTACTO]
+- Correo electrónico: hola@fenaki.tv
 - Idiomas aceptados: español e inglés
 
 Este canal permite una comunicación directa y rápida, y no depende únicamente de herramientas automatizadas.
