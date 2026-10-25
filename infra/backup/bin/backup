@@ -1,7 +1,7 @@
 #!/bin/sh
 # One backup, now: every database (pg_dump, custom format), the roles, a Meilisearch dump and the
-# uploads, in one tar archive encrypted with age for BACKUP_AGE_RECIPIENT (the server never holds
-# the private key), uploaded to the bucket. Then deletes archives older than
+# uploads (documents and media), in one tar archive encrypted with age for BACKUP_AGE_RECIPIENT
+# (the server never holds the private key), uploaded to the bucket. Then deletes archives older than
 # BACKUP_RETENTION_DAYS and pings BACKUP_HEARTBEAT_URL (or its /fail URL), so the uptime monitor
 # alerts when a day is missed.
 #   kamal backup-now
@@ -42,6 +42,7 @@ dump=$(echo "$state" | jq -r .details.dumpUid)
 mv "/meili_data/dumps/$dump.dump" "$work/meilisearch.dump"
 
 if [ -d /uploads ]; then
+  # Payload's upload directories: documents (signed licenses) and media (logos).
   log "uploads"
   tar -C /uploads -cf "$work/uploads.tar" .
 fi

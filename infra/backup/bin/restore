@@ -6,7 +6,7 @@
 #   restore fetch <archive|latest>        download and decrypt into /restore (check it first)
 #   restore postgres <archive|latest>     every database, replacing their contents
 #   restore meilisearch <archive|latest>  leave the dump for infra/meilisearch/import-dump.sh
-#   restore uploads <archive|latest>      replace the uploads
+#   restore uploads <archive|latest>      replace the uploads (documents and media)
 #
 # <archive> is a name from `restore list` or a local path. Stop the app roles before restoring
 # PostgreSQL (`kamal app stop`). Step by step: docs/deploy.md, "Restore".
@@ -97,7 +97,8 @@ case $command in
   uploads)
     fetch
     [ -f /restore/uploads.tar ] || fail "the archive has no uploads"
-    find /uploads -mindepth 1 -delete
+    # /uploads/documents and /uploads/media are volumes: empty them, keep the mount points.
+    find /uploads -mindepth 2 -delete
     tar -C /uploads -xf /restore/uploads.tar
     log "uploads: restored"
     ;;

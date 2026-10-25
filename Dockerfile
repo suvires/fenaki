@@ -76,9 +76,10 @@ COPY --from=build /app/apps/cms/.next apps/cms/.next
 COPY docker/app/shortix /usr/local/bin/shortix
 
 # The application files stay owned by root and read only; the processes run as `node` and write
-# only to Next's cache and the uploads directory (a volume in production).
-RUN mkdir -p apps/cms/.next/cache apps/cms/documents \
-  && chown node:node apps/cms/.next/cache apps/cms/documents
+# only to Next's cache and Payload's upload directories (volumes in production): `documents`
+# (signed licenses) and `media` (images such as organization logos).
+RUN mkdir -p apps/cms/.next/cache apps/cms/documents apps/cms/media \
+  && chown node:node apps/cms/.next/cache apps/cms/documents apps/cms/media
 USER node
 
 EXPOSE 3000 4321

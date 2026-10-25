@@ -48,8 +48,11 @@ servers:
       # The site reaches the API at http://shortix-cms:3000 on the Docker network. While a deploy
       # overlaps old and new containers, both answer to the alias.
       network-alias: shortix-cms
-      # Payload uploads (signed license documents), for the CMS and the worker only.
-      volume: shortix-uploads:/app/apps/cms/documents
+      # Payload uploads, for the CMS and the worker only: signed license documents and media
+      # (organization logos).
+      volume:
+        - shortix-uploads:/app/apps/cms/documents
+        - shortix-media:/app/apps/cms/media
       memory: 1200m
     env: *cms-env
   web:
@@ -100,7 +103,9 @@ servers:
     # Payload's worker stops at once on SIGTERM; the next one requeues what it left half done.
     cmd: jobs
     options:
-      volume: shortix-uploads:/app/apps/cms/documents
+      volume:
+        - shortix-uploads:/app/apps/cms/documents
+        - shortix-media:/app/apps/cms/media
       memory: 800m
     env: *cms-env
 
@@ -287,7 +292,8 @@ accessories:
     volumes:
       - shortix-meilisearch:/meili_data
       # Read and write: `restore uploads` writes here.
-      - shortix-uploads:/uploads
+      - shortix-uploads:/uploads/documents
+      - shortix-media:/uploads/media
     options:
       memory: 512m
 
