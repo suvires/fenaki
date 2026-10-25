@@ -1,5 +1,6 @@
 ---
-import { CollectionHero, Rail, ShortCard, ShortHero } from '@fenaki/ui'
+import { TOP10_PREVIEW } from 'astro:env/server'
+import { CollectionHero, Rail, RankedItem, RankedRail, ShortCard, ShortHero } from '@fenaki/ui'
 import { formatList, formatYear } from '@fenaki/i18n'
 import Landing from '../../components/Landing.astro'
 import { HomeFilters } from '../../islands/HomeFilters.tsx'
@@ -14,6 +15,7 @@ import {
   toSavedShort,
 } from '../../lib/catalog.ts'
 import {
+  getRanking,
   listCollections,
   listShorts,
   peopleOf,
@@ -24,6 +26,7 @@ import {
 } from '../../lib/cms.ts'
 import { sponsorCredit } from '../../lib/analytics.ts'
 import { localeFrom, paths, translator } from '../../lib/i18n.ts'
+import { previewEnabled, topTen } from '../../lib/ranking.ts'
 import { badgeClock, siteMode } from '../../lib/services.ts'
 import type { PublishedShort } from '../../lib/cms.ts'
 
@@ -36,6 +39,15 @@ const clock = badgeClock()
 const [shorts, collections] = landing
   ? [[], []]
   : await Promise.all([listShorts(locale), listCollections(locale)])
+
+// «Lo más visto»: only a real ranking of ten (or the development preview).
+const top = landing
+  ? []
+  : topTen({
+      ranked: await getRanking(locale),
+      latest: shorts,
+      preview: previewEnabled(TOP10_PREVIEW, import.meta.env.PROD),
+    })
 
 // For now the hero is the latest short; picking one from the admin panel comes later.
 const hero = shorts[0]
@@ -116,6 +128,17 @@ const filterOptions = (['short', 'mid', 'long', 'subtitles'] as const).map((valu
         shorts.map((s) => [s.slug, toCurrentShort(toCardSource(s), locale)]),
       )}
     />
+  )}
+  {top.length > 0 && (
+    <RankedRail title={t('home.top10.title')}>
+      {top.map((short, index) => (
+        <RankedItem rank={index + 1} rankLabel={t('home.top10.rank', { rank: index + 1 })}>
+          <ShortCard
+            {...toCard(toCardSource(short), locale, t, paths.short(locale, short.slug), clock)}
+          />
+        </RankedItem>
+      ))}
+    </RankedRail>
   )}
   {!landing && featured && (
     <CollectionHero

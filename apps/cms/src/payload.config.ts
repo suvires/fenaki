@@ -8,6 +8,7 @@ import { buildConfig } from 'payload'
 import sharp from 'sharp'
 import { Contacts } from './collections/Contacts.ts'
 import { InboxState } from './collections/InboxState.ts'
+import { Ranking } from './collections/Ranking.ts'
 import { Messages } from './collections/Messages.ts'
 import { Organizations } from './collections/Organizations.ts'
 import { Collections } from './collections/Collections.ts'
@@ -23,6 +24,7 @@ import { Stills } from './collections/Stills.ts'
 import { Users } from './collections/Users.ts'
 import { emailAdapter } from './email.ts'
 import { checkEmbedsTask } from './jobs/checkEmbeds.ts'
+import { computeRankingTask } from './jobs/computeRanking.ts'
 import { indexShortTask } from './jobs/indexShort.ts'
 import { purgeWaitlistTask } from './jobs/purgeWaitlist.ts'
 import { syncInboxTask } from './jobs/syncInbox.ts'
@@ -80,7 +82,7 @@ export default buildConfig({
     Messages,
     Users,
   ],
-  globals: [InboxState],
+  globals: [InboxState, Ranking],
   cors: [process.env.WEB_URL ?? 'http://localhost:4321'],
   // The schema changes only through migrations (`pnpm migrate`), in development too, so the
   // first deployment runs exactly what was tested locally.
@@ -91,7 +93,7 @@ export default buildConfig({
   }),
   // Jobs run in a separate process (`pnpm --filter @fenaki/cms jobs`), never inside the web server.
   jobs: {
-    tasks: [indexShortTask, purgeWaitlistTask, checkEmbedsTask, syncInboxTask],
+    tasks: [indexShortTask, purgeWaitlistTask, checkEmbedsTask, computeRankingTask, syncInboxTask],
     deleteJobOnComplete: true,
   },
   // SMTP (Amazon SES in production) when SMTP_HOST is set; otherwise emails go to the console.

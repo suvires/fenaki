@@ -33,6 +33,10 @@ x-cms-env: &cms-env
     MAILBOX_SMTP_HOST: smtp.mail.ovh.net
     MAILBOX_SMTP_PORT: 465
     CRM_DAILY_SEND_LIMIT: 20
+    # The nightly «Lo más visto» job reads the play events from Umami (same website as the site).
+    UMAMI_URL: http://fenaki-umami:3000
+    UMAMI_WEBSITE_ID: 0b6c4f8e-2d7a-4e15-9a3c-7f2e1d5b8c64
+    UMAMI_USERNAME: admin
   secret:
     - DATABASE_URL
     - PAYLOAD_SECRET
@@ -40,6 +44,7 @@ x-cms-env: &cms-env
     - SMTP_USERNAME:SES_SMTP_USERNAME
     - SMTP_PASSWORD:SES_SMTP_PASSWORD
     - MAILBOX_PASSWORD
+    - UMAMI_PASSWORD:UMAMI_ADMIN_PASSWORD
     # Optional metadata APIs for «Add from URL» and the nightly embed checker (03:00 UTC).
     - YOUTUBE_API_KEY
     - TMDB_API_KEY

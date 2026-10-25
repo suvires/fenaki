@@ -7,6 +7,7 @@ import * as migration_20261025_175727_crm from './20261025_175727_crm';
 import * as migration_20261025_183142_distributor_type from './20261025_183142_distributor_type';
 import * as migration_20261025_223519_stills from './20261025_223519_stills';
 import * as migration_20261025_231009_still_card_size from './20261025_231009_still_card_size';
+import * as migration_20261025_233011_ranking_global from './20261025_233011_ranking_global';
 
 export const migrations = [
   {
@@ -52,6 +53,11 @@ export const migrations = [
   {
     up: migration_20261025_231009_still_card_size.up,
     down: migration_20261025_231009_still_card_size.down,
-    name: '20261025_231009_still_card_size'
+    name: '20261025_231009_still_card_size',
+  },
+  {
+    up: migration_20261025_233011_ranking_global.up,
+    down: migration_20261025_233011_ranking_global.down,
+    name: '20261025_233011_ranking_global'
   },
 ];

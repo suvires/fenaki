@@ -201,8 +201,8 @@ Production is one OVHcloud VPS behind Cloudflare, deployed with Kamal: one image
 
 Each app reads its own `.env` (never committed; `.env.example` lists every variable):
 
-- `apps/cms/.env`: `DATABASE_URL`, `PAYLOAD_SECRET`, `PAYLOAD_PUBLIC_SERVER_URL`, `WEB_URL`, `MEILISEARCH_HOST`, `MEILISEARCH_ADMIN_KEY`, `SEED_ADMIN_EMAIL`, `SEED_ADMIN_PASSWORD`, `CATALOG_IMPORT_PATH`, and optionally `SEARCH_INDEX_PREFIX`, `YOUTUBE_API_KEY` and `TMDB_API_KEY`, the `SMTP_*` and `EMAIL_FROM_*` variables (Payload's emails; without `SMTP_HOST` they go to the console) and `SENTRY_DSN`.
-- `apps/web/.env`: `CMS_URL`, `CMS_PUBLIC_URL`, `MEILISEARCH_HOST`, `MEILISEARCH_SEARCH_KEY` (a search-only key in production), `SEARCH_INDEX_PREFIX`, `SITE_URL`, `SITE_MODE`, `LAUNCH_DATE`, `LEGAL_DRAFT`, `CONTACT_EMAIL`, the `LISTMONK_*` and `UMAMI_*` variables, and `SENTRY_DSN`.
+- `apps/cms/.env`: `DATABASE_URL`, `PAYLOAD_SECRET`, `PAYLOAD_PUBLIC_SERVER_URL`, `WEB_URL`, `MEILISEARCH_HOST`, `MEILISEARCH_ADMIN_KEY`, `SEED_ADMIN_EMAIL`, `SEED_ADMIN_PASSWORD`, `CATALOG_IMPORT_PATH`, and optionally `SEARCH_INDEX_PREFIX`, `YOUTUBE_API_KEY` and `TMDB_API_KEY`, the `SMTP_*` and `EMAIL_FROM_*` variables (Payload's emails; without `SMTP_HOST` they go to the console), `UMAMI_URL`, `UMAMI_WEBSITE_ID`, `UMAMI_USERNAME` and `UMAMI_PASSWORD` (the nightly job that ranks «Lo más visto» from the `play` events of the last 7 days; without them it does nothing) and `SENTRY_DSN`.
+- `apps/web/.env`: `CMS_URL`, `CMS_PUBLIC_URL`, `MEILISEARCH_HOST`, `MEILISEARCH_SEARCH_KEY` (a search-only key in production), `SEARCH_INDEX_PREFIX`, `SITE_URL`, `SITE_MODE`, `LAUNCH_DATE`, `LEGAL_DRAFT`, `CONTACT_EMAIL`, the `LISTMONK_*` and `UMAMI_*` variables, `TOP10_PREVIEW` (development only: fills the «Lo más visto» rail with the 10 latest shorts to work on its design; ignored in production, where the rail appears only once the CMS has a real ranking of 10), and `SENTRY_DSN`.
 
 Sentry (error tracking, server side only) is off while `SENTRY_DSN` is empty, so development and tests never report anything.
 
