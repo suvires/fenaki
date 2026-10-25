@@ -51,7 +51,7 @@ export async function ensureAdmin(payload: Payload, log: (message: string) => vo
   }
   const existing = await payload.find({ collection: 'users', where: { email: { equals: email } } })
   if (existing.totalDocs === 0) {
-    await payload.create({ collection: 'users', data: { email, password } })
+    await payload.create({ collection: 'users', data: { email, password, role: 'admin' } })
     log(`created admin user ${email}`)
   }
 }

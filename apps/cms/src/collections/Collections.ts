@@ -1,5 +1,5 @@
 import { ValidationError, type CollectionConfig, type Payload, type PayloadRequest } from 'payload'
-import { publishedOrAuthenticated } from '../access.ts'
+import { isAdmin, publishedOrAuthenticated } from '../access.ts'
 import { importKeyField } from '../fields/importKey.ts'
 import { slugField } from '../fields/slug.ts'
 import { statusField } from '../fields/status.ts'
@@ -71,7 +71,12 @@ export const Collections: CollectionConfig = {
     defaultColumns: ['title', 'featured', 'sponsor', 'status'],
     group: groups.catalog,
   },
-  access: { read: publishedOrAuthenticated },
+  access: {
+    read: publishedOrAuthenticated,
+    create: isAdmin,
+    update: isAdmin,
+    delete: isAdmin,
+  },
   fields: [
     { name: 'title', label: common.title, type: 'text', required: true, localized: true },
     slugField('title', { localized: true }),

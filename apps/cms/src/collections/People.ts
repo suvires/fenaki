@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { isAuthenticated } from '../access.ts'
+import { isAdmin } from '../access.ts'
 import { importKeyField } from '../fields/importKey.ts'
 import { slugField } from '../fields/slug.ts'
 import { queueIndexShort } from '../jobs/queue.ts'
@@ -11,9 +11,9 @@ export const People: CollectionConfig = {
   admin: { useAsTitle: 'name', group: groups.catalog },
   access: {
     read: () => true,
-    create: isAuthenticated,
-    update: isAuthenticated,
-    delete: isAuthenticated,
+    create: isAdmin,
+    update: isAdmin,
+    delete: isAdmin,
   },
   fields: [
     { name: 'name', label: common.name, type: 'text', required: true },
