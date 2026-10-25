@@ -37,6 +37,11 @@ export const common = {
   name: label('Name', 'Nombre'),
   notes: label('Internal notes', 'Notas internas'),
   notesHelp: label('Internal. Never shown publicly.', 'Internas. Nunca se muestran al público.'),
+  importKey: label('Import key', 'Clave de importación'),
+  importKeyHelp: label(
+    'Set by the catalog import. Re-running the import updates this document.',
+    'La fija la importación del catálogo. Al repetirla, se actualiza este documento.',
+  ),
 }
 
 /** A label in the language of the panel user who triggered a validation or hook. */
@@ -53,5 +58,9 @@ export const messages = {
   nonCommercialInSponsored: label(
     'A sponsored collection cannot include non-commercial (NC) shorts:',
     'Una colección patrocinada no puede incluir cortos con licencia no comercial (NC):',
+  ),
+  brandedInSponsored: label(
+    'A sponsored collection cannot include branded content:',
+    'Una colección patrocinada no puede incluir contenido de marca:',
   ),
 }

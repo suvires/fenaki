@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { isAuthenticated } from '../access.ts'
+import { importKeyField } from '../fields/importKey.ts'
 import { queueIndexShort } from '../jobs/queue.ts'
 import { groups, label, options } from '../labels.ts'
 
@@ -116,6 +117,7 @@ export const Sources: CollectionConfig = {
       relationTo: 'licenses',
       required: true,
     },
+    importKeyField(),
   ],
   hooks: {
     afterChange: [

@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { isAuthenticated, isAuthenticatedField } from '../access.ts'
+import { importKeyField } from '../fields/importKey.ts'
 import { common, groups, label, options } from '../labels.ts'
 
 export const LICENSE_TYPES = [
@@ -109,5 +110,6 @@ export const Licenses: CollectionConfig = {
       access: { read: isAuthenticatedField },
       admin: { description: common.notesHelp },
     },
+    importKeyField(),
   ],
 }

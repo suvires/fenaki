@@ -14,6 +14,8 @@ export interface ShortSearchDocument {
   typeLabel: string
   posterTone: string
   noDialogue: boolean
+  /** Made by or for a brand: cards show a «Contenido de marca» badge. */
+  brandedContent: boolean
   subtitles: string[]
   publishedAt: number | null
 }
@@ -25,8 +27,15 @@ export const SHORTS_INDEX_SETTINGS = {
   displayedAttributes: ['*'],
 }
 
-export function shortsIndexName(locale: string): string {
-  return `shorts_${locale}`
+/**
+ * One index per locale. SEARCH_INDEX_PREFIX keeps other databases apart on the same Meilisearch,
+ * such as the e2e tests' (`test_shorts_es`).
+ */
+export function shortsIndexName(
+  locale: string,
+  prefix = process.env.SEARCH_INDEX_PREFIX ?? '',
+): string {
+  return `${prefix}shorts_${locale}`
 }
 
 interface PersonLike {
@@ -45,6 +54,7 @@ export interface IndexableShort {
   type: string
   posterTone?: string | null
   noDialogue?: boolean | null
+  brandedContent?: boolean | null
   publishedAt?: string | null
   credits?: { person: number | PersonLike; role: string }[] | null
   sources?: { docs?: (number | { subtitles?: string[] | null; status?: string | null })[] } | null
@@ -76,6 +86,7 @@ export function toSearchDocument(short: IndexableShort, typeLabel: string): Shor
     typeLabel,
     posterTone: short.posterTone ?? 'sala',
     noDialogue: Boolean(short.noDialogue),
+    brandedContent: Boolean(short.brandedContent),
     subtitles: [...subtitles],
     publishedAt: short.publishedAt ? Date.parse(short.publishedAt) : null,
   }

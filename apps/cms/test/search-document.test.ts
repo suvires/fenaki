@@ -46,8 +46,16 @@ describe('toSearchDocument', () => {
     expect(toSearchDocument(short, 'Animación').typeLabel).toBe('Animación')
   })
 
+  it('marks branded content, and treats a missing flag as not branded', () => {
+    expect(toSearchDocument(short, 'Animación').brandedContent).toBe(false)
+    expect(toSearchDocument({ ...short, brandedContent: true }, 'Animación').brandedContent).toBe(
+      true,
+    )
+  })
+
   it('names one index per locale', () => {
-    expect(shortsIndexName('es')).toBe('shorts_es')
+    expect(shortsIndexName('es', '')).toBe('shorts_es')
+    expect(shortsIndexName('es', 'test_')).toBe('test_shorts_es')
   })
 })
 
