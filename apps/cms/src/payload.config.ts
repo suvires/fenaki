@@ -14,6 +14,7 @@ import { Shorts } from './collections/Shorts.ts'
 import { Sources } from './collections/Sources.ts'
 import { Sponsors } from './collections/Sponsors.ts'
 import { Users } from './collections/Users.ts'
+import { emailAdapter } from './email.ts'
 import { indexShortTask } from './jobs/indexShort.ts'
 import { purgeWaitlistTask } from './jobs/purgeWaitlist.ts'
 
@@ -51,6 +52,8 @@ export default buildConfig({
     tasks: [indexShortTask, purgeWaitlistTask],
     deleteJobOnComplete: true,
   },
+  // SMTP (Amazon SES in production) when SMTP_HOST is set; otherwise emails go to the console.
+  email: emailAdapter(),
   typescript: { outputFile: path.resolve(dirname, 'payload-types.ts') },
   sharp,
   telemetry: false,
