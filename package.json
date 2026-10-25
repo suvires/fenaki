@@ -15,7 +15,9 @@
     "test": "turbo run test",
     "test:e2e": "turbo run test:e2e",
     "seed": "pnpm --filter @shortix/cms seed",
-    "storybook": "pnpm --filter @shortix/ui storybook"
+    "storybook": "pnpm --filter @shortix/ui storybook",
+    "test:visual": "pnpm --filter @shortix/ui test:visual",
+    "test:visual:update": "pnpm --filter @shortix/ui test:visual:update"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",

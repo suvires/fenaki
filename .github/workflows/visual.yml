@@ -1,5 +1,6 @@
-# Visual regression of every Storybook story. Runs in the same Playwright image as
-# `pnpm test:visual` locally, so screenshots match the committed baselines pixel for pixel.
+# Visual regression of every Storybook story. Runs in the same Playwright image and on the same
+# CPU architecture (arm64, like Apple Silicon) as `pnpm test:visual` locally, so screenshots
+# match the committed baselines pixel for pixel. Arm64 runners are free for public repositories.
 name: Visual regression
 
 on:
@@ -15,7 +16,7 @@ concurrency:
 
 jobs:
   storybook:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-24.04-arm
     timeout-minutes: 20
     container:
       image: mcr.microsoft.com/playwright:v1.64.1-noble
