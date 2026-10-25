@@ -58,6 +58,7 @@ async function configureListmonk(client: Listmonk) {
     await client.request<Record<string, unknown>>('GET', '/api/settings'),
   ) as Record<string, unknown>
   const smtpAuth = env('LISTMONK_SMTP_AUTH', 'none')
+  const sendsThroughSes = env('LISTMONK_SMTP_HOST', 'mailpit').endsWith('.amazonaws.com')
   const next = {
     ...settings,
     'app.site_name': 'Fenaki',
@@ -75,6 +76,16 @@ async function configureListmonk(client: Listmonk) {
     // Proof of consent: the privacy policy lists the confirmation IP.
     'privacy.record_optin_ip': true,
     'privacy.unsubscribe_header': true,
+    // Bounces and complaints: SES posts them through SNS to /webhooks/service/ses. A hard bounce or
+    // a complaint blocklists the address at once; soft bounces are only counted.
+    'bounce.enabled': true,
+    'bounce.webhooks_enabled': sendsThroughSes,
+    'bounce.ses_enabled': sendsThroughSes,
+    'bounce.actions': {
+      hard: { count: 1, action: 'blocklist' },
+      complaint: { count: 1, action: 'blocklist' },
+      soft: { count: 3, action: 'none' },
+    },
     smtp: [
       {
         name: 'fenaki',
