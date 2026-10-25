@@ -12,26 +12,10 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-/** At rest: the typographic poster carries the title. The card expands on hover and keyboard focus. */
+/** The typographic poster carries the title. The preview on hover is the page's island: see ShortPreview. */
 export const WithBadge: Story = {}
 /** At rest with the short's still: only the title, on a dark gradient. */
 export const WithImage: Story = { args: { image: backdrop } }
-/** The hover and focus state, forced for the visual baseline. */
-export const ExpandedWithImage: Story = {
-  args: {
-    image: backdrop,
-    expanded: true,
-    badges: [
-      { label: 'Nuevo', tone: 'accent' },
-      { label: 'Sub ES', tone: 'info' },
-    ],
-  },
-  decorators: [(Story) => <div className="p-6">{Story()}</div>],
-}
-export const ExpandedWithPoster: Story = {
-  args: { expanded: true },
-  decorators: [(Story) => <div className="p-6">{Story()}</div>],
-}
 /** Branded content stays visible at rest. */
 export const BrandedWithImage: Story = {
   args: {
@@ -42,10 +26,6 @@ export const BrandedWithImage: Story = {
       { label: 'Sub ES', tone: 'info' },
     ],
   },
-}
-export const BrandedExpanded: Story = {
-  args: { ...BrandedWithImage.args, expanded: true },
-  decorators: [(Story) => <div className="p-6">{Story()}</div>],
 }
 export const WithoutBadges: Story = { args: { ...SHORTS[2], title: 'Madre', href: '#' } }
 export const LongDirector: Story = { args: { ...SHORTS[3], title: 'Alike', href: '#' } }

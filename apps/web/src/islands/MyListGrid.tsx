@@ -40,6 +40,9 @@ export function MyListGrid({ emptyHint, locale, hrefBase, current }: MyListGridP
         tone: item.tone,
         image: item.image,
         synopsis: item.synopsis,
+        badges: item.badges,
+        slug: item.slug,
+        typeLabel: item.typeLabel,
         href: `${hrefBase}${item.slug}`,
       }))}
     />

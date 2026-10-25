@@ -4,7 +4,7 @@
  * to the account instead.
  */
 
-import type { PosterTone } from '@fenaki/ui'
+import type { BadgeTone, PosterTone } from '@fenaki/ui'
 
 export const STORAGE_KEY = 'fenaki:my-list:v1'
 export const CHANGE_EVENT = 'fenaki:my-list'
@@ -48,14 +48,21 @@ function isSaved(value: unknown): value is SavedShort {
   )
 }
 
-/** A short as the catalog shows it now: what is saved, plus the synopsis, which is never stored. */
-export type CurrentShort = NewSavedShort & { synopsis?: string }
+/**
+ * A short as the catalog shows it now: what is saved, plus what is never stored: the synopsis, the
+ * type («Ficción») and the badges, which the floating preview shows.
+ */
+export type CurrentShort = NewSavedShort & {
+  synopsis?: string
+  typeLabel?: string
+  badges?: { label: string; tone?: BadgeTone }[]
+}
 
 /** The catalog's current card data, by slug, as the server renders it for this locale. */
 export type CurrentShorts = Record<string, CurrentShort>
 
 /** A saved short with its current catalog data. */
-export type ListedShort = SavedShort & Pick<CurrentShort, 'synopsis'>
+export type ListedShort = SavedShort & Pick<CurrentShort, 'synopsis' | 'typeLabel' | 'badges'>
 
 /**
  * The saved shorts with the catalog's current data (title, still…) instead of what was stored

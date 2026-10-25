@@ -1,11 +1,10 @@
-import type { ReactNode } from 'react'
+import type { HTMLAttributes, ReactNode } from 'react'
 import { cx } from '../cx.ts'
 
 export type BadgeTone = 'neutral' | 'accent' | 'info' | 'branded'
 
-export interface BadgeProps {
+export interface BadgeProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'children'> {
   tone?: BadgeTone
-  className?: string
   children: ReactNode
 }
 
@@ -18,9 +17,10 @@ const TONES = {
 } as const
 
 /** A one- or two-word fact about a short, in the uppercase timecode voice. */
-export function Badge({ tone = 'neutral', className, children }: BadgeProps) {
+export function Badge({ tone = 'neutral', className, children, ...rest }: BadgeProps) {
   return (
     <span
+      {...rest}
       className={cx(
         'inline-flex items-center min-h-(--size-badge) px-2 py-hair rounded-xs font-mono text-label uppercase',
         TONES[tone],

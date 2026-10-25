@@ -113,7 +113,7 @@ const filterOptions = (['short', 'mid', 'long', 'subtitles'] as const).map((valu
       locale={locale}
       hrefBase={paths.short(locale, '')}
       current={Object.fromEntries(
-        shorts.map((s) => [s.slug, toCurrentShort(toCardSource(s), locale)]),
+        shorts.map((s) => [s.slug, toCurrentShort(toCardSource(s), locale, t, clock)]),
       )}
     />
   )}

@@ -19,6 +19,10 @@ for (const story of stories) {
     await page.goto(`/iframe.html?viewMode=story&id=${story.id}`)
     await page.locator('#storybook-root > *').first().waitFor()
     await page.evaluate(() => document.fonts.ready)
+    // Stills are decoded before the shot, or a big JPEG can be caught half painted.
+    await page.evaluate(() =>
+      Promise.all([...document.images].map((img) => img.decode().catch(() => {}))),
+    )
     await expect(page).toHaveScreenshot(`${story.id}.png`, { fullPage: true })
   })
 }

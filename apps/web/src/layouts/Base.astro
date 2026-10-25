@@ -2,6 +2,7 @@
 import '../styles/global.css'
 import type { Locale } from '@fenaki/i18n'
 import { SiteFooter, SiteHeader, Wordmark } from '@fenaki/ui'
+import { CardPreview } from '../islands/CardPreview.tsx'
 import { paths, translator } from '../lib/i18n.ts'
 import { contactLinks } from '../lib/contact.ts'
 import { contactEmail, csp, siteMode, siteUrl, umami } from '../lib/services.ts'
@@ -193,6 +194,26 @@ const footerGroups = [
     <main id="main" class="mx-auto max-w-page grid gap-12 px-4 md:px-8 pb-8">
       <slot />
     </main>
+    {/* One island for every card on the page: the floating preview of the card under the pointer. */}
+    {!landing && (
+      <CardPreview
+        client:idle
+        locale={locale}
+        labels={{
+          play: t('preview.play'),
+          addToList: t('short.addToList'),
+          inMyList: t('short.inMyList'),
+          more: t('preview.more'),
+          directedBy: t('short.directedBy', { names: '{names}' }),
+          rating: {
+            rate: t('preview.rate'),
+            dislike: t('preview.dislike'),
+            like: t('preview.like'),
+            love: t('preview.love'),
+          },
+        }}
+      />
+    )}
     <SiteFooter
       className="mx-auto max-w-page px-4 md:px-8 pb-8"
       label={t('footer.label')}
