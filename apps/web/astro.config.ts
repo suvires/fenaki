@@ -3,6 +3,7 @@ import react from '@astrojs/react'
 import { defaultLocale, locales } from '@shortix/i18n'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig, envField } from 'astro/config'
+import { STATIC_DIRECTIVES, STYLE_ATTRIBUTES } from './src/lib/csp.ts'
 
 export default defineConfig({
   output: 'server',
@@ -10,6 +11,18 @@ export default defineConfig({
   integrations: [react()],
   server: { port: 4321 },
   devToolbar: { enabled: false },
+  // A <meta> CSP with the hashes of every script and style Astro emits (src/lib/csp.ts). Not
+  // applied by `astro dev`: test it on a build.
+  security: {
+    csp: {
+      directives: [...STATIC_DIRECTIVES],
+      scriptDirective: { resources: ["'self'"] },
+      styleDirective: {
+        resources: ["'self'", { resource: "'unsafe-hashes'", kind: 'attribute' }],
+        hashes: Object.values(STYLE_ATTRIBUTES).map((hash) => ({ hash, kind: 'attribute' })),
+      },
+    },
+  },
   i18n: {
     locales: [...locales],
     defaultLocale,
@@ -24,6 +37,8 @@ export default defineConfig({
         access: 'secret',
         default: 'http://localhost:3000',
       }),
+      // The CMS's public address, for the media it serves (logos). Empty: CMS_URL.
+      CMS_PUBLIC_URL: envField.string({ context: 'server', access: 'secret', optional: true }),
       MEILISEARCH_HOST: envField.string({
         context: 'server',
         access: 'secret',

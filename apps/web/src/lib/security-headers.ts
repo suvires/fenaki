@@ -1,9 +1,9 @@
 /**
  * Security headers for every response of the site. No Astro imports, so tests can use it.
  *
- * The policy restricts what does not depend on the page's scripts: no framing of the site, no
- * <base> or plugin injection, forms only to the site itself. A script-src policy needs the hashes
- * of Astro's inline island scripts and is not set yet. HSTS is ignored by browsers over plain HTTP,
+ * Pages carry Astro's full Content Security Policy (lib/csp.ts), which a response keeps; this one
+ * is the fallback for what Astro does not render (redirects, API routes): no framing, no <base>
+ * or plugin injection, forms only to the site itself. HSTS is ignored by browsers over plain HTTP,
  * so local development is unaffected. Permissions-Policy leaves fullscreen, autoplay and
  * picture-in-picture alone: the YouTube and Vimeo players need them.
  */

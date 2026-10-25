@@ -35,7 +35,7 @@ export default defineConfig({
   projects: [
     {
       name: 'catalog',
-      testMatch: ['smoke.spec.ts', 'catalog.spec.ts'],
+      testMatch: ['smoke.spec.ts', 'catalog.spec.ts', 'csp.spec.ts'],
       use: {
         ...devices['Desktop Chrome'],
         baseURL: external.catalog ?? `http://localhost:${CATALOG_PORT}`,
@@ -43,7 +43,7 @@ export default defineConfig({
     },
     {
       name: 'landing',
-      testMatch: 'landing.spec.ts',
+      testMatch: ['landing.spec.ts', 'csp.spec.ts'],
       use: {
         ...devices['Desktop Chrome'],
         baseURL: external.landing ?? `http://localhost:${LANDING_PORT}`,

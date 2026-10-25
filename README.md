@@ -161,7 +161,7 @@ Production is one OVHcloud VPS behind Cloudflare, deployed with Kamal: one image
 Each app reads its own `.env` (never committed; `.env.example` lists every variable):
 
 - `apps/cms/.env`: `DATABASE_URL`, `PAYLOAD_SECRET`, `PAYLOAD_PUBLIC_SERVER_URL`, `WEB_URL`, `MEILISEARCH_HOST`, `MEILISEARCH_ADMIN_KEY`, `SEED_ADMIN_EMAIL`, `SEED_ADMIN_PASSWORD`, `CATALOG_IMPORT_PATH`, and optionally `SEARCH_INDEX_PREFIX`, `YOUTUBE_API_KEY` and `TMDB_API_KEY`, the `SMTP_*` and `EMAIL_FROM_*` variables (Payload's emails; without `SMTP_HOST` they go to the console) and `SENTRY_DSN`.
-- `apps/web/.env`: `CMS_URL`, `MEILISEARCH_HOST`, `MEILISEARCH_SEARCH_KEY` (a search-only key in production), `SEARCH_INDEX_PREFIX`, `SITE_URL`, `SITE_MODE`, `LAUNCH_DATE`, `LEGAL_DRAFT`, `CONTACT_EMAIL`, the `LISTMONK_*` and `UMAMI_*` variables, and `SENTRY_DSN`.
+- `apps/web/.env`: `CMS_URL`, `CMS_PUBLIC_URL`, `MEILISEARCH_HOST`, `MEILISEARCH_SEARCH_KEY` (a search-only key in production), `SEARCH_INDEX_PREFIX`, `SITE_URL`, `SITE_MODE`, `LAUNCH_DATE`, `LEGAL_DRAFT`, `CONTACT_EMAIL`, the `LISTMONK_*` and `UMAMI_*` variables, and `SENTRY_DSN`.
 
 Sentry (error tracking, server side only) is off while `SENTRY_DSN` is empty, so development and tests never report anything.
 
@@ -183,6 +183,7 @@ To start from an empty database and index (this also empties listmonk and Umami)
 - The site never touches the database: it reads the catalog through Payload's REST API (`apps/web/src/lib/cms.ts`) and searches through its own `/api/search` endpoint, so the browser never sees a Meilisearch key.
 - Pages render the UI components as static HTML. Only the home filters, the player gate and the search field are hydrated islands.
 - The player gate loads no third-party request until the viewer presses play.
+- Every page is served with a Content Security Policy (`apps/web/src/lib/csp.ts`, Astro's `security.csp`): scripts and styles only from the site, by hash; frames only from the YouTube and Vimeo players; Umami and the CMS's media from their own origins. It applies to builds, not to `astro dev`; `e2e/csp.spec.ts` checks that no page breaks it.
 - The waitlist lives in listmonk, never in the site's own storage: `/api/waitlist` subscribes the address as unconfirmed on double opt-in lists and sends the confirmation email; `/es/lista-de-espera/confirmar` confirms it through listmonk. Links expire 7 days after the last email and work once.
 - Analytics are Umami, cookieless (no cookies, no local storage, no query strings sent). Custom events: `waitlist-signup`, `play` (the PlayerGate button) and `sponsor-click` (the sponsor credit, which links to the sponsor's site).
 - The weekly selection goes out on Friday mornings, 09:00 Spanish time (`NEWSLETTER_SCHEDULE` in `packages/waitlist`); the waitlist confirmation page announces it.

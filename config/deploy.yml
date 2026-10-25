@@ -82,6 +82,8 @@ servers:
         # Empty hides the links that write to it, until the mailbox exists.
         CONTACT_EMAIL: ""
         CMS_URL: http://shortix-cms:3000
+        # The CMS's public address: logos and other media load from it (Content Security Policy).
+        CMS_PUBLIC_URL: https://cms.fenaki.tv
         SEARCH_INDEX_PREFIX: ""
         LISTMONK_FROM_EMAIL: Fenaki <hola@fenaki.tv>
         # Public address of listmonk: the unsubscribe links in emails point here.

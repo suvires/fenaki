@@ -4,7 +4,7 @@ import type { Locale } from '@shortix/i18n'
 import { SearchField, SiteFooter } from '@shortix/ui'
 import { paths, translator } from '../lib/i18n.ts'
 import { contactLinks } from '../lib/contact.ts'
-import { contactEmail, siteMode, siteUrl, umami } from '../lib/services.ts'
+import { contactEmail, csp, siteMode, siteUrl, umami } from '../lib/services.ts'
 import { absoluteUrl, hreflangLinks, jsonLdScript, type Alternates } from '../lib/seo.ts'
 
 interface Props {
@@ -38,6 +38,11 @@ const {
   ogType = 'website',
   jsonLd,
 } = Astro.props
+// This environment's origins, next to the hashes Astro adds to the page's policy. Only while
+// rendering a page: Astro ignores additions made earlier, in middleware. No policy in `astro dev`.
+for (const resource of csp.scriptResources) Astro.csp?.insertScriptResource(resource)
+for (const directive of csp.directives) Astro.csp?.insertDirective(directive)
+
 const t = translator(locale)
 const landing = siteMode === 'landing'
 const pageTitle = title

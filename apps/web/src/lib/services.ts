@@ -1,5 +1,7 @@
 /** Server-side configuration read when the server starts (see astro.config.ts). */
 import {
+  CMS_PUBLIC_URL,
+  CMS_URL,
   CONTACT_EMAIL,
   LAUNCH_DATE,
   LEGAL_DRAFT,
@@ -14,6 +16,7 @@ import {
 } from 'astro:env/server'
 import { createListmonk, type Listmonk } from '@shortix/waitlist'
 import type { BadgeClock } from './catalog.ts'
+import { runtimePolicy } from './csp.ts'
 import type { SiteMode } from './site-mode.ts'
 
 export const siteMode: SiteMode = SITE_MODE
@@ -25,6 +28,12 @@ export const umami =
   UMAMI_SCRIPT_URL && UMAMI_WEBSITE_ID
     ? { scriptUrl: UMAMI_SCRIPT_URL, websiteId: UMAMI_WEBSITE_ID }
     : undefined
+
+/** This environment's part of the Content Security Policy (lib/csp.ts). */
+export const csp = runtimePolicy({
+  umamiScriptUrl: umami?.scriptUrl,
+  cmsPublicUrl: CMS_PUBLIC_URL || CMS_URL,
+})
 
 export const fromEmail = LISTMONK_FROM_EMAIL
 

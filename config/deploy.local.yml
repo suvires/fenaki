@@ -53,6 +53,7 @@ servers:
     env:
       clear:
         SITE_URL: <%= base % "fenaki" %>
+        CMS_PUBLIC_URL: <%= base % "cms.fenaki" %>
         SITE_MODE: <%= ENV.fetch("SITE_MODE", "landing") %>
         # As the e2e tests expect (apps/web/e2e/serve.sh): a mailbox in landing mode, none in catalog.
         CONTACT_EMAIL: <%= ENV.fetch("SITE_MODE", "landing") == "catalog" ? '""' : "hola@shortix.film" %>
