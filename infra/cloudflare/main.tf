@@ -290,3 +290,15 @@ resource "cloudflare_zero_trust_access_application" "cms_public" {
   ]
   policies = [{ id = cloudflare_zero_trust_access_policy.everyone[0].id, precedence = 1 }]
 }
+
+# --- Backups -------------------------------------------------------------------------------------
+
+# The off-site backup bucket (infra/backup), in the EU jurisdiction: its data stays in the EU.
+# The backup accessory's API token (Object Read & Write on this bucket only) is created in the
+# dashboard: docs/deploy.md.
+resource "cloudflare_r2_bucket" "backups" {
+  count        = var.backup_bucket == "" ? 0 : 1
+  account_id   = var.account_id
+  name         = var.backup_bucket
+  jurisdiction = "eu"
+}

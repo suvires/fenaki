@@ -15,3 +15,8 @@ output "tunnel_token" {
   value       = data.cloudflare_zero_trust_tunnel_cloudflared_token.server.token
   sensitive   = true
 }
+
+output "backup_s3_endpoint" {
+  description = "BACKUP_S3_ENDPOINT for the R2 bucket (EU jurisdiction)."
+  value       = var.backup_bucket == "" ? null : "https://${var.account_id}.eu.r2.cloudflarestorage.com"
+}

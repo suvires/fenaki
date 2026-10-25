@@ -108,3 +108,11 @@ variable "access_emails" {
   type        = list(string)
   default     = []
 }
+
+# --- Backups -------------------------------------------------------------------------------------
+
+variable "backup_bucket" {
+  description = "Name of the R2 bucket for the backups (EU jurisdiction). Empty: none here (e.g. Backblaze B2 instead)."
+  type        = string
+  default     = "shortix-backups"
+}
