@@ -1,4 +1,5 @@
 ---
+import { badgeClock } from '../../../lib/services.ts'
 import { formatCountry, formatList, formatYear } from '@shortix/i18n'
 import { Badge, Duration, LicenseNote, PlayerGate, Rail, ShortCard } from '@shortix/ui'
 import NotFound from '../../../components/NotFound.astro'
@@ -24,7 +25,7 @@ const t = translator(locale)
 const short = Astro.params.slug ? await getShort(locale, Astro.params.slug) : undefined
 if (!short) Astro.response.status = 404
 
-const now = Date.now()
+const clock = badgeClock()
 const source = short ? playableSource(await listSources(short.id)) : undefined
 const license = source ? licenseOf(source) : undefined
 const provider = source ? t(`providers.${source.provider}`) : ''
@@ -117,7 +118,9 @@ const origin = [
       {related.length > 0 && (
         <Rail title={t('short.related')}>
           {related.map((s) => (
-            <ShortCard {...toCard(toCardSource(s), locale, t, paths.short(locale, s.slug), now)} />
+            <ShortCard
+              {...toCard(toCardSource(s), locale, t, paths.short(locale, s.slug), clock)}
+            />
           ))}
         </Rail>
       )}

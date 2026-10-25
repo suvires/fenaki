@@ -14,7 +14,7 @@ import {
 } from '../../lib/cms.ts'
 import { sponsorCredit } from '../../lib/analytics.ts'
 import { localeFrom, paths, translator } from '../../lib/i18n.ts'
-import { siteMode } from '../../lib/services.ts'
+import { badgeClock, siteMode } from '../../lib/services.ts'
 import type { Short } from '@shortix/cms/types'
 
 const locale = localeFrom(Astro.params.locale)
@@ -22,7 +22,7 @@ if (!locale) return Astro.rewrite('/404')
 
 const t = translator(locale)
 const landing = siteMode === 'landing'
-const now = Date.now()
+const clock = badgeClock()
 const [shorts, collections] = landing
   ? [[], []]
   : await Promise.all([listShorts(locale), listCollections(locale)])
@@ -95,7 +95,7 @@ const filterOptions = (['short', 'mid', 'long', 'subtitles'] as const).map((valu
               const card = toCardSource(short)
               return (
                 <div {...filterAttributes(card, locale)}>
-                  <ShortCard {...toCard(card, locale, t, paths.short(locale, short.slug), now)} />
+                  <ShortCard {...toCard(card, locale, t, paths.short(locale, short.slug), clock)} />
                 </div>
               )
             })}

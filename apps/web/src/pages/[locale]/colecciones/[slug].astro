@@ -1,4 +1,5 @@
 ---
+import { badgeClock } from '../../../lib/services.ts'
 import { ShortCard, SponsorCredit } from '@shortix/ui'
 import NotFound from '../../../components/NotFound.astro'
 import Base from '../../../layouts/Base.astro'
@@ -15,7 +16,7 @@ const collection = Astro.params.slug ? await getCollection(locale, Astro.params.
 if (!collection) Astro.response.status = 404
 const shorts = collection ? shortsOf(collection) : []
 const sponsor = collection ? sponsorOf(collection) : undefined
-const now = Date.now()
+const clock = badgeClock()
 ---
 
 <Base
@@ -64,7 +65,7 @@ const now = Date.now()
         {shorts.map((short) => (
           <li>
             <ShortCard
-              {...toCard(toCardSource(short), locale, t, paths.short(locale, short.slug), now)}
+              {...toCard(toCardSource(short), locale, t, paths.short(locale, short.slug), clock)}
               stretch
             />
           </li>

@@ -3,6 +3,7 @@ import { SearchIsland } from '../../islands/SearchIsland.tsx'
 import Base from '../../layouts/Base.astro'
 import { localeFrom, translator } from '../../lib/i18n.ts'
 import { searchShorts, type SearchResult } from '../../lib/search.ts'
+import { badgeClock } from '../../lib/services.ts'
 
 const locale = localeFrom(Astro.params.locale)
 if (!locale) return Astro.rewrite('/404')
@@ -29,7 +30,7 @@ if (query) {
       locale={locale}
       initial={initial}
       initialError={initialError}
-      now={Date.now()}
+      clock={badgeClock()}
     />
   </section>
 </Base>

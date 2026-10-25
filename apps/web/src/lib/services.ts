@@ -1,6 +1,7 @@
 /** Server-side configuration read when the server starts (see astro.config.ts). */
 import {
   CONTACT_EMAIL,
+  LAUNCH_DATE,
   LEGAL_DRAFT,
   LISTMONK_API_TOKEN,
   LISTMONK_API_USER,
@@ -12,6 +13,7 @@ import {
   UMAMI_WEBSITE_ID,
 } from 'astro:env/server'
 import { createListmonk, type Listmonk } from '@shortix/waitlist'
+import type { BadgeClock } from './catalog.ts'
 import type { SiteMode } from './site-mode.ts'
 
 export const siteMode: SiteMode = SITE_MODE
@@ -39,4 +41,14 @@ export function listmonk(): Listmonk {
     token: LISTMONK_API_TOKEN,
   })
   return client
+}
+
+/** The public launch, from LAUNCH_DATE (ISO 8601). A typo fails at start rather than hiding «Nuevo». */
+const launchedAt = LAUNCH_DATE ? Date.parse(LAUNCH_DATE) : undefined
+if (launchedAt !== undefined && Number.isNaN(launchedAt))
+  throw new Error(`LAUNCH_DATE is not an ISO 8601 date: ${LAUNCH_DATE}`)
+
+/** The clock the «Nuevo» badge reads, for this request. */
+export function badgeClock(now = Date.now()): BadgeClock {
+  return { now, launchedAt }
 }

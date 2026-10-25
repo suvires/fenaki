@@ -28,10 +28,26 @@ export function durationBand(seconds: number): DurationBand {
   return 'long'
 }
 
-export function isNew(publishedAt: CardSource['publishedAt'], now = Date.now()): boolean {
+/**
+ * What «Nuevo» is measured against: the current time and the public launch (LAUNCH_DATE).
+ * Fixed by the server so server and client renders agree.
+ */
+export interface BadgeClock {
+  now: number
+  /** Undefined until a launch date is set: before launch, nothing is new. */
+  launchedAt: number | undefined
+}
+
+/**
+ * «Nuevo» marks what arrived after the launch, for 30 days. The catalog published before the
+ * launch is the starting catalog, never new; before the launch no short is.
+ */
+export function isNew(publishedAt: CardSource['publishedAt'], clock: BadgeClock): boolean {
+  const { now, launchedAt } = clock
+  if (launchedAt === undefined || now < launchedAt) return false
   if (publishedAt === null || publishedAt === undefined) return false
   const time = typeof publishedAt === 'number' ? publishedAt : Date.parse(publishedAt)
-  return now - time < NEW_FOR_DAYS * DAY
+  return time >= launchedAt && now - time < NEW_FOR_DAYS * DAY
 }
 
 /**
@@ -42,11 +58,11 @@ export function badgesFor(
   short: CardSource,
   locale: Locale,
   t: Translate,
-  now = Date.now(),
+  clock: BadgeClock,
 ): { label: string; tone?: BadgeTone }[] {
   const badges: { label: string; tone?: BadgeTone }[] = []
   if (short.brandedContent) badges.push({ label: t('badges.branded'), tone: 'branded' })
-  if (isNew(short.publishedAt, now)) badges.push({ label: t('badges.new'), tone: 'accent' })
+  if (isNew(short.publishedAt, clock)) badges.push({ label: t('badges.new'), tone: 'accent' })
   if (short.subtitles.includes(locale))
     badges.push({ label: t('badges.subtitles', { language: locale.toUpperCase() }), tone: 'info' })
   if (short.noDialogue) badges.push({ label: t('badges.noDialogue') })
@@ -66,7 +82,7 @@ export function toCard(
   t: Translate,
   /** The short's page. Without it the card is not a link (the landing page's sample). */
   href: string | undefined,
-  now = Date.now(),
+  clock: BadgeClock,
 ): ShortCardProps {
   return {
     title: short.title,
@@ -76,7 +92,7 @@ export function toCard(
     locale,
     tone: posterTone(short.posterTone),
     href,
-    badges: badgesFor(short, locale, t, now),
+    badges: badgesFor(short, locale, t, clock),
   }
 }
 

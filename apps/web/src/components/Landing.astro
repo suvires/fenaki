@@ -6,7 +6,7 @@ import { toCard } from '../lib/catalog.ts'
 import { listCollections, shortsOf, toCardSource } from '../lib/cms.ts'
 import { contactLinks } from '../lib/contact.ts'
 import { paths, translator } from '../lib/i18n.ts'
-import { contactEmail } from '../lib/services.ts'
+import { badgeClock, contactEmail } from '../lib/services.ts'
 import RichText from './RichText.astro'
 
 interface Props {
@@ -15,7 +15,7 @@ interface Props {
 
 const { locale } = Astro.props
 const t = translator(locale)
-const now = Date.now()
+const clock = badgeClock()
 
 // A sample of one launch collection. Its shorts are not public yet: the cards are not links.
 let sample:
@@ -101,7 +101,7 @@ const list = 'm-0 p-0 list-none grid gap-4 max-w-synopsis'
     </p>
     <Rail title={shown.title}>
       {shown.shorts.map((short) => (
-        <ShortCard {...toCard(toCardSource(short), locale, t, undefined, now)} />
+        <ShortCard {...toCard(toCardSource(short), locale, t, undefined, clock)} />
       ))}
     </Rail>
     {shown.description && <p class={lead}>{shown.description}</p>}

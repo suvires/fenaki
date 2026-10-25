@@ -12,6 +12,8 @@ import { embedUrl } from '../src/lib/embed.ts'
 
 const t = createTranslator('es')
 const NOW = Date.parse('2026-10-25T12:00:00Z')
+const LAUNCH = Date.parse('2026-10-01T00:00:00Z')
+const launched = { now: NOW, launchedAt: LAUNCH }
 
 const short: CardSource = {
   slug: 'alike',
@@ -36,10 +38,19 @@ describe('durationBand', () => {
 })
 
 describe('isNew', () => {
-  it('marks shorts published in the last 30 days', () => {
-    expect(isNew('2026-10-20T10:00:00Z', NOW)).toBe(true)
-    expect(isNew('2026-09-18T10:00:00Z', NOW)).toBe(false)
-    expect(isNew(null, NOW)).toBe(false)
+  it('marks shorts published after the launch, for 30 days', () => {
+    expect(isNew('2026-10-20T10:00:00Z', launched)).toBe(true)
+    expect(isNew('2026-10-20T10:00:00Z', { ...launched, now: NOW + 30 * 86_400_000 })).toBe(false)
+    expect(isNew(null, launched)).toBe(false)
+  })
+
+  it('never marks the catalog published before the launch', () => {
+    expect(isNew('2026-09-30T23:59:59Z', launched)).toBe(false)
+  })
+
+  it('marks nothing before the launch, or without a launch date', () => {
+    expect(isNew('2026-10-20T10:00:00Z', { now: NOW, launchedAt: undefined })).toBe(false)
+    expect(isNew('2026-10-20T10:00:00Z', { now: NOW, launchedAt: NOW + 1 })).toBe(false)
   })
 })
 
@@ -49,7 +60,7 @@ describe('badgesFor', () => {
       { ...short, publishedAt: '2026-10-20T10:00:00Z', subtitles: ['es', 'en'] },
       'es',
       t,
-      NOW,
+      launched,
     )
     expect(badges).toEqual([
       { label: 'Nuevo', tone: 'accent' },
@@ -68,7 +79,7 @@ describe('badgesFor', () => {
       },
       'es',
       t,
-      NOW,
+      launched,
     )
     expect(badges).toEqual([
       { label: 'Contenido de marca', tone: 'branded' },
@@ -78,7 +89,7 @@ describe('badgesFor', () => {
   })
 
   it('falls back to the animation badge when the short has dialogue', () => {
-    expect(badgesFor({ ...short, noDialogue: false }, 'es', t, NOW)).toEqual([
+    expect(badgesFor({ ...short, noDialogue: false }, 'es', t, launched)).toEqual([
       { label: 'Animación' },
     ])
   })
@@ -86,7 +97,7 @@ describe('badgesFor', () => {
 
 describe('toCard', () => {
   it('joins directors with Intl.ListFormat and links to the short', () => {
-    const card = toCard(short, 'es', t, '/es/cortos/alike', NOW)
+    const card = toCard(short, 'es', t, '/es/cortos/alike', launched)
     expect(card.director).toBe('Daniel Martínez Lara y Rafa Cano Méndez')
     expect(card.href).toBe('/es/cortos/alike')
     expect(card.seconds).toBe(480)
