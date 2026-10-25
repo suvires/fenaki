@@ -1,0 +1,16 @@
+# Private: plan, daily log, contacts and business data. Versioned in its own private repository.
+private/
+
+# OS and editors
+.DS_Store
+
+# Dependencies and builds
+node_modules/
+dist/
+.turbo/
+
+# Secrets
+.env
+.env.*
+!.env.example
+.kamal/secrets*
