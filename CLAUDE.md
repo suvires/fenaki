@@ -21,7 +21,7 @@ The repo is public on GitHub (free Actions minutes, build-in-public). Never comm
 
 ## Status
 
-The monorepo is scaffolded and runs locally (nothing is deployed yet). Setup and every command are in `README.md`. From the root:
+The monorepo is scaffolded and runs locally. Deployment is configured and rehearsed locally but nothing is deployed yet: runbook in `docs/deploy.md`. Setup and every command are in `README.md`. From the root:
 
 - `docker compose up -d`: PostgreSQL, Meilisearch, listmonk, Mailpit (local SMTP) and Umami for development.
 - `pnpm migrate`: applies the Payload migrations (the schema never changes by push, in development either).

@@ -117,7 +117,7 @@ The site imports the CMS types from `apps/cms/src/payload-types.ts`, so regenera
 
 ## Continuous integration
 
-Two GitHub Actions workflows run on every push and pull request, without secrets or paid services:
+Two GitHub Actions workflows run on every push and pull request, without secrets or paid services (a third, `deploy.yml`, deploys `main`; see Deployment):
 
 - `.github/workflows/checks.yml`: `pnpm lint`, `pnpm typecheck` and `pnpm test`.
 - `.github/workflows/visual.yml`: the visual regression tests.
@@ -130,12 +130,23 @@ When a visual change is intended, run `pnpm test:visual:update`, check the chang
 
 Baselines are only accepted when generated on arm64 (Apple Silicon), the same architecture as the CI runner. The comparison has no pixel tolerance, and text renders slightly differently on x86, so `pnpm test:visual:update` refuses to run on other architectures.
 
+## Deployment
+
+Production is one OVHcloud VPS behind Cloudflare, deployed with Kamal: one image (`Dockerfile`) runs the site, the CMS and the jobs worker as three roles, with PostgreSQL, Meilisearch, listmonk, Umami, `cloudflared` and the backups as accessories (`config/deploy.yml`). The runbook, the secrets, monitoring and the restore drill are in [`docs/deploy.md`](docs/deploy.md).
+
+- `bin/kamal <command>`: Kamal from its pinned image, the same on a laptop and in CI.
+- `infra/local/rehearse.sh up`: rehearses a full deploy on this machine against a stand-in server (Docker only).
+- `.github/workflows/deploy.yml` deploys every push to `main`, once the repository variable `DEPLOY_ENABLED` is `true`.
+- `infra/cloudflare`: DNS, the tunnel and the redirects with OpenTofu. `infra/backup`: the backup image.
+
 ## Configuration
 
 Each app reads its own `.env` (never committed; `.env.example` lists every variable):
 
-- `apps/cms/.env`: `DATABASE_URL`, `PAYLOAD_SECRET`, `PAYLOAD_PUBLIC_SERVER_URL`, `WEB_URL`, `MEILISEARCH_HOST`, `MEILISEARCH_ADMIN_KEY`, `SEED_ADMIN_EMAIL`, `SEED_ADMIN_PASSWORD`, `CATALOG_IMPORT_PATH`, and optionally `SEARCH_INDEX_PREFIX`.
-- `apps/web/.env`: `CMS_URL`, `MEILISEARCH_HOST`, `MEILISEARCH_SEARCH_KEY` (a search-only key in production), `SEARCH_INDEX_PREFIX`, `SITE_URL`, `SITE_MODE`, `LAUNCH_DATE`, `LEGAL_DRAFT`, `CONTACT_EMAIL`, the `LISTMONK_*` and `UMAMI_*` variables.
+- `apps/cms/.env`: `DATABASE_URL`, `PAYLOAD_SECRET`, `PAYLOAD_PUBLIC_SERVER_URL`, `WEB_URL`, `MEILISEARCH_HOST`, `MEILISEARCH_ADMIN_KEY`, `SEED_ADMIN_EMAIL`, `SEED_ADMIN_PASSWORD`, `CATALOG_IMPORT_PATH`, and optionally `SEARCH_INDEX_PREFIX`, the `SMTP_*` and `EMAIL_FROM_*` variables (Payload's emails; without `SMTP_HOST` they go to the console) and `SENTRY_DSN`.
+- `apps/web/.env`: `CMS_URL`, `MEILISEARCH_HOST`, `MEILISEARCH_SEARCH_KEY` (a search-only key in production), `SEARCH_INDEX_PREFIX`, `SITE_URL`, `SITE_MODE`, `LAUNCH_DATE`, `LEGAL_DRAFT`, `CONTACT_EMAIL`, the `LISTMONK_*` and `UMAMI_*` variables, and `SENTRY_DSN`.
+
+Sentry (error tracking, server side only) is off while `SENTRY_DSN` is empty, so development and tests never report anything.
 
 The site reads all of them when the server starts, not at build time, so one build serves either mode in any environment.
 
