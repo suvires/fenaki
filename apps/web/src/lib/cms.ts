@@ -137,7 +137,14 @@ export function toCardSource(short: PublishedShort): CardSource {
     type: short.type,
     noDialogue: short.noDialogue,
     brandedContent: short.brandedContent,
-    subtitles: [...new Set(sourcesOf(short).flatMap((source) => source.subtitles ?? []))],
+    // By primary language, as in the search index: «es-ES» counts as Spanish.
+    subtitles: [
+      ...new Set(
+        sourcesOf(short)
+          .flatMap((source) => source.subtitles ?? [])
+          .map((code) => code.split('-')[0]?.toLowerCase() ?? code),
+      ),
+    ],
     publishedAt: short.publishedAt,
   }
 }

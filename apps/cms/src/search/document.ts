@@ -9,6 +9,12 @@ export interface ShortSearchDocument {
   year: number | null
   durationSeconds: number
   country: string | null
+  /** BCP 47; `zxx` when the short has no dialogue. */
+  originalLanguage: string | null
+  /** Duration filter: under 5 min, 5 to 15, over 15 (same bands as the site's home filters). */
+  durationBand: DurationBand
+  /** Animation or live action, a filter of its own next to the type. */
+  form: 'animation' | 'live-action'
   type: string
   /** The type in the index's locale («Animación»), so viewers can search by it. */
   typeLabel: string
@@ -20,9 +26,29 @@ export interface ShortSearchDocument {
   publishedAt: number | null
 }
 
+export type DurationBand = 'short' | 'mid' | 'long'
+
+/** Under 5 min, 5 to 15 min, over 15 min. */
+export function durationBand(seconds: number): DurationBand {
+  if (seconds < 5 * 60) return 'short'
+  if (seconds <= 15 * 60) return 'mid'
+  return 'long'
+}
+
+/** Every filter of the browse page (/es/cortos) is a facet. */
 export const SHORTS_INDEX_SETTINGS = {
   searchableAttributes: ['title', 'directors', 'people', 'typeLabel', 'synopsis'],
-  filterableAttributes: ['type', 'durationSeconds', 'subtitles', 'noDialogue', 'year', 'country'],
+  filterableAttributes: [
+    'type',
+    'form',
+    'durationSeconds',
+    'durationBand',
+    'subtitles',
+    'noDialogue',
+    'originalLanguage',
+    'year',
+    'country',
+  ],
   sortableAttributes: ['publishedAt', 'year', 'durationSeconds'],
   displayedAttributes: ['*'],
 }
@@ -51,6 +77,7 @@ export interface IndexableShort {
   durationSeconds: number
   year?: number | null
   country?: string | null
+  originalLanguage?: string | null
   type: string
   posterTone?: string | null
   noDialogue?: boolean | null
@@ -69,8 +96,11 @@ export function toSearchDocument(short: IndexableShort, typeLabel: string): Shor
       .filter((c) => !role || c.role === role)
       .map((c) => nameOf(c.person))
       .filter((n): n is string => Boolean(n))
+  // By primary language: «es-ES» and «es» are both Spanish subtitles.
   const subtitles = new Set(
-    (short.sources?.docs ?? []).flatMap((s) => (typeof s === 'object' ? (s.subtitles ?? []) : [])),
+    (short.sources?.docs ?? [])
+      .flatMap((s) => (typeof s === 'object' ? (s.subtitles ?? []) : []))
+      .map((code) => code.split('-')[0]?.toLowerCase() ?? code),
   )
   return {
     id: short.id,
@@ -82,6 +112,9 @@ export function toSearchDocument(short: IndexableShort, typeLabel: string): Shor
     year: short.year ?? null,
     durationSeconds: short.durationSeconds,
     country: short.country ?? null,
+    originalLanguage: short.noDialogue ? 'zxx' : (short.originalLanguage ?? null),
+    durationBand: durationBand(short.durationSeconds),
+    form: short.type === 'animation' ? 'animation' : 'live-action',
     type: short.type,
     typeLabel,
     posterTone: short.posterTone ?? 'sala',
