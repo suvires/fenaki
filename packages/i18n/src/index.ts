@@ -21,5 +21,6 @@ export {
   formatLanguage,
   formatList,
   formatNumber,
+  formatWeekday,
   formatYear,
 } from './format.ts'

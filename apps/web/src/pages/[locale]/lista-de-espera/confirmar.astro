@@ -3,7 +3,8 @@ import { Button, Notice } from '@shortix/ui'
 import Base from '../../../layouts/Base.astro'
 import { localeFrom, paths, translator } from '../../../lib/i18n.ts'
 import { listmonk } from '../../../lib/services.ts'
-import { confirm, type ConfirmResult } from '@shortix/waitlist'
+import { formatWeekday } from '@shortix/i18n'
+import { confirm, NEWSLETTER_WEEKDAY, type ConfirmResult } from '@shortix/waitlist'
 
 const locale = localeFrom(Astro.params.locale)
 if (!locale) return Astro.rewrite('/404')
@@ -34,7 +35,13 @@ const title =
     {result.status === 'confirmed' && (
       <>
         <p class="m-0 text-body-l">{t('waitlist.confirmed.text')}</p>
-        {result.newsletter && <p class="m-0 text-body-l">{t('waitlist.confirmed.newsletter')}</p>}
+        {result.newsletter && (
+          <p class="m-0 text-body-l">
+            {t('waitlist.confirmed.newsletter', {
+              weekday: formatWeekday(NEWSLETTER_WEEKDAY, locale),
+            })}
+          </p>
+        )}
         <p class="m-0 text-body text-ink-muted">{t('waitlist.confirmed.building')}</p>
       </>
     )}
