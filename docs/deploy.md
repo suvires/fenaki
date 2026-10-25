@@ -1,6 +1,6 @@
 # Deployment
 
-Fenaki runs on one OVHcloud VPS-2 (4 vCores, 8 GB, x86_64, Ubuntu 24.04) behind Cloudflare, deployed with [Kamal](https://kamal-deploy.org). This document is the first-deploy runbook, the day-to-day operations, monitoring and the restore drill.
+Fenaki runs on one OVHcloud VPS-1 (2 vCores, 4 GB, 40 GB NVMe, x86_64, Ubuntu 24.04) behind Cloudflare, deployed with [Kamal](https://kamal-deploy.org). This document is the first-deploy runbook, the day-to-day operations, monitoring and the restore drill.
 
 - [How it is built](#how-it-is-built)
 - [Secrets](#secrets)
@@ -30,7 +30,7 @@ VPS ── cloudflared ─▶ kamal-proxy ─┬─ fenaki.tv         → web   
 - **SSH, hardened** (`infra/server/sshd.conf`, installed by the bootstrap): public keys only (no passwords, no keyboard-interactive, no root), only the user `ubuntu`, Ed25519 keys or RSA keys of at least 3072 bits with SHA-2 signatures (`rsa-sha2-512`, `rsa-sha2-256`; never `ssh-rsa`, which is SHA-1), modern key exchange, ciphers and MACs, no forwarding, 3 tries per connection. Exactly two keys may log in: the human's own (Ed25519 or RSA ≥ 3072), for interactive access, and the CI deploy key (Ed25519). fail2ban bans for an hour (longer if it repeats) any address that fails 5 times in 10 minutes. Kamal's SSH library has no curve25519, so `ecdh-sha2-nistp256` closes the key-exchange list; OpenSSH clients pick the stronger ones first. With an SSH agent holding several keys, set `IdentitiesOnly yes` and the key in `~/.ssh/config` for the server, or the three tries run out.
 - **Accessories** (not touched by `kamal deploy`): PostgreSQL 18 (Fenaki, listmonk and Umami databases), Meilisearch, listmonk, Umami, `cloudflared` and `backup`. Data lives in named Docker volumes: `fenaki-postgres`, `fenaki-meilisearch`, `fenaki-uploads` (signed license documents) and `fenaki-media` (logos and other images).
 - **The site reaches the CMS** at `http://fenaki-cms:3000` on the Docker network, never through Cloudflare.
-- **Memory** (limits in `config/deploy.yml`, about 7 GB with everything at its limit): PostgreSQL 2 GB, CMS 1.2 GB, Meilisearch 1 GB, worker 800 MB, site 600 MB, Umami 512 MB, backup 512 MB, listmonk 256 MB, cloudflared 128 MB, plus 2 GB of swap.
+- **Memory** (limits in `config/deploy.yml`, sized for 4 GB): PostgreSQL 1 GB, CMS 900 MB, worker 600 MB, Meilisearch 512 MB, site 400 MB, Umami 400 MB, backup 384 MB, listmonk 256 MB, cloudflared 128 MB, plus 2 GB of swap. The limits are ceilings: with today's catalog everything uses about 2 GB, and a deploy adds about 1 GB for a few seconds while the old and new site and CMS overlap. **Move to a VPS-2 (8 GB)** from the OVHcloud panel (same IP, no reinstall; there is no way back down) when memory stays above 80 % or swap is in regular use, and double these limits and the PostgreSQL settings.
 - **Content Security Policy.** Every page carries Astro's CSP header with the hashes of its scripts and styles (`apps/web/src/lib/csp.ts`): no `unsafe-inline`; frames only from the YouTube and Vimeo players; images from the site and `cms.fenaki.tv` (logos); connections to the site and `stats.fenaki.tv`. A new third-party resource needs a change there, or the browser blocks it (`e2e/csp.spec.ts` catches it).
 - **Cloudflare as code** with OpenTofu (`infra/cloudflare`): a plan shows every change before it is applied, the state is encrypted natively, and the official provider covers everything needed (zones, DNS, the tunnel and its routes, redirect rules, Access). A script against the API would have to re-implement idempotency and drift detection. OpenTofu over Terraform for its open-source licence and built-in state encryption.
 
@@ -91,7 +91,7 @@ Accounts, purchases and anything that needs your identity or a card. Paste each 
 
 1. **OVHcloud**
    1. The domain `fenaki.tv` (if not bought yet). The redirect domains (`fenaki.es`, `fenakitv.es`, `fenakitv.com`) come later, at the launch: see [Redirect domains](#redirect-domains).
-   2. VPS-2 with **Ubuntu 24.04**, in an EU data centre, with **your own SSH public key**: Ed25519, or RSA of at least 3072 bits (`ssh-keygen -t ed25519` if you have none; give Claude the `.pub` file, never the private key). Note its IP address.
+   2. VPS-1 with **Ubuntu 24.04**, in an EU data centre, with **your own SSH public key**: Ed25519, or RSA of at least 3072 bits (`ssh-keygen -t ed25519` if you have none; give Claude the `.pub` file, never the private key). Note its IP address.
    3. Zimbra Starter mailbox `hola@fenaki.tv`. Note the MX and DKIM values its control panel shows.
 2. **Cloudflare** (free plan): create the account. In Zero Trust, choose a team name and the Free plan (it may ask for a card even for the free plan). Give Claude the **account ID** and an **API token** with:
    - Account: Cloudflare Tunnel Edit, Access: Apps and Policies Edit, Workers R2 Storage Edit, Account Settings Read.
