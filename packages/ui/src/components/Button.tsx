@@ -17,7 +17,7 @@ const VARIANTS = {
   primary: 'bg-tungsteno text-on-tungsteno border-transparent hover:bg-tungsteno-hover',
   // Translucent and borderless: the ground, or a hero image, shows through, blurred.
   secondary:
-    'bg-ink/(--opacity-veil) backdrop-blur-veil text-ink border-transparent hover:bg-ink/(--opacity-veil-hover)',
+    'bg-veil/(--opacity-veil) backdrop-blur-veil text-ink border-transparent hover:bg-veil/(--opacity-veil-hover)',
   ghost: 'bg-transparent text-ink border-transparent underline underline-offset-4',
 } as const
 

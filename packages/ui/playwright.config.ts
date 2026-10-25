@@ -15,7 +15,8 @@ export default defineConfig({
     ? [['github'], ['html', { open: 'never' }]]
     : [['list'], ['html', { open: 'never' }]],
   use: { baseURL: `http://localhost:${port}`, trace: 'retain-on-failure' },
-  expect: { toHaveScreenshot: { animations: 'disabled', caret: 'hide' } },
+  // threshold 0: Playwright's default (0.2) lets subtle colour changes, like a token's opacity, pass unseen.
+  expect: { toHaveScreenshot: { animations: 'disabled', caret: 'hide', threshold: 0 } },
   projects: [
     {
       name: 'chromium',
