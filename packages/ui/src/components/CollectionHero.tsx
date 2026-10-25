@@ -42,7 +42,7 @@ export function CollectionHero({
     <section
       className={cx(
         'grid grid-cols-1 md:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] items-center gap-8',
-        'p-6 md:p-8 rounded-sm',
+        'p-6 md:p-8 rounded-hero',
         sponsored ? 'bg-telon text-on-telon' : 'bg-sala-1',
         className,
       )}

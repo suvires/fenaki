@@ -34,7 +34,7 @@ export function ShowcaseHero({
   return (
     <header
       className={cx(
-        'grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_auto] items-center gap-6 p-6 md:p-8 rounded-sm',
+        'grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_auto] items-center gap-6 p-6 md:p-8 rounded-hero',
         sponsored ? 'bg-telon text-on-telon' : 'bg-sala-1',
         className,
       )}

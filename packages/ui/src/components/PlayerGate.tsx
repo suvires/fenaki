@@ -37,7 +37,7 @@ export function PlayerGate({
   return (
     <div
       className={cx(
-        'relative aspect-still max-w-full box-border overflow-hidden rounded-sm bg-sala-2',
+        'relative aspect-still max-w-full box-border overflow-hidden rounded-hero bg-sala-2',
         className,
       )}
     >
