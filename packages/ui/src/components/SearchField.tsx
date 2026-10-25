@@ -32,7 +32,7 @@ export function SearchField({
         type="search"
         className={cx(
           'w-full h-(--size-control-search) box-border pr-4 pl-(--size-control-search)',
-          'text-ink bg-sala-1 border border-line-strong rounded-sm placeholder:text-ink-muted',
+          'text-ink bg-sala-1 border border-line-strong rounded-control placeholder:text-ink-muted',
           'focus-visible:focus-ring',
         )}
         {...inputProps}

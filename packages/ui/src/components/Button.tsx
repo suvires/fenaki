@@ -32,7 +32,7 @@ export function Button({
   ...rest
 }: ButtonProps) {
   const classes = cx(
-    'inline-flex items-center gap-2 rounded-sm border cursor-pointer no-underline',
+    'inline-flex items-center gap-2 rounded-control border cursor-pointer no-underline',
     'transition-[background-color,transform] duration-(--duration-press) ease-standard',
     'active:translate-y-(--size-press) focus-visible:focus-ring motion-reduce:transition-none',
     size === 'lg'

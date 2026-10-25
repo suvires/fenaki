@@ -26,7 +26,7 @@ export function TextField({ id, label, hint, error, className, ...inputProps }: 
         aria-describedby={describedBy}
         className={cx(
           'w-full h-(--size-control-lg) box-border px-4 min-w-0',
-          'text-ink bg-sala-1 border rounded-sm placeholder:text-ink-muted',
+          'text-ink bg-sala-1 border rounded-control placeholder:text-ink-muted',
           'focus-visible:focus-ring',
           error ? 'border-danger' : 'border-line-strong',
         )}
