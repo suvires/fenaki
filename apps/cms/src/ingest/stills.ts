@@ -1,7 +1,7 @@
 import sharp from 'sharp'
 import type { Fetch } from './oembed.ts'
 
-/** A thumbnail ready to store: JPEG bytes, always 16:9 without letterbox bars. */
+/** A thumbnail ready to store: JPEG bytes, without black bars on any side. */
 export interface Thumbnail {
   data: Buffer
   mimetype: 'image/jpeg'
@@ -10,10 +10,12 @@ export interface Thumbnail {
 }
 
 const YOUTUBE_NAMES = ['maxresdefault', 'sddefault', 'hqdefault'] as const
-/** `maxresdefault` is already 16:9; the others are 4:3 with black bars. */
-const NEEDS_TRIM = new Set<string>(['sddefault', 'hqdefault'])
 const MIN_BYTES = 2_000
-const WIDE = 16 / 9
+/** A row or column is a bar when it is this dark on average and has no brighter pixel than MAX. */
+const BAR_MEAN = 20
+const BAR_MAX = 48
+/** Never keep less than this share of a side: an almost black frame is left as it is. */
+const MIN_KEPT = 0.5
 
 /** Where each provider keeps its thumbnails, best first. */
 export function thumbnailCandidates(
@@ -31,22 +33,43 @@ export function thumbnailCandidates(
   return []
 }
 
-/** Removes the letterbox bars; falls back to a centered 16:9 crop when the trim is not plausible. */
-async function toWide(input: Buffer, trim: boolean): Promise<Buffer> {
-  const image = sharp(input).rotate()
-  const meta = await image.metadata()
-  const { width = 0, height = 0 } = meta
+/** The picture inside any black bars (letterbox, pillarbox or both), as a box in pixels. */
+export async function pictureBox(input: Buffer) {
+  const { data, info } = await sharp(input)
+    .rotate()
+    .greyscale()
+    .raw()
+    .toBuffer({ resolveWithObject: true })
+  const { width, height } = info
   if (!width || !height) throw new Error('unreadable image')
-  if (!trim) return image.jpeg({ quality: 88 }).toBuffer()
-  const trimmed = await sharp(input).trim({ threshold: 12 }).toBuffer({ resolveWithObject: true })
-  const ratio = trimmed.info.width / trimmed.info.height
-  if (Math.abs(ratio - WIDE) < 0.12) return sharp(trimmed.data).jpeg({ quality: 88 }).toBuffer()
-  // Dark frames can fool the trim: crop to 16:9 from the center instead.
-  const cropHeight = Math.min(height, Math.round(width / WIDE))
-  return sharp(input)
-    .extract({ left: 0, top: Math.round((height - cropHeight) / 2), width, height: cropHeight })
-    .jpeg({ quality: 88 })
-    .toBuffer()
+  const at = (x: number, y: number) => data[y * width + x] ?? 0
+  const isBar = (length: number, pixel: (i: number) => number) => {
+    let sum = 0
+    for (let i = 0; i < length; i++) {
+      const value = pixel(i)
+      if (value > BAR_MAX) return false
+      sum += value
+    }
+    return sum / length < BAR_MEAN
+  }
+  let top = 0
+  let bottom = height
+  let left = 0
+  let right = width
+  while (top < bottom && isBar(width, (x) => at(x, top))) top++
+  while (bottom > top && isBar(width, (x) => at(x, bottom - 1))) bottom--
+  while (left < right && isBar(bottom - top, (y) => at(left, top + y))) left++
+  while (right > left && isBar(bottom - top, (y) => at(right - 1, top + y))) right--
+  const box = { left, top, width: right - left, height: bottom - top }
+  if (box.width < width * MIN_KEPT || box.height < height * MIN_KEPT)
+    return { left: 0, top: 0, width, height }
+  return box
+}
+
+/** Removes black bars on any side and keeps the picture's own aspect ratio. */
+async function withoutBars(input: Buffer): Promise<Buffer> {
+  const box = await pictureBox(input)
+  return sharp(input).rotate().extract(box).jpeg({ quality: 88 }).toBuffer()
 }
 
 /**
@@ -64,8 +87,7 @@ export async function downloadThumbnail(
       if (response.status !== 200) continue
       const bytes = Buffer.from(await response.arrayBuffer())
       if (bytes.length < MIN_BYTES) continue
-      const name = url.split('/').pop()?.replace(/\..*$/, '') ?? ''
-      const data = await toWide(bytes, NEEDS_TRIM.has(name))
+      const data = await withoutBars(bytes)
       return { data, mimetype: 'image/jpeg', from: url }
     } catch {
       // Try the next candidate.
