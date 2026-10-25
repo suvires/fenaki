@@ -23,8 +23,8 @@ const meta = {
         title: 'Legal',
         links: [
           { label: 'Aviso legal', href: '#legal-notice' },
-          { label: 'Privacidad', href: '#privacy' },
-          { label: 'Cookies', href: '#cookies' },
+          { label: 'Política de privacidad', href: '#privacy' },
+          { label: 'Política de cookies', href: '#cookies' },
         ],
       },
     ],
