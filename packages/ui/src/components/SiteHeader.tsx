@@ -28,7 +28,7 @@ export interface SiteHeaderProps {
     /** Accessible name of the magnifier button. */
     toggleLabel: string
   }
-  /** «Iniciar sesión» (a link) and «Crear cuenta» (a secondary button). */
+  /** «Iniciar sesión» (a link) and «Crear cuenta» (a primary button). */
   account: { signIn: Link; signUp: Link }
   /** Accessible name of the menu button on small screens. */
   menuLabel: string
@@ -135,9 +135,7 @@ export function SiteHeader({
       <a href={account.signIn.href} className={linkClass}>
         {account.signIn.label}
       </a>
-      <Button href={account.signUp.href} variant="secondary">
-        {account.signUp.label}
-      </Button>
+      <Button href={account.signUp.href}>{account.signUp.label}</Button>
     </div>
   )
 
