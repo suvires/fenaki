@@ -21,7 +21,13 @@ The repo is public on GitHub (free Actions minutes, build-in-public). Never comm
 
 ## Status
 
-The monorepo is scaffolded and runs locally. Deployment is configured and rehearsed locally but nothing is deployed yet: runbook in `docs/deploy.md`. Setup and every command are in `README.md`. From the root:
+Production runs at fenaki.tv (runbook in `docs/deploy.md`). Claude operates it; never ask the user for these:
+
+- **GitHub:** the active `gh` account on this machine is the user's work account, so prefix every `gh` call on this repo with `GH_TOKEN=$(gh auth token -u suvires)`. Every push to `main` deploys. Other Kamal commands run as a manual dispatch of the Deploy workflow: `gh workflow run deploy.yml -f command=setup-services` (also `setup`, `rollback` with `-f version=<commit>`).
+- **Server:** `ssh -i ~/.ssh/fenaki_deploy ubuntu@$(security find-generic-password -a fenaki -s prod-fenaki-host -w)`. The IP stays out of the repo (it is the origin behind Cloudflare).
+- **Secrets:** macOS Keychain, account `fenaki` (`security find-generic-password -a fenaki -s <name> -w`; production values are `prod-*`).
+
+Setup and every local command are in `README.md`. From the root:
 
 - `docker compose up -d`: PostgreSQL, Meilisearch, listmonk, Mailpit (local SMTP) and Umami for development.
 - `pnpm migrate`: applies the Payload migrations (the schema never changes by push, in development either).
