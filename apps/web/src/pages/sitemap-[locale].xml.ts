@@ -24,6 +24,7 @@ export const GET: APIRoute = async ({ params }) => {
     const [docs, showcases] = await Promise.all([listSitemapDocs(locale), listShowcases(locale)])
     entries.push(
       page(paths.browse(locale)),
+      page(paths.latest(locale)),
       ...docs.shorts.map((s) => page(paths.short(locale, s.slug), s.updatedAt)),
       ...docs.collections.map((c) => page(paths.collection(locale, c.slug), c.updatedAt)),
       ...[...docs.people].map(([slug, updatedAt]) => page(paths.person(locale, slug), updatedAt)),

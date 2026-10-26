@@ -19,8 +19,8 @@ export const paths = {
   /** The browse page filtered by type (a «genre» in the header). */
   genre: (locale: Locale, type: 'fiction' | 'documentary' | 'animation' | 'experimental') =>
     `/${locale}/cortos?type=${type}`,
-  /** The latest shorts: one rail on the home page, not a full list. */
-  latest: (locale: Locale) => `/${locale}/#novedades`,
+  /** The latest shorts, one rail per genre. */
+  latest: (locale: Locale) => `/${locale}/novedades`,
   /** The viewer's saved shorts (kept in their browser, so the page is never indexed). */
   myList: (locale: Locale) => `/${locale}/mi-lista`,
   showcase: (locale: Locale, slug: string) => `/${locale}/escaparates/${slug}`,

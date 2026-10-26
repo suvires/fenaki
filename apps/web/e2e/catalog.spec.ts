@@ -219,3 +219,22 @@ test('the home page has no «Lo más visto» rail until the CMS has a real ranki
   await expect(page.getByRole('region', { name: 'Novedades' })).toBeVisible()
   await expect(page.getByRole('region', { name: 'Lo más visto' })).toHaveCount(0)
 })
+
+test('«Novedades» in the header and on the home rail lead to a page with one rail per genre', async ({
+  page,
+}) => {
+  await page.goto('/es/')
+  await expect(
+    page.getByRole('region', { name: 'Novedades' }).getByRole('link', { name: /Novedades/ }),
+  ).toHaveAttribute('href', '/es/novedades')
+  await page.getByRole('navigation').first().getByRole('link', { name: 'Novedades' }).click()
+  await expect(page).toHaveURL(/\/es\/novedades$/)
+  await expect(page.getByRole('heading', { level: 1, name: 'Novedades' })).toBeVisible()
+  // The sample seed has fiction and animation: a rail for each, linking to its genre.
+  const animation = page.getByRole('region', { name: 'Animación' })
+  await expect(animation).toBeVisible()
+  await expect(animation.getByRole('link', { name: /Animación/ }).first()).toHaveAttribute(
+    'href',
+    '/es/cortos?type=animation',
+  )
+})

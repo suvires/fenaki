@@ -1,0 +1,47 @@
+---
+import { PageHeader, Rail, ShortCard } from '@fenaki/ui'
+import Base from '../../layouts/Base.astro'
+import { toCard } from '../../lib/catalog.ts'
+import { listShorts, toCardSource } from '../../lib/cms.ts'
+import { localeFrom, paths, translator } from '../../lib/i18n.ts'
+import { badgeClock } from '../../lib/services.ts'
+
+const locale = localeFrom(Astro.params.locale)
+if (!locale) return Astro.rewrite('/404')
+
+const t = translator(locale)
+const clock = badgeClock()
+const GENRES = ['fiction', 'documentary', 'animation', 'experimental'] as const
+/** How many of the latest shorts each genre's rail shows. */
+const PER_GENRE = 20
+
+// Newest first (listShorts sorts by publication date): one rail per genre, empty genres left out.
+const shorts = await listShorts(locale, 1000)
+const rails = GENRES.map((type) => ({
+  type,
+  shorts: shorts.filter((short) => short.type === type).slice(0, PER_GENRE),
+})).filter((rail) => rail.shorts.length > 0)
+---
+
+<Base locale={locale} title={t('home.rails.latest')}>
+  <div class="grid gap-12">
+    <PageHeader title={t('home.rails.latest')} />
+    {rails.length === 0 ? (
+      <p class="m-0 text-body-l text-ink-muted">{t('home.empty')}</p>
+    ) : (
+      rails.map((rail) => (
+        <Rail
+          title={t(`short.types.${rail.type}`)}
+          actionLabel={t('rail.seeAll')}
+          actionHref={paths.genre(locale, rail.type)}
+        >
+          {rail.shorts.map((short) => (
+            <ShortCard
+              {...toCard(toCardSource(short), locale, t, paths.short(locale, short.slug), clock)}
+            />
+          ))}
+        </Rail>
+      ))
+    )}
+  </div>
+</Base>
