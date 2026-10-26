@@ -15,7 +15,7 @@ export function Prose({ children, className }: ProseProps) {
   return (
     <div
       className={cx(
-        'grid gap-4 max-w-synopsis min-w-0 text-body text-ink',
+        'grid gap-4 max-w-prose min-w-0 text-body text-ink',
         '[&_h1]:m-0 [&_h1]:font-display [&_h1]:text-display-l [&_h1]:uppercase [&_h1]:text-balance',
         '[&_h2]:m-0 [&_h2]:mt-6 [&_h2]:font-display [&_h2]:text-title [&_h2]:uppercase',
         '[&_h3]:m-0 [&_h3]:mt-2 [&_h3]:text-card-title',

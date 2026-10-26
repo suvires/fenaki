@@ -20,7 +20,7 @@ const title = headings.find((heading) => heading.depth === 1)?.text ?? page
 <Base locale={locale} title={title}>
   <article class="grid gap-8">
     {legalDraft && (
-      <Notice className="max-w-synopsis" label={t('legal.draft.label')}>
+      <Notice className="max-w-prose" label={t('legal.draft.label')}>
         {t('legal.draft.text')}
       </Notice>
     )}
