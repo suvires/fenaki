@@ -17,9 +17,8 @@ const privacyPolicy = {
 }
 ---
 
-{/* On desktop the hero fills the first screen below the header (its 24px top padding and
-    24px logo, then main's 16px) with its content centred, and sits further in from the edges. */}
-<section class="grid gap-6 py-8 md:py-0 md:px-12 md:min-h-[calc(100dvh-var(--spacing-12)-var(--spacing-4))] md:content-center">
+{/* Centred in the space main leaves between the header and the footer (Base.astro), and further in on desktop. */}
+<section class="grid gap-6 py-8 md:px-12">
   <h1 class="m-0 font-display text-display-l md:text-display-xl uppercase text-balance">
     {t('landing.hero.title')}
   </h1>

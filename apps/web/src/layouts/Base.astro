@@ -235,7 +235,11 @@ const footerLinks = landing
     )}
     <main
       id="main"
-      class="flex-1 w-full mx-auto max-w-page grid content-start gap-12 px-4 md:px-8 pt-4 pb-8"
+      class:list={[
+        'flex-1 w-full mx-auto max-w-page grid gap-12 px-4 md:px-8 pt-4 pb-8',
+        // The landing page's only content, the hero, sits centred between the header and the footer.
+        landing ? 'content-center' : 'content-start',
+      ]}
     >
       <slot />
     </main>
