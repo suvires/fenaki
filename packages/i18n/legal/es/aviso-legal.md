@@ -13,7 +13,7 @@ En cumplimiento del artículo 10 de la Ley 34/2002, de 11 de julio, de servicios
 | Domicilio | Calle Decano López Arjona, 18, 29140 Málaga (España) |
 | Email     | hola@fenaki.tv                                       |
 
-## 2. Qué es FENAKI
+## 2. Objeto
 
 FENAKI es un catálogo curado de cortometrajes que se pueden ver gratis y de forma legal. FENAKI:
 
@@ -24,7 +24,7 @@ El acceso a FENAKI es gratuito y no requiere registro. Si creas una cuenta, se a
 
 ## 3. Condiciones de uso
 
-Al navegar por FENAKI aceptas usarlo de forma lícita y no:
+Al usar FENAKI te comprometes a hacerlo de forma lícita y, en particular, a no:
 
 - Copiar, descargar o redistribuir los cortos fuera de las condiciones que fije su titular o la plataforma de origen.
 - Extraer de forma masiva o automatizada el catálogo, las fichas o las colecciones editoriales (art. 133 y ss. del Texto Refundido de la Ley de Propiedad Intelectual, derecho _sui generis_ del fabricante de la base de datos).
@@ -46,13 +46,13 @@ Los cortometrajes, sus títulos, carteles, fotogramas y demás materiales perten
 - **Cortos con cesión directa.** Se usan en los términos del contrato firmado con su titular.
 - **Miniaturas y fotogramas.** Las fichas, los carruseles y la portada muestran la miniatura que el propio titular eligió para su vídeo en YouTube o Vimeo, como acompañamiento del reproductor oficial. FENAKI la sirve desde su propio servidor, para que tu navegador no contacte con esas plataformas antes de reproducir, y la renueva o la borra cada noche: si el vídeo deja de estar disponible, su miniatura se elimina. Si un autor nos cede un fotograma, se usa en lugar de la miniatura.
 
-### 4.3 Si crees que un contenido infringe tus derechos
+### 4.3 Notificación de contenidos ilícitos
 
-Consulta el **[Procedimiento de retirada de contenidos](/es/retirada-de-contenidos)**. Respondemos lo antes posible.
+Si consideras que un contenido de FENAKI infringe tus derechos o es ilícito, puedes notificarlo mediante el [procedimiento de retirada de contenidos](/es/retirada-de-contenidos).
 
-## 5. Enlaces a otros sitios
+## 5. Enlaces a sitios de terceros
 
-FENAKI enlaza al origen de cada corto y a webs de autores, festivales y patrocinadores. No controlamos esos sitios ni respondemos de su contenido. Conforme al art. 17 LSSI, si tenemos conocimiento efectivo de que un enlace lleva a contenido ilícito, lo retiramos con diligencia.
+FENAKI enlaza al origen de cada corto y a webs de autores, festivales y patrocinadores. FENAKI no controla esos sitios ni responde de su contenido. Conforme al art. 17 LSSI, si tiene conocimiento efectivo de que un enlace lleva a contenido ilícito, lo retirará con diligencia.
 
 ## 6. Colecciones patrocinadas
 

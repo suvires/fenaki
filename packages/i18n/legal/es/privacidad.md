@@ -2,7 +2,7 @@
 
 Última actualización: 26 de octubre de 2026
 
-En FENAKI tratamos los mínimos datos posibles. Puedes ver el catálogo sin registrarte, la analítica no usa cookies y los reproductores de YouTube y Vimeo solo se cargan si das tu consentimiento. Esta política explica qué datos tratamos, para qué, durante cuánto tiempo y qué derechos tienes, según el Reglamento (UE) 2016/679 (RGPD) y la Ley Orgánica 3/2018 de Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD).
+FENAKI trata los mínimos datos posibles. Puedes ver el catálogo sin registrarte, la analítica no usa cookies y los reproductores de YouTube y Vimeo solo se cargan si das tu consentimiento. Esta política explica qué datos tratamos, para qué, durante cuánto tiempo y qué derechos tienes, según el Reglamento (UE) 2016/679 (RGPD) y la Ley Orgánica 3/2018 de Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD).
 
 ## 1. Responsable del tratamiento
 
@@ -13,7 +13,7 @@ En FENAKI tratamos los mínimos datos posibles. Puedes ver el catálogo sin regi
 | Domicilio   | Calle Decano López Arjona, 18, 29140 Málaga (España)       |
 | Email       | hola@fenaki.tv                                             |
 
-## 2. Qué datos tratamos y para qué
+## 2. Datos tratados y finalidades
 
 ### 2.1 Lista de espera
 
@@ -25,7 +25,7 @@ En FENAKI tratamos los mínimos datos posibles. Puedes ver el catálogo sin regi
 | Conservación  | Hasta que te avisemos del lanzamiento o te des de baja. Después guardamos bloqueada solo la prueba de tu consentimiento y de la baja, durante el plazo de prescripción de las posibles responsabilidades |
 | Herramientas  | listmonk, instalado en nuestro propio servidor, y Amazon SES para el envío                                                                                                                               |
 
-### 2.2 Contacto
+### 2.2 Consultas
 
 |               |                                                                                                                                                                                                                                          |
 | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -45,7 +45,7 @@ En FENAKI tratamos los mínimos datos posibles. Puedes ver el catálogo sin regi
 | Conservación   | 3 años desde el cierre del aviso                                                                                                                                                                                             |
 | Comunicaciones | Podemos comunicar los datos imprescindibles a la persona afectada por el aviso (por ejemplo, el titular del canal del que procede el corto) cuando sea necesario para resolverlo, y a autoridades o juzgados si lo requieren |
 
-### 2.4 Organizaciones con las que trabajamos (patrocinadores, festivales, escuelas)
+### 2.4 Patrocinadores, festivales y escuelas
 
 |               |                                                                                                                                                                                                                                      |
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -74,7 +74,7 @@ Usamos **Umami**, instalado en nuestro propio servidor, para contar visitas, pá
 - Base jurídica: interés legítimo en conocer el uso de FENAKI y mejorarlo (art. 6.1.f RGPD).
 - Conservación: como no permiten identificarte, conservamos las cifras mientras nos sean útiles.
 
-### 2.7 Seguridad, funcionamiento y errores
+### 2.7 Seguridad y registro de errores
 
 |               |                                                                                                                                                                                                          |
 | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -91,7 +91,7 @@ Los cortos se ven en el reproductor oficial de YouTube (Google) o de Vimeo. No s
 - **Responsabilidad:** FENAKI decide insertar el reproductor y por eso es corresponsable con Google o Vimeo de la recogida y transmisión de esos datos (sentencia _Fashion ID_, C-40/17). Lo que esas empresas hagan después con ellos es responsabilidad suya: consulta la [política de privacidad de Google](https://policies.google.com/privacy?hl=es) y la [de Vimeo](https://vimeo.com/privacy).
 - **Si tienes cuenta e iniciaste sesión,** FENAKI lee del reproductor el punto del corto por el que vas para ofrecerte «Seguir viendo» (ver 2.5). Sin sesión no se registra nada.
 
-## 3. Datos de menores
+## 3. Menores de edad
 
 FENAKI no está dirigido a menores de 14 años y no recogemos a sabiendas sus datos. Si tienes menos de 14 años, no te suscribas, no crees una cuenta ni nos envíes datos sin el consentimiento de tu madre, padre o tutor legal (art. 7 LOPDGDD).
 
@@ -99,7 +99,7 @@ FENAKI no está dirigido a menores de 14 años y no recogemos a sabiendas sus da
 
 No tomamos decisiones basadas únicamente en tratamientos automatizados que produzcan efectos jurídicos sobre ti o te afecten de forma significativa, ni elaboramos perfiles con ese fin.
 
-## 5. Quién trata datos por cuenta de FENAKI y transferencias internacionales
+## 5. Encargados del tratamiento y transferencias internacionales
 
 No vendemos ni cedemos tus datos. Estos proveedores los tratan por cuenta de FENAKI, con contrato de encargo (art. 28 RGPD), solo para prestar su servicio:
 
@@ -112,18 +112,18 @@ No vendemos ni cedemos tus datos. Estos proveedores los tratan por cuenta de FEN
 
 Google (YouTube) y Vimeo no son encargados de FENAKI: cuando aceptas sus reproductores, tratan tus datos como responsables (apartado 2.8).
 
-## 6. Tus derechos
+## 6. Derechos
 
 Puedes ejercer en cualquier momento tus derechos de acceso, rectificación, supresión, oposición, limitación del tratamiento y portabilidad, y retirar tu consentimiento sin que afecte a lo tratado antes.
 
-**Cómo ejercerlos.** Escribe a hola@fenaki.tv indicando qué derecho quieres ejercer. Si tenemos dudas razonables sobre tu identidad, podemos pedirte información adicional para confirmarla. Te responderemos en el plazo de un mes, ampliable dos meses más en casos complejos (art. 12 RGPD). Para darte de baja de la lista de espera, basta con el enlace de cada email. Si tienes cuenta, puedes descargar tus datos y borrarla tú mismo desde «Mi cuenta».
+**Ejercicio de los derechos.** Puedes ejercerlos por email a hola@fenaki.tv, indicando qué derecho quieres ejercer. Si tenemos dudas razonables sobre tu identidad, podemos pedirte información adicional para confirmarla. Te responderemos en el plazo de un mes, ampliable dos meses más en casos complejos (art. 12 RGPD). Para darte de baja de la lista de espera, puedes usar el enlace incluido en cada email. Si tienes cuenta, puedes descargar tus datos y borrarla directamente desde «Mi cuenta».
 
-**Reclamación ante la autoridad.** Si crees que no hemos tratado bien tus datos, puedes reclamar ante la Agencia Española de Protección de Datos (AEPD) en [sedeagpd.gob.es](https://sedeagpd.gob.es). Te agradeceremos que antes nos escribas, para intentar resolverlo.
+**Reclamación ante la autoridad.** Si crees que no hemos tratado bien tus datos, puedes reclamar ante la Agencia Española de Protección de Datos (AEPD) en [sedeagpd.gob.es](https://sedeagpd.gob.es). Antes de hacerlo, puedes escribirnos para intentar resolverlo.
 
 ## 7. Seguridad
 
 Aplicamos medidas técnicas y organizativas adecuadas: conexión cifrada (HTTPS), servidor sin puertos abiertos a internet, copias de seguridad cifradas fuera del servidor, acceso restringido a los datos y contraseñas guardadas con hash.
 
-## 8. Cambios en esta política
+## 8. Modificaciones de esta política
 
 Antes de tratar datos para algo nuevo (por ejemplo, una newsletter, pagos o el envío de cortos por autores), actualizaremos esta política. Publicaremos cada versión con su fecha y, si el cambio es importante, te avisaremos por email si estás en la lista de espera o tienes cuenta.

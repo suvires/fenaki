@@ -9,5 +9,5 @@ set -e
 SITE_URL=https://fenaki.test pnpm --filter @fenaki/web build >/dev/null
 CATALOG_PORT=${CATALOG_PORT:-4400}
 LANDING_PORT=${LANDING_PORT:-4401}
-SITE_MODE=landing LEGAL_DRAFT=true SITE_URL=http://localhost:$LANDING_PORT CONTACT_EMAIL=hola@fenaki.tv PORT=$LANDING_PORT node --env-file-if-exists=.env dist/server/entry.mjs &
-SITE_MODE=catalog LEGAL_DRAFT=true SITE_URL=http://localhost:$CATALOG_PORT CONTACT_EMAIL= PORT=$CATALOG_PORT exec node --env-file-if-exists=.env dist/server/entry.mjs
+SITE_MODE=landing LEGAL_DRAFT=false SITE_URL=http://localhost:$LANDING_PORT CONTACT_EMAIL=hola@fenaki.tv PORT=$LANDING_PORT node --env-file-if-exists=.env dist/server/entry.mjs &
+SITE_MODE=catalog LEGAL_DRAFT=false SITE_URL=http://localhost:$CATALOG_PORT CONTACT_EMAIL= PORT=$CATALOG_PORT exec node --env-file-if-exists=.env dist/server/entry.mjs

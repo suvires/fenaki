@@ -55,7 +55,7 @@ The sponsorship page (`/es/patrocina`) is public in both modes.
 
 `CONTACT_EMAIL` is the public contact mailbox. While it is empty, the links that would write to it («Proponer un corto», the sponsorship links in the footer) are hidden, so the site never points to an address that does not receive mail.
 
-Both modes serve the legal pages (`/es/aviso-legal`, `/es/privacidad`, `/es/cookies`, `/es/retirada-de-contenidos`), linked from the footer. While `LEGAL_DRAFT=true` they show a «Borrador» notice: the texts are pending a lawyer's review.
+Both modes serve the legal pages (`/es/aviso-legal`, `/es/privacidad`, `/es/cookies`, `/es/retirada-de-contenidos`), linked from the footer. `LEGAL_DRAFT=true` adds a «Borrador» notice to them (off in production since 26 oct 2026).
 
 To try the waitlist: with `SITE_MODE=landing`, sign up at <http://localhost:4321/es/#waitlist>, open the confirmation email in Mailpit, follow its link, and check in listmonk that the subscriber's lists are «confirmed».
 

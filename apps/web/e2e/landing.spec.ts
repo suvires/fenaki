@@ -136,7 +136,9 @@ test('signing up sends a confirmation email that confirms the subscription in li
   }
 })
 
-test('the legal pages are linked from the footer and marked as drafts', async ({ page }) => {
+test('the legal pages are linked from the footer, published without the draft notice', async ({
+  page,
+}) => {
   await page.goto('/es/')
   await page
     .getByRole('navigation', { name: 'Pie de página' })
@@ -144,9 +146,9 @@ test('the legal pages are linked from the footer and marked as drafts', async ({
     .click()
   await expect(page).toHaveURL(/\/es\/aviso-legal$/)
   await expect(page.getByRole('heading', { level: 1, name: 'Aviso legal' })).toBeVisible()
-  await expect(page.getByText('Borrador', { exact: true })).toBeVisible()
+  await expect(page.getByText('Borrador', { exact: true })).toHaveCount(0)
   await expect(page.getByText('hola@fenaki.tv').first()).toBeVisible()
-  await expect(page.getByText('REVISAR')).toHaveCount(0)
+  await expect(page.getByText(/REVISAR|COMPLETAR/)).toHaveCount(0)
 })
 
 test('the credits page carries the TMDB attribution', async ({ page }) => {

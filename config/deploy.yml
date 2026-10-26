@@ -90,7 +90,8 @@ servers:
         SITE_URL: https://fenaki.tv
         # `landing` until the public launch, then `catalog` (one deploy; see docs/deploy.md).
         SITE_MODE: landing
-        LEGAL_DRAFT: true
+        # The legal texts are published; set true again to show the «Borrador» notice.
+        LEGAL_DRAFT: false
         # ISO 8601, set at the launch (e.g. 2026-11-20T09:00:00+01:00).
         LAUNCH_DATE: ""
         # Empty hides the links that write to it, until the mailbox exists.

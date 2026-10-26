@@ -2,32 +2,32 @@
 
 Última actualización: 26 de octubre de 2026
 
-## 1. Qué son las cookies y tecnologías similares
+## 1. Cookies y tecnologías similares
 
 Una cookie es un pequeño archivo que una web guarda en tu navegador para recordar información. Esta política cubre también tecnologías parecidas, como el almacenamiento local del navegador (`localStorage`), porque la ley las trata igual (art. 22.2 de la LSSI).
 
-## 2. Resumen
+## 2. Uso de cookies en FENAKI
 
 - **Sin cookies de analítica ni de publicidad.** Medimos las visitas con Umami, que no usa cookies.
 - **Solo usamos lo técnicamente necesario** para que FENAKI funcione, sea seguro y recuerde tus elecciones. No necesita consentimiento (art. 22.2 LSSI).
 - **Los reproductores de YouTube y Vimeo solo se cargan si aceptas.** Al pulsar «reproducir», una ventana te explica qué recibe el proveedor y qué guarda su reproductor, y solo se carga si pulsas «Aceptar y reproducir».
 
-## 3. Tu consentimiento
+## 3. Consentimiento
 
-No mostramos un banner de cookies porque FENAKI no usa cookies que lo necesiten. El único contenido que requiere tu consentimiento son los reproductores de YouTube y Vimeo (apartado 4.3), y lo pedimos en el momento de reproducir, con dos botones del mismo nivel: «Cancelar» y «Aceptar y reproducir». Si cancelas, puedes seguir navegando por el catálogo.
+FENAKI no muestra un banner de cookies porque no usa cookies que lo requieran. Solo los reproductores de YouTube y Vimeo (apartado 4.3) requieren tu consentimiento, que se solicita en el momento de reproducir, con dos botones del mismo nivel: «Cancelar» y «Aceptar y reproducir». Si cancelas, puedes seguir navegando por el catálogo con normalidad.
 
-En esa ventana puedes marcar «Recordar mi elección» para que los cortos de ese proveedor se carguen sin preguntar. Si no la marcas, te preguntamos cada vez. Puedes retirar tu elección en cualquier momento, con un clic, desde «Preferencias de reproducción», en el pie de página.
+En esa ventana puedes marcar «Recordar mi elección» para que los cortos de ese proveedor se carguen sin volver a solicitar tu consentimiento. Si no la marcas, se solicitará cada vez. Puedes retirar tu elección en cualquier momento, con un clic, desde «Preferencias de reproducción», en el pie de página.
 
-## 4. Cookies y tecnologías que usamos
+## 4. Cookies y tecnologías utilizadas
 
-### 4.1 Técnicas (necesarias, sin consentimiento)
+### 4.1 Técnicas (no requieren consentimiento)
 
-| Nombre                     | Proveedor | Finalidad                                                                   | Duración                                                                                | Tipo                                                                                                                                                                                     |
-| -------------------------- | --------- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `fenaki:player-consent:v1` | FENAKI    | Recordar qué reproductores (YouTube, Vimeo) has pedido cargar sin preguntar | Hasta que lo retires en «Preferencias de reproducción» o borres los datos del navegador | Propia, `localStorage`. Solo existe si marcas «Recordar mi elección»; no se envía a nuestros servidores                                                                                  |
-| `fenaki:my-list:v1`        | FENAKI    | Guardar en tu navegador los cortos que añades a «Mi lista»                  | Hasta que la quites o borres los datos del navegador                                    | Propia, `localStorage`. La guardas tú al pulsar «Añadir a mi lista»; no se envía a nuestros servidores. Si tienes cuenta e inicias sesión, se añade a tu cuenta y se borra del navegador |
-| `fenaki:my-ratings:v1`     | FENAKI    | Guardar en tu navegador las valoraciones que das a los cortos               | Hasta que la quites o borres los datos del navegador                                    | Propia, `localStorage`. La guardas tú al valorar un corto; no se envía a nuestros servidores. Si tienes cuenta e inicias sesión, se añade a tu cuenta y se borra del navegador           |
-| `__Host-fenaki-session`    | FENAKI    | Mantener tu sesión iniciada cuando tienes cuenta                            | 30 días como máximo; se borra al cerrar sesión o al borrar la cuenta                    | Propia, solo se instala si inicias sesión                                                                                                                                                |
+| Nombre                     | Proveedor | Finalidad                                                                      | Duración                                                                                | Tipo                                                                                                                                                                                     |
+| -------------------------- | --------- | ------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `fenaki:player-consent:v1` | FENAKI    | Recordar qué reproductores (YouTube, Vimeo) has autorizado de forma permanente | Hasta que lo retires en «Preferencias de reproducción» o borres los datos del navegador | Propia, `localStorage`. Solo existe si marcas «Recordar mi elección»; no se envía a nuestros servidores                                                                                  |
+| `fenaki:my-list:v1`        | FENAKI    | Guardar en tu navegador los cortos que añades a «Mi lista»                     | Hasta que la quites o borres los datos del navegador                                    | Propia, `localStorage`. La guardas tú al pulsar «Añadir a mi lista»; no se envía a nuestros servidores. Si tienes cuenta e inicias sesión, se añade a tu cuenta y se borra del navegador |
+| `fenaki:my-ratings:v1`     | FENAKI    | Guardar en tu navegador las valoraciones que das a los cortos                  | Hasta que la quites o borres los datos del navegador                                    | Propia, `localStorage`. La guardas tú al valorar un corto; no se envía a nuestros servidores. Si tienes cuenta e inicias sesión, se añade a tu cuenta y se borra del navegador           |
+| `__Host-fenaki-session`    | FENAKI    | Mantener tu sesión iniciada cuando tienes cuenta                               | 30 días como máximo; se borra al cerrar sesión o al borrar la cuenta                    | Propia, solo se instala si inicias sesión                                                                                                                                                |
 
 Cloudflare, que protege FENAKI frente a ataques, puede instalar una cookie técnica de seguridad (como `__cf_bm` o `cf_clearance`) si detecta tráfico sospechoso o te muestra una verificación. Más información en la [documentación de Cloudflare sobre sus cookies](https://developers.cloudflare.com/fundamentals/reference/policies-compliances/cloudflare-cookies/).
 
@@ -51,11 +51,11 @@ La tabla recoge lo que medimos el 26 de octubre de 2026 al reproducir un corto e
 
 Más información: [cómo usa Google las cookies](https://policies.google.com/technologies/cookies?hl=es) y [política de cookies de Vimeo](https://vimeo.com/cookie_policy).
 
-## 5. Cambios
+## 5. Modificaciones de esta política
 
 Si algún día usamos cookies de analítica o de publicidad, actualizaremos antes esta política y solo se activarán con tu consentimiento.
 
-## 6. Desactivar las cookies desde el navegador
+## 6. Configuración del navegador
 
 También puedes bloquear o borrar las cookies y el almacenamiento local desde la configuración de tu navegador. Si bloqueas los técnicos, algunas partes de FENAKI pueden no funcionar.
 
@@ -64,6 +64,6 @@ También puedes bloquear o borrar las cookies y el almacenamiento local desde la
 - [Safari](https://support.apple.com/es-es/guide/safari/sfri11471/mac)
 - [Edge](https://support.microsoft.com/es-es/microsoft-edge)
 
-## 7. Más información
+## 7. Responsable y contacto
 
-Quién es el responsable y cómo ejercer tus derechos: [política de privacidad](/es/privacidad). Contacto: hola@fenaki.tv.
+El responsable y la forma de ejercer tus derechos se indican en la [política de privacidad](/es/privacidad). Contacto: hola@fenaki.tv.
