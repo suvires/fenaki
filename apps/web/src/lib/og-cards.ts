@@ -41,9 +41,10 @@ export function pageCard(locale: Locale, page: OgPage): OgCard {
       return {
         eyebrow: t('site.domain'),
         title: t('site.tagline'),
-        subtitle: t('home.title'),
+        subtitle: t('seo.ogHome'),
         siteName,
         tagline: '',
+        home: true,
       }
   }
 }

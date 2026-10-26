@@ -405,7 +405,8 @@
   },
   "seo": {
     "ogShort": "Cortometraje · {duration}",
-    "ogBrowse": "Catálogo"
+    "ogBrowse": "Catálogo",
+    "ogHome": "Cortometrajes gratis y legales, en un solo sitio."
   },
   "credits": {
     "title": "Créditos",

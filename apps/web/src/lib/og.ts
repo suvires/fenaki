@@ -5,6 +5,7 @@
  */
 import { palettes } from '@fenaki/tokens'
 import wordmark from '@fenaki/ui/wordmark.svg?raw'
+import homeBackdrop from '../assets/og-home-backdrop.png?inline'
 import { readFile } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 import satori from 'satori'
@@ -30,6 +31,11 @@ export interface OgCard {
   tagline: string
   siteName: string
   tone?: OgTone
+  /**
+   * The home page's card: the tilted catalog behind the text, as on the landing page, with the
+   * title broken after its comma and the address at the foot (scripts/og-backdrop.mjs).
+   */
+  home?: boolean
 }
 
 const color = palettes.dark
@@ -109,8 +115,102 @@ function wordmarkDataUri(ink: string): string {
   return `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`
 }
 
+const HOME_TEXT_WIDTH = 820
+
+/** The home page's card: the catalog in perspective on the right, the promise on the left. */
+function homeTree(card: OgCard): Node {
+  const tone = TONES.sala
+  // «El mejor cine, en cortos» on two lines, never with a word left alone on the second.
+  const lines = card.title.split(/(?<=,)\s+/)
+  return el(
+    'div',
+    {
+      width: OG_WIDTH,
+      height: OG_HEIGHT,
+      display: 'flex',
+      position: 'relative',
+      background: tone.ground,
+      color: tone.ink,
+    },
+    [
+      {
+        type: 'img',
+        props: {
+          src: homeBackdrop,
+          width: OG_WIDTH,
+          height: OG_HEIGHT,
+          style: { position: 'absolute', left: 0, top: 0, opacity: 0.55 },
+        },
+      },
+      // The page colour from the left, under the text, fading out over the catalog.
+      el('div', {
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        width: OG_WIDTH,
+        height: OG_HEIGHT,
+        backgroundImage: `linear-gradient(to right, ${tone.ground} 45%, transparent 85%)`,
+      }),
+      el(
+        'div',
+        {
+          position: 'absolute',
+          left: 72,
+          top: PADDING_Y,
+          width: HOME_TEXT_WIDTH,
+          height: INNER_HEIGHT,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+        },
+        [
+          {
+            type: 'img',
+            props: {
+              src: wordmarkDataUri(tone.ink),
+              alt: card.siteName,
+              height: WORDMARK_HEIGHT,
+              width: Math.round(WORDMARK_HEIGHT * WORDMARK_RATIO),
+            },
+          },
+          el('div', { display: 'flex', flexDirection: 'column', gap: 24 }, [
+            el(
+              'div',
+              {
+                display: 'flex',
+                flexDirection: 'column',
+                fontFamily: 'display',
+                fontSize: 96,
+                whiteSpace: 'nowrap',
+                lineHeight: 0.92,
+                textTransform: 'uppercase',
+              },
+              lines.map((line) => el('div', {}, line)),
+            ),
+            ...(card.subtitle
+              ? [el('div', { fontFamily: 'text', fontSize: 34, color: tone.ink }, card.subtitle)]
+              : []),
+          ]),
+          el(
+            'div',
+            {
+              fontFamily: 'mono',
+              fontSize: 28,
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              color: tone.accent,
+            },
+            card.eyebrow,
+          ),
+        ],
+      ),
+    ],
+  )
+}
+
 /** The card as Satori's element tree (React-like objects, no JSX needed). */
 export function ogTree(card: OgCard): Node {
+  if (card.home) return homeTree(card)
   const tone = TONES[card.tone ?? 'sala']
   const holes = Array.from({ length: 13 }, () =>
     el('div', {
