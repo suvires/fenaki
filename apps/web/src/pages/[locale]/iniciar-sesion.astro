@@ -1,0 +1,33 @@
+---
+import { PageHeader } from '@fenaki/ui'
+import { SignInForm } from '../../islands/account/SignInForm.tsx'
+import Base from '../../layouts/Base.astro'
+import { safeNext } from '../../lib/account/rules.ts'
+import { localeFrom, paths, translator } from '../../lib/i18n.ts'
+
+const locale = localeFrom(Astro.params.locale)
+if (!locale) return Astro.rewrite('/404')
+
+// Only a path of this site: anything else goes to the home page.
+const next = safeNext(Astro.url.searchParams.get('next')) ?? paths.home(locale)
+if (Astro.locals.member) return Astro.redirect(next)
+
+const t = translator(locale)
+const notices = ['verified', 'reset', 'deleted'] as const
+const asked = Astro.url.searchParams.get('notice')
+const notice = notices.find((value) => value === asked)
+---
+
+<Base locale={locale} title={t('account.signIn.title')} noindex>
+  <section class="grid gap-6 max-w-(--container-note) py-8">
+    <PageHeader title={t('account.signIn.title')} description={t('account.signIn.lead')} />
+    <SignInForm
+      client:load
+      locale={locale}
+      next={next}
+      notice={notice}
+      forgotHref={paths.forgotPassword(locale)}
+      signUpHref={paths.signUp(locale)}
+    />
+  </section>
+</Base>

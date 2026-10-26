@@ -144,6 +144,37 @@ export async function loadViewings(
   })
 }
 
+/** Where the member stopped in one short, if they ever started it. */
+export async function loadViewing(
+  member: SessionMember,
+  shortId: number,
+): Promise<{ position: number; duration: number; completed: boolean } | undefined> {
+  const result = ensure(
+    await cms<
+      Page<{ positionSeconds: number; durationSeconds: number; completed?: boolean | null }>
+    >('viewings', {
+      token: member.token,
+      query: {
+        depth: 0,
+        limit: 1,
+        'where[short][equals]': shortId,
+        'select[positionSeconds]': true,
+        'select[durationSeconds]': true,
+        'select[completed]': true,
+      },
+    }),
+    [200],
+  )
+  const row = result.data?.docs?.[0]
+  return row
+    ? {
+        position: row.positionSeconds,
+        duration: row.durationSeconds,
+        completed: Boolean(row.completed),
+      }
+    : undefined
+}
+
 const states = new WeakMap<SessionMember, Promise<AccountState>>()
 
 /** The list and ratings of the member, once per request: the layout and the page share it. */

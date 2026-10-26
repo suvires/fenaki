@@ -1,0 +1,24 @@
+---
+import { PageHeader } from '@fenaki/ui'
+import { SignUpForm } from '../../islands/account/SignUpForm.tsx'
+import Base from '../../layouts/Base.astro'
+import { localeFrom, paths, translator } from '../../lib/i18n.ts'
+
+const locale = localeFrom(Astro.params.locale)
+if (!locale) return Astro.rewrite('/404')
+if (Astro.locals.member) return Astro.redirect(paths.account(locale))
+
+const t = translator(locale)
+---
+
+<Base locale={locale} title={t('account.signUp.title')} noindex>
+  <section class="grid gap-6 max-w-(--container-note) py-8">
+    <PageHeader title={t('account.signUp.title')} description={t('account.signUp.lead')} />
+    <SignUpForm
+      client:load
+      locale={locale}
+      signInHref={paths.signIn(locale)}
+      privacyHref={paths.legal(locale, 'privacidad')}
+    />
+  </section>
+</Base>

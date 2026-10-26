@@ -23,6 +23,15 @@ export const paths = {
   latest: (locale: Locale) => `/${locale}/novedades`,
   /** The viewer's saved shorts (kept in their browser, so the page is never indexed). */
   myList: (locale: Locale) => `/${locale}/mi-lista`,
+  /** Accounts (all outside the sitemap and `noindex`). */
+  signUp: (locale: Locale) => `/${locale}/crear-cuenta`,
+  signIn: (locale: Locale, next?: string) =>
+    `/${locale}/iniciar-sesion${next ? `?next=${encodeURIComponent(next)}` : ''}`,
+  verifyAccount: (locale: Locale) => `/${locale}/cuenta/verificar`,
+  forgotPassword: (locale: Locale) => `/${locale}/cuenta/recuperar`,
+  resetPassword: (locale: Locale) => `/${locale}/cuenta/restablecer`,
+  account: (locale: Locale) => `/${locale}/cuenta`,
+  history: (locale: Locale) => `/${locale}/historial`,
   showcase: (locale: Locale, slug: string) => `/${locale}/escaparates/${slug}`,
   sponsor: (locale: Locale, section?: 'collection' | 'showcase') =>
     `/${locale}/patrocina${section ? `#${section === 'collection' ? 'coleccion' : 'escaparate'}` : ''}`,
