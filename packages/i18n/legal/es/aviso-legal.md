@@ -2,22 +2,16 @@
 
 Última actualización: 26 de octubre de 2026
 
-## 1. Quién está detrás de FENAKI
+## 1. Titularidad
 
 En cumplimiento del artículo 10 de la Ley 34/2002, de 11 de julio, de servicios de la sociedad de la información y de comercio electrónico (LSSI-CE), te informamos de que el sitio web **fenaki.tv** (en adelante, «FENAKI») es titularidad de:
 
-| Dato                               | Valor                                                                                                          |
-| ---------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| Titular                            | Miguel Ángel Suvires García                                                                                    |
-| NIF                                | 25729485Y                                                                                                      |
-| Domicilio                          | Calle Decano López Arjona, 18, 29140 Málaga (España)                                                           |
-| Correo electrónico de contacto     | hola@fenaki.tv                                                                                                 |
-| Marca comercial                    | FENAKI (marca de uso; no es una sociedad mercantil)                                                            |
-| Inscripción registral              | No aplica: el titular es una persona física no inscrita en el Registro Mercantil                               |
-| Autorización administrativa previa | No se requiere para esta actividad                                                                             |
-| Profesión regulada                 | No aplica                                                                                                      |
-| Códigos de conducta                | FENAKI no está adherido a ningún código de conducta                                                            |
-| Alojamiento                        | OVHcloud, en un servidor situado en Beauharnois (Canadá), país con decisión de adecuación de la Unión Europea. |
+| Dato      | Valor                                                |
+| --------- | ---------------------------------------------------- |
+| Titular   | Miguel Ángel Suvires García                          |
+| NIF       | 25729485Y                                            |
+| Domicilio | Calle Decano López Arjona, 18, 29140 Málaga (España) |
+| Email     | hola@fenaki.tv                                       |
 
 FENAKI es una marca independiente. Cuando en FENAKI se habla de «nosotros» o de «el equipo», se hace referencia al titular indicado arriba.
 
