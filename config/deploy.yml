@@ -24,7 +24,7 @@ x-cms-env: &cms-env
     SMTP_PORT: 587
     SMTP_TLS: STARTTLS
     EMAIL_FROM_ADDRESS: hola@fenaki.tv
-    EMAIL_FROM_NAME: Fenaki
+    EMAIL_FROM_NAME: FENAKI
     # The sales CRM's own mailbox (hola@fenaki.tv, OVHcloud Zimbra): outreach goes out through its
     # SMTP server (SSL, 465), replies are read over IMAP (SSL, 993). Not SES.
     MAILBOX_USER: hola@fenaki.tv
@@ -99,7 +99,7 @@ servers:
         # The CMS's public address: logos and other media load from it (Content Security Policy).
         CMS_PUBLIC_URL: https://cms.fenaki.tv
         SEARCH_INDEX_PREFIX: ""
-        LISTMONK_FROM_EMAIL: Fenaki <hola@fenaki.tv>
+        LISTMONK_FROM_EMAIL: FENAKI <hola@fenaki.tv>
         # Public address of listmonk: the unsubscribe links in emails point here.
         LISTMONK_PUBLIC_URL: https://lists.fenaki.tv
         LISTMONK_SMTP_HOST: email-smtp.eu-west-1.amazonaws.com
