@@ -48,7 +48,7 @@ export const paths = {
   og: (locale: Locale, kind: 'cortos' | 'personas' | 'colecciones' | 'escaparates', slug: string) =>
     `/og/${locale}/${kind}/${slug}.png`,
   /** ?v changes the address when a card's design changes: the CDN and social networks cache by URL. */
-  ogPage: (locale: Locale, page: 'site' | 'browse' | 'sponsor') => `/og/${locale}/${page}.png?v=2`,
+  ogPage: (locale: Locale, page: 'site' | 'browse' | 'sponsor') => `/og/${locale}/${page}.png?v=3`,
 }
 
 /** The legal pages, by slug. Their text lives in packages/i18n/legal/<locale>/<slug>.md. */
