@@ -10,7 +10,8 @@ import { cx } from '../cx.ts'
  * - closed round shapes (the magnifier) span 15.5px (4.5–20): a ring carries more mass than lines;
  * - the play triangle spans 17px (3.5–20.5): a triangle fills only half its box, so it needs
  *   more height than the plus to read at the same size.
- * - the thumbs-up, a closed shape of mixed lines and curves, spans 16px wide and 15.5px tall (4–20.3, 4.5–20).
+ * - the thumbs-up, one closed outline of cuff and hand (mixed lines and curves), spans 16px wide and
+ *   15.5px tall (4–20.3, 4.5–20).
  * - the thumbs-down is the thumbs-up mirrored; the double thumbs-up is two whole thumbs-up at 74 %
  *   (see DOUBLE), so the pair spans the same box as a single one.
  * The chevron is the one exception: tall, to sit at the cap height of a display title (Rail). The
@@ -26,36 +27,31 @@ const PATHS = {
   arrow: 'M4 12h16M14 6l6 6-6 6',
   chevron: 'M8.5 3.5 17 12l-8.5 8.5',
   'chevron-down': 'M5.5 8.75 12 15.25l6.5-6.5',
-  // A cuff and a hand: the thumb's edge, the knuckle curve, the palm and the heel back to the cuff.
+  // One outline, cuff and hand: no line between them. The cuff, the thumb's edge, the knuckle
+  // curve, the palm and the heel back along the cuff's foot.
   'thumbs-up':
-    'M4 11.5h3.5V20H4zM7.5 11.5 11 4.5a2.5 2.5 0 0 1 2.5 2.5v3.5h5.3a1.5 1.5 0 0 1 1.5 1.75l-1 6.5A2 2 0 0 1 17.3 20H7.5',
+    'M4 11.5h3.5L11 4.5a2.5 2.5 0 0 1 2.5 2.5v3.5h5.3a1.5 1.5 0 0 1 1.5 1.75l-1 6.5A2 2 0 0 1 17.3 20H4z',
   'thumbs-down':
-    'M4 12.5h3.5V4H4zM7.5 12.5 11 19.5a2.5 2.5 0 0 0 2.5-2.5v-3.5h5.3a1.5 1.5 0 0 0 1.5-1.75l-1-6.5A2 2 0 0 0 17.3 4H7.5',
+    'M4 12.5h3.5L11 19.5a2.5 2.5 0 0 0 2.5-2.5v-3.5h5.3a1.5 1.5 0 0 0 1.5-1.75l-1-6.5A2 2 0 0 0 17.3 4H4z',
   // Drawn from two thumbs-up (see DOUBLE below): the path here is the single one.
   'thumbs-up-double':
-    'M4 11.5h3.5V20H4zM7.5 11.5 11 4.5a2.5 2.5 0 0 1 2.5 2.5v3.5h5.3a1.5 1.5 0 0 1 1.5 1.75l-1 6.5A2 2 0 0 1 17.3 20H7.5',
+    'M4 11.5h3.5L11 4.5a2.5 2.5 0 0 1 2.5 2.5v3.5h5.3a1.5 1.5 0 0 1 1.5 1.75l-1 6.5A2 2 0 0 1 17.3 20H4z',
   check: 'M5.5 12.5l4.5 4.5 8.5-9.5',
   close: 'M5.5 5.5l13 13M18.5 5.5l-13 13',
 } as const
 
 /**
- * The thumbs have a filled variant (a rating that is chosen): the same hand outline as the outlined
- * icon, filled, without the cuff, so filling never changes the shape; moved 1.75px left so the
- * hand alone sits centred.
+ * The thumbs have a filled variant (a rating that is chosen): the very same shape, filled.
  */
 const FILLED_PATHS = {
-  'thumbs-up':
-    'M5.75 11.5 9.25 4.5a2.5 2.5 0 0 1 2.5 2.5v3.5h5.3a1.5 1.5 0 0 1 1.5 1.75l-1 6.5A2 2 0 0 1 15.55 20H5.75z',
-  'thumbs-down':
-    'M5.75 12.5 9.25 19.5a2.5 2.5 0 0 0 2.5-2.5v-3.5h5.3a1.5 1.5 0 0 0 1.5-1.75l-1-6.5A2 2 0 0 0 15.55 4H5.75z',
-  'thumbs-up-double':
-    'M5.75 11.5 9.25 4.5a2.5 2.5 0 0 1 2.5 2.5v3.5h5.3a1.5 1.5 0 0 1 1.5 1.75l-1 6.5A2 2 0 0 1 15.55 20H5.75z',
+  'thumbs-up': PATHS['thumbs-up'],
+  'thumbs-down': PATHS['thumbs-down'],
+  'thumbs-up-double': PATHS['thumbs-up-double'],
 } as const
 
 /**
- * The double thumbs-up is two single thumbs-up, cuff included, at 74 %: the back one up and to the
- * right, the front one down and to the left (so the back one's cuff is cut cleanly by the front
- * hand, like the cuff of a single thumb), in the 4–20.3 × 4.5–20 box of a single one. The back one has the front
+ * The double thumbs-up is two single thumbs-up at 74 %: the back one up and to the right, the
+ * front one down and to the left, the pair centred like a single thumb. The back one has the front
  * one's outline cut out of it (an SVG mask) with a gap, so outlined or filled they stay two thumbs.
  * Strokes are divided by the scale so they match the single thumbs.
  */
