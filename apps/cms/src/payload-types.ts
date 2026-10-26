@@ -217,6 +217,24 @@ export interface Short {
       }[]
     | null;
   /**
+   * Only awards and nominations a source states, with that source. The year is the ceremony year.
+   */
+  awards?:
+    | {
+        /**
+         * E.g. «Goya al mejor cortometraje de animación».
+         */
+        name: string;
+        result: 'won' | 'nominated' | 'selected' | 'shortlisted';
+        year?: number | null;
+        /**
+         * The page that states it (the awards body, the festival, specialised press).
+         */
+        source: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
    * Where the short plays from. Each source has its own license.
    */
   sources?: {
@@ -968,6 +986,15 @@ export interface ShortsSelect<T extends boolean = true> {
     | {
         person?: T;
         role?: T;
+        id?: T;
+      };
+  awards?:
+    | T
+    | {
+        name?: T;
+        result?: T;
+        year?: T;
+        source?: T;
         id?: T;
       };
   sources?: T;

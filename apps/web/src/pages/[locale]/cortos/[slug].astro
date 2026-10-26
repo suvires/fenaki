@@ -38,6 +38,8 @@ const directors = short ? creditsOf(short, 'director') : []
 const directedBy = createRichTranslator(locale)('short.directedBy', { names: true as const })
 
 const ROLES = ['writer', 'producer', 'cinematographer', 'editor', 'composer', 'cast'] as const
+// Newest ceremony first.
+const awards = [...(short?.awards ?? [])].sort((a, b) => (b.year ?? 0) - (a.year ?? 0))
 const credits = short
   ? ROLES.map((role) => ({ role, people: creditsOf(short, role) })).filter(
       (c) => c.people.length > 0,
@@ -132,6 +134,28 @@ const origin = [
             piece === true ? <PeopleLinks locale={locale} people={directors} /> : piece,
           )}
         </p>
+      )}
+      {awards.length > 0 && (
+        <section class="grid gap-2" aria-labelledby="awards">
+          <h2 id="awards" class="m-0 font-display text-title uppercase">
+            {t('short.awards')}
+          </h2>
+          <ul class="m-0 p-0 list-none grid gap-2 text-body">
+            {awards.map((award) => (
+              <li class="grid">
+                <span>{award.name}</span>
+                <span class="text-meta text-ink-muted">
+                  {[
+                    t(`short.awardResults.${award.result}`),
+                    award.year && formatYear(award.year, locale),
+                  ]
+                    .filter(Boolean)
+                    .join(' · ')}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
       )}
       {credits.length > 0 && (
         <section class="grid gap-2" aria-labelledby="credits">

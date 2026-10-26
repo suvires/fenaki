@@ -70,6 +70,13 @@
   "short": {
     "directedBy": "Dirigido por {names}",
     "credits": "Créditos",
+    "awards": "Premios",
+    "awardResults": {
+      "won": "Ganador",
+      "nominated": "Nominado",
+      "selected": "Selección oficial",
+      "shortlisted": "Preseleccionado"
+    },
     "synopsis": "Sinopsis",
     "addToList": "Añadir a mi lista",
     "inMyList": "En mi lista",

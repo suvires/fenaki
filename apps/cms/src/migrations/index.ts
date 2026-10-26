@@ -10,6 +10,7 @@ import * as migration_20261025_231009_still_card_size from './20261025_231009_st
 import * as migration_20261025_233011_ranking_global from './20261025_233011_ranking_global';
 import * as migration_20261026_002047_still_text_presentation from './20261026_002047_still_text_presentation';
 import * as migration_20261026_003244_home_page from './20261026_003244_home_page';
+import * as migration_20261026_012129_short_awards from './20261026_012129_short_awards';
 
 export const migrations = [
   {
@@ -70,6 +71,11 @@ export const migrations = [
   {
     up: migration_20261026_003244_home_page.up,
     down: migration_20261026_003244_home_page.down,
-    name: '20261026_003244_home_page'
+    name: '20261026_003244_home_page',
+  },
+  {
+    up: migration_20261026_012129_short_awards.up,
+    down: migration_20261026_012129_short_awards.down,
+    name: '20261026_012129_short_awards'
   },
 ];

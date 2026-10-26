@@ -225,6 +225,65 @@ export const Shorts: CollectionConfig = {
       ],
     },
     {
+      name: 'awards',
+      label: label('Awards', 'Premios'),
+      labels: { singular: label('Award', 'Premio'), plural: label('Awards', 'Premios') },
+      type: 'array',
+      admin: {
+        description: label(
+          'Only awards and nominations a source states, with that source. The year is the ceremony year.',
+          'Solo premios y nominaciones que afirme una fuente, con esa fuente. El año es el de la ceremonia.',
+        ),
+      },
+      fields: [
+        {
+          name: 'name',
+          label: label('Award', 'Premio'),
+          type: 'text',
+          required: true,
+          localized: true,
+          admin: {
+            description: label(
+              'E.g. «Goya al mejor cortometraje de animación».',
+              'Por ejemplo, «Goya al mejor cortometraje de animación».',
+            ),
+          },
+        },
+        {
+          type: 'row',
+          fields: [
+            {
+              name: 'result',
+              label: label('Result', 'Resultado'),
+              type: 'select',
+              required: true,
+              defaultValue: 'won',
+              options: options({
+                won: label('Won', 'Ganador'),
+                nominated: label('Nominated', 'Nominado'),
+                selected: label('Official selection', 'Selección oficial'),
+                shortlisted: label('Shortlisted', 'Preseleccionado'),
+              }),
+            },
+            { name: 'year', label: label('Year', 'Año'), type: 'number', min: 1888, max: 2100 },
+          ],
+        },
+        {
+          name: 'source',
+          label: label('Source', 'Fuente'),
+          type: 'text',
+          required: true,
+          access: { read: isAuthenticatedField },
+          admin: {
+            description: label(
+              'The page that states it (the awards body, the festival, specialised press).',
+              'La página que lo afirma (la academia, el festival, prensa especializada).',
+            ),
+          },
+        },
+      ],
+    },
+    {
       name: 'sources',
       label: label('Sources', 'Fuentes'),
       type: 'join',
