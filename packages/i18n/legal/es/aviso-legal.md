@@ -8,7 +8,7 @@ En cumplimiento del artículo 10 de la Ley 34/2002, de 11 de julio, de servicios
 
 | Dato                               | Valor                                                                                                          |
 | ---------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| Titular                            | Miguel Ángel Suvires García, persona física que actúa como trabajador autónomo                                 |
+| Titular                            | Miguel Ángel Suvires García                                                                                    |
 | NIF                                | 25729485Y                                                                                                      |
 | Domicilio                          | Calle Decano López Arjona, 18, 29140 Málaga (España)                                                           |
 | Correo electrónico de contacto     | hola@fenaki.tv                                                                                                 |

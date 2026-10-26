@@ -6,7 +6,7 @@ Estos términos se aplican si creas una cuenta en FENAKI. Para ver cortos no nec
 
 ## 1. Quién presta el servicio
 
-FENAKI es una marca de Miguel Ángel Suvires García, trabajador autónomo. Sus datos completos están en el [aviso legal](/es/aviso-legal). Contacto: hola@fenaki.tv.
+FENAKI es una marca de Miguel Ángel Suvires García. Sus datos completos están en el [aviso legal](/es/aviso-legal). Contacto: hola@fenaki.tv.
 
 ## 2. Qué te da la cuenta
 

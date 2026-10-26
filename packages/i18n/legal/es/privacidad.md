@@ -8,7 +8,7 @@ En FENAKI tratamos los mínimos datos posibles. Puedes ver el catálogo sin regi
 
 | Dato                            | Valor                                                                               |
 | ------------------------------- | ----------------------------------------------------------------------------------- |
-| Responsable                     | Miguel Ángel Suvires García, autónomo, que opera con la marca FENAKI                |
+| Responsable                     | Miguel Ángel Suvires García, que opera con la marca FENAKI                          |
 | NIF                             | 25729485Y                                                                           |
 | Domicilio                       | Calle Decano López Arjona, 18, 29140 Málaga (España)                                |
 | Correo para temas de privacidad | hola@fenaki.tv                                                                      |
