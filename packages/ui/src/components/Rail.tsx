@@ -75,7 +75,7 @@ export function Rail({ title, actionLabel, actionHref, arrows, className, childr
         </div>
         {arrows ? (
           <>
-            <span className={cx(ARROW_SLOT, '-left-2')}>
+            <span className={cx(ARROW_SLOT, 'left-2')}>
               <IconButton
                 icon="chevron"
                 label={arrows.previous}
@@ -85,7 +85,7 @@ export function Rail({ title, actionLabel, actionHref, arrows, className, childr
                 className={cx(ARROW, 'rotate-180 invisible group-data-can-previous/rail:visible')}
               />
             </span>
-            <span className={cx(ARROW_SLOT, '-right-2')}>
+            <span className={cx(ARROW_SLOT, 'right-2')}>
               <IconButton
                 icon="chevron"
                 label={arrows.next}
