@@ -1,6 +1,6 @@
 {
   "site": {
-    "name": "Fenaki",
+    "name": "FENAKI",
     "domain": "fenaki.tv",
     "tagline": "El mejor cine, en cortos",
     "description": "Cortometrajes gratis y legales, elegidos uno a uno y vistos desde los canales de sus autores.",
@@ -107,7 +107,7 @@
           "mode": "Lo cargamos con la opción «no rastrear»: según Vimeo, no guarda cookies de seguimiento ni estadísticas de tu sesión.",
           "storage": "Cloudflare, el servicio de seguridad de Vimeo, puede guardar cookies técnicas para frenar a los bots."
         },
-        "fenaki": "Fenaki no pone cookies de publicidad ni de seguimiento.",
+        "fenaki": "FENAKI no pone cookies de publicidad ni de seguimiento.",
         "policy": "Política de privacidad de {provider}",
         "remember": "Recordar mi elección para los cortos de {provider}",
         "accept": "Aceptar y reproducir",
@@ -139,9 +139,9 @@
       "direct": "Licencia directa"
     },
     "text": {
-      "embed": "Se reproduce desde el canal oficial en {provider}. Fenaki no aloja ni modifica el corto.",
+      "embed": "Se reproduce desde el canal oficial en {provider}. FENAKI no aloja ni modifica el corto.",
       "open": "Se publica con una licencia abierta que permite verlo y compartirlo.",
-      "direct": "Se publica en Fenaki con permiso directo de sus autores."
+      "direct": "Se publica en FENAKI con permiso directo de sus autores."
     }
   },
   "badges": {
@@ -153,7 +153,7 @@
   "providers": {
     "youtube": "YouTube",
     "vimeo": "Vimeo",
-    "bunny": "Fenaki"
+    "bunny": "FENAKI"
   },
   "errors": {
     "notFoundTitle": "No encontramos este corto",
@@ -164,7 +164,7 @@
     "title": "Cortometrajes gratis y legales en español",
     "hero": {
       "title": "El mejor cine, en cortos",
-      "lead": "Hay muchos cortometrajes publicados en abierto, pero están repartidos entre diferentes canales, festivales y escuelas. Fenaki los reúne en un solo sitio."
+      "lead": "Los cortometrajes publicados en abierto están repartidos entre diferentes canales, festivales y escuelas; FENAKI los reúne en un solo sitio."
     }
   },
   "waitlist": {
@@ -178,7 +178,7 @@
     },
     "submit": "Apuntarme",
     "submitting": "Enviando…",
-    "privacy": "Responsable: el titular de Fenaki (datos en el {legalNotice}). Finalidad: avisarte del lanzamiento y, si lo marcas, enviarte la selección semanal. Base: tu consentimiento. No cedemos tus datos; los correos salen por Amazon SES desde la UE. Puedes darte de baja en cada correo y ejercer tus derechos como explica la {privacyPolicy}.",
+    "privacy": "FENAKI usará tu correo para avisarte del lanzamiento y, si lo marcas, enviarte la selección semanal. Puedes ejercer tus derechos y consultar más información en la {privacyPolicy}.",
     "error": {
       "empty": "Escribe tu correo para apuntarte.",
       "invalid": "Ese correo no parece completo. Revisa que tenga @ y un dominio, por ejemplo nombre@ejemplo.com.",
@@ -192,7 +192,7 @@
     },
     "confirmed": {
       "title": "Ya estás en la lista",
-      "text": "Te escribiremos cuando Fenaki abra.",
+      "text": "Te escribiremos cuando FENAKI abra.",
       "newsletter": "Si marcaste la selección semanal, la recibirás los {weekday} por la mañana cuando empiece.",
       "building": "Mientras tanto, lo estamos construyendo en público, un día cada vez."
     },
@@ -204,15 +204,15 @@
   },
   "email": {
     "confirm": {
-      "subject": "Confirma tu correo para la lista de Fenaki",
+      "subject": "Confirma tu correo para la lista de FENAKI",
       "preview": "Un clic y te avisamos cuando abra.",
       "greeting": "Hola:",
-      "intro": "Alguien, seguramente tú, ha apuntado este correo a la lista de espera de Fenaki, un catálogo de cortometrajes gratis y legales en español.",
+      "intro": "Alguien, seguramente tú, ha apuntado este correo a la lista de espera de FENAKI, un catálogo de cortometrajes gratis y legales en español.",
       "action": "Para confirmarlo, pulsa el botón:",
       "button": "Confirmar mi correo",
       "fallback": "Si el botón no funciona, copia este enlace en el navegador: {url}",
       "expiry": "El enlace caduca en 7 días. Si no has sido tú, no hagas nada: sin confirmar, no te volveremos a escribir y borraremos este correo de la lista.",
-      "signature": "Fenaki",
+      "signature": "FENAKI",
       "motto": "El mejor cine, en cortos.",
       "footer": "Recibes este mensaje porque alguien escribió esta dirección en fenaki.tv. Responsable del tratamiento y datos de contacto en el {legalNotice}. {privacyPolicy}"
     }
@@ -259,13 +259,13 @@
   },
   "person": {
     "shorts": {
-      "one": "{count} corto en Fenaki",
-      "other": "{count} cortos en Fenaki"
+      "one": "{count} corto en FENAKI",
+      "other": "{count} cortos en FENAKI"
     },
     "shortsTitle": "Sus cortos",
     "description": {
-      "one": "{name}: {roles}. {count} corto gratis y legal en Fenaki.",
-      "other": "{name}: {roles}. {count} cortos gratis y legales en Fenaki."
+      "one": "{name}: {roles}. {count} corto gratis y legal en FENAKI.",
+      "other": "{name}: {roles}. {count} cortos gratis y legales en FENAKI."
     }
   },
   "browse": {
@@ -322,12 +322,12 @@
       "one": "Su selección · {count} corto",
       "other": "Su selección · {count} cortos"
     },
-    "description": "El escaparate de {name} en Fenaki: su selección de cortometrajes, gratis y legales."
+    "description": "El escaparate de {name} en FENAKI: su selección de cortometrajes, gratis y legales."
   },
   "sponsor": {
-    "title": "Patrocina Fenaki",
+    "title": "Patrocina FENAKI",
     "eyebrow": "Para organizaciones",
-    "lead": "Fenaki es un catálogo curado de cortometrajes gratuitos y legales, con la experiencia de una plataforma de streaming. Reúne en un solo sitio cortos en español que hoy están dispersos entre canales oficiales, webs de festivales y archivos.",
+    "lead": "FENAKI es un catálogo curado de cortometrajes gratuitos y legales, con la experiencia de una plataforma de streaming. Reúne en un solo sitio cortos en español que hoy están dispersos entre canales oficiales, webs de festivales y archivos.",
     "pillars": {
       "curated": {
         "title": "Curado.",
@@ -350,15 +350,15 @@
     },
     "founders": {
       "title": "Por qué ahora",
-      "text": "Fenaki se construye en público: cada día contamos en redes cómo avanza. Hoy partimos de cero en audiencia, y lo decimos así. Lo que ofrecemos a las primeras organizaciones es ser fundadoras del proyecto, aparecer en su lanzamiento, asociar su nombre a una selección editorial cuidada y recibir cifras medidas, no estimadas. Por eso el precio de fundador es la mitad del precio de lista y solo está disponible para las tres primeras organizaciones de cada producto."
+      "text": "FENAKI se construye en público: cada día contamos en redes cómo avanza. Hoy partimos de cero en audiencia, y lo decimos así. Lo que ofrecemos a las primeras organizaciones es ser fundadoras del proyecto, aparecer en su lanzamiento, asociar su nombre a una selección editorial cuidada y recibir cifras medidas, no estimadas. Por eso el precio de fundador es la mitad del precio de lista y solo está disponible para las tres primeras organizaciones de cada producto."
     },
-    "offersTitle": "Dos formas de estar en Fenaki",
+    "offersTitle": "Dos formas de estar en FENAKI",
     "includes": "Incluye",
     "founderNote": "Precio de fundador · tres primeras organizaciones",
     "collection": {
       "audience": "Para marcas e instituciones culturales",
       "title": "Colección patrocinada",
-      "description": "Una colección editorial de Fenaki con tu nombre durante un mes.",
+      "description": "Una colección editorial de FENAKI con tu nombre durante un mes.",
       "includes": {
         "header": "Cabecera en la colección y en la portada",
         "newsletter": "2 menciones en la newsletter",
@@ -393,7 +393,7 @@
       "placement": "El patrocinio aparece en la página de la colección, en la cabecera de la portada, en la newsletter y en redes.",
       "player": "Nunca aparece dentro del reproductor ni junto a él, ni se presenta como «este corto lo patrocina…». Así lo exigen las condiciones de YouTube y Vimeo, y así lo preferimos.",
       "nonCommercial": "Las colecciones patrocinadas no incluyen cortos con licencia no comercial (NC).",
-      "selection": "La selección de una colección patrocinada la hace el equipo editorial de Fenaki; puedes proponer el tema. En un escaparate, la selección es tuya, siempre que los cortos estén publicados en canales oficiales.",
+      "selection": "La selección de una colección patrocinada la hace el equipo editorial de FENAKI; puedes proponer el tema. En un escaparate, la selección es tuya, siempre que los cortos estén publicados en canales oficiales.",
       "festivals": "Los festivales muestran cortos que ya han terminado su recorrido (ediciones anteriores o palmarés), nunca cortos aún en circuito."
     },
     "contact": {
@@ -401,11 +401,11 @@
       "text": "Escríbenos con el producto que te interesa y te proponemos una llamada de 20 minutos. Si te encaja, reservamos tu plaza de fundador con un acuerdo de una página y una factura.",
       "soon": "Muy pronto tendrás aquí una dirección de contacto."
     },
-    "description": "Colecciones patrocinadas y escaparates para festivales, escuelas de cine e instituciones culturales en Fenaki, el catálogo de cortometrajes gratis y legales."
+    "description": "Colecciones patrocinadas y escaparates para festivales, escuelas de cine e instituciones culturales en FENAKI, el catálogo de cortometrajes gratis y legales."
   },
   "crm": {
     "footer": {
-      "identity": "Fenaki (fenaki.tv), catálogo de cortometrajes gratuitos y legales.",
+      "identity": "FENAKI (fenaki.tv), catálogo de cortometrajes gratuitos y legales.",
       "privacy": "Cómo tratamos tus datos: {url}",
       "optOut": "Si no quieres que volvamos a escribirte, responde «no» a este correo y no lo haremos."
     }
@@ -416,7 +416,7 @@
   },
   "credits": {
     "title": "Créditos",
-    "intro": "Fenaki se apoya en el trabajo de otras personas y servicios. Estos son sus créditos.",
+    "intro": "FENAKI se apoya en el trabajo de otras personas y servicios. Estos son sus créditos.",
     "shorts": {
       "title": "Los cortos",
       "text": "Cada corto es de quien lo hizo. Se reproduce desde su canal oficial, con el reproductor de YouTube o de Vimeo, y su ficha enlaza a ese canal."
@@ -429,7 +429,7 @@
     },
     "youtube": {
       "title": "YouTube",
-      "text": "Fenaki usa los servicios de API de YouTube para obtener los datos de los cortos publicados en YouTube, como la duración o los subtítulos. Al ver un corto de YouTube aceptas sus condiciones.",
+      "text": "FENAKI usa los servicios de API de YouTube para obtener los datos de los cortos publicados en YouTube, como la duración o los subtítulos. Al ver un corto de YouTube aceptas sus condiciones.",
       "terms": "Condiciones del servicio de YouTube",
       "privacy": "Política de privacidad de Google"
     },
@@ -566,7 +566,7 @@
         "wrong": "La contraseña actual no es correcta."
       },
       "data": {
-        "title": "Tus datos en Fenaki",
+        "title": "Tus datos en FENAKI",
         "text": "Descarga una copia de tu cuenta, tu lista, tus valoraciones y tu historial en un archivo JSON.",
         "download": "Descargar mis datos"
       },
@@ -596,28 +596,28 @@
   },
   "accountEmail": {
     "verify": {
-      "subject": "Verifica tu correo en Fenaki",
+      "subject": "Verifica tu correo en FENAKI",
       "preview": "Un clic y tu cuenta estará lista.",
       "greeting": "Hola:",
-      "intro": "Alguien, seguramente tú, ha creado una cuenta en Fenaki, un catálogo de cortometrajes gratis y legales en español.",
+      "intro": "Alguien, seguramente tú, ha creado una cuenta en FENAKI, un catálogo de cortometrajes gratis y legales en español.",
       "action": "Para activarla, verifica tu correo:",
       "button": "Verificar mi correo",
       "fallback": "Si el botón no funciona, copia este enlace en el navegador: {url}",
       "ignore": "Si no has sido tú, no hagas nada: sin verificar, la cuenta no se activa.",
-      "signature": "Fenaki",
+      "signature": "FENAKI",
       "motto": "El mejor cine, en cortos.",
       "footer": "Recibes este mensaje porque alguien creó una cuenta en fenaki.tv con esta dirección. Responsable del tratamiento y datos de contacto en el {legalNotice}. {privacyPolicy}"
     },
     "reset": {
-      "subject": "Elige una contraseña nueva en Fenaki",
+      "subject": "Elige una contraseña nueva en FENAKI",
       "preview": "El enlace caduca en 1 hora.",
       "greeting": "Hola:",
-      "intro": "Alguien, seguramente tú, ha pedido cambiar la contraseña de tu cuenta de Fenaki.",
+      "intro": "Alguien, seguramente tú, ha pedido cambiar la contraseña de tu cuenta de FENAKI.",
       "action": "Para elegir una nueva, pulsa el botón:",
       "button": "Cambiar mi contraseña",
       "fallback": "Si el botón no funciona, copia este enlace en el navegador: {url}",
       "ignore": "El enlace caduca en 1 hora. Si no has sido tú, no hagas nada: tu contraseña seguirá siendo la misma.",
-      "signature": "Fenaki",
+      "signature": "FENAKI",
       "motto": "El mejor cine, en cortos.",
       "footer": "Recibes este mensaje porque alguien pidió cambiar la contraseña de la cuenta de fenaki.tv con esta dirección. Responsable del tratamiento y datos de contacto en el {legalNotice}. {privacyPolicy}"
     }

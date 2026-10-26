@@ -15,7 +15,7 @@ const meta = {
       { label: 'Créditos', href: '#credits' },
     ],
     tagline: 'El mejor cine, en cortos.',
-    brand: 'Fenaki',
+    brand: 'FENAKI',
   },
 } satisfies Meta<typeof SiteFooter>
 

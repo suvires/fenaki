@@ -256,7 +256,7 @@ describe('the sales CRM, end to end', () => {
     const [found] = await mailpitSearch(`subject:"${subject}"`)
     expect(found).toBeDefined()
     const raw = await mailpitRaw(found!.ID)
-    expect(raw).toContain('From: Fenaki <hola@fenaki.tv>')
+    expect(raw).toContain('From: FENAKI <hola@fenaki.tv>')
     expect(raw).toContain(`To: ${contactEmail}`)
     expect(raw).toContain('Reply-To: hola@fenaki.tv')
     expect(raw).toContain(`Message-ID: ${messageId}`)

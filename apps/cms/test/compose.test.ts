@@ -5,7 +5,7 @@ import { imapConfig, mailboxConfig, smtpConfig } from '../src/crm/mailbox.ts'
 describe('footerText', () => {
   it('says who we are, links the privacy policy and offers the opt-out', () => {
     const footer = footerText('https://fenaki.tv/')
-    expect(footer).toContain('Fenaki')
+    expect(footer).toContain('FENAKI')
     expect(footer).toContain('https://fenaki.tv/es/privacidad')
     expect(footer).toContain('«no»')
   })
@@ -13,7 +13,7 @@ describe('footerText', () => {
 
 describe('composeOutbound', () => {
   const base = {
-    fromName: 'Fenaki',
+    fromName: 'FENAKI',
     fromAddress: 'hola@fenaki.tv',
     to: { email: 'ana@festival.example', name: 'Ana' },
     subject: 'Una propuesta\r\nBcc: x@y',
@@ -22,9 +22,9 @@ describe('composeOutbound', () => {
     siteUrl: 'https://fenaki.tv',
   }
 
-  it('is plain text from Fenaki, with Reply-To and the footer after a signature line, no BCC', () => {
+  it('is plain text from FENAKI, with Reply-To and the footer after a signature line, no BCC', () => {
     const mail = composeOutbound(base)
-    expect(mail.from).toEqual({ name: 'Fenaki', address: 'hola@fenaki.tv' })
+    expect(mail.from).toEqual({ name: 'FENAKI', address: 'hola@fenaki.tv' })
     expect(mail.replyTo).toBe('hola@fenaki.tv')
     expect(mail.messageId).toBe('<m1@fenaki.tv>')
     expect(mail.text).toContain('Un saludo.\n\n-- \n')
@@ -87,6 +87,6 @@ describe('mailbox settings', () => {
     expect(imapConfig({ ...env, MAILBOX_IMAP_HOST: '' })).toBeUndefined()
     expect(smtpConfig({ ...env, MAILBOX_PASSWORD: '' })).toBeUndefined()
     expect(mailboxConfig({})).toBeUndefined()
-    expect(mailboxConfig(env)?.fromName).toBe('Fenaki')
+    expect(mailboxConfig(env)?.fromName).toBe('FENAKI')
   })
 })

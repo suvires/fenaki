@@ -119,7 +119,7 @@ describe('sign-up and verification', () => {
     expect(member.name).toBe('Ana')
 
     const mail = await mailTo(email)
-    expect(mail.subject).toBe('Verifica tu correo en Fenaki')
+    expect(mail.subject).toBe('Verifica tu correo en FENAKI')
     const link = /href="(https:\/\/fenaki\.tv\/es\/cuenta\/verificar\?token=[^"]+)"/.exec(mail.html)
     expect(link).not.toBeNull()
     expect(mail.html).not.toContain('localhost:3198')
@@ -190,7 +190,7 @@ describe('sign-up and verification', () => {
       disableEmail: false,
     })
     const mail = await mailTo(member.email)
-    expect(mail.subject).toBe('Elige una contraseña nueva en Fenaki')
+    expect(mail.subject).toBe('Elige una contraseña nueva en FENAKI')
     expect(mail.html).toMatch(/https:\/\/fenaki\.tv\/es\/cuenta\/restablecer\?token=/)
   })
 })

@@ -43,7 +43,7 @@ export default buildConfig({
   admin: {
     user: Users.slug,
     importMap: { baseDir: path.resolve(dirname) },
-    meta: { titleSuffix: ' · Fenaki' },
+    meta: { titleSuffix: ' · FENAKI' },
     components: {
       afterNavLinks: [
         '/admin/TodayLink.tsx#TodayLink',

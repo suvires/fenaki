@@ -67,7 +67,7 @@ test('the sponsorship page is public before launch, with the contact links', asy
   request,
 }) => {
   await page.goto('/es/patrocina')
-  await expect(page.getByRole('heading', { level: 1, name: 'Patrocina Fenaki' })).toBeVisible()
+  await expect(page.getByRole('heading', { level: 1, name: 'Patrocina FENAKI' })).toBeVisible()
   await expect(
     page
       .getByRole('main')
@@ -102,7 +102,7 @@ test('signing up sends a confirmation email that confirms the subscription in li
   await expect(page.getByText(email)).toBeVisible()
 
   const message = await waitForEmail(email)
-  expect(message.Subject).toBe('Confirma tu correo para la lista de Fenaki')
+  expect(message.Subject).toBe('Confirma tu correo para la lista de FENAKI')
   const origin = new URL(page.url()).origin.replace(/[./]/g, '\\$&')
   const link = new RegExp(`href="(${origin}/es/lista-de-espera/confirmar\\?s=[^"]+)"`).exec(
     message.HTML,

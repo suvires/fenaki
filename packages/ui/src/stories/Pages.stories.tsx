@@ -24,7 +24,7 @@ export const Home: Story = {
   render: () => (
     <main className="grid gap-12 p-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <strong className="font-display text-title uppercase">Fenaki</strong>
+        <strong className="font-display text-title uppercase">FENAKI</strong>
         <SearchField label="Buscar cortos" placeholder="Título, director o tema" />
       </div>
       <CollectionHero
@@ -92,7 +92,7 @@ export const Short: Story = {
         </Button>
       </div>
       <LicenseNote route="embed" routeLabel="Embed oficial">
-        Se reproduce desde el canal de YouTube de su productora. Fenaki no aloja ni modifica el
+        Se reproduce desde el canal de YouTube de su productora. FENAKI no aloja ni modifica el
         corto.
       </LicenseNote>
       <Rail title="Si te ha gustado" actionLabel="Ver todo" actionHref="#">

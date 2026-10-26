@@ -4,7 +4,7 @@ import { Wordmark } from '../components/Wordmark.tsx'
 const meta = {
   title: 'Brand/Wordmark',
   component: Wordmark,
-  args: { label: 'Fenaki', className: 'h-6 w-auto text-ink' },
+  args: { label: 'FENAKI', className: 'h-6 w-auto text-ink' },
 } satisfies Meta<typeof Wordmark>
 
 export default meta

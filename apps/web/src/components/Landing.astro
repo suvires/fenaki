@@ -11,10 +11,6 @@ interface Props {
 const { locale } = Astro.props
 const t = translator(locale)
 
-const legalNotice = {
-  href: paths.legal(locale, 'aviso-legal'),
-  label: t('legal.links.legalNotice'),
-}
 const privacyPolicy = {
   href: paths.legal(locale, 'privacidad'),
   label: t('legal.links.privacyPolicy'),
@@ -29,11 +25,7 @@ const privacyPolicy = {
   <div id="waitlist" class="grid gap-3 max-w-search scroll-mt-8">
     <WaitlistForm client:load locale={locale} />
     <p class="m-0 text-small text-ink-muted">
-      <RichText
-        locale={locale}
-        messageKey="waitlist.privacy"
-        parts={{ legalNotice, privacyPolicy }}
-      />
+      <RichText locale={locale} messageKey="waitlist.privacy" parts={{ privacyPolicy }} />
     </p>
   </div>
 </section>

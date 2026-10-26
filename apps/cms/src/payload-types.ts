@@ -369,7 +369,7 @@ export interface Source {
    */
   checkNote?: string | null;
   /**
-   * Where the checker downloads the still from (Vimeo). Visitors never load it: Fenaki serves its own copy from the Stills collection.
+   * Where the checker downloads the still from (Vimeo). Visitors never load it: FENAKI serves its own copy from the Stills collection.
    */
   thumbnailUrl?: string | null;
   uploadedAt?: string | null;

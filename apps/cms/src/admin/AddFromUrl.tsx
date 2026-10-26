@@ -7,8 +7,8 @@ import { inLanguage, label } from '../labels.ts'
 const text = {
   title: label('Add a short from a URL', 'Añadir un corto desde una URL'),
   help: label(
-    'Paste a YouTube or Vimeo link. Fenaki fills in what the provider knows and saves the short as pending review; nothing is published until you check the channel is official.',
-    'Pega un enlace de YouTube o Vimeo. Fenaki rellena lo que sabe el proveedor y guarda el corto pendiente de revisión; no se publica nada hasta que compruebes que el canal es oficial.',
+    'Paste a YouTube or Vimeo link. FENAKI fills in what the provider knows and saves the short as pending review; nothing is published until you check the channel is official.',
+    'Pega un enlace de YouTube o Vimeo. FENAKI rellena lo que sabe el proveedor y guarda el corto pendiente de revisión; no se publica nada hasta que compruebes que el canal es oficial.',
   ),
   field: label('Video URL', 'URL del vídeo'),
   submit: label('Add', 'Añadir'),

@@ -7,7 +7,7 @@ const meta = {
   parameters: { layout: 'fullscreen' },
   args: {
     className: 'p-6',
-    home: { href: '#', label: 'Fenaki' },
+    home: { href: '#', label: 'FENAKI' },
     navLabel: 'Principal',
     genres: {
       label: 'Cortometrajes',

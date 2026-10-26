@@ -61,10 +61,10 @@ async function configureListmonk(client: Listmonk) {
   const sendsThroughSes = env('LISTMONK_SMTP_HOST', 'mailpit').endsWith('.amazonaws.com')
   const next = {
     ...settings,
-    'app.site_name': 'Fenaki',
+    'app.site_name': 'FENAKI',
     // The public address (unsubscribe links in emails); LISTMONK_URL may be an internal one.
     'app.root_url': env('LISTMONK_PUBLIC_URL', env('LISTMONK_URL', 'http://localhost:9000')),
-    'app.from_email': env('LISTMONK_FROM_EMAIL', 'Fenaki <hola@fenaki.tv>'),
+    'app.from_email': env('LISTMONK_FROM_EMAIL', 'FENAKI <hola@fenaki.tv>'),
     'app.lang': defaultLocale,
     // The web app sends its own confirmation email, and the only way in is its form.
     'app.send_optin_confirmation': false,
@@ -199,7 +199,7 @@ async function configureUmami() {
     headers,
     body: JSON.stringify({
       id: websiteId,
-      name: 'Fenaki',
+      name: 'FENAKI',
       domain: env('UMAMI_WEBSITE_DOMAIN', 'localhost'),
     }),
   })

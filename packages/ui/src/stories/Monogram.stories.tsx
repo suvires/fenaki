@@ -4,7 +4,7 @@ import { Monogram } from '../components/Monogram.tsx'
 const meta = {
   title: 'Brand/Monogram',
   component: Monogram,
-  args: { label: 'Fenaki', className: 'h-12 w-auto text-tungsteno' },
+  args: { label: 'FENAKI', className: 'h-12 w-auto text-tungsteno' },
 } satisfies Meta<typeof Monogram>
 
 export default meta

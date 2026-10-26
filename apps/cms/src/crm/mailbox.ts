@@ -41,7 +41,7 @@ export function mailboxConfig(env: Env = process.env): MailboxConfig | undefined
   return {
     user: env.MAILBOX_USER,
     password: env.MAILBOX_PASSWORD,
-    fromName: env.EMAIL_FROM_NAME ?? 'Fenaki',
+    fromName: env.EMAIL_FROM_NAME ?? 'FENAKI',
     imap,
     smtp,
     sentFolder: env.MAILBOX_SENT_FOLDER || undefined,

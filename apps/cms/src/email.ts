@@ -32,7 +32,7 @@ export function emailAdapter(env: Env = process.env) {
   if (!transportOptions) return undefined
   return nodemailerAdapter({
     defaultFromAddress: env.EMAIL_FROM_ADDRESS ?? 'hola@fenaki.tv',
-    defaultFromName: env.EMAIL_FROM_NAME ?? 'Fenaki',
+    defaultFromName: env.EMAIL_FROM_NAME ?? 'FENAKI',
     transportOptions,
   })
 }

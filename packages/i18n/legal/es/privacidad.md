@@ -2,17 +2,17 @@
 
 Última actualización: 26 de octubre de 2026
 
-En Fenaki tratamos los mínimos datos posibles. Puedes ver el catálogo sin registrarte, la analítica no usa cookies y los reproductores de YouTube y Vimeo solo se cargan si das tu consentimiento. Esta política explica qué datos tratamos, para qué, durante cuánto tiempo y qué derechos tienes, según el Reglamento (UE) 2016/679 (RGPD) y la Ley Orgánica 3/2018 de Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD).
+En FENAKI tratamos los mínimos datos posibles. Puedes ver el catálogo sin registrarte, la analítica no usa cookies y los reproductores de YouTube y Vimeo solo se cargan si das tu consentimiento. Esta política explica qué datos tratamos, para qué, durante cuánto tiempo y qué derechos tienes, según el Reglamento (UE) 2016/679 (RGPD) y la Ley Orgánica 3/2018 de Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD).
 
 ## 1. Responsable del tratamiento
 
 | Dato                            | Valor                                                                               |
 | ------------------------------- | ----------------------------------------------------------------------------------- |
-| Responsable                     | Miguel Ángel Suvires García, autónomo, que opera con la marca Fenaki                |
+| Responsable                     | Miguel Ángel Suvires García, autónomo, que opera con la marca FENAKI                |
 | NIF                             | 25729485Y                                                                           |
 | Domicilio                       | Calle Decano López Arjona, 18, 29140 Málaga (España)                                |
 | Correo para temas de privacidad | hola@fenaki.tv                                                                      |
-| Delegado de protección de datos | No designado: Fenaki no está obligado a designarlo (art. 37 RGPD y art. 34 LOPDGDD) |
+| Delegado de protección de datos | No designado: FENAKI no está obligado a designarlo (art. 37 RGPD y art. 34 LOPDGDD) |
 
 ## 2. Qué datos tratamos y para qué
 
@@ -42,9 +42,9 @@ En Fenaki tratamos los mínimos datos posibles. Puedes ver el catálogo sin regi
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Datos          | Nombre, datos de contacto, condición en la que actúas (titular o representante), descripción de la obra y del contenido denunciado, y la documentación que aportes                                                                               |
 | Finalidad      | Tramitar tu aviso o contranotificación conforme al [procedimiento de retirada](/es/retirada-de-contenidos)                                                                                                                                       |
-| Base jurídica  | Cumplimiento de obligaciones legales (art. 6.1.c RGPD, en relación con el art. 16 de la LSSI y el art. 16 del Reglamento de Servicios Digitales cuando aplique) e interés legítimo en defender los derechos de terceros y de Fenaki (art. 6.1.f) |
+| Base jurídica  | Cumplimiento de obligaciones legales (art. 6.1.c RGPD, en relación con el art. 16 de la LSSI y el art. 16 del Reglamento de Servicios Digitales cuando aplique) e interés legítimo en defender los derechos de terceros y de FENAKI (art. 6.1.f) |
 | Conservación   | 3 años desde el cierre del aviso                                                                                                                                                                                                                 |
-| Comunicaciones | Podemos comunicar los datos imprescindibles a la persona afectada por el aviso (por ejemplo, el autor de un corto enviado a Fenaki) cuando sea necesario para resolverlo, y a autoridades o juzgados si lo requieren                             |
+| Comunicaciones | Podemos comunicar los datos imprescindibles a la persona afectada por el aviso (por ejemplo, el autor de un corto enviado a FENAKI) cuando sea necesario para resolverlo, y a autoridades o juzgados si lo requieren                             |
 
 ### 2.4 Organizaciones con las que trabajamos (patrocinadores, festivales, escuelas)
 
@@ -59,7 +59,7 @@ En Fenaki tratamos los mínimos datos posibles. Puedes ver el catálogo sin regi
 
 |               |                                                                                                                                                                                  |
 | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Datos         | Nombre, correo electrónico, importe, fecha, país y, si pides factura completa, NIF y dirección. Los datos de la tarjeta los trata solo Stripe: Fenaki nunca los ve ni los guarda |
+| Datos         | Nombre, correo electrónico, importe, fecha, país y, si pides factura completa, NIF y dirección. Los datos de la tarjeta los trata solo Stripe: FENAKI nunca los ve ni los guarda |
 | Finalidad     | Cobrar tu apoyo, gestionar la membresía y emitir la factura                                                                                                                      |
 | Base jurídica | Ejecución del contrato (art. 6.1.b RGPD) y cumplimiento de obligaciones fiscales y contables (art. 6.1.c RGPD)                                                                   |
 | Conservación  | Mientras dure la membresía y, después, 6 años (art. 30 del Código de Comercio) y el plazo de prescripción tributaria (art. 66 de la Ley General Tributaria)                      |
@@ -109,23 +109,23 @@ Los cortos se ven en el reproductor oficial de YouTube (Google) o de Vimeo. No s
 - **Esas empresas reciben tu dirección IP y datos técnicos de tu navegador** (tipo y versión, idioma, la página desde la que se carga el reproductor), como al visitar cualquier web.
 - **El reproductor guarda datos en tu navegador.** YouTube, en su modo de privacidad mejorada, guarda datos técnicos en el almacenamiento local; Vimeo, con la opción «no rastrear», solo cookies de seguridad de Cloudflare. El detalle está en la [política de cookies](/es/cookies).
 
-**Responsabilidad.** Fenaki decide insertar el reproductor en la página y, por eso, es corresponsable con Google o Vimeo de la recogida y transmisión de esos datos (sentencia _Fashion ID_, C-40/17). Lo que esas empresas hagan después con ellos es responsabilidad suya: consulta la [política de privacidad de Google](https://policies.google.com/privacy?hl=es) y la [de Vimeo](https://vimeo.com/privacy). [REVISAR: acuerdo de corresponsabilidad, art. 26 RGPD]
+**Responsabilidad.** FENAKI decide insertar el reproductor en la página y, por eso, es corresponsable con Google o Vimeo de la recogida y transmisión de esos datos (sentencia _Fashion ID_, C-40/17). Lo que esas empresas hagan después con ellos es responsabilidad suya: consulta la [política de privacidad de Google](https://policies.google.com/privacy?hl=es) y la [de Vimeo](https://vimeo.com/privacy). [REVISAR: acuerdo de corresponsabilidad, art. 26 RGPD]
 
 **Base jurídica:** tu consentimiento (art. 6.1.a RGPD y art. 22.2 LSSI), que das al pulsar «Aceptar y reproducir» y puedes retirar en cualquier momento desde «Preferencias de reproducción». [REVISAR: consulta 7b]
 
-**Si tienes cuenta e iniciaste sesión,** Fenaki lee del reproductor el punto del corto por el que vas para ofrecerte «Seguir viendo» (ver 2.6). Sin sesión no se registra nada.
+**Si tienes cuenta e iniciaste sesión,** FENAKI lee del reproductor el punto del corto por el que vas para ofrecerte «Seguir viendo» (ver 2.6). Sin sesión no se registra nada.
 
 ## 3. Datos de menores
 
-Fenaki no está dirigido a menores de 14 años y no recogemos a sabiendas sus datos. Si tienes menos de 14 años, no te suscribas, no crees una cuenta ni nos envíes datos sin el consentimiento de tus padres o tutores (art. 7 LOPDGDD).
+FENAKI no está dirigido a menores de 14 años y no recogemos a sabiendas sus datos. Si tienes menos de 14 años, no te suscribas, no crees una cuenta ni nos envíes datos sin el consentimiento de tus padres o tutores (art. 7 LOPDGDD).
 
 ## 4. Decisiones automatizadas
 
 No tomamos decisiones basadas únicamente en tratamientos automatizados que produzcan efectos jurídicos sobre ti o te afecten de forma significativa, ni elaboramos perfiles con ese fin.
 
-## 5. Quién trata datos por cuenta de Fenaki (encargados) y transferencias internacionales
+## 5. Quién trata datos por cuenta de FENAKI (encargados) y transferencias internacionales
 
-No vendemos ni cedemos tus datos. Los proveedores siguientes los tratan por cuenta de Fenaki, con contrato de encargo (art. 28 RGPD), solo para prestar su servicio.
+No vendemos ni cedemos tus datos. Los proveedores siguientes los tratan por cuenta de FENAKI, con contrato de encargo (art. 28 RGPD), solo para prestar su servicio.
 
 | Proveedor                                    | Servicio                                                                                                 | Sede de la entidad                 | Dónde se tratan los datos                                  | Transferencia internacional y garantía                                                                                                                           |
 | -------------------------------------------- | -------------------------------------------------------------------------------------------------------- | ---------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -140,7 +140,7 @@ No vendemos ni cedemos tus datos. Los proveedores siguientes los tratan por cuen
 
 Fuentes de los datos de los proveedores: OVH SAS (2 rue Kellermann, 59100 Roubaix, Francia; RCS Lille Métropole 424 761 419), según su [aviso legal](https://www.ovhcloud.com/es-es/terms-and-conditions/), consultado el 25 oct 2026. El resto de entidades se han tomado de las condiciones públicas de cada proveedor y deben confirmarse con el contrato y el DPA de cada cuenta al darla de alta.
 
-Google (YouTube) y Vimeo no son encargados de Fenaki: cuando aceptas sus reproductores, tratan tus datos como responsables (ver el apartado 2.10).
+Google (YouTube) y Vimeo no son encargados de FENAKI: cuando aceptas sus reproductores, tratan tus datos como responsables (ver el apartado 2.10).
 
 ## 6. Tus derechos
 
