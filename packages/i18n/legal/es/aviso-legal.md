@@ -1,23 +1,23 @@
 # Aviso legal
 
-Última actualización: 25 de octubre de 2026
+Última actualización: 26 de octubre de 2026
 
 ## 1. Quién está detrás de FENAKI
 
 En cumplimiento del artículo 10 de la Ley 34/2002, de 11 de julio, de servicios de la sociedad de la información y de comercio electrónico (LSSI-CE), te informamos de que el sitio web **fenaki.tv** (en adelante, «FENAKI» o «el sitio») es titularidad de:
 
-| Dato                               | Valor                                                                                                                                                                                                    |
-| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Titular                            | Miguel Ángel Suvires García, persona física que actúa como trabajador autónomo                                                                                                                           |
-| NIF                                | 25729485Y                                                                                                                                                                                                |
-| Domicilio                          | Calle Decano López Arjona, 18, 29140 Málaga (España)                                                                                                                                                     |
-| Correo electrónico de contacto     | hola@fenaki.tv                                                                                                                                                                                           |
-| Marca comercial                    | FENAKI (marca de uso; no es una sociedad mercantil)                                                                                                                                                      |
-| Inscripción registral              | No aplica: el titular es una persona física no inscrita en el Registro Mercantil                                                                                                                         |
-| Autorización administrativa previa | No se requiere para esta actividad                                                                                                                                                                       |
-| Profesión regulada                 | No aplica                                                                                                                                                                                                |
-| Códigos de conducta                | FENAKI no está adherido a ningún código de conducta                                                                                                                                                      |
-| Alojamiento del sitio              | OVH SAS, 2 rue Kellermann, 59100 Roubaix (Francia), RCS Lille Métropole 424 761 419 (fuente: [aviso legal de OVHcloud](https://www.ovhcloud.com/es-es/terms-and-conditions/), consultado el 25 oct 2026) |
+| Dato                               | Valor                                                                                                          |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| Titular                            | Miguel Ángel Suvires García, persona física que actúa como trabajador autónomo                                 |
+| NIF                                | 25729485Y                                                                                                      |
+| Domicilio                          | Calle Decano López Arjona, 18, 29140 Málaga (España)                                                           |
+| Correo electrónico de contacto     | hola@fenaki.tv                                                                                                 |
+| Marca comercial                    | FENAKI (marca de uso; no es una sociedad mercantil)                                                            |
+| Inscripción registral              | No aplica: el titular es una persona física no inscrita en el Registro Mercantil                               |
+| Autorización administrativa previa | No se requiere para esta actividad                                                                             |
+| Profesión regulada                 | No aplica                                                                                                      |
+| Códigos de conducta                | FENAKI no está adherido a ningún código de conducta                                                            |
+| Alojamiento del sitio              | OVHcloud, en un servidor situado en Beauharnois (Canadá), país con decisión de adecuación de la Unión Europea. |
 
 FENAKI es una marca independiente. Cuando en este sitio se habla de «FENAKI», «nosotros» o «el equipo», se hace referencia al titular indicado arriba.
 
@@ -29,7 +29,7 @@ FENAKI es un catálogo curado de cortometrajes que se pueden ver gratis y de for
 - En el futuro podrá alojar en su propio servicio de vídeo cortos de dominio público, con licencia abierta (Creative Commons BY o BY-SA) o con cesión firmada por su titular. Cuando sea así, la ficha del corto lo indicará.
 - Indica en cada ficha la vía legal por la que el corto está en el catálogo y enlaza a su origen.
 
-El acceso al sitio es gratuito y no requiere registro. Algunas funciones (lista de espera, newsletter, cuentas de usuario y, más adelante, apoyos económicos) tienen sus propias condiciones, que se indican en el momento de usarlas.
+El acceso al sitio es gratuito y no requiere registro. Si creas una cuenta, se aplican también los [términos de uso de las cuentas](/es/terminos-de-uso). La lista de espera, la newsletter y, más adelante, los apoyos económicos explican sus condiciones en el momento de usarlos.
 
 ## 3. Condiciones de uso
 
@@ -55,6 +55,7 @@ Los cortometrajes, sus títulos, carteles, fotogramas y demás materiales perten
 - **Cortos embebidos (YouTube y Vimeo).** FENAKI muestra el reproductor oficial de la plataforma con el vídeo que su titular ha publicado libremente en su canal oficial. FENAKI no copia ni almacena el vídeo. Si el titular retira el vídeo, lo hace privado o desactiva la opción de insertarlo, el corto deja de reproducirse en FENAKI y su ficha se oculta.
 - **Cortos con licencia abierta.** Se respetan las condiciones de la licencia, con atribución visible del autor y de la licencia en la ficha.
 - **Cortos con cesión directa.** Se usan en los términos del contrato firmado con su titular.
+- **Miniaturas y fotogramas.** Las fichas, los carruseles y la portada muestran la miniatura que el propio titular eligió para su vídeo en YouTube o Vimeo, como acompañamiento del reproductor oficial. FENAKI la sirve desde su propio servidor, para que tu navegador no contacte con esas plataformas antes de reproducir, y la renueva o la borra cada noche: si el vídeo deja de estar disponible, su miniatura se elimina. Si un autor nos cede un fotograma, se usa en lugar de la miniatura.
 
 ### 4.3 Si crees que un contenido infringe tus derechos
 

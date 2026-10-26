@@ -213,7 +213,8 @@
     "links": {
       "legalNotice": "aviso legal",
       "privacyPolicy": "política de privacidad",
-      "privacyPolicyTitle": "Política de privacidad"
+      "privacyPolicyTitle": "Política de privacidad",
+      "terms": "términos de uso"
     },
     "draft": {
       "label": "Borrador",
@@ -227,6 +228,7 @@
       "legalNotice": "Aviso legal",
       "privacy": "Política de privacidad",
       "cookies": "Política de cookies",
+      "terms": "Términos de uso",
       "sponsor": "Patrocinar una colección",
       "showcase": "Escaparates para festivales y escuelas",
       "browse": "Todos los cortos",
@@ -480,7 +482,7 @@
       "submit": "Crear cuenta",
       "hasAccount": "¿Ya tienes cuenta?",
       "signInLink": "Inicia sesión",
-      "privacy": "Usamos tu email y tus datos de uso solo para darte la cuenta, hasta que la borres. Más en la {privacyPolicy}.",
+      "privacy": "Al crear la cuenta aceptas los {terms}. Usamos tu email y tus datos de uso solo para darte la cuenta, hasta que la borres. Más en la {privacyPolicy}.",
       "done": {
         "title": "Revisa tu email",
         "text": "Si {email} puede crear una cuenta, te hemos enviado un enlace para verificarla. Ábrelo para terminar.",

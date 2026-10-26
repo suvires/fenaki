@@ -56,6 +56,7 @@ export const LEGAL_PAGES = [
   'privacidad',
   'cookies',
   'retirada-de-contenidos',
+  'terminos-de-uso',
 ] as const
 export type LegalPage = (typeof LEGAL_PAGES)[number]
 

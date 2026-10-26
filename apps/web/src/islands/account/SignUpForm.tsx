@@ -9,6 +9,7 @@ interface SignUpFormProps {
   locale: Locale
   signInHref: string
   privacyHref: string
+  termsHref: string
 }
 
 type State =
@@ -21,7 +22,7 @@ type State =
  * Creates the account. The answer is the same for a new address and one that already has an
  * account: the page asks the viewer to open the link in their email.
  */
-export function SignUpForm({ locale, signInHref, privacyHref }: SignUpFormProps) {
+export function SignUpForm({ locale, signInHref, privacyHref, termsHref }: SignUpFormProps) {
   const t = createTranslator(locale)
   const rich = createRichTranslator(locale)
   const [state, setState] = useState<State>({ kind: 'idle' })
@@ -114,8 +115,19 @@ export function SignUpForm({ locale, signInHref, privacyHref }: SignUpFormProps)
       ) : null}
       <p className="m-0 text-small text-ink-muted">
         {rich('account.signUp.privacy', {
+          terms: (
+            <a
+              className="text-ink underline underline-offset-4 hover:no-underline"
+              href={termsHref}
+            >
+              {t('legal.links.terms')}
+            </a>
+          ),
           privacyPolicy: (
-            <a className="text-ink" href={privacyHref}>
+            <a
+              className="text-ink underline underline-offset-4 hover:no-underline"
+              href={privacyHref}
+            >
               {t('legal.links.privacyPolicy')}
             </a>
           ),

@@ -260,3 +260,17 @@ test('rails are sliders: the arrows move the row and show only where it can move
   await expect.poll(() => track.evaluate((el) => el.scrollLeft)).toBeGreaterThan(0)
   await expect(previous).toBeVisible()
 })
+
+test('the account terms are linked from the footer and accepted at sign-up', async ({ page }) => {
+  await page.goto('/es/crear-cuenta')
+  await page.getByRole('main').getByRole('link', { name: 'términos de uso' }).click()
+  await expect(page).toHaveURL(/\/es\/terminos-de-uso$/)
+  await expect(
+    page.getByRole('heading', { level: 1, name: 'Términos de uso de las cuentas' }),
+  ).toBeVisible()
+  await expect(
+    page.getByRole('navigation', { name: 'Pie de página' }).getByRole('link', {
+      name: 'Términos de uso',
+    }),
+  ).toHaveAttribute('href', '/es/terminos-de-uso')
+})
