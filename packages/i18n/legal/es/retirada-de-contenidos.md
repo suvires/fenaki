@@ -26,7 +26,7 @@ Para que podamos actuar con rapidez, el aviso debe incluir (art. 16.2 DSA):
 
 1. **Dónde está el contenido**: la dirección (URL) exacta de la página de FENAKI y, si se trata de un embed, la URL del vídeo en YouTube o Vimeo.
 2. **Por qué crees que es ilegal o infringe tus derechos**: una explicación suficiente. En propiedad intelectual: qué obra es, quién es su titular y por qué el uso no está autorizado.
-3. **Tus datos**: nombre y correo electrónico. Si actúas en nombre de otra persona, en nombre de quién y en qué condición.
+3. **Tus datos**: nombre y email. Si actúas en nombre de otra persona, en nombre de quién y en qué condición.
 4. **Una declaración** de que crees de buena fe que la información y las alegaciones del aviso son exactas y completas.
 
 Si puedes, añade la documentación que lo respalde (por ejemplo, contrato de producción o de distribución, registro de la obra o enlace a tu canal oficial).
@@ -35,9 +35,7 @@ Si el aviso no incluye estos datos, te pediremos que lo completes. Un aviso comp
 
 ## 4. Cómo enviarlo
 
-- **Formulario**: [URL DEL FORMULARIO, por ejemplo fenaki.tv/es/retirada] [COMPLETAR: crear el formulario electrónico, exigido por el art. 16.1 DSA para que el aviso se pueda enviar de forma sencilla]
-- **Correo electrónico**: hola@fenaki.tv, con el asunto «Retirada de contenido».
-- Idiomas: español o inglés.
+Escríbenos a hola@fenaki.tv con el asunto «Retirada de contenido», en español o en inglés.
 
 Al recibirlo, te enviaremos un acuse de recibo (art. 16.4 DSA).
 
@@ -57,20 +55,19 @@ Tus datos se tratan según la [política de privacidad](/es/privacidad) (apartad
 
 Si el contenido retirado lo aportaste tú (por ejemplo, un corto que enviaste a FENAKI como autor) o eres el titular de un corto embebido que se ha desactivado, te informaremos de la retirada y de sus motivos, siempre que tengamos tus datos de contacto (declaración de motivos, art. 17 DSA).
 
-Puedes responder con una **contranotificación** en un plazo de [6 meses] desde que te informemos, por los mismos canales, indicando:
+Puedes responder con una **contranotificación** en un plazo de 6 meses desde que te informemos, por email, indicando:
 
 1. El contenido retirado (URL).
 2. Por qué crees que la retirada es un error (por ejemplo, la licencia o el contrato que te autoriza).
 3. Tu nombre, datos de contacto y una declaración de buena fe.
 
-Revisaremos la contranotificación con personal cualificado, no solo con medios automatizados, y te responderemos en un plazo máximo de [7 días]. Si la contranotificación es fundada, informaremos a quien envió el aviso y podremos restablecer el contenido, salvo que nos acredite que ha iniciado acciones legales.
+Revisaremos la contranotificación con personal cualificado, no solo con medios automatizados, y te responderemos lo antes posible. Si la contranotificación es fundada, informaremos a quien envió el aviso y podremos restablecer el contenido, salvo que nos acredite que ha iniciado acciones legales.
 
 Además, siempre puedes acudir a los juzgados y tribunales o, en materia de propiedad intelectual, a la Sección Segunda de la Comisión de Propiedad Intelectual (art. 195 TRLPI).
 
 ## 7. Casos reiterados y abusos
 
-- **Canales con avisos fundados**: si un canal de YouTube o Vimeo acumula [2] avisos fundados, dejamos de usarlo como fuente y revisamos el resto de sus cortos en el catálogo.
-- **Autores o usuarios que aportan contenido ilícito de forma reiterada** (cuando haya envíos y cuentas, fase 3): tras una advertencia previa, podemos suspender durante un tiempo razonable su posibilidad de enviar contenido (art. 23.1 DSA, como referencia).
+- **Canales con avisos fundados**: si un canal de YouTube o Vimeo acumula avisos fundados, dejamos de usarlo como fuente y revisamos el resto de sus cortos en el catálogo.
 - **Avisos manifiestamente infundados enviados con frecuencia**: tras una advertencia previa, podemos dejar de tramitar los avisos de esa persona durante un tiempo razonable (art. 23.2 DSA, como referencia).
 - Valoramos cada caso de forma individual, con criterios como el número de casos, su gravedad y la intención de quien los causa.
 
@@ -84,6 +81,6 @@ Guardamos un registro de los avisos recibidos, las decisiones tomadas y los plaz
 
 Para autoridades de los Estados miembros, la Comisión Europea, el Comité Europeo de Servicios Digitales (art. 11 DSA) y los usuarios (art. 12 DSA):
 
-- Correo electrónico: hola@fenaki.tv
+- Email: hola@fenaki.tv
 - Idiomas: español e inglés
 - Titular: Miguel Ángel Suvires García, Calle Decano López Arjona, 18, 29140 Málaga (España) (ver el [aviso legal](/es/aviso-legal))
