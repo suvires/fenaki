@@ -1,6 +1,7 @@
 import type { Access, CollectionBeforeValidateHook, CollectionConfig } from 'payload'
 import { ValidationError } from 'payload'
 import { isAdminField, isAdminUser, isMemberUser } from '../access.ts'
+import { resendVerificationEndpoint } from '../accounts/resendVerification.ts'
 import { accountEmailHtml, accountEmailSubject, accountLink } from '../accounts/emails.ts'
 import {
   LOCK_TIME_MS,
@@ -87,6 +88,7 @@ export const Members: CollectionConfig = {
       generateEmailSubject: () => accountEmailSubject('reset'),
     },
   },
+  endpoints: [resendVerificationEndpoint],
   access: {
     admin: () => false,
     read: readMembers,

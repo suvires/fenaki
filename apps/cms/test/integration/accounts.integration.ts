@@ -23,6 +23,7 @@ Object.assign(process.env, {
 })
 
 const { default: config } = await import('../../src/payload.config.ts')
+const { resendVerification } = await import('../../src/accounts/resendVerification.ts')
 
 const token = Math.random().toString(36).slice(2, 8)
 const PASSWORD = 'a-long-password-1'
@@ -160,6 +161,25 @@ describe('sign-up and verification', () => {
     const stored = await payload.findByID({ collection: 'members', id: sneaky.id })
     expect(stored._verified).not.toBe(true)
     expect(stored.sample).toBe(false)
+  })
+
+  it('sends a new verification link to an unverified account, once a minute, and to nobody else', async () => {
+    const email = `accounts-test-resend-${token}@example.org`
+    const member = await payload.create({
+      collection: 'members',
+      data: { email, password: PASSWORD },
+      disableVerificationEmail: true,
+    })
+    created.push({ collection: 'members', id: member.id })
+    const later = Date.now() + 120_000
+    expect(await resendVerification(payload, email, later)).toBe(true)
+    const mail = await mailTo(email)
+    expect(mail.html).toMatch(/https:\/\/fenaki\.tv\/es\/cuenta\/verificar\?token=/)
+    // Right after, nothing again.
+    expect(await resendVerification(payload, email, Date.now())).toBe(false)
+    expect(await resendVerification(payload, `nobody-${token}@example.org`, later)).toBe(false)
+    const verified = await newMember('resend-verified')
+    expect(await resendVerification(payload, verified.email, later)).toBe(false)
   })
 
   it('sends the reset link to the site too', async () => {
