@@ -37,16 +37,17 @@ const clamp = (value: number, min: number, max: number) =>
   Math.min(Math.max(value, min), Math.max(min, max))
 
 /**
- * The panel is centred on its card, 1.5× its width, and kept inside the page container and the
- * viewport. Vertically its still lines up over the card's, then the whole panel is pulled back
- * into the viewport.
+ * The panel is centred on its card, 1.5× its width, both ways: the whole panel (still and body)
+ * is centred on the card's middle, so it grows evenly over its row. Then it is kept inside the
+ * page container and the viewport. Until the panel has been measured, its still stands in for it.
  */
 export function placePreview({ card, viewport, bounds, panelHeight }: PlaceOptions): Placement {
   const min = Math.max(bounds.left, EDGE_GAP)
   const max = Math.min(bounds.right, viewport.width - EDGE_GAP)
   const width = Math.min(card.width * WIDTH_RATIO, max - min)
   const left = clamp(card.left + card.width / 2 - width / 2, min, max - width)
-  const centred = card.top + card.height / 2 - (width * STILL_HEIGHT_RATIO) / 2
+  const height = panelHeight ?? width * STILL_HEIGHT_RATIO
+  const centred = card.top + card.height / 2 - height / 2
   const top =
     panelHeight === undefined
       ? centred

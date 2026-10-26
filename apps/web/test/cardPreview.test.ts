@@ -13,12 +13,18 @@ const bounds = { left: 80, right: 1360 }
 const card = (left: number, top: number) => ({ left, top, width: 280, height: 157.5 })
 
 describe('placePreview', () => {
-  it('centres a panel 1.5 times as wide on the card, its still over the card', () => {
+  it('centres a panel 1.5 times as wide on the card, its still standing in until measured', () => {
     const place = placePreview({ card: card(600, 300), viewport, bounds })
     expect(place.width).toBe(280 * WIDTH_RATIO)
     expect(place.left).toBe(600 + 140 - 210)
     // The still is 16:9: 420 × 236.25, centred on the card's centre (378.75).
     expect(place.top).toBeCloseTo(378.75 - 236.25 / 2)
+  })
+
+  it('once measured, centres the whole panel on the card, so it grows evenly over its row', () => {
+    const place = placePreview({ card: card(600, 300), viewport, bounds, panelHeight: 400 })
+    // Card centre 378.75: 200 above and 200 below it.
+    expect(place.top).toBeCloseTo(378.75 - 200)
   })
 
   it('stays inside the page container on both sides', () => {
