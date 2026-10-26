@@ -18,7 +18,6 @@ En cumplimiento del artículo 10 de la Ley 34/2002, de 11 de julio, de servicios
 FENAKI es un catálogo curado de cortometrajes que se pueden ver gratis y de forma legal. FENAKI:
 
 - **No aloja vídeos de terceros.** Los cortos se reproducen mediante el reproductor oficial de YouTube o Vimeo (contenido «embebido»), desde el canal oficial de su autor, productora, distribuidora o festival.
-- En el futuro podrá alojar en su propio servicio de vídeo cortos de dominio público, con licencia abierta (Creative Commons BY o BY-SA) o con cesión firmada por su titular. Cuando sea así, la ficha del corto lo indicará.
 - Indica en cada ficha la vía legal por la que el corto está en el catálogo y enlaza a su origen.
 
 El acceso a FENAKI es gratuito y no requiere registro. Si creas una cuenta, se aplican también los [términos de uso de las cuentas](/es/terminos-de-uso). La lista de espera, la newsletter y, más adelante, los apoyos económicos explican sus condiciones en el momento de usarlos.
@@ -38,8 +37,6 @@ Al navegar por FENAKI aceptas usarlo de forma lícita y no:
 
 Son de FENAKI (o se usan con licencia) el diseño, la marca y el logotipo, los textos editoriales (sinopsis propias, descripciones de colecciones, biografías redactadas por FENAKI), la selección y la ordenación del catálogo y su código fuente.
 
-La marca «FENAKI» está en uso y su registro en la Oficina Española de Patentes y Marcas está previsto.
-
 ### 4.2 Contenido de terceros
 
 Los cortometrajes, sus títulos, carteles, fotogramas y demás materiales pertenecen a sus respectivos titulares. FENAKI no reclama ningún derecho sobre ellos.
@@ -51,7 +48,7 @@ Los cortometrajes, sus títulos, carteles, fotogramas y demás materiales perten
 
 ### 4.3 Si crees que un contenido infringe tus derechos
 
-Consulta el **[Procedimiento de retirada de contenidos](/es/retirada-de-contenidos)**. Respondemos en un plazo máximo de 48 horas.
+Consulta el **[Procedimiento de retirada de contenidos](/es/retirada-de-contenidos)**. Respondemos lo antes posible, normalmente en 48 horas.
 
 ## 5. Enlaces a otros sitios
 
@@ -73,20 +70,11 @@ FENAKI no responde de:
 
 Nada de lo anterior limita la responsabilidad que no pueda limitarse según la ley.
 
-## 8. Punto de contacto (Reglamento de Servicios Digitales)
-
-En cumplimiento de los artículos 11 y 12 del Reglamento (UE) 2022/2065 de Servicios Digitales (DSA), el punto único de contacto para autoridades de los Estados miembros, la Comisión Europea, el Comité Europeo de Servicios Digitales y los usuarios es:
-
-- Correo electrónico: hola@fenaki.tv
-- Idiomas aceptados: español e inglés
-
-Este canal permite una comunicación directa y rápida, y no depende únicamente de herramientas automatizadas.
-
-## 9. Protección de datos y cookies
+## 8. Protección de datos y cookies
 
 - [Política de privacidad](/es/privacidad)
 - [Política de cookies](/es/cookies)
 
-## 10. Legislación aplicable y jurisdicción
+## 9. Legislación aplicable y jurisdicción
 
 Este aviso legal se rige por la ley española. Para cualquier controversia, las partes se someten a los juzgados y tribunales que correspondan según la ley. Si actúas como consumidor, serán competentes los de tu domicilio cuando así lo establezca la normativa de consumo.
