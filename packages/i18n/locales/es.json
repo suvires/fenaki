@@ -193,7 +193,7 @@
     },
     "expired": {
       "title": "Este enlace ya no funciona",
-      "text": "Ha caducado o ya se usó. Si quieres apuntarte, vuelve a escribir tu email.",
+      "text": "Ha caducado o ya se utilizó. Si quieres apuntarte, vuelve a escribir tu email.",
       "back": "Apúntate de nuevo"
     }
   },
