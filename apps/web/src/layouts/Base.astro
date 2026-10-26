@@ -15,6 +15,13 @@ interface Props {
   locale: Locale
   /** The light from above at the top of the page: the home page only. */
   glow?: boolean
+  /**
+   * Before launch, the landing page's layout: content centred between the header and the footer,
+   * over the tilted screenshot of the catalog. The landing and its waitlist confirmation only.
+   */
+  backdrop?: boolean
+  /** The home page: its hero sits close to the header. Every other page gets more room above. */
+  home?: boolean
   title?: string
   description?: string
   /** Pages that only make sense from a link, such as the waitlist confirmation. */
@@ -33,6 +40,8 @@ interface Props {
 const {
   locale,
   glow = false,
+  backdrop = false,
+  home = false,
   title,
   description,
   noindex = false,
@@ -239,12 +248,13 @@ const footerLinks = landing
     <main
       id="main"
       class:list={[
-        'flex-1 w-full mx-auto max-w-page grid gap-12 px-4 md:px-8 pt-4 pb-8',
-        // The landing page's only content, the hero, sits centred between the header and the footer.
-        landing ? 'relative content-center' : 'content-start',
+        'flex-1 w-full mx-auto max-w-page grid gap-12 px-4 md:px-8 pb-8',
+        home ? 'pt-4' : 'pt-12',
+        // The landing page's hero sits centred between the header and the footer.
+        landing && backdrop ? 'relative content-center' : 'content-start',
       ]}
     >
-      {landing && (
+      {landing && backdrop && (
         // Before launch, a glimpse of the catalog behind the hero: a screenshot of the home page tilted
         // in perspective, dimmed, and fading into the page colour at the top and the bottom so it never
         // meets the header or the footer with an edge. It spans the window's width but only main's height:
