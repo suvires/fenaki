@@ -26,6 +26,8 @@ builder:
   # Builds the working tree, so a change can be rehearsed before it is committed. No registry
   # cache (KAMAL_REHEARSAL drops it from deploy.yml): the local registry is not a cache.
   context: .
+  args:
+    SITE_URL: <%= base % "fenaki" %>
 
 proxy:
   run:

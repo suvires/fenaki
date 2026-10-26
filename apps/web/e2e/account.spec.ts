@@ -391,3 +391,31 @@ test('state-changing account routes refuse other origins, and the limits and gua
   expect((await request.get('/api/account/export')).status()).toBe(401)
   expect((await request.get('/api/account/me')).status()).toBe(401)
 })
+
+test('Astro origin check: the sign-out form passes from behind the proxy, a foreign origin does not', async ({
+  request,
+}) => {
+  test.skip(Boolean(process.env.E2E_CATALOG_URL), 'needs the build served by e2e/serve.sh')
+  // The site is built for https://fenaki.test (e2e/serve.sh). kamal-proxy terminates TLS and tells
+  // the app with X-Forwarded-*; a browser posting the form sends Origin: https://fenaki.test.
+  const proxied = {
+    'X-Forwarded-Proto': 'https',
+    'X-Forwarded-Host': 'fenaki.test',
+    'CF-Connecting-IP': randomAddress(),
+  }
+  const own = await request.post('/api/account/logout', {
+    headers: { ...proxied, Origin: 'https://fenaki.test' },
+    form: {},
+    maxRedirects: 0,
+  })
+  expect(own.status()).toBe(303)
+
+  const foreign = await request.post('/api/account/logout', {
+    headers: { ...proxied, Origin: 'https://evil.example' },
+    form: {},
+    maxRedirects: 0,
+  })
+  expect(foreign.status()).toBe(403)
+  // Astro's own refusal (the route's would be JSON): the check is on.
+  expect(await foreign.text()).toContain('Cross-site POST form submissions are forbidden')
+})

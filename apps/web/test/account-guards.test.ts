@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { allowedDomains } from '../src/lib/allowedDomains.ts'
 import {
   clientIp,
   createLimiter,
@@ -171,5 +172,22 @@ describe('rules', () => {
       ['5', 600],
     ])
       expect(checkProgress(position, duration)).toBeUndefined()
+  })
+})
+
+describe('allowedDomains', () => {
+  it('trusts the proxy headers for the public address only', () => {
+    expect(allowedDomains('https://fenaki.tv')).toEqual([
+      { protocol: 'https', hostname: 'fenaki.tv' },
+    ])
+    expect(allowedDomains('http://fenaki.localhost:8480')).toEqual([
+      { protocol: 'http', hostname: 'fenaki.localhost', port: '8480' },
+    ])
+  })
+
+  it('trusts nothing without a usable address', () => {
+    expect(allowedDomains(undefined)).toEqual([])
+    expect(allowedDomains('')).toEqual([])
+    expect(allowedDomains('not a url')).toEqual([])
   })
 })
