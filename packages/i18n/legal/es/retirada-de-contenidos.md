@@ -2,7 +2,7 @@
 
 Última actualización: 25 de octubre de 2026
 
-FENAKI solo incluye cortometrajes publicados por sus titulares en canales oficiales, con licencia abierta o con cesión firmada. Aun así, nos podemos equivocar. Si crees que un contenido de FENAKI infringe tus derechos o es ilegal, avísanos: **respondemos en un plazo máximo de 48 horas**.
+FENAKI solo incluye cortometrajes publicados por sus titulares en canales oficiales, con licencia abierta o con cesión firmada. Aun así, nos podemos equivocar. Si crees que un contenido de FENAKI infringe tus derechos o es ilegal, avísanos: **respondemos lo antes posible**.
 
 Este procedimiento sigue el mecanismo de notificación y acción del Reglamento (UE) 2022/2065 de Servicios Digitales (DSA, art. 16), el art. 16 y 17 de la Ley 34/2002 (LSSI-CE) y el Texto Refundido de la Ley de Propiedad Intelectual (TRLPI, Real Decreto Legislativo 1/1996).
 
@@ -48,7 +48,7 @@ Tus datos se tratan según la [política de privacidad](/es/privacidad) (apartad
 | Paso                 | Plazo                                                                                        | Qué pasa                                                                                                                                                                                                                  |
 | -------------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Acuse de recibo      | En el momento (automático) o, como máximo, 24 horas                                          | Confirmamos que lo hemos recibido                                                                                                                                                                                         |
-| Revisión y respuesta | **Máximo 48 horas** desde la recepción del aviso completo                                    | Revisamos el aviso de forma diligente, objetiva y no arbitraria. Si es fundado, o si tenemos dudas razonables, **desactivamos el contenido de forma cautelar** (ocultamos la ficha o el reproductor) mientras se resuelve |
+| Revisión y respuesta | **Lo antes posible** desde la recepción del aviso completo                                   | Revisamos el aviso de forma diligente, objetiva y no arbitraria. Si es fundado, o si tenemos dudas razonables, **desactivamos el contenido de forma cautelar** (ocultamos la ficha o el reproductor) mientras se resuelve |
 | Decisión             | Te la comunicamos en ese mismo plazo o, si hace falta más información, en cuanto la tengamos | Te informamos de lo que hemos decidido y de las vías de recurso. Si hemos usado medios automatizados, te lo decimos (art. 16.6 DSA)                                                                                       |
 
 **Qué puede hacer FENAKI y qué no.** FENAKI puede retirar o desactivar lo que publica: la ficha, el reproductor embebido, imágenes y textos. **No puede retirar el vídeo de YouTube o Vimeo**: si el vídeo infringe tus derechos en la propia plataforma, también debes notificarlo allí ([YouTube](https://support.google.com/youtube/answer/2807622?hl=es), [Vimeo](https://vimeo.com/dmca)).

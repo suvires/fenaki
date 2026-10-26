@@ -48,7 +48,7 @@ Los cortometrajes, sus títulos, carteles, fotogramas y demás materiales perten
 
 ### 4.3 Si crees que un contenido infringe tus derechos
 
-Consulta el **[Procedimiento de retirada de contenidos](/es/retirada-de-contenidos)**. Respondemos lo antes posible, normalmente en 48 horas.
+Consulta el **[Procedimiento de retirada de contenidos](/es/retirada-de-contenidos)**. Respondemos lo antes posible.
 
 ## 5. Enlaces a otros sitios
 
