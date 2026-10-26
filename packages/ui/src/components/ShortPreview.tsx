@@ -107,9 +107,10 @@ export function ShortPreview({
       className={cx(
         'rounded-panel bg-sala-1 shadow-hover',
         floating ? 'fixed z-(--layer-preview)' : 'relative',
-        // It grows out of the card: no fade, so the growth itself is what you see.
+        // It grows out of the card: no fade, so the growth itself is what you see. While entering it
+        // jumps, untransitioned, onto the card's box; the transition only runs on the way out of it.
         'transition-transform duration-(--duration-preview) ease-standard motion-reduce:transition-none',
-        'data-entering:[transform:var(--preview-from)]',
+        'data-entering:[transform:var(--preview-from)] data-entering:transition-none',
         className,
       )}
     >
