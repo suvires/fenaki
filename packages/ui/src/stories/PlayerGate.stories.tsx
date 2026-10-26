@@ -7,8 +7,6 @@ const meta = {
   component: PlayerGate,
   args: {
     title: 'Timecode',
-    message:
-      'Este corto se reproduce desde YouTube. Al darle a reproducir, YouTube puede guardar cookies en tu navegador.',
     playLabel: 'Ver ahora',
     moreLabel: 'Más sobre las cookies',
     moreHref: '#',

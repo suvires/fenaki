@@ -4,8 +4,6 @@ import { Button } from './Button.tsx'
 
 export interface PlayerGateProps {
   title: string
-  /** Names the provider and what it does with cookies. */
-  message: string
   playLabel: string
   moreLabel?: string
   moreHref?: string
@@ -37,7 +35,6 @@ export interface PlayerGateProps {
 /** The player before consent. The third-party player loads only after «Ver ahora». */
 export function PlayerGate({
   title,
-  message,
   playLabel,
   moreLabel,
   moreHref,
@@ -94,7 +91,6 @@ export function PlayerGate({
       ) : (
         <div className="absolute inset-0 grid content-end gap-3 p-6 bg-linear-to-t from-sala-0 from-0% to-transparent to-85%">
           <p className="m-0 font-display text-display-l uppercase">{title}</p>
-          <p className="m-0 max-w-player-text text-small text-ink-muted">{message}</p>
           <div className="flex flex-wrap items-center gap-3">
             <Button
               variant="primary"

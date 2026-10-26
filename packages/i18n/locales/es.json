@@ -87,7 +87,6 @@
     "origin": "{country} · {year}",
     "player": {
       "play": "Ver ahora",
-      "message": "Este corto se reproduce desde {provider}. Antes de cargar su reproductor, te contamos qué datos recibe.",
       "more": "Más sobre las cookies",
       "loaded": "Aquí se carga el reproductor de {provider}",
       "sample": "Este es un corto de ejemplo: no tiene un reproductor real.",
