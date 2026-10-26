@@ -9,7 +9,11 @@ import { cx } from '../cx.ts'
  * - closed round shapes (the magnifier) span 15.5px (4.5–20): a ring carries more mass than lines;
  * - the play triangle spans 17px (3.5–20.5): a triangle fills only half its box, so it needs
  *   more height than the plus to read at the same size.
- * The chevron is the one exception: tall, to sit at the cap height of a display title (Rail).
+ * - the thumbs-up, a closed shape of mixed lines and curves, spans 16px wide and 15.5px tall (4–20.3, 4.5–20).
+ * - the thumbs-down is the thumbs-up mirrored; the double thumbs-up is two of them at 74 %, the back
+ *   one showing only its cuff and thumb, so the pair spans 16px wide and 14.7px tall (4–20.3, 4.4–19).
+ * The chevron is the one exception: tall, to sit at the cap height of a display title (Rail). The
+ * chevron-down is a plain diagonal pair, 13px wide like the check and the close.
  * The «Grid» story shows them over the keylines.
  */
 const PATHS = {
@@ -20,8 +24,31 @@ const PATHS = {
   search: 'M10.5 16.5a6 6 0 1 1 0-12 6 6 0 0 1 0 12zM15 15l5 5',
   arrow: 'M4 12h16M14 6l6 6-6 6',
   chevron: 'M8.5 3.5 17 12l-8.5 8.5',
+  'chevron-down': 'M5.5 8.75 12 15.25l6.5-6.5',
+  // A cuff and a hand: the thumb's edge, the knuckle curve, the palm and the heel back to the cuff.
+  'thumbs-up':
+    'M4 11.5h3.5V20H4zM7.5 11.5 11 4.5a2.5 2.5 0 0 1 2.5 2.5v3.5h5.3a1.5 1.5 0 0 1 1.5 1.75l-1 6.5A2 2 0 0 1 17.3 20H7.5',
+  'thumbs-down':
+    'M4 12.5h3.5V4H4zM7.5 12.5 11 19.5a2.5 2.5 0 0 0 2.5-2.5v-3.5h5.3a1.5 1.5 0 0 0 1.5-1.75l-1-6.5A2 2 0 0 0 17.3 4H7.5',
+  'thumbs-up-double':
+    'M8.24 12.71H10.83V19H8.24ZM10.83 12.71 13.42 7.53a1.85 1.85 0 0 1 1.85 1.85v2.59h3.92a1.11 1.11 0 0 1 1.11 1.29l-.74 4.81A1.48 1.48 0 0 1 18.08 19H10.83M4.04 10.51H6.63V16.8H4.04ZM6.63 10.51 9.22 5.33a1.85 1.85 0 0 1 1.85 1.85v1.2',
   check: 'M5.5 12.5l4.5 4.5 8.5-9.5',
   close: 'M5.5 5.5l13 13M18.5 5.5l-13 13',
+} as const
+
+/**
+ * The thumbs have a filled variant (a rating that is chosen). Same outline, drawn to be filled:
+ * the cuff is narrowed and the hand starts further right, so that with the stroke they stay two
+ * shapes with a hairline between them instead of merging into one block.
+ */
+const FILLED_PATHS = {
+  'thumbs-up':
+    'M4 11.5h2V20H4zM8.5 11.5 11 4.5a2.5 2.5 0 0 1 2.5 2.5v3.5h5.3a1.5 1.5 0 0 1 1.5 1.75l-1 6.5A2 2 0 0 1 17.3 20H8.5z',
+  'thumbs-down':
+    'M4 12.5h2V4H4zM8.5 12.5 11 19.5a2.5 2.5 0 0 0 2.5-2.5v-3.5h5.3a1.5 1.5 0 0 0 1.5-1.75l-1-6.5A2 2 0 0 0 17.3 4H8.5z',
+  // The back thumb is drawn down to the front one, so the two read as a stack.
+  'thumbs-up-double':
+    'M8.24 12.71h2V19h-2zM12.2 12.71 13.42 7.53a1.85 1.85 0 0 1 1.85 1.85v2.59h3.92a1.11 1.11 0 0 1 1.11 1.29l-.74 4.81A1.48 1.48 0 0 1 18.08 19H12.2zM4.04 10.51h2V16.8h-2zM8.04 12.9 9.22 5.33a1.85 1.85 0 0 1 1.85 1.85v5.72z',
 } as const
 
 export type IconName = keyof typeof PATHS
@@ -41,12 +68,21 @@ export interface IconProps {
   size?: keyof typeof SIZES
   /** `heavy` matches bold display type (a rail title's chevron). */
   weight?: 'regular' | 'heavy'
+  /** The filled variant, for the icons that have one (the thumbs): a chosen rating. */
+  filled?: boolean
   className?: string
 }
 
 /** Inline SVG on the 24px grid above, 1.75 stroke (3 when heavy), drawn in currentColor. Decorative: hidden from screen readers. */
-export function Icon({ name, size = 'md', weight = 'regular', className }: IconProps) {
-  const filled = name === 'play'
+export function Icon({
+  name,
+  size = 'md',
+  weight = 'regular',
+  filled: chosen = false,
+  className,
+}: IconProps) {
+  const variant = chosen ? FILLED_PATHS[name as keyof typeof FILLED_PATHS] : undefined
+  const filled = name === 'play' || variant !== undefined
   return (
     <svg
       className={cx('flex-none', SIZES[size], className)}
@@ -54,11 +90,11 @@ export function Icon({ name, size = 'md', weight = 'regular', className }: IconP
       aria-hidden="true"
       fill={filled ? 'currentColor' : 'none'}
       stroke="currentColor"
-      strokeWidth={filled || weight === 'heavy' ? 3 : 1.75}
+      strokeWidth={name === 'play' || weight === 'heavy' ? 3 : 1.75}
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <path d={PATHS[name]} />
+      <path d={variant ?? PATHS[name]} />
     </svg>
   )
 }

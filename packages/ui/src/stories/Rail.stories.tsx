@@ -30,12 +30,3 @@ export const WithImages: Story = {
     )),
   },
 }
-
-/** The first card expanded: it must not be clipped by the rail's scroll area. */
-export const FirstCardExpanded: Story = {
-  args: {
-    children: SHORTS.map((s, i) => (
-      <ShortCard key={s.title} {...s} image={backdrop} expanded={i === 0} href="#" />
-    )),
-  },
-}

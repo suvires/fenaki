@@ -1,4 +1,4 @@
-import { formatList, type Locale, type Translate } from '@fenaki/i18n'
+import { formatList, type Locale, type MessageKey, type Translate } from '@fenaki/i18n'
 import type { CurrentShort, NewSavedShort } from './myList.ts'
 import type { BadgeTone, PosterTone, ShortCardProps } from '@fenaki/ui'
 
@@ -19,6 +19,8 @@ export interface CardSource {
   subtitles: string[]
   publishedAt?: string | number | null
 }
+
+const TYPES = ['fiction', 'documentary', 'animation', 'experimental']
 
 export type DurationBand = 'short' | 'mid' | 'long'
 
@@ -85,6 +87,13 @@ export function badgesFor(
   return badges.slice(0, 3)
 }
 
+/** The short's type as the viewer reads it: «Ficción», «Animación»… */
+export function typeLabel(short: CardSource, t: Translate): string | undefined {
+  return TYPES.find((type) => type === short.type)
+    ? t(`short.types.${short.type}` as MessageKey)
+    : undefined
+}
+
 const TONES: PosterTone[] = ['sala', 'tungsteno', 'plata']
 
 export function posterTone(value: string | null | undefined): PosterTone {
@@ -100,6 +109,7 @@ export function toCard(
   clock: BadgeClock,
 ): ShortCardProps {
   return {
+    slug: short.slug,
     title: short.title,
     synopsis: short.synopsis || undefined,
     director: short.directors.length > 0 ? formatList(short.directors, locale) : undefined,
@@ -110,6 +120,7 @@ export function toCard(
     image: short.still ?? undefined,
     href,
     badges: badgesFor(short, locale, t, clock),
+    typeLabel: typeLabel(short, t),
   }
 }
 
@@ -135,7 +146,17 @@ export function toSavedShort(short: CardSource, locale: Locale): NewSavedShort {
   }
 }
 
-/** A short's card data as «Mi lista» shows it now: what it saves, plus the synopsis it does not. */
-export function toCurrentShort(short: CardSource, locale: Locale): CurrentShort {
-  return { ...toSavedShort(short, locale), synopsis: short.synopsis || undefined }
+/** A short's card data as «Mi lista» shows it now: what it saves, plus what it does not (see CurrentShort). */
+export function toCurrentShort(
+  short: CardSource,
+  locale: Locale,
+  t: Translate,
+  clock: BadgeClock,
+): CurrentShort {
+  return {
+    ...toSavedShort(short, locale),
+    synopsis: short.synopsis || undefined,
+    typeLabel: typeLabel(short, t),
+    badges: badgesFor(short, locale, t, clock),
+  }
 }

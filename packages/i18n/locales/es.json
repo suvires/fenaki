@@ -59,6 +59,14 @@
   "rail": {
     "seeAll": "Ver todo"
   },
+  "preview": {
+    "play": "Ver ahora",
+    "more": "Más información",
+    "rate": "Valorar",
+    "dislike": "No es para mí",
+    "like": "Me gusta",
+    "love": "¡Me encanta!"
+  },
   "short": {
     "directedBy": "Dirigido por {names}",
     "credits": "Créditos",

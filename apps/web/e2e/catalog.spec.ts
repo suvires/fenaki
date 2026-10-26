@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test'
+import { expect, test, type Page } from '@playwright/test'
 
 test('the browse page filters by facets with shareable URLs', async ({ page }) => {
   await page.goto('/es/cortos')
@@ -129,6 +129,85 @@ test('a short added to «Mi lista» appears in the rail and the list page, and s
   await expect(page.getByRole('region', { name: 'Mi lista' })).toHaveCount(0)
   await page.goto('/es/mi-lista')
   await expect(page.getByText(/Guarda cortos con/)).toBeVisible()
+})
+
+/** Hovers the first card of the home page and waits for its floating preview. */
+async function openPreview(page: Page) {
+  await page.goto('/es/')
+  const card = page.locator('[data-short-card]').first()
+  await card.scrollIntoViewIfNeeded()
+  await card.hover()
+  const preview = page.locator('[data-short-preview]')
+  await expect(preview).toBeVisible()
+  return { card, preview }
+}
+
+test('hovering a card floats a preview with its actions, and leaving closes it', async ({
+  page,
+}) => {
+  const { card, preview } = await openPreview(page)
+  const title = await card.getAttribute('data-title')
+  await expect(preview).toHaveAccessibleName(title ?? '')
+  await expect(preview.getByRole('link', { name: 'Ver ahora' })).toHaveAttribute(
+    'href',
+    /\/es\/cortos\//,
+  )
+  await expect(preview.getByRole('link', { name: 'Más información' })).toBeVisible()
+  await expect(preview.getByRole('button', { name: 'Valorar' })).toBeVisible()
+  await expect(preview.getByText('Dirigido por')).toBeVisible()
+  // Over the card, inside the viewport.
+  const box = await preview.boundingBox()
+  const viewport = page.viewportSize()
+  expect(box && viewport && box.x >= 0 && box.x + box.width <= viewport.width).toBe(true)
+
+  // «Mi lista» from the preview: the rail on the page follows.
+  await expect(page.getByRole('region', { name: 'Mi lista' })).toHaveCount(0)
+  await preview.getByRole('button', { name: 'Añadir a mi lista' }).click()
+  await expect(preview.getByRole('button', { name: 'En mi lista' })).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  )
+  await expect(page.getByRole('region', { name: 'Mi lista' })).toBeVisible()
+
+  await page.mouse.move(0, 0)
+  await expect(preview).toHaveCount(0)
+})
+
+test('the preview closes on Escape', async ({ page }) => {
+  const { preview } = await openPreview(page)
+  await page.keyboard.press('Escape')
+  await expect(preview).toHaveCount(0)
+})
+
+test('ratings are chosen from the preview and kept in the browser', async ({ page }) => {
+  const { card, preview } = await openPreview(page)
+  const slug = (await card.getAttribute('data-short-card')) ?? ''
+  const rate = preview.getByRole('button', { name: 'Valorar' })
+  const like = preview.getByRole('button', { name: 'Me gusta' })
+  // The thumbs-up, outlined, until the short is rated.
+  const outlined = await rate.locator('path').first().getAttribute('d')
+
+  await rate.hover()
+  await like.click()
+  await expect(like).toHaveAttribute('aria-pressed', 'true')
+  expect(await rate.locator('path').first().getAttribute('d')).not.toBe(outlined)
+  expect(await page.evaluate(() => localStorage.getItem('fenaki:my-ratings:v1'))).toBe(
+    JSON.stringify({ [slug]: 'like' }),
+  )
+
+  // Still rated after a reload.
+  await page.reload()
+  await card.scrollIntoViewIfNeeded()
+  await card.hover()
+  await expect(preview).toBeVisible()
+  await rate.hover()
+  await expect(like).toHaveAttribute('aria-pressed', 'true')
+
+  // Choosing it again clears the rating.
+  await like.click()
+  await expect(like).toHaveAttribute('aria-pressed', 'false')
+  expect(await rate.locator('path').first().getAttribute('d')).toBe(outlined)
+  expect(await page.evaluate(() => localStorage.getItem('fenaki:my-ratings:v1'))).toBe('{}')
 })
 
 test('the home page has no «Lo más visto» rail until the CMS has a real ranking of ten', async ({
