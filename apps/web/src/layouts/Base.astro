@@ -131,7 +131,7 @@ const footerLinks = landing
     data-signed-in={member ? 'true' : undefined}
     class:list={[
       // A column at least as tall as the window: main grows, so the footer always sits at the bottom.
-      // relative isolate: the landing page's backdrop sits behind everything, above the body colour.
+      // isolate: the landing page's backdrop (in main) sits behind everything, above the body colour.
       'relative isolate min-h-dvh overflow-x-hidden flex flex-col',
       // The home page: a light from above, like a screen glowing in a dark room. A huge ellipse
       // centred above the page (radial, so it arcs: brighter in the middle than at the sides), in
@@ -148,25 +148,6 @@ const footerLinks = landing
         id="fenaki-account"
         set:html={JSON.stringify(accountState).replace(/</g, '\\u003c')}
       />
-    )}
-    {landing && (
-      // Before launch, a glimpse of the catalog behind the hero: a screenshot of the home page tilted
-      // in perspective, dimmed, and fading into the page colour at the top and the bottom so it never
-      // meets the header or the footer with an edge.
-      <div
-        aria-hidden="true"
-        class="pointer-events-none absolute inset-0 -z-10 overflow-hidden [perspective:1600px]"
-      >
-        <img
-          src={catalogShot.src}
-          alt=""
-          width={catalogShot.width}
-          height={catalogShot.height}
-          decoding="async"
-          class="absolute left-1/2 top-1/2 w-[max(105%,900px)] max-w-none opacity-(--opacity-backdrop) [transform:translate(-50%,-46%)_rotateX(32deg)_rotateZ(-8deg)]"
-        />
-        <div class="absolute inset-0 bg-[linear-gradient(to_bottom,var(--color-sala-0)_8%,transparent_35%,transparent_65%,var(--color-sala-0)_92%)]" />
-      </div>
     )}
     <a
       href="#main"
@@ -259,9 +240,29 @@ const footerLinks = landing
       class:list={[
         'flex-1 w-full mx-auto max-w-page grid gap-12 px-4 md:px-8 pt-4 pb-8',
         // The landing page's only content, the hero, sits centred between the header and the footer.
-        landing ? 'content-center' : 'content-start',
+        landing ? 'relative content-center' : 'content-start',
       ]}
     >
+      {landing && (
+        // Before launch, a glimpse of the catalog behind the hero: a screenshot of the home page tilted
+        // in perspective, dimmed, and fading into the page colour at the top and the bottom so it never
+        // meets the header or the footer with an edge. It spans the window's width but only main's height:
+        // it never runs under the footer.
+        <div
+          aria-hidden="true"
+          class="pointer-events-none absolute inset-y-0 left-1/2 w-screen -translate-x-1/2 -z-10 overflow-hidden [perspective:1600px]"
+        >
+          <img
+            src={catalogShot.src}
+            alt=""
+            width={catalogShot.width}
+            height={catalogShot.height}
+            decoding="async"
+            class="absolute left-1/2 top-1/2 w-[max(105%,900px)] max-w-none opacity-(--opacity-backdrop) [transform:translate(-50%,-46%)_rotateX(32deg)_rotateZ(-8deg)]"
+          />
+          <div class="absolute inset-0 bg-[linear-gradient(to_bottom,var(--color-sala-0)_8%,transparent_35%,transparent_65%,var(--color-sala-0)_92%)]" />
+        </div>
+      )}
       <slot />
     </main>
     {/* One island for every card on the page: the floating preview of the card under the pointer. */}
