@@ -41,19 +41,24 @@ interface MeResponse {
   exp?: number
 }
 
+export type Resolved =
+  | { status: 'ok'; member: SessionMember; refreshed?: { token: string; exp: number } }
+  /** The CMS answered: this token is not a signed-in member (expired, revoked, not a viewer's). */
+  | { status: 'invalid' }
+  /** The CMS did not answer: nobody is signed out because of that. */
+  | { status: 'unavailable' }
+
 /** Asks the CMS who the token belongs to; refreshes it when it is close to expiring. */
-export async function resolveSession(
-  token: string,
-): Promise<{ member: SessionMember; refreshed?: { token: string; exp: number } } | undefined> {
+export async function resolveSession(token: string): Promise<Resolved> {
   let me
   try {
     me = await cms<MeResponse>('members/me', { token })
   } catch {
-    // The CMS is unreachable: not a reason to sign anyone out. Treat the request as signed out.
-    return undefined
+    return { status: 'unavailable' }
   }
+  if (me.status >= 500) return { status: 'unavailable' }
   const user = me.data?.user
-  if (me.status !== 200 || !user || user.collection !== 'members') return undefined
+  if (me.status !== 200 || !user || user.collection !== 'members') return { status: 'invalid' }
   let member: SessionMember = {
     id: user.id,
     email: user.email,
@@ -62,13 +67,14 @@ export async function resolveSession(
   }
 
   const exp = me.data?.exp ?? 0
-  if (exp - Date.now() / 1000 > REFRESH_WITHIN_SECONDS) return { member }
+  if (exp - Date.now() / 1000 > REFRESH_WITHIN_SECONDS) return { status: 'ok', member }
   const refresh = await cms<{ refreshedToken?: string; exp?: number }>('members/refresh-token', {
     method: 'POST',
     token,
   }).catch(() => undefined)
   const refreshedToken = refresh?.data?.refreshedToken
-  if (refresh?.status !== 200 || !refreshedToken || !refresh.data?.exp) return { member }
+  if (refresh?.status !== 200 || !refreshedToken || !refresh.data?.exp)
+    return { status: 'ok', member }
   member = { ...member, token: refreshedToken }
-  return { member, refreshed: { token: refreshedToken, exp: refresh.data.exp } }
+  return { status: 'ok', member, refreshed: { token: refreshedToken, exp: refresh.data.exp } }
 }

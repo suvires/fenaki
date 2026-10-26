@@ -8,6 +8,11 @@ import { isHiddenInMode } from './lib/site-mode.ts'
 /** Static files and generated images never depend on who is signed in. */
 const NO_SESSION = /^\/(_astro\/|og\/|up$|favicon|apple-touch-icon|robots\.txt|sitemap)/
 
+function setPrivate(headers: Headers) {
+  headers.set('Cache-Control', 'private, no-store')
+  headers.append('Vary', 'Cookie')
+}
+
 export const onRequest = defineMiddleware(async (context, next) => {
   // Before launch, the catalog routes are not public: they answer as if they did not exist.
   if (isHiddenInMode(context.url.pathname, siteMode)) {
@@ -19,18 +24,23 @@ export const onRequest = defineMiddleware(async (context, next) => {
   const token = context.cookies.get(SESSION_COOKIE)?.value
   if (token && !NO_SESSION.test(context.url.pathname)) {
     const session = await resolveSession(token)
-    if (session) {
+    if (session.status === 'ok') {
       context.locals.member = session.member
       if (session.refreshed)
         setSession(context.cookies, session.refreshed.token, session.refreshed.exp)
-    } else clearSession(context.cookies)
+    } else if (session.status === 'invalid') clearSession(context.cookies)
   }
   try {
-    const response = await next()
+    let response = await next()
     // What a signed-in viewer sees is theirs: no shared cache keeps it.
     if (context.locals.member) {
-      response.headers.set('Cache-Control', 'private, no-store')
-      response.headers.append('Vary', 'Cookie')
+      try {
+        setPrivate(response.headers)
+      } catch {
+        // Some responses (redirects) have immutable headers: copy them.
+        response = new Response(response.body, response)
+        setPrivate(response.headers)
+      }
     }
     return withSecurityHeaders(response)
   } catch (error) {
