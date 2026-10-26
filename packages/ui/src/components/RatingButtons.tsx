@@ -77,17 +77,21 @@ export function RatingButtons({
     setDismissed(false)
     setActive(undefined)
   }
-  const onKeyDown = (event: KeyboardEvent) => {
-    if (event.key !== 'Escape' || !open) return
-    // The preview closes on Escape too (it skips events already handled): this only folds the pill.
-    event.stopPropagation()
-    event.preventDefault()
+  /** Folds the pill; focus inside it goes back to the rate button, not lost in a hidden one. */
+  const fold = () => {
     setDismissed(true)
     setActive(undefined)
     if (root.current?.contains(document.activeElement) && document.activeElement !== rest.current) {
       restoring.current = true
       rest.current?.focus()
     }
+  }
+  const onKeyDown = (event: KeyboardEvent) => {
+    if (event.key !== 'Escape' || !open) return
+    // The preview closes on Escape too (it skips events already handled): this only folds the pill.
+    event.stopPropagation()
+    event.preventDefault()
+    fold()
   }
 
   return (
@@ -121,8 +125,9 @@ export function RatingButtons({
           // The pill's buttons are as big as the one it opens from, centred on it, with a little padding.
           'absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 flex items-center gap-1 p-1',
           'rounded-control bg-sala-2/(--opacity-pill) backdrop-blur-veil shadow-card',
-          'transition-[opacity,visibility] duration-(--duration-press) ease-standard motion-reduce:transition-none',
-          'invisible opacity-0 data-open:visible data-open:opacity-100',
+          // Unfolds from the rate button and folds back into it: width and opacity, both ways.
+          'transition-[opacity,scale,visibility] duration-(--duration-pill) ease-standard motion-reduce:transition-none',
+          'invisible opacity-0 scale-x-(--scale-pill-folded) data-open:visible data-open:opacity-100 data-open:scale-x-100',
         )}
       >
         {CHOICES.map((choice) => (
@@ -140,7 +145,11 @@ export function RatingButtons({
               label={labels[choice.value]}
               variant="ghost"
               aria-pressed={value === choice.value}
-              onClick={() => onChange?.(value === choice.value ? undefined : choice.value)}
+              onClick={() => {
+                onChange?.(value === choice.value ? undefined : choice.value)
+                // A choice made, the pill folds back into the rate button.
+                fold()
+              }}
             />
             <Tooltip open={open && (active ?? tooltip) === choice.value}>
               {labels[choice.value]}

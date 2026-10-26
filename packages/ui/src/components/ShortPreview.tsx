@@ -27,7 +27,7 @@ export interface ShortPreviewProps {
   typeLabel?: string
   synopsis?: string
   badges?: { label: string; tone?: BadgeTone }[]
-  /** The short's page: the play and «Más información» buttons go there. */
+  /** The short's page: the play button and the rest of the panel lead there. */
   href: string
   /** Whether the short is in «Mi lista». */
   saved?: boolean
@@ -41,7 +41,7 @@ export interface ShortPreviewProps {
     addToList: string
     /** «En mi lista» */
     inMyList: string
-    /** «Más información» */
+    /** «Más información»: the name of the link that covers the panel. */
     more: string
     rating: RatingButtonsProps['labels']
   }
@@ -61,8 +61,8 @@ export interface ShortPreviewProps {
 
 /**
  * The floating preview of a short that opens when the pointer rests on its card: the still with the
- * title, then the actions (play, «Mi lista», rating, more information), the facts, the director and
- * the synopsis. Presentational: the page's preview island positions it and keeps the state.
+ * title, then the actions (play, «Mi lista», rating), the facts, the director and the synopsis.
+ * Anywhere but the buttons leads to the short's page: a link stretched over the whole panel. Presentational: the page's preview island positions it and keeps the state.
  */
 export function ShortPreview({
   title,
@@ -142,7 +142,8 @@ export function ShortPreview({
         )}
       </div>
       <div className="grid gap-3 p-4">
-        <div className="flex items-center gap-2">
+        {/* Above the panel-wide link, so the buttons keep their own actions. */}
+        <div className="relative z-10 flex items-center gap-2">
           <IconButton icon="play" label={labels.play} variant="primary" href={href} />
           <IconButton
             icon={saved ? 'check' : 'plus'}
@@ -157,7 +158,6 @@ export function ShortPreview({
             expanded={ratingExpanded}
             tooltip={ratingTooltip}
           />
-          <IconButton icon="chevron-down" label={labels.more} href={href} className="ml-auto" />
         </div>
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-meta text-ink">
           {seconds ? <Duration seconds={seconds} locale={locale} muted={false} /> : null}
@@ -172,6 +172,11 @@ export function ShortPreview({
         {directedBy ? <p className="m-0 text-meta text-ink-muted">{directedBy}</p> : null}
         {synopsis ? <p className="m-0 text-meta text-ink-muted line-clamp-3">{synopsis}</p> : null}
       </div>
+      <a
+        href={href}
+        aria-label={labels.more}
+        className="absolute inset-0 rounded-panel focus-visible:focus-ring"
+      />
     </div>
   )
 }

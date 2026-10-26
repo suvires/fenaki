@@ -184,13 +184,14 @@ test('ratings are chosen from the preview and kept in the browser', async ({ pag
   const slug = (await card.getAttribute('data-short-card')) ?? ''
   const rate = preview.getByRole('button', { name: 'Valorar' })
   const like = preview.getByRole('button', { name: 'Me gusta' })
-  // The thumbs-up, outlined, until the short is rated.
-  const outlined = await rate.locator('path').first().getAttribute('d')
+  // The thumbs-up, outlined (not filled), until the short is rated.
+  const fill = () => rate.locator('svg').first().getAttribute('fill')
+  expect(await fill()).toBe('none')
 
   await rate.hover()
   await like.click()
   await expect(like).toHaveAttribute('aria-pressed', 'true')
-  expect(await rate.locator('path').first().getAttribute('d')).not.toBe(outlined)
+  expect(await fill()).toBe('currentColor')
   expect(await page.evaluate(() => localStorage.getItem('fenaki:my-ratings:v1'))).toBe(
     JSON.stringify({ [slug]: 'like' }),
   )
@@ -206,7 +207,7 @@ test('ratings are chosen from the preview and kept in the browser', async ({ pag
   // Choosing it again clears the rating.
   await like.click()
   await expect(like).toHaveAttribute('aria-pressed', 'false')
-  expect(await rate.locator('path').first().getAttribute('d')).toBe(outlined)
+  expect(await fill()).toBe('none')
   expect(await page.evaluate(() => localStorage.getItem('fenaki:my-ratings:v1'))).toBe('{}')
 })
 
