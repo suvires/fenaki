@@ -120,6 +120,7 @@ const otherRails = rails.filter((rail) => rail.key !== 'latest')
       title={t('home.myList.title')}
       actionLabel={t('rail.seeAll')}
       actionHref={paths.myList(locale)}
+      arrows={{ previous: t('rail.previous'), next: t('rail.next') }}
       locale={locale}
       hrefBase={paths.short(locale, '')}
       current={Object.fromEntries(
@@ -134,6 +135,7 @@ const otherRails = rails.filter((rail) => rail.key !== 'latest')
     latestRails.map((rail) => (
       <div>
         <Rail
+          arrows={{ previous: t('rail.previous'), next: t('rail.next') }}
           title={rail.title}
           actionLabel={rail.href ? t('rail.seeAll') : undefined}
           actionHref={rail.href}
@@ -166,7 +168,10 @@ const otherRails = rails.filter((rail) => rail.key !== 'latest')
     />
   )}
   {top.length > 0 && (
-    <RankedRail title={t('home.top10.title')}>
+    <RankedRail
+      arrows={{ previous: t('rail.previous'), next: t('rail.next') }}
+      title={t('home.top10.title')}
+    >
       {top.map((short, index) => (
         <RankedItem rank={index + 1} rankLabel={t('home.top10.rank', { rank: index + 1 })}>
           <ShortCard
@@ -180,6 +185,7 @@ const otherRails = rails.filter((rail) => rail.key !== 'latest')
     otherRails.map((rail) => (
       <div>
         <Rail
+          arrows={{ previous: t('rail.previous'), next: t('rail.next') }}
           title={rail.title}
           actionLabel={rail.href ? t('rail.seeAll') : undefined}
           actionHref={rail.href}

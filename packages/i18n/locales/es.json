@@ -55,7 +55,9 @@
     "sponsoredBy": "Presentada por"
   },
   "rail": {
-    "seeAll": "Ver todo"
+    "seeAll": "Ver todo",
+    "previous": "Anteriores",
+    "next": "Siguientes"
   },
   "preview": {
     "play": "Ver ahora",

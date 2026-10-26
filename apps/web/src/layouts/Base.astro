@@ -258,6 +258,53 @@ const footerGroups = [
         fit()
         new ResizeObserver(fit).observe(glowEnd)
       }
+      // Rails with arrows are sliders: the arrows move the row about one screen, and show only
+      // where there is more to see (data-can-previous / data-can-next on the rail). Delegated, so
+      // rails rendered later by islands («Mi lista») work too.
+      const railOf = (target: EventTarget | null) =>
+        target instanceof Element ? target.closest<HTMLElement>('[data-rail]') : null
+      const trackOf = (rail: HTMLElement) => rail.querySelector<HTMLElement>('[data-rail-track]')
+      const syncRail = (rail: HTMLElement) => {
+        const track = trackOf(rail)
+        if (!track) return
+        const max = track.scrollWidth - track.clientWidth
+        rail.toggleAttribute('data-can-previous', track.scrollLeft > 1)
+        rail.toggleAttribute('data-can-next', track.scrollLeft < max - 1)
+      }
+      const syncAll = () => document.querySelectorAll<HTMLElement>('[data-rail]').forEach(syncRail)
+      syncAll()
+      window.addEventListener('resize', syncAll, { passive: true })
+      document.addEventListener('pointerover', (event) => {
+        const rail = railOf(event.target)
+        if (rail) syncRail(rail)
+      })
+      document.addEventListener('focusin', (event) => {
+        const rail = railOf(event.target)
+        if (rail) syncRail(rail)
+      })
+      document.addEventListener(
+        'scroll',
+        (event) => {
+          const rail = railOf(event.target)
+          if (rail) syncRail(rail)
+        },
+        { capture: true, passive: true },
+      )
+      document.addEventListener('click', (event) => {
+        const button =
+          event.target instanceof Element
+            ? event.target.closest('[data-rail-previous], [data-rail-next]')
+            : null
+        const rail = railOf(button)
+        const track = rail && trackOf(rail)
+        if (!button || !track) return
+        const direction = button.hasAttribute('data-rail-next') ? 1 : -1
+        const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        track.scrollBy({
+          left: direction * track.clientWidth * 0.9,
+          behavior: still ? 'auto' : 'smooth',
+        })
+      })
       if (header && main) {
         let queued = false
         const update = () => {

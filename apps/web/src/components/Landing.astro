@@ -99,7 +99,7 @@ const list = 'm-0 p-0 list-none grid gap-4 max-w-synopsis'
     <p id="sample-label" class="m-0 font-mono text-label uppercase text-tungsteno-text">
       {t('landing.sample.label')}
     </p>
-    <Rail title={shown.title}>
+    <Rail arrows={{ previous: t('rail.previous'), next: t('rail.next') }} title={shown.title}>
       {shown.shorts.map((short) => (
         <ShortCard {...toCard(toCardSource(short), locale, t, undefined, clock)} />
       ))}

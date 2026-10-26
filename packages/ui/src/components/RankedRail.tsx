@@ -3,7 +3,7 @@ import { cx } from '../cx.ts'
 import { Rail, type RailProps } from './Rail.tsx'
 import { RankNumber } from './RankNumber.tsx'
 
-/** A Top 10 rail: the same scrolling, snapping row as `Rail`, filled with `RankedItem`s. */
+/** A Top 10 rail: the same row (or slider, with `arrows`) as `Rail`, filled with `RankedItem`s. */
 export function RankedRail(props: RailProps) {
   return <Rail {...props} />
 }

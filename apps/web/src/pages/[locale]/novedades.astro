@@ -32,6 +32,7 @@ const rails = GENRES.map((type) => ({
     ) : (
       rails.map((rail) => (
         <Rail
+          arrows={{ previous: t('rail.previous'), next: t('rail.next') }}
           title={t(`short.types.${rail.type}`)}
           actionLabel={t('rail.seeAll')}
           actionHref={paths.genre(locale, rail.type)}

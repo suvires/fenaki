@@ -242,3 +242,21 @@ test('«Novedades» in the header and on the home rail lead to a page with one r
     '/es/cortos?type=animation',
   )
 })
+
+test('rails are sliders: the arrows move the row and show only where it can move', async ({
+  page,
+}) => {
+  await page.goto('/es/')
+  const rail = page.getByRole('region', { name: 'Novedades' })
+  const next = rail.getByRole('button', { name: 'Siguientes' })
+  const previous = rail.getByRole('button', { name: 'Anteriores' })
+  const track = rail.locator('[data-rail-track]')
+  // Over the rail's title, not a card: a card would open its floating preview over the arrows.
+  await rail.getByRole('heading').hover()
+  await expect(next).toBeVisible()
+  await expect(previous).toBeHidden()
+
+  await next.click()
+  await expect.poll(() => track.evaluate((el) => el.scrollLeft)).toBeGreaterThan(0)
+  await expect(previous).toBeVisible()
+})

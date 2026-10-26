@@ -8,7 +8,7 @@ export interface IconButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonEle
   label: string
   /** The icon's filled variant, for a chosen state (the thumbs). */
   filled?: boolean
-  variant?: 'primary' | 'secondary' | 'ghost'
+  variant?: 'primary' | 'secondary' | 'ghost' | 'veil'
   size?: 'sm' | 'md' | 'lg'
   /** Renders a link that looks like a button. */
   href?: string
@@ -21,6 +21,8 @@ const VARIANTS = {
   secondary: 'bg-transparent text-ink border-line-strong hover:border-ink',
   // No outline: for buttons grouped inside a surface of their own (the rating pill).
   ghost: 'bg-transparent text-ink border-transparent hover:bg-veil/(--opacity-veil-hover)',
+  // Translucent and blurred, like the secondary Button: over images (a rail's arrows).
+  veil: 'bg-veil/(--opacity-veil) backdrop-blur-veil text-ink border-transparent hover:bg-veil/(--opacity-veil-hover)',
 } as const
 
 const SIZES = {

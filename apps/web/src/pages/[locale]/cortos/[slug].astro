@@ -156,7 +156,10 @@ const origin = [
         </LicenseNote>
       )}
       {related.length > 0 && (
-        <Rail title={t('short.related')}>
+        <Rail
+          arrows={{ previous: t('rail.previous'), next: t('rail.next') }}
+          title={t('short.related')}
+        >
           {related.map((s) => (
             <ShortCard
               {...toCard(toCardSource(s), locale, t, paths.short(locale, s.slug), clock)}

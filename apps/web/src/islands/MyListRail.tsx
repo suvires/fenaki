@@ -15,6 +15,8 @@ interface MyListRailProps {
   actionLabel: string
   /** The page with the whole list. */
   actionHref: string
+  /** The slider arrows' names. */
+  arrows: { previous: string; next: string }
   locale: Locale
   /** The path of a short's page, already built by the server for this slug pattern. */
   hrefBase: string
@@ -30,6 +32,7 @@ export function MyListRail({
   title,
   actionLabel,
   actionHref,
+  arrows,
   locale,
   hrefBase,
   current,
@@ -44,7 +47,7 @@ export function MyListRail({
 
   if (items.length === 0) return null
   return (
-    <Rail title={title} actionLabel={actionLabel} actionHref={actionHref}>
+    <Rail title={title} actionLabel={actionLabel} actionHref={actionHref} arrows={arrows}>
       {items.map((item) => (
         <ShortCard
           key={item.slug}
