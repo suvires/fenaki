@@ -170,7 +170,7 @@
   "waitlist": {
     "title": "Te avisamos cuando abra",
     "email": {
-      "label": "Correo electrónico",
+      "label": "¿Quieres que te avisemos?",
       "placeholder": "nombre@ejemplo.com"
     },
     "submit": "Avísame",

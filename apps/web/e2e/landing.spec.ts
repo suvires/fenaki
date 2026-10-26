@@ -85,7 +85,7 @@ test('the waitlist form explains what is wrong with the address', async ({ page 
   const submit = page.getByRole('button', { name: 'Avísame' })
   await submit.click()
   await expect(page.getByText('Escribe tu correo para apuntarte.')).toBeVisible()
-  await page.getByLabel('Correo electrónico').fill('ana@ejemplo')
+  await page.getByLabel('¿Quieres que te avisemos?').fill('ana@ejemplo')
   await submit.click()
   await expect(page.getByText('Ese correo no parece completo.', { exact: false })).toBeVisible()
 })
@@ -95,7 +95,7 @@ test('signing up sends a confirmation email that confirms the subscription in li
 }) => {
   const email = `e2e+${Date.now()}@example.com`
   await page.goto('/es/')
-  await page.getByLabel('Correo electrónico').fill(email)
+  await page.getByLabel('¿Quieres que te avisemos?').fill(email)
   await page.getByRole('button', { name: 'Avísame' }).click()
   await expect(page.getByText('Revisa tu correo')).toBeVisible()
   await expect(page.getByText(email)).toBeVisible()
