@@ -76,12 +76,16 @@ test('search finds shorts by director as you type', async ({ page }) => {
   await expect(page).toHaveURL(/\/es\/buscar\?q=vigalondo$/)
 })
 
-test('the header opens the genres and the search in place', async ({ page }) => {
+test('the header leads to the catalogue and opens the search in place', async ({ page }) => {
   await page.goto('/es/')
   const nav = page.getByRole('navigation', { name: 'Principal' })
-  await nav.getByRole('button', { name: 'Cortometrajes' }).click()
-  await nav.getByRole('link', { name: 'Animación' }).click()
-  await expect(page).toHaveURL(/\/es\/cortos\?type=animation$/)
+  await nav.getByRole('link', { name: 'Cortometrajes' }).click()
+  await expect(page).toHaveURL(/\/es\/cortos$/)
+  await expect(nav.getByRole('link', { name: 'Cortometrajes' })).toHaveAttribute(
+    'aria-current',
+    'page',
+  )
+  await page.goto('/es/')
 
   await page.getByRole('button', { name: 'Buscar', exact: true }).click()
   const search = page.getByRole('searchbox', { name: 'Buscar cortos' })

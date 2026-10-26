@@ -29,9 +29,9 @@ test('the catalog pages run under the policy', async ({ page }, testInfo) => {
   const violations = watchViolations(page)
 
   await visit(page, '/es/')
-  // A hydrated island: the header's genres menu.
-  await page.getByRole('button', { name: 'Cortometrajes' }).first().click()
-  await expect(page.getByRole('link', { name: 'Animación' }).first()).toBeVisible()
+  // A hydrated island: the header's search opens in place.
+  await page.getByRole('button', { name: 'Buscar', exact: true }).click()
+  await expect(page.getByRole('searchbox', { name: 'Buscar cortos' })).toBeFocused()
 
   await visit(page, '/es/cortos/timecode')
   await page.getByRole('button', { name: 'Ver ahora' }).click()

@@ -46,7 +46,6 @@ for (const directive of csp.directives) Astro.csp?.insertDirective(directive)
 
 const t = translator(locale)
 const landing = siteMode === 'landing'
-const GENRES = ['fiction', 'documentary', 'animation', 'experimental'] as const
 const pageTitle = title
   ? `${title} · ${t('site.name')}`
   : `${t('site.name')} · ${t('site.tagline')}`
@@ -145,7 +144,8 @@ const footerGroups = [
   </head>
   <body
     class:list={[
-      'min-h-dvh overflow-x-hidden',
+      // A column at least as tall as the window: main grows, so the footer always sits at the bottom.
+      'min-h-dvh overflow-x-hidden flex flex-col',
       // The home page: a light from above, like a screen glowing in a dark room. A huge ellipse
       // centred above the page (radial, so it arcs: brighter in the middle than at the sides), in
       // the glow colour at the glow opacity, fading to transparent; and a black band behind the
@@ -162,7 +162,7 @@ const footerGroups = [
       {t('site.skipToContent')}
     </a>
     {landing ? (
-      <header class="mx-auto max-w-page flex items-center px-4 md:px-8 pt-6">
+      <header class="w-full mx-auto max-w-page flex items-center px-4 md:px-8 pt-6">
         <a
           href={paths.home(locale)}
           class="inline-flex text-ink rounded-xs focus-visible:focus-ring"
@@ -180,14 +180,12 @@ const footerGroups = [
           className="mx-auto max-w-page px-4 md:px-8 py-6"
           home={{ href: paths.home(locale), label: t('site.name') }}
           navLabel={t('header.nav')}
-          genres={{
-            label: t('header.genres'),
-            items: GENRES.map((type) => ({
-              label: t(`short.types.${type}`),
-              href: paths.genre(locale, type),
-            })),
-          }}
           links={[
+            {
+              label: t('header.genres'),
+              href: paths.browse(locale),
+              current: Astro.url.pathname === paths.browse(locale),
+            },
             {
               label: t('header.latest'),
               href: paths.latest(locale),
@@ -215,7 +213,10 @@ const footerGroups = [
         />
       </div>
     )}
-    <main id="main" class="mx-auto max-w-page grid gap-12 px-4 md:px-8 pt-4 pb-8">
+    <main
+      id="main"
+      class="flex-1 w-full mx-auto max-w-page grid content-start gap-12 px-4 md:px-8 pt-4 pb-8"
+    >
       <slot />
     </main>
     {/* One island for every card on the page: the floating preview of the card under the pointer. */}
@@ -277,7 +278,7 @@ const footerGroups = [
       }
     </script>
     <SiteFooter
-      className="mx-auto max-w-page px-4 md:px-8 pb-8"
+      className="w-full mx-auto max-w-page px-4 md:px-8 pb-8"
       label={t('footer.label')}
       groups={footerGroups}
       tagline={t('footer.tagline')}

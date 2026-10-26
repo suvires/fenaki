@@ -16,8 +16,8 @@ export interface SiteHeaderProps {
   home: { href: string; label: string }
   /** Accessible name of the main navigation. */
   navLabel: string
-  /** «Géneros»: a disclosure with one link per type. */
-  genres: { label: string; items: Link[] }
+  /** Optional: a disclosure with one link per genre. Without it the navigation is only `links`. */
+  genres?: { label: string; items: Link[] }
   /** Plain links after the genres, such as «Novedades» and «Mi lista». */
   links: Link[]
   /** The search form the magnifier opens in the header. */
@@ -106,41 +106,43 @@ export function SiteHeader({
 
   const navigation = (where: 'bar' | 'menu') => (
     <ul className="m-0 p-0 list-none flex flex-col md:flex-row md:items-center gap-4 md:gap-6">
-      <li className="relative">
-        <button
-          type="button"
-          aria-expanded={genresOpen}
-          aria-controls={`${genresId}-${where}`}
-          onClick={() => setGenresOpen((open) => !open)}
-          className={cx(
-            linkClass,
-            'inline-flex items-center gap-1 bg-transparent border-0 p-0 cursor-pointer',
-          )}
-        >
-          {genres.label}
-          <Icon
-            name="chevron"
-            size="xs"
+      {genres ? (
+        <li className="relative">
+          <button
+            type="button"
+            aria-expanded={genresOpen}
+            aria-controls={`${genresId}-${where}`}
+            onClick={() => setGenresOpen((open) => !open)}
             className={cx(
-              'transition-transform motion-reduce:transition-none',
-              genresOpen ? '-rotate-90' : 'rotate-90',
+              linkClass,
+              'inline-flex items-center gap-1 bg-transparent border-0 p-0 cursor-pointer',
             )}
-          />
-        </button>
-        <ul
-          id={`${genresId}-${where}`}
-          hidden={!genresOpen}
-          className="m-0 mt-2 p-2 list-none grid gap-1 md:absolute md:left-0 md:top-full md:z-10 md:min-w-(--size-column) rounded-sm bg-sala-1 border border-line shadow-hover"
-        >
-          {genres.items.map((item) => (
-            <li key={item.href}>
-              <a href={item.href} className={cx(linkClass, 'block px-2 py-1')}>
-                {item.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </li>
+          >
+            {genres.label}
+            <Icon
+              name="chevron"
+              size="xs"
+              className={cx(
+                'transition-transform motion-reduce:transition-none',
+                genresOpen ? '-rotate-90' : 'rotate-90',
+              )}
+            />
+          </button>
+          <ul
+            id={`${genresId}-${where}`}
+            hidden={!genresOpen}
+            className="m-0 mt-2 p-2 list-none grid gap-1 md:absolute md:left-0 md:top-full md:z-10 md:min-w-(--size-column) rounded-sm bg-sala-1 border border-line shadow-hover"
+          >
+            {genres.items.map((item) => (
+              <li key={item.href}>
+                <a href={item.href} className={cx(linkClass, 'block px-2 py-1')}>
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </li>
+      ) : null}
       {links.map((link) => (
         <li key={link.href}>
           <a
