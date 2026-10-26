@@ -39,17 +39,17 @@ const PATHS = {
 } as const
 
 /**
- * The thumbs have a filled variant (a rating that is chosen). Same outline, drawn to be filled:
- * the cuff is narrowed and the hand starts further right, so that with the stroke they stay two
- * shapes with a hairline between them instead of merging into one block.
+ * The thumbs have a filled variant (a rating that is chosen): the same hand outline as the outlined
+ * icon, filled, without the cuff, so filling never changes the shape; moved 1.75px left so the
+ * hand alone sits centred.
  */
 const FILLED_PATHS = {
   'thumbs-up':
-    'M4 11.5h2V20H4zM8.5 11.5 11 4.5a2.5 2.5 0 0 1 2.5 2.5v3.5h5.3a1.5 1.5 0 0 1 1.5 1.75l-1 6.5A2 2 0 0 1 17.3 20H8.5z',
+    'M5.75 11.5 9.25 4.5a2.5 2.5 0 0 1 2.5 2.5v3.5h5.3a1.5 1.5 0 0 1 1.5 1.75l-1 6.5A2 2 0 0 1 15.55 20H5.75z',
   'thumbs-down':
-    'M4 12.5h2V4H4zM8.5 12.5 11 19.5a2.5 2.5 0 0 0 2.5-2.5v-3.5h5.3a1.5 1.5 0 0 0 1.5-1.75l-1-6.5A2 2 0 0 0 17.3 4H8.5z',
+    'M5.75 12.5 9.25 19.5a2.5 2.5 0 0 0 2.5-2.5v-3.5h5.3a1.5 1.5 0 0 0 1.5-1.75l-1-6.5A2 2 0 0 0 15.55 4H5.75z',
   'thumbs-up-double':
-    'M4 11.5h2V20H4zM8.5 11.5 11 4.5a2.5 2.5 0 0 1 2.5 2.5v3.5h5.3a1.5 1.5 0 0 1 1.5 1.75l-1 6.5A2 2 0 0 1 17.3 20H8.5z',
+    'M5.75 11.5 9.25 4.5a2.5 2.5 0 0 1 2.5 2.5v3.5h5.3a1.5 1.5 0 0 1 1.5 1.75l-1 6.5A2 2 0 0 1 15.55 20H5.75z',
 } as const
 
 /**
@@ -118,7 +118,7 @@ export function Icon({
           <mask id={maskId} maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
             <rect width="24" height="24" fill="white" stroke="none" />
             <path
-              d={FILLED_PATHS['thumbs-up']}
+              d={d}
               transform={DOUBLE.front}
               fill="black"
               stroke="black"
