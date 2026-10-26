@@ -4,7 +4,7 @@
 
 ## 1. Quién está detrás de FENAKI
 
-En cumplimiento del artículo 10 de la Ley 34/2002, de 11 de julio, de servicios de la sociedad de la información y de comercio electrónico (LSSI-CE), te informamos de que el sitio web **fenaki.tv** (en adelante, «FENAKI» o «el sitio») es titularidad de:
+En cumplimiento del artículo 10 de la Ley 34/2002, de 11 de julio, de servicios de la sociedad de la información y de comercio electrónico (LSSI-CE), te informamos de que el sitio web **fenaki.tv** (en adelante, «FENAKI») es titularidad de:
 
 | Dato                               | Valor                                                                                                          |
 | ---------------------------------- | -------------------------------------------------------------------------------------------------------------- |
@@ -17,9 +17,9 @@ En cumplimiento del artículo 10 de la Ley 34/2002, de 11 de julio, de servicios
 | Autorización administrativa previa | No se requiere para esta actividad                                                                             |
 | Profesión regulada                 | No aplica                                                                                                      |
 | Códigos de conducta                | FENAKI no está adherido a ningún código de conducta                                                            |
-| Alojamiento del sitio              | OVHcloud, en un servidor situado en Beauharnois (Canadá), país con decisión de adecuación de la Unión Europea. |
+| Alojamiento                        | OVHcloud, en un servidor situado en Beauharnois (Canadá), país con decisión de adecuación de la Unión Europea. |
 
-FENAKI es una marca independiente. Cuando en este sitio se habla de «FENAKI», «nosotros» o «el equipo», se hace referencia al titular indicado arriba.
+FENAKI es una marca independiente. Cuando en FENAKI se habla de «nosotros» o de «el equipo», se hace referencia al titular indicado arriba.
 
 ## 2. Qué es FENAKI
 
@@ -29,22 +29,22 @@ FENAKI es un catálogo curado de cortometrajes que se pueden ver gratis y de for
 - En el futuro podrá alojar en su propio servicio de vídeo cortos de dominio público, con licencia abierta (Creative Commons BY o BY-SA) o con cesión firmada por su titular. Cuando sea así, la ficha del corto lo indicará.
 - Indica en cada ficha la vía legal por la que el corto está en el catálogo y enlaza a su origen.
 
-El acceso al sitio es gratuito y no requiere registro. Si creas una cuenta, se aplican también los [términos de uso de las cuentas](/es/terminos-de-uso). La lista de espera, la newsletter y, más adelante, los apoyos económicos explican sus condiciones en el momento de usarlos.
+El acceso a FENAKI es gratuito y no requiere registro. Si creas una cuenta, se aplican también los [términos de uso de las cuentas](/es/terminos-de-uso). La lista de espera, la newsletter y, más adelante, los apoyos económicos explican sus condiciones en el momento de usarlos.
 
 ## 3. Condiciones de uso
 
-Al navegar por FENAKI aceptas usar el sitio de forma lícita y no:
+Al navegar por FENAKI aceptas usarlo de forma lícita y no:
 
 - Copiar, descargar o redistribuir los cortos fuera de las condiciones que fije su titular o la plataforma de origen.
 - Extraer de forma masiva o automatizada el catálogo, las fichas o las colecciones editoriales (art. 133 y ss. del Texto Refundido de la Ley de Propiedad Intelectual, derecho _sui generis_ del fabricante de la base de datos).
-- Introducir virus o código malicioso, o intentar acceder a zonas no públicas del sitio.
-- Usar el sitio para fines contrarios a la ley, la moral o el orden público.
+- Introducir virus o código malicioso, o intentar acceder a zonas no públicas de FENAKI.
+- Usar FENAKI para fines contrarios a la ley, la moral o el orden público.
 
 ## 4. Propiedad intelectual e industrial
 
 ### 4.1 Contenido propio de FENAKI
 
-Son de FENAKI (o se usan con licencia) el diseño del sitio, la marca y el logotipo, los textos editoriales (sinopsis propias, descripciones de colecciones, biografías redactadas por FENAKI), la selección y la ordenación del catálogo y el código del sitio.
+Son de FENAKI (o se usan con licencia) el diseño, la marca y el logotipo, los textos editoriales (sinopsis propias, descripciones de colecciones, biografías redactadas por FENAKI), la selección y la ordenación del catálogo y su código fuente.
 
 La marca «FENAKI» está en uso y su registro en la Oficina Española de Patentes y Marcas está previsto.
 
@@ -75,7 +75,7 @@ FENAKI trabaja para que la información del catálogo (fichas, duraciones, licen
 
 FENAKI no responde de:
 
-- Interrupciones o fallos técnicos del sitio o de las plataformas de vídeo de terceros.
+- Interrupciones o fallos técnicos de FENAKI o de las plataformas de vídeo de terceros.
 - El contenido de los cortos, que es responsabilidad de sus autores. Cada ficha puede incluir indicaciones de edad o de contenido como orientación, sin que constituyan una calificación oficial.
 - El uso que hagas de los cortos fuera de FENAKI.
 

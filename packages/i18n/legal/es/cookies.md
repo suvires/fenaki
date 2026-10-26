@@ -9,7 +9,7 @@ Una cookie es un pequeño archivo que un sitio web guarda en tu navegador para r
 ## 2. Cómo usa FENAKI las cookies, en resumen
 
 - **Sin cookies de analítica ni de publicidad.** Medimos las visitas con Umami, que no usa cookies.
-- **Solo usamos las cookies técnicas** necesarias para que el sitio funcione, sea seguro y recuerde tus elecciones (como «Mi lista» o los reproductores que cargas sin preguntar). No necesitan consentimiento (art. 22.2 LSSI).
+- **Solo usamos las cookies técnicas** necesarias para que FENAKI funcione, sea seguro y recuerde tus elecciones (como «Mi lista» o los reproductores que cargas sin preguntar). No necesitan consentimiento (art. 22.2 LSSI).
 - **Los reproductores de YouTube y Vimeo solo se cargan si aceptas.** Hasta entonces, cada ficha muestra una imagen del corto con un aviso. Al pulsar «reproducir», una ventana te explica qué recibe el proveedor y qué guarda su reproductor en tu navegador, y el reproductor solo se carga si pulsas «Aceptar y reproducir».
 
 Si en el futuro usamos herramientas con cookies de analítica o publicidad, solo se activarán con tu consentimiento y actualizaremos esta política antes.
@@ -29,7 +29,7 @@ Si no marcas «Recordar mi elección», te preguntamos cada vez que cargas un re
 | Nombre                                          | Proveedor  | Finalidad                                                                   | Duración                                                                                | Tipo                                                                                                                                                                                     |
 | ----------------------------------------------- | ---------- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `fenaki:player-consent:v1`                      | FENAKI     | Recordar qué reproductores (YouTube, Vimeo) has pedido cargar sin preguntar | Hasta que lo retires en «Preferencias de reproducción» o borres los datos del navegador | Propia, `localStorage`. Solo existe si marcas «Recordar mi elección»; no se envía a nuestros servidores                                                                                  |
-| `__cf_bm`                                       | Cloudflare | Distinguir personas de bots y proteger el sitio                             | 30 minutos                                                                              | Propia (dominio de FENAKI), de sesión corta. Solo si se activa la gestión de bots [COMPLETAR]                                                                                            |
+| `__cf_bm`                                       | Cloudflare | Distinguir personas de bots y proteger FENAKI                               | 30 minutos                                                                              | Propia (dominio de FENAKI), de sesión corta. Solo si se activa la gestión de bots [COMPLETAR]                                                                                            |
 | `cf_clearance`                                  | Cloudflare | Recordar que has superado una verificación de seguridad                     | Según configuración (por defecto, 30 minutos) [COMPLETAR]                               | Propia, solo si se muestra una verificación                                                                                                                                              |
 | `_cfuvid`                                       | Cloudflare | Limitar el número de peticiones por visitante (protección)                  | Sesión                                                                                  | Propia. Solo si se activan reglas de limitación [COMPLETAR]                                                                                                                              |
 | [COMPLETAR: por ejemplo, preferencia de idioma] | FENAKI     | Recordar el idioma elegido, cuando haya más de uno                          | [COMPLETAR]                                                                             | Propia, `localStorage` o cookie                                                                                                                                                          |
@@ -73,7 +73,7 @@ No se usan. Si se incorporan (por ejemplo, Google Analytics 4 con el modo de con
 
 ## 5. Desactivar las cookies desde el navegador
 
-También puedes bloquear o borrar las cookies desde la configuración de tu navegador. Si bloqueas las técnicas, algunas partes del sitio pueden no funcionar.
+También puedes bloquear o borrar las cookies desde la configuración de tu navegador. Si bloqueas las técnicas, algunas partes de FENAKI pueden no funcionar.
 
 - [Chrome](https://support.google.com/chrome/answer/95647?hl=es)
 - [Firefox](https://support.mozilla.org/es/kb/Borrar%20cookies)

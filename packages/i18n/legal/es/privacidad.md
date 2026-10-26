@@ -82,11 +82,11 @@ Sin cuenta, o antes de iniciar sesión, tu lista y tus valoraciones se guardan s
 
 También se actualizará esta política para el envío de cortos por autores (datos del autor, aceptación de la licencia de cesión), antes de abrirlo.
 
-### 2.7 Analítica del sitio (sin cookies)
+### 2.7 Analítica de FENAKI (sin cookies)
 
 Usamos **Umami**, instalado en nuestro propio servidor, para contar visitas, páginas vistas y eventos como «reproducción iniciada». Umami no usa cookies ni guarda tu IP: con la IP y el navegador calcula un identificador anónimo que cambia cada cierto tiempo, y solo conservamos cifras agregadas. Esas cifras agregadas se pueden compartir con los patrocinadores; nunca incluyen datos que te identifiquen.
 
-- Base jurídica: interés legítimo en conocer el uso del sitio y mejorarlo (art. 6.1.f RGPD).
+- Base jurídica: interés legítimo en conocer el uso de FENAKI y mejorarlo (art. 6.1.f RGPD).
 - Conservación: [PLAZO]
 
 ### 2.8 Seguridad, funcionamiento y errores
@@ -94,7 +94,7 @@ Usamos **Umami**, instalado en nuestro propio servidor, para contar visitas, pá
 |               |                                                                                                                                                                                     |
 | ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Datos         | IP, navegador, páginas solicitadas y fecha (registros del servidor y de Cloudflare); información técnica de errores (Sentry), configurada para no enviar IP ni datos de formularios |
-| Finalidad     | Proteger el sitio frente a ataques, mantenerlo disponible y corregir errores                                                                                                        |
+| Finalidad     | Proteger FENAKI frente a ataques, mantenerlo disponible y corregir errores                                                                                                          |
 | Base jurídica | Interés legítimo en la seguridad del servicio (art. 6.1.f RGPD y considerando 49)                                                                                                   |
 | Conservación  | Registros del servidor: [30] días; errores en Sentry: según el plan contratado, [90] días como máximo                                                                               |
 
@@ -131,7 +131,7 @@ No vendemos ni cedemos tus datos. Los proveedores siguientes los tratan por cuen
 | -------------------------------------------- | -------------------------------------------------------------------------------------------------------- | ---------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | OVH SAS                                      | Servidor (VPS) donde funcionan la web, la base de datos, listmonk y Umami; dominios y buzón de correo    | Francia (UE)                       | UE                                                         | No                                                                                                                                                               |
 | Amazon Web Services EMEA SARL                | Envío de correos (Amazon SES): newsletter y correos de las cuentas                                       | Luxemburgo (UE); matriz en EE. UU. | Región de la UE (por ejemplo, Irlanda, Fráncfort o España) | Posible acceso desde EE. UU. por la matriz o soporte: Marco de Privacidad de Datos UE-EE. UU. (Amazon está certificada) y cláusulas contractuales tipo en su DPA |
-| Cloudflare, Inc.                             | DNS, CDN, protección frente a ataques y túnel de conexión: todo el tráfico del sitio pasa por Cloudflare | EE. UU.                            | Red global                                                 | Sí: Marco de Privacidad de Datos UE-EE. UU. (Cloudflare está certificada) y cláusulas contractuales tipo en su DPA                                               |
+| Cloudflare, Inc.                             | DNS, CDN, protección frente a ataques y túnel de conexión: todo el tráfico de FENAKI pasa por Cloudflare | EE. UU.                            | Red global                                                 | Sí: Marco de Privacidad de Datos UE-EE. UU. (Cloudflare está certificada) y cláusulas contractuales tipo en su DPA                                               |
 | Functional Software, Inc. (Sentry)           | Seguimiento de errores                                                                                   | EE. UU.                            | Región de la UE (Alemania)                                 | Posible acceso desde EE. UU.: Marco de Privacidad de Datos UE-EE. UU. y/o cláusulas contractuales tipo                                                           |
 | Stripe Payments Europe, Limited              | Pagos                                                                                                    | Irlanda (UE)                       | UE y EE. UU.                                               | Sí, a Stripe, Inc.: Marco de Privacidad de Datos UE-EE. UU. y cláusulas contractuales tipo                                                                       |
 | [Cloudflare R2 o Backblaze B2]               | Copias de seguridad externas de la base de datos (incluyen los datos de suscriptores)                    | EE. UU.                            |                                                            |                                                                                                                                                                  |
