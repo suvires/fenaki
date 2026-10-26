@@ -229,7 +229,11 @@ test('«Novedades» in the header and on the home rail lead to a page with one r
   ).toHaveAttribute('href', '/es/novedades')
   await page.getByRole('navigation').first().getByRole('link', { name: 'Novedades' }).click()
   await expect(page).toHaveURL(/\/es\/novedades$/)
-  await expect(page.getByRole('heading', { level: 1, name: 'Novedades' })).toBeVisible()
+  // No visible title: the header marks the page instead; the heading is for screen readers.
+  await expect(page.getByRole('heading', { level: 1, name: 'Novedades' })).toBeAttached()
+  await expect(
+    page.getByRole('navigation').first().getByRole('link', { name: 'Novedades' }),
+  ).toHaveAttribute('aria-current', 'page')
   // The sample seed has fiction and animation: a rail for each, linking to its genre.
   const animation = page.getByRole('region', { name: 'Animación' })
   await expect(animation).toBeVisible()

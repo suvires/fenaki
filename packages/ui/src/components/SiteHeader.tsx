@@ -7,6 +7,8 @@ import { Wordmark } from './Wordmark.tsx'
 interface Link {
   label: string
   href: string
+  /** The page being viewed: marked in the navigation (aria-current). */
+  current?: boolean
 }
 
 export interface SiteHeaderProps {
@@ -141,7 +143,11 @@ export function SiteHeader({
       </li>
       {links.map((link) => (
         <li key={link.href}>
-          <a href={link.href} className={linkClass}>
+          <a
+            href={link.href}
+            aria-current={link.current ? 'page' : undefined}
+            className={cx(linkClass, 'aria-[current=page]:text-tungsteno-text')}
+          >
             {link.label}
           </a>
         </li>

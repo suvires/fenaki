@@ -188,9 +188,16 @@ const footerGroups = [
             })),
           }}
           links={[
-            { label: t('header.latest'), href: paths.latest(locale) },
-            // Accounts arrive later: the links are in place, without a page yet.
-            { label: t('header.myList'), href: paths.myList(locale) },
+            {
+              label: t('header.latest'),
+              href: paths.latest(locale),
+              current: Astro.url.pathname === paths.latest(locale),
+            },
+            {
+              label: t('header.myList'),
+              href: paths.myList(locale),
+              current: Astro.url.pathname === paths.myList(locale),
+            },
           ]}
           search={{
             action: paths.search(locale),

@@ -1,5 +1,5 @@
 ---
-import { PageHeader, Rail, ShortCard } from '@fenaki/ui'
+import { Rail, ShortCard } from '@fenaki/ui'
 import Base from '../../layouts/Base.astro'
 import { toCard } from '../../lib/catalog.ts'
 import { listShorts, toCardSource } from '../../lib/cms.ts'
@@ -25,7 +25,8 @@ const rails = GENRES.map((type) => ({
 
 <Base locale={locale} title={t('home.rails.latest')}>
   <div class="grid gap-12">
-    <PageHeader title={t('home.rails.latest')} />
+    {/* No visible title: the header marks the page. The heading stays for screen readers. */}
+    <h1 class="sr-only">{t('home.rails.latest')}</h1>
     {rails.length === 0 ? (
       <p class="m-0 text-body-l text-ink-muted">{t('home.empty')}</p>
     ) : (

@@ -64,3 +64,11 @@ export const SearchWithText: Story = {
     await userEvent.type(canvas.getByRole('searchbox', { name: 'Buscar cortos' }), 'vigalondo')
   },
 }
+export const CurrentPage: Story = {
+  args: {
+    links: [
+      { label: 'Novedades', href: '#latest', current: true },
+      { label: 'Mi lista', href: '#my-list' },
+    ],
+  },
+}
