@@ -6,7 +6,8 @@
 # it needs are listed in docs/deploy.md and .kamal/secrets.example.
 #
 # Manual runs (Actions → Deploy → Run workflow) choose the Kamal command: `deploy`, `setup` for the
-# first deploy, or `rollback` to an earlier version (the git commit of a previous deploy).
+# first deploy, `setup-services` to push listmonk's lists, SMTP and email templates and Umami's
+# website after they change, or `rollback` to an earlier version (the git commit of a previous deploy).
 name: Deploy
 
 on:
@@ -17,7 +18,7 @@ on:
       command:
         description: Kamal command
         type: choice
-        options: [deploy, setup, rollback]
+        options: [deploy, setup, setup-services, rollback]
         default: deploy
       version:
         description: 'rollback only: the version to return to (a git commit from `bin/kamal app containers`)'
