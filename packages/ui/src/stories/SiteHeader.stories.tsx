@@ -10,7 +10,7 @@ const meta = {
     home: { href: '#', label: 'Fenaki' },
     navLabel: 'Principal',
     genres: {
-      label: 'Géneros',
+      label: 'Cortometrajes',
       items: [
         { label: 'Ficción', href: '#fiction' },
         { label: 'Documental', href: '#documentary' },
@@ -46,7 +46,7 @@ export const Default: Story = {}
 /** The genres list open. */
 export const GenresOpen: Story = {
   play: async ({ canvas, userEvent }) => {
-    await userEvent.click(canvas.getByRole('button', { name: 'Géneros' }))
+    await userEvent.click(canvas.getByRole('button', { name: 'Cortometrajes' }))
   },
 }
 

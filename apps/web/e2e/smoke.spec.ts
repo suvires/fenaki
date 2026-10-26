@@ -79,7 +79,7 @@ test('search finds shorts by director as you type', async ({ page }) => {
 test('the header opens the genres and the search in place', async ({ page }) => {
   await page.goto('/es/')
   const nav = page.getByRole('navigation', { name: 'Principal' })
-  await nav.getByRole('button', { name: 'Géneros' }).click()
+  await nav.getByRole('button', { name: 'Cortometrajes' }).click()
   await nav.getByRole('link', { name: 'Animación' }).click()
   await expect(page).toHaveURL(/\/es\/cortos\?type=animation$/)
 

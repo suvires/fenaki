@@ -119,7 +119,7 @@ test('a short added to «Mi lista» appears in the rail and the list page, and s
     .getByRole('link', { name: /Mi lista/ })
     .click()
   await expect(page).toHaveURL(/\/es\/mi-lista$/)
-  await expect(page.getByRole('heading', { level: 1, name: 'Mi lista' })).toBeVisible()
+  await expect(page.getByRole('heading', { level: 1, name: 'Mi lista' })).toBeAttached()
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, follow')
   await expect(page.getByRole('link', { name: new RegExp(title, 'i') })).toBeVisible()
 

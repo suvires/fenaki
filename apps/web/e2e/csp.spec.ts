@@ -30,7 +30,7 @@ test('the catalog pages run under the policy', async ({ page }, testInfo) => {
 
   await visit(page, '/es/')
   // A hydrated island: the header's genres menu.
-  await page.getByRole('button', { name: 'Géneros' }).first().click()
+  await page.getByRole('button', { name: 'Cortometrajes' }).first().click()
   await expect(page.getByRole('link', { name: 'Animación' }).first()).toBeVisible()
 
   await visit(page, '/es/cortos/timecode')

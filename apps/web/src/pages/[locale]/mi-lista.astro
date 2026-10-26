@@ -1,5 +1,4 @@
 ---
-import { PageHeader } from '@fenaki/ui'
 import { MyListGrid } from '../../islands/MyListGrid.tsx'
 import Base from '../../layouts/Base.astro'
 import { toCurrentShort } from '../../lib/catalog.ts'
@@ -22,7 +21,8 @@ const current = Object.fromEntries(
 
 <Base locale={locale} title={t('home.myList.title')} noindex>
   <div class="grid gap-8">
-    <PageHeader title={t('home.myList.title')} />
+    {/* No visible title: the header marks the page. The heading stays for screen readers. */}
+    <h1 class="sr-only">{t('home.myList.title')}</h1>
     <MyListGrid
       client:load
       emptyHint={t('home.myList.empty')}
