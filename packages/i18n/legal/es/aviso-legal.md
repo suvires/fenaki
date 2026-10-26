@@ -44,7 +44,7 @@ Al navegar por FENAKI aceptas usar el sitio de forma lícita y no:
 
 ### 4.1 Contenido propio de FENAKI
 
-Son de FENAKI (o se usan con licencia) el diseño del sitio, la marca y el logotipo, los textos editoriales (sinopsis propias, descripciones de colecciones, biografías redactadas por FENAKI), la selección y la ordenación del catálogo y el código no publicado como software libre.
+Son de FENAKI (o se usan con licencia) el diseño del sitio, la marca y el logotipo, los textos editoriales (sinopsis propias, descripciones de colecciones, biografías redactadas por FENAKI), la selección y la ordenación del catálogo y el código del sitio.
 
 La marca «FENAKI» está en uso y su registro en la Oficina Española de Patentes y Marcas está previsto.
 
