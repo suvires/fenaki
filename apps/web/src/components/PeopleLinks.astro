@@ -14,7 +14,8 @@ const parts = formatListParts(
   people.map((person) => person.name),
   locale,
 ).map((part) => (part.type === 'element' ? { ...part, person: people[index++] } : part))
-const link = 'text-inherit underline underline-offset-4 rounded-xs focus-visible:focus-ring'
+const link =
+  'text-inherit underline underline-offset-4 hover:no-underline rounded-xs focus-visible:focus-ring'
 ---
 
 {parts.map((part) =>

@@ -19,7 +19,10 @@ const more = createRichTranslator(locale)('playerSettings.more', { cookies: 'lin
     <p class="m-0 text-small text-ink-muted">
       {more.map((piece) =>
         piece === 'link' ? (
-          <a class="text-ink underline underline-offset-4" href={paths.legal(locale, 'cookies')}>
+          <a
+            class="text-ink underline underline-offset-4 hover:no-underline"
+            href={paths.legal(locale, 'cookies')}
+          >
             {t('playerSettings.cookiesLink')}
           </a>
         ) : (

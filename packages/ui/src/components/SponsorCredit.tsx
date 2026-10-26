@@ -27,7 +27,7 @@ export function SponsorCredit({
           href={href}
           target="_blank"
           rel="sponsored noopener"
-          className="text-meta-strong text-inherit underline underline-offset-4 rounded-xs focus-visible:focus-ring"
+          className="text-meta-strong text-inherit underline underline-offset-4 hover:no-underline rounded-xs focus-visible:focus-ring"
           {...linkAttributes}
         >
           {name}

@@ -17,13 +17,14 @@ const privacyPolicy = {
 }
 ---
 
-{/* Centred in the space main leaves between the header and the footer (Base.astro), and further in on desktop. */}
-<section class="grid gap-6 py-8 md:px-12">
+{/* Centred in the space main leaves between the header and the footer (Base.astro), in a narrow
+    column; the lead and the form take its whole width. */}
+<section class="w-full max-w-article mx-auto grid gap-6 py-8">
   <h1 class="m-0 font-display text-display-l md:text-display-xl uppercase text-balance">
     {t('landing.hero.title')}
   </h1>
-  <p class="m-0 max-w-hero-text text-body-l text-ink-muted">{t('landing.hero.lead')}</p>
-  <div id="waitlist" class="grid gap-3 max-w-search scroll-mt-8">
+  <p class="m-0 text-body-l text-ink-muted">{t('landing.hero.lead')}</p>
+  <div id="waitlist" class="grid gap-3 scroll-mt-8">
     <WaitlistForm client:load locale={locale} />
     <p class="m-0 text-small text-ink-muted">
       <RichText locale={locale} messageKey="waitlist.privacy" parts={{ privacyPolicy }} />

@@ -66,7 +66,7 @@ export function ShowcaseHero({
             <a
               href={website.href}
               rel="noopener"
-              className="inline-flex items-center gap-1 rounded-xs text-small-strong text-inherit underline underline-offset-4 focus-visible:focus-ring"
+              className="inline-flex items-center gap-1 rounded-xs text-small-strong text-inherit underline underline-offset-4 hover:no-underline focus-visible:focus-ring"
             >
               {website.label}
               <Icon name="arrow" size="xs" />

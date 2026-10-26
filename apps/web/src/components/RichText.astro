@@ -12,7 +12,8 @@ interface Props {
 
 const { locale, messageKey, parts } = Astro.props
 const pieces = createRichTranslator(locale)(messageKey, parts)
-const link = 'text-tungsteno-text underline underline-offset-4 rounded-xs focus-visible:focus-ring'
+const link =
+  'text-tungsteno-text underline underline-offset-4 hover:no-underline rounded-xs focus-visible:focus-ring'
 ---
 
 {pieces.map((piece) =>

@@ -21,7 +21,7 @@ export function Prose({ children, className }: ProseProps) {
         '[&_h3]:m-0 [&_h3]:mt-2 [&_h3]:text-card-title',
         '[&_p]:m-0 [&_ul]:m-0 [&_ol]:m-0 [&_ul]:pl-6 [&_ol]:pl-6 [&_li]:mt-1',
         '[&_strong]:font-[number:var(--text-meta-strong--font-weight)]',
-        '[&_a]:text-tungsteno-text [&_a]:underline [&_a]:underline-offset-4 [&_a]:rounded-xs [&_a:focus-visible]:focus-ring',
+        '[&_a]:text-tungsteno-text [&_a]:underline [&_a]:underline-offset-4 [&_a:hover]:no-underline [&_a]:rounded-xs [&_a:focus-visible]:focus-ring',
         '[&_code]:font-mono [&_code]:text-small',
         '[&_table]:block [&_table]:max-w-full [&_table]:overflow-x-auto [&_table]:border-collapse [&_table]:text-small',
         '[&_th]:text-left [&_th]:align-top [&_th]:p-2 [&_th]:border-b [&_th]:border-line-strong',
