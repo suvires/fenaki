@@ -12,17 +12,17 @@ export interface SiteFooterProps {
   className?: string
 }
 
-/** The footer on every page: the monogram and the motto, and a flat row of links (legal pages and credits always among them). */
+/** The footer on every page: the motto as a headline over the monogram, and a flat row of links (legal pages and credits always among them). */
 export function SiteFooter({ label, links, tagline, brand, className }: SiteFooterProps) {
   return (
     <footer className={cx('grid gap-8 pt-8', className)}>
-      <div className="grid gap-8 md:grid-cols-[var(--size-column)_1fr]">
-        <div className="grid content-start gap-3">
+      <div className="grid gap-8 md:grid-cols-[1fr_auto]">
+        <div className="grid content-start gap-4">
+          <p className="m-0 font-display text-title uppercase text-balance">{tagline}</p>
           <Monogram
             label={brand}
             className="h-12 w-auto self-start justify-self-start text-tungsteno"
           />
-          <p className="m-0 text-meta text-ink-muted">{tagline}</p>
         </div>
         <nav aria-label={label} className="content-start md:justify-self-end">
           <ul className="m-0 p-0 list-none grid gap-2">

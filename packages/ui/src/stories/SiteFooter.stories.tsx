@@ -14,7 +14,7 @@ const meta = {
       { label: 'Política de cookies', href: '#cookies' },
       { label: 'Créditos', href: '#credits' },
     ],
-    tagline: 'El mejor cine, en cortos.',
+    tagline: 'El mejor cine, en cortos',
     brand: 'FENAKI',
   },
 } satisfies Meta<typeof SiteFooter>
