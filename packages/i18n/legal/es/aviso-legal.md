@@ -13,8 +13,6 @@ En cumplimiento del artículo 10 de la Ley 34/2002, de 11 de julio, de servicios
 | Domicilio | Calle Decano López Arjona, 18, 29140 Málaga (España) |
 | Email     | hola@fenaki.tv                                       |
 
-FENAKI es una marca independiente. Cuando en FENAKI se habla de «nosotros» o de «el equipo», se hace referencia al titular indicado arriba.
-
 ## 2. Qué es FENAKI
 
 FENAKI es un catálogo curado de cortometrajes que se pueden ver gratis y de forma legal. FENAKI:
