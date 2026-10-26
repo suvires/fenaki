@@ -97,7 +97,7 @@ export function AccountSettings({
         <h2 id="account-profile" className={heading}>
           {t('account.settings.profile.title')}
         </h2>
-        <form className="grid gap-4" onSubmit={saveProfile}>
+        <form method="post" className="grid gap-4" onSubmit={saveProfile}>
           <TextField
             id="account-name"
             name="name"
@@ -127,7 +127,7 @@ export function AccountSettings({
         <h2 id="account-password" className={heading}>
           {t('account.settings.password.title')}
         </h2>
-        <form className="grid gap-4" noValidate onSubmit={changePassword}>
+        <form method="post" className="grid gap-4" noValidate onSubmit={changePassword}>
           <TextField
             id="account-current"
             name="current"
@@ -187,7 +187,7 @@ export function AccountSettings({
             </Button>
           </div>
         ) : (
-          <form onSubmit={deleteAccount}>
+          <form method="post" onSubmit={deleteAccount}>
             <Notice tone="danger" title={t('account.settings.delete.confirmTitle')}>
               <p className="m-0">{t('account.settings.delete.confirmText')}</p>
               <TextField

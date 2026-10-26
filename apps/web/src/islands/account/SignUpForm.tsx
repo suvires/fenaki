@@ -66,7 +66,7 @@ export function SignUpForm({ locale, signInHref, privacyHref }: SignUpFormProps)
 
   const submitting = state.kind === 'submitting'
   return (
-    <form className="grid gap-4" noValidate onSubmit={submit}>
+    <form method="post" className="grid gap-4" noValidate onSubmit={submit}>
       <TextField
         id="signup-name"
         name="name"

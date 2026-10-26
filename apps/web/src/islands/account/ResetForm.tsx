@@ -56,7 +56,7 @@ export function ResetForm({ locale, token, doneHref, forgotHref }: ResetFormProp
 
   const submitting = state.kind === 'submitting'
   return (
-    <form className="grid gap-4" noValidate onSubmit={submit}>
+    <form method="post" className="grid gap-4" noValidate onSubmit={submit}>
       <TextField
         id="reset-password"
         name="password"

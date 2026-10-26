@@ -6,7 +6,8 @@ import { defineConfig, devices } from '@playwright/test'
  * and the `test_` search indexes, and one build of the site served in catalog mode on 4400 and
  * in landing mode on 4401.
  * Needs `docker compose up -d` and `pnpm setup:services`; the waitlist test uses listmonk and
- * reads the confirmation email from Mailpit.
+ * reads the confirmation email from Mailpit, and so do the account tests (verification and
+ * password reset emails: the CMS sends through the same Mailpit).
  */
 // E2E_* variables move the whole stack aside, so two checkouts can run the tests at once.
 const port = (name: string, fallback: number) => Number(process.env[name] ?? fallback)
@@ -17,7 +18,7 @@ const CMS_URL = `http://localhost:${CMS_PORT}`
 /**
  * Or against a running deployment, with no servers started here: E2E_CATALOG_URL (a site in
  * catalog mode with the sample seed) and E2E_LANDING_URL (a site in landing mode), plus
- * E2E_MAILPIT_URL, E2E_LISTMONK_URL and LISTMONK_API_TOKEN for the waitlist test. The local
+ * E2E_MAILPIT_URL, E2E_LISTMONK_URL and LISTMONK_API_TOKEN for the waitlist test (and, in the deployment's CMS, SMTP pointing at that Mailpit for the account tests). The local
  * deploy rehearsal uses this (docs/deploy.md).
  */
 const external = { catalog: process.env.E2E_CATALOG_URL, landing: process.env.E2E_LANDING_URL }
@@ -37,7 +38,7 @@ export default defineConfig({
   projects: [
     {
       name: 'catalog',
-      testMatch: ['smoke.spec.ts', 'catalog.spec.ts', 'csp.spec.ts'],
+      testMatch: ['smoke.spec.ts', 'catalog.spec.ts', 'account.spec.ts', 'csp.spec.ts'],
       use: {
         ...devices['Desktop Chrome'],
         baseURL: external.catalog ?? `http://localhost:${CATALOG_PORT}`,
@@ -62,6 +63,12 @@ export default defineConfig({
             env: {
               ...test,
               PAYLOAD_PUBLIC_SERVER_URL: CMS_URL,
+              // Account emails (verification, password reset) go to Mailpit, with links to the
+              // site under test.
+              SMTP_HOST: '127.0.0.1',
+              SMTP_PORT: '1025',
+              SMTP_TLS: 'none',
+              WEB_URL: `http://localhost:${CATALOG_PORT}`,
               NEXT_DIST_DIR: '.next-e2e',
               NODE_OPTIONS: '--no-deprecation',
             },

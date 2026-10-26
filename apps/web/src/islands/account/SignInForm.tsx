@@ -60,7 +60,7 @@ export function SignInForm({ locale, next, forgotHref, signUpHref, notice }: Sig
   return (
     <div className="grid gap-4">
       {notice ? <Notice role="status">{t(`account.signIn.notice.${notice}`)}</Notice> : null}
-      <form className="grid gap-4" noValidate onSubmit={submit}>
+      <form method="post" className="grid gap-4" noValidate onSubmit={submit}>
         <TextField
           id="signin-email"
           name="email"
