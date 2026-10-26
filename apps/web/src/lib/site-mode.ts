@@ -6,6 +6,9 @@ const CATALOG_ROUTES = [
   /^\/[a-z]{2}\/escaparates(\/|$)/,
   /^\/[a-z]{2}\/buscar\/?$/,
   /^\/api\/search\/?$/,
+  // Accounts open with the catalog.
+  /^\/[a-z]{2}\/(crear-cuenta|iniciar-sesion|cuenta|historial)(\/|$)/,
+  /^\/api\/account(\/|$)/,
   /^\/og\/[a-z]{2}\/(cortos|colecciones|personas|escaparates)\//,
   /^\/og\/[a-z]{2}\/browse\.png$/,
 ]

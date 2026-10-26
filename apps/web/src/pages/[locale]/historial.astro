@@ -1,0 +1,46 @@
+---
+import { PageHeader } from '@fenaki/ui'
+import { HistoryGrid } from '../../islands/account/HistoryGrid.tsx'
+import Base from '../../layouts/Base.astro'
+import { loadViewings } from '../../lib/account/data.ts'
+import { signInUrl } from '../../lib/account/rules.ts'
+import { toCard } from '../../lib/catalog.ts'
+import { listShorts, toCardSource } from '../../lib/cms.ts'
+import { localeFrom, paths, translator } from '../../lib/i18n.ts'
+import { badgeClock } from '../../lib/services.ts'
+
+const locale = localeFrom(Astro.params.locale)
+if (!locale) return Astro.rewrite('/404')
+
+const member = Astro.locals.member
+if (!member) return Astro.redirect(signInUrl(paths.signIn(locale), Astro.url.pathname))
+
+const t = translator(locale)
+const clock = badgeClock()
+// Everything watched, newest first. A short no longer published has no page to link to: it drops out.
+const [viewings, shorts] = await Promise.all([
+  loadViewings(member, locale),
+  listShorts(locale, 1000),
+])
+const bySlug = new Map(shorts.map((short) => [short.slug, short]))
+const items = viewings.flatMap((viewing) => {
+  const short = bySlug.get(viewing.slug)
+  if (!short) return []
+  const progress = viewing.completed ? 1 : Math.min(1, viewing.position / viewing.duration)
+  return [
+    {
+      ...toCard(toCardSource(short), locale, t, paths.short(locale, short.slug), clock),
+      slug: short.slug,
+      progress,
+      progressLabel: t('short.progress', { percent: Math.round(progress * 100) }),
+    },
+  ]
+})
+---
+
+<Base locale={locale} title={t('account.history.title')} noindex>
+  <div class="grid gap-8">
+    <PageHeader title={t('account.history.title')} description={t('account.history.lead')} />
+    <HistoryGrid client:load locale={locale} items={items} />
+  </div>
+</Base>

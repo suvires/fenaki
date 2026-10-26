@@ -1,13 +1,13 @@
 import { APIError, type CollectionConfig } from 'payload'
-import { isAdmin, isStaff } from '../access.ts'
+import { isAdmin, isAdminUser, isAgentUser, isStaff } from '../access.ts'
 import { DIRECTIONS, MESSAGE_STATUSES } from '../crm/constants.ts'
 import { crmErrors } from '../crm/errors.ts'
 import { approveAndSendEndpoint, syncInboxEndpoint } from '../crm/endpoints.ts'
 import { checkMessageWrite, idOf, type Actor } from '../crm/messageGate.ts'
 import { groups, inLanguage, label, options } from '../labels.ts'
 
-const actorOf = (user: { role?: string | null } | null | undefined): Actor =>
-  !user ? 'system' : user.role === 'admin' ? 'admin' : user.role === 'agent' ? 'agent' : 'anonymous'
+const actorOf = (user: object | null | undefined): Actor =>
+  !user ? 'system' : isAdminUser(user) ? 'admin' : isAgentUser(user) ? 'agent' : 'anonymous'
 
 const protectedField = {
   // Set by the send action and the inbox sync only; the gate discards anything else.

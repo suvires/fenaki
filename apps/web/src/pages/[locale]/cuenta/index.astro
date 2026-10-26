@@ -1,0 +1,28 @@
+---
+import { AccountSettings } from '../../../islands/account/AccountSettings.tsx'
+import Base from '../../../layouts/Base.astro'
+import { signInUrl } from '../../../lib/account/rules.ts'
+import { localeFrom, paths, translator } from '../../../lib/i18n.ts'
+
+const locale = localeFrom(Astro.params.locale)
+if (!locale) return Astro.rewrite('/404')
+
+const member = Astro.locals.member
+if (!member) return Astro.redirect(signInUrl(paths.signIn(locale), Astro.url.pathname))
+
+const t = translator(locale)
+---
+
+<Base locale={locale} title={t('account.settings.title')} noindex>
+  <div class="py-8">
+    <AccountSettings
+      client:load
+      locale={locale}
+      email={member.email}
+      name={member.name ?? ''}
+      exportHref="/api/account/export"
+      signOutAction="/api/account/logout"
+      deletedHref={`${paths.signIn(locale)}?notice=deleted`}
+    />
+  </div>
+</Base>

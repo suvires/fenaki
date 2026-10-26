@@ -70,6 +70,7 @@ Monorepo (pnpm + Turborepo): `apps/web` (Astro), `apps/cms` (Payload), `packages
 
 - A **short** and its **sources** are separate entities: a short has one or more sources (provider, external id, embeddable flag, last check, status), each tied to a **license** (route: embed, open, direct). This lets a short move from embed to self-hosted without changing its page or URL.
 - Translatable text (title, slug, synopsis, bio, collection title/description) uses Payload localized fields, one value per locale.
+- Viewers are `members`, a separate auth collection from the staff `users`; their list, ratings and viewings are owner-only rows (one per member and short). Anything that checks "is signed in" in the CMS must check for a staff account (`isStaffAccount`), or a viewer passes. The browser never calls the CMS for accounts: the site's `/api/account/*` routes do, and keep the token in an `httpOnly` cookie.
 - Full entity list: `private/plan/plan-de-desarrollo.md`, section "Modelo de datos".
 
 ### Legal constraints that affect code

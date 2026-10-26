@@ -150,6 +150,9 @@ registry:
 
 builder:
   arch: amd64
+  # Astro trusts the proxy's X-Forwarded-* headers for this host only (security.allowedDomains).
+  args:
+    SITE_URL: https://fenaki.tv
 <% unless ENV["KAMAL_REHEARSAL"] %>
   # Layers shared between CI and local builds.
   cache:

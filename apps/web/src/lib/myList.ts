@@ -1,10 +1,14 @@
 /**
- * «Mi lista» without accounts: the shorts a viewer saved, kept in this browser's localStorage.
- * Everything goes through this module so that, once accounts exist, the same interface can sync
- * to the account instead.
+ * «Mi lista»: the shorts a viewer saved. Two backends behind one interface: signed out, this
+ * browser's localStorage; signed in, the account, through the site's API. Everything goes through
+ * this module, so the islands do not care which one is in use.
+ *
+ * With an account the list the server rendered into the page is the starting point (see
+ * accountClient.ts); changes show at once and are sent in order, and one that fails is undone.
  */
 
 import type { BadgeTone, PosterTone, StillTextColor } from '@fenaki/ui'
+import { api, createQueue, isSignedIn, pageState } from './accountClient.ts'
 
 export const STORAGE_KEY = 'fenaki:my-list:v1'
 export const CHANGE_EVENT = 'fenaki:my-list'
@@ -78,8 +82,57 @@ export function withCurrent(items: SavedShort[], current: CurrentShorts): Listed
   })
 }
 
+/** The account's list, once the page has said there is an account; undefined when signed out. */
+let accountItems: SavedShort[] | undefined
+const enqueue = createQueue()
+
+/**
+ * What the account keeps of a short is its slug and when it was saved; the rest comes from the
+ * catalog (see `withCurrent`), so the other fields are empty until a short is saved on this page.
+ */
+function accountList(): SavedShort[] | undefined {
+  if (!isSignedIn()) return undefined
+  accountItems ??= pageState().list.map(stub)
+  return accountItems
+}
+
+const language = () =>
+  typeof document === 'undefined' ? undefined : document.documentElement.lang || undefined
+
+function emit(): void {
+  try {
+    window.dispatchEvent(new CustomEvent(CHANGE_EVENT))
+  } catch {
+    // Not in a browser.
+  }
+}
+
+function writeAccount(list: SavedShort[]): void {
+  accountItems = list
+  emit()
+}
+
+/** Sends a change to the account; if it does not go through, puts the short back as it was. */
+function sync(method: 'PUT' | 'DELETE', slug: string, previous: SavedShort | undefined): void {
+  void enqueue(() => api('list', method, { slug, locale: language() })).then((result) => {
+    if (result.ok) return
+    const others = (accountItems ?? []).filter((item) => item.slug !== slug)
+    writeAccount(previous ? [...others, previous].sort((a, b) => b.savedAt - a.savedAt) : others)
+  })
+}
+
+/** A saved short with only its slug and date, to be filled in from the catalog (`withCurrent`). */
+export function stub(entry: { slug: string; savedAt: number }): SavedShort {
+  return { slug: entry.slug, title: '', seconds: 0, tone: 'sala', savedAt: entry.savedAt }
+}
+
 /** The saved shorts, newest first. Never throws: corrupt or unreadable storage is an empty list. */
 export function readList(): SavedShort[] {
+  return accountList() ?? readLocal()
+}
+
+/** What this browser kept while nobody was signed in (to merge into an account). */
+export function readLocal(): SavedShort[] {
   try {
     const raw = storage()?.getItem(STORAGE_KEY)
     if (raw === null || raw === undefined) return memory
@@ -97,10 +150,16 @@ function write(list: SavedShort[]): void {
   } catch {
     // Blocked or full: the in-memory copy keeps this page working.
   }
+  emit()
+}
+
+/** Forgets what this browser kept, once it has been merged into an account. */
+export function clearLocal(): void {
+  memory = []
   try {
-    window.dispatchEvent(new CustomEvent(CHANGE_EVENT))
+    storage()?.removeItem(STORAGE_KEY)
   } catch {
-    // Not in a browser.
+    // Blocked: nothing to forget.
   }
 }
 
@@ -110,13 +169,25 @@ export function has(slug: string): boolean {
 
 /** Saves a short at the top of the list. Saving it again moves it to the top. */
 export function add(item: NewSavedShort): void {
-  const rest = readList().filter((saved) => saved.slug !== item.slug)
-  write([{ ...item, savedAt: Date.now() }, ...rest].slice(0, MAX_ITEMS))
+  const mine = accountList()
+  const current = mine ?? readLocal()
+  const rest = current.filter((saved) => saved.slug !== item.slug)
+  const next = [{ ...item, savedAt: Date.now() }, ...rest].slice(0, MAX_ITEMS)
+  if (!mine) return write(next)
+  const previous = mine.find((saved) => saved.slug === item.slug)
+  writeAccount(next)
+  sync('PUT', item.slug, previous)
 }
 
 export function remove(slug: string): void {
-  const list = readList()
-  if (list.some((item) => item.slug === slug)) write(list.filter((item) => item.slug !== slug))
+  const mine = accountList()
+  const list = mine ?? readLocal()
+  const previous = list.find((item) => item.slug === slug)
+  if (!previous) return
+  const next = list.filter((item) => item.slug !== slug)
+  if (!mine) return write(next)
+  writeAccount(next)
+  sync('DELETE', slug, previous)
 }
 
 /** Returns whether the short is saved after the call. */
@@ -142,7 +213,8 @@ export function subscribe(callback: () => void): () => void {
   }
 }
 
-/** Test helper: forgets the in-memory fallback. */
+/** Test helper: forgets the in-memory fallback and the account's copy. */
 export function resetMemory(): void {
   memory = []
+  accountItems = undefined
 }

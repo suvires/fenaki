@@ -1,0 +1,18 @@
+---
+import { PageHeader } from '@fenaki/ui'
+import { ForgotForm } from '../../../islands/account/ForgotForm.tsx'
+import Base from '../../../layouts/Base.astro'
+import { localeFrom, paths, translator } from '../../../lib/i18n.ts'
+
+const locale = localeFrom(Astro.params.locale)
+if (!locale) return Astro.rewrite('/404')
+
+const t = translator(locale)
+---
+
+<Base locale={locale} title={t('account.forgot.title')} noindex>
+  <section class="grid gap-6 max-w-(--container-note) py-8">
+    <PageHeader title={t('account.forgot.title')} description={t('account.forgot.lead')} />
+    <ForgotForm client:load locale={locale} signInHref={paths.signIn(locale)} />
+  </section>
+</Base>

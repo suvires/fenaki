@@ -1,10 +1,11 @@
 /**
- * Ratings without accounts: how a viewer rated each short, kept in this browser's localStorage.
- * Everything goes through this module so that, once accounts exist, the same interface can sync
- * to the account instead.
+ * Ratings: how a viewer rated each short. Two backends behind one interface: signed out, this
+ * browser's localStorage; signed in, the account, through the site's API (changes show at once, are
+ * sent in order, and one that fails is undone). Everything goes through this module.
  */
 
 import type { Rating } from '@fenaki/ui'
+import { api, createQueue, isSignedIn, pageState } from './accountClient.ts'
 
 export const STORAGE_KEY = 'fenaki:my-ratings:v1'
 export const CHANGE_EVENT = 'fenaki:my-ratings'
@@ -30,8 +31,34 @@ function isRating(value: unknown): value is Rating {
   return RATINGS.some((rating) => rating === value)
 }
 
+/** The account's ratings, once the page has said there is an account. */
+let accountRatings: Ratings | undefined
+const enqueue = createQueue()
+
+function accountMap(): Ratings | undefined {
+  if (!isSignedIn()) return undefined
+  accountRatings ??= { ...pageState().ratings }
+  return accountRatings
+}
+
+const language = () =>
+  typeof document === 'undefined' ? undefined : document.documentElement.lang || undefined
+
+function emit(): void {
+  try {
+    window.dispatchEvent(new CustomEvent(CHANGE_EVENT))
+  } catch {
+    // Not in a browser.
+  }
+}
+
 /** Every rating given, by slug. Never throws: corrupt or unreadable storage is no ratings. */
 export function readRatings(): Ratings {
+  return accountMap() ?? readLocal()
+}
+
+/** What this browser kept while nobody was signed in (to merge into an account). */
+export function readLocal(): Ratings {
   try {
     const raw = storage()?.getItem(STORAGE_KEY)
     if (raw === null || raw === undefined) return memory
@@ -50,10 +77,16 @@ function write(ratings: Ratings): void {
   } catch {
     // Blocked or full: the in-memory copy keeps this page working.
   }
+  emit()
+}
+
+/** Forgets what this browser kept, once it has been merged into an account. */
+export function clearLocal(): void {
+  memory = {}
   try {
-    window.dispatchEvent(new CustomEvent(CHANGE_EVENT))
+    storage()?.removeItem(STORAGE_KEY)
   } catch {
-    // Not in a browser.
+    // Blocked: nothing to forget.
   }
 }
 
@@ -63,14 +96,30 @@ export function getRating(slug: string): Rating | undefined {
 
 /** Rates a short, or clears its rating with `undefined`. Past the cap, the oldest rating goes. */
 export function setRating(slug: string, rating: Rating | undefined): void {
-  const { [slug]: _previous, ...rest } = readRatings()
-  if (rating === undefined) {
-    if (_previous !== undefined) write(rest)
-    return
-  }
+  const mine = accountMap()
+  const { [slug]: previous, ...rest } = mine ?? readLocal()
+  if (rating === undefined && previous === undefined) return
   // Object keys keep insertion order: re-rating moves the short to the end, the newest.
-  const entries = Object.entries({ ...rest, [slug]: rating }).slice(-MAX_ITEMS)
-  write(Object.fromEntries(entries))
+  const next =
+    rating === undefined
+      ? rest
+      : Object.fromEntries(Object.entries({ ...rest, [slug]: rating }).slice(-MAX_ITEMS))
+  if (!mine) return write(next)
+
+  accountRatings = next
+  emit()
+  void enqueue(() =>
+    rating === undefined
+      ? api('ratings', 'DELETE', { slug, locale: language() })
+      : api('ratings', 'PUT', { slug, value: rating, locale: language() }),
+  ).then((result) => {
+    if (result.ok) return
+    const others = Object.fromEntries(
+      Object.entries(accountRatings ?? {}).filter(([key]) => key !== slug),
+    )
+    accountRatings = previous === undefined ? others : { ...others, [slug]: previous }
+    emit()
+  })
 }
 
 /** Calls back on changes from this page's islands and from other tabs. Returns the unsubscribe. */
@@ -86,7 +135,8 @@ export function subscribe(callback: () => void): () => void {
   }
 }
 
-/** Test helper: forgets the in-memory fallback. */
+/** Test helper: forgets the in-memory fallback and the account's copy. */
 export function resetMemory(): void {
   memory = {}
+  accountRatings = undefined
 }

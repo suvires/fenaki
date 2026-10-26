@@ -3,6 +3,7 @@ import { Rail, ShortCard } from '@fenaki/ui'
 import { useEffect, useState } from 'react'
 import {
   readList,
+  stub,
   subscribe,
   withCurrent,
   type CurrentShorts,
@@ -22,6 +23,11 @@ interface MyListRailProps {
   hrefBase: string
   /** The published shorts' current card data: saved items show it, and unpublished ones drop out. */
   current: CurrentShorts
+  /**
+   * Signed in: the account's list as the server read it, rendered right away. Signed out it is
+   * absent and the list appears once this browser's storage is read.
+   */
+  initial?: { slug: string; savedAt: number }[]
 }
 
 /**
@@ -36,8 +42,11 @@ export function MyListRail({
   locale,
   hrefBase,
   current,
+  initial,
 }: MyListRailProps) {
-  const [items, setItems] = useState<ListedShort[]>([])
+  const [items, setItems] = useState<ListedShort[]>(() =>
+    initial ? withCurrent(initial.map(stub), current) : [],
+  )
 
   useEffect(() => {
     const sync = () => setItems(withCurrent(readList(), current))

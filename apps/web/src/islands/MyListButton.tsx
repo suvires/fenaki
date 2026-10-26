@@ -9,14 +9,23 @@ interface MyListButtonProps {
   /** «En mi lista» */
   savedLabel: string
   size?: ButtonProps['size']
+  /** Signed in: whether the account has it, as the server rendered it, so nothing flickers. */
+  initialSaved?: boolean
 }
 
 /**
- * Saves a short to the viewer's list in this browser. The server and the first client render show
- * the unsaved state; the stored state is read after hydration.
+ * Saves a short to the viewer's list: the account's when signed in, else this browser's. Signed
+ * out, the server and the first client render show the unsaved state and the stored state is read
+ * after hydration; signed in, the server already knows and renders it.
  */
-export function MyListButton({ short, label, savedLabel, size = 'md' }: MyListButtonProps) {
-  const [saved, setSaved] = useState(false)
+export function MyListButton({
+  short,
+  label,
+  savedLabel,
+  size = 'md',
+  initialSaved = false,
+}: MyListButtonProps) {
+  const [saved, setSaved] = useState(initialSaved)
 
   useEffect(() => {
     const sync = () => setSaved(has(short.slug))

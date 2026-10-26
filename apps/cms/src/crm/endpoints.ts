@@ -1,4 +1,5 @@
 import type { Endpoint } from 'payload'
+import type { User } from '../payload-types.ts'
 import { isAdminUser, isStaffUser } from '../access.ts'
 import { inLanguage } from '../labels.ts'
 import { CrmError, crmErrors } from './errors.ts'
@@ -31,10 +32,10 @@ export const approveAndSendEndpoint: Endpoint = {
           collection: 'messages',
           id,
           data: { status: 'approved' },
-          user: req.user,
+          user: req.user as User,
           overrideAccess: false,
         })
-      const result = await sendApprovedMessage(id, { payload: req.payload, user: req.user })
+      const result = await sendApprovedMessage(id, { payload: req.payload, user: req.user as User })
       return Response.json({ sent: true, ...result })
     } catch (error) {
       if (error instanceof CrmError) {

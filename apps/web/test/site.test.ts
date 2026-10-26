@@ -26,6 +26,12 @@ describe('isHiddenInMode', () => {
       '/es/escaparates/x',
       '/es/buscar',
       '/api/search',
+      '/es/crear-cuenta',
+      '/es/iniciar-sesion',
+      '/es/cuenta',
+      '/es/cuenta/verificar',
+      '/es/historial',
+      '/api/account/login',
     ])
       expect(isHiddenInMode(path, 'landing')).toBe(true)
     for (const path of [

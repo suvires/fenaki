@@ -37,6 +37,8 @@ FROM pnpm-build AS build
 COPY --from=manifests /app ./
 RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store pnpm install --frozen-lockfile
 COPY . .
+# The site's public address: Astro trusts the proxy's X-Forwarded-* headers for this host only.
+ARG SITE_URL
 ENV NEXT_TELEMETRY_DISABLED=1 ASTRO_TELEMETRY_DISABLED=1 NODE_OPTIONS=--no-deprecation
 RUN pnpm turbo run build --filter=@fenaki/web --filter=@fenaki/cms \
   && rm -rf apps/cms/.next/cache

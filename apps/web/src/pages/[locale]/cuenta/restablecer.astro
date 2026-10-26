@@ -1,0 +1,37 @@
+---
+import { Button, Notice, PageHeader } from '@fenaki/ui'
+import { ResetForm } from '../../../islands/account/ResetForm.tsx'
+import Base from '../../../layouts/Base.astro'
+import { looksLikeToken } from '../../../lib/account/outcomes.ts'
+import { localeFrom, paths, translator } from '../../../lib/i18n.ts'
+
+const locale = localeFrom(Astro.params.locale)
+if (!locale) return Astro.rewrite('/404')
+
+const t = translator(locale)
+const token = Astro.url.searchParams.get('token')
+---
+
+<Base locale={locale} title={t('account.reset.title')} noindex>
+  <section class="grid gap-6 max-w-(--container-note) py-8">
+    <PageHeader title={t('account.reset.title')} />
+    {looksLikeToken(token) ? (
+      <ResetForm
+        client:load
+        locale={locale}
+        token={token}
+        doneHref={`${paths.signIn(locale)}?notice=reset`}
+        forgotHref={paths.forgotPassword(locale)}
+      />
+    ) : (
+      <Notice tone="danger" role="alert" title={t('account.reset.invalidTitle')}>
+        <p class="m-0">{t('account.reset.invalidText')}</p>
+        <div>
+          <Button variant="secondary" href={paths.forgotPassword(locale)}>
+            {t('account.reset.again')}
+          </Button>
+        </div>
+      </Notice>
+    )}
+  </section>
+</Base>

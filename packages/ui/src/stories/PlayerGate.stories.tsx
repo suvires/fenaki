@@ -32,3 +32,21 @@ export const AfterPlay: Story = {
     )
   },
 }
+
+/** The viewer left it unfinished: the main button resumes, the other starts over. */
+export const ResumeOffer: Story = {
+  args: {
+    resume: { label: 'Seguir viendo desde 3:24' },
+    startOverLabel: 'Empezar de nuevo',
+  },
+}
+export const ResumeAfterPlay: Story = {
+  args: ResumeOffer.args,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    await userEvent.click(canvas.getByRole('button', { name: 'Seguir viendo desde 3:24' }))
+    await expect(canvas.getByRole('status')).toHaveTextContent(
+      'Aquí se carga el reproductor de YouTube',
+    )
+  },
+}

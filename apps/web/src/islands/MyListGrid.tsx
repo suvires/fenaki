@@ -3,6 +3,7 @@ import { ShortGrid } from '@fenaki/ui'
 import { useEffect, useState } from 'react'
 import {
   readList,
+  stub,
   subscribe,
   withCurrent,
   type CurrentShorts,
@@ -16,11 +17,18 @@ interface MyListGridProps {
   hrefBase: string
   /** The published shorts' current card data: saved items show it, and unpublished ones drop out. */
   current: CurrentShorts
+  /**
+   * Signed in: the account's list as the server read it, rendered right away. Signed out it is
+   * absent and the list appears once this browser's storage is read.
+   */
+  initial?: { slug: string; savedAt: number }[]
 }
 
 /** Every short the viewer saved, newest first. The hint is on the server render until storage is read. */
-export function MyListGrid({ emptyHint, locale, hrefBase, current }: MyListGridProps) {
-  const [items, setItems] = useState<ListedShort[]>([])
+export function MyListGrid({ emptyHint, locale, hrefBase, current, initial }: MyListGridProps) {
+  const [items, setItems] = useState<ListedShort[]>(() =>
+    initial ? withCurrent(initial.map(stub), current) : [],
+  )
 
   useEffect(() => {
     const sync = () => setItems(withCurrent(readList(), current))

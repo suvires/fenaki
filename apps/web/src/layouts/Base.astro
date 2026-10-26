@@ -2,7 +2,9 @@
 import '../styles/global.css'
 import type { Locale } from '@fenaki/i18n'
 import { SiteFooter, SiteHeader, Wordmark } from '@fenaki/ui'
+import { AccountSync } from '../islands/account/AccountSync.tsx'
 import { CardPreview } from '../islands/CardPreview.tsx'
+import { loadAccountState } from '../lib/account/data.ts'
 import { paths, translator } from '../lib/i18n.ts'
 import { contactLinks } from '../lib/contact.ts'
 import { contactEmail, csp, siteMode, siteUrl, umami } from '../lib/services.ts'
@@ -46,6 +48,12 @@ for (const directive of csp.directives) Astro.csp?.insertDirective(directive)
 
 const t = translator(locale)
 const landing = siteMode === 'landing'
+// A signed-in viewer's list and ratings go into the page, so every card knows what is saved and
+// rated without asking (lib/accountClient.ts). The pages of the same request share the read.
+const member = landing ? undefined : Astro.locals.member
+const accountState = member
+  ? await loadAccountState(member, locale).catch(() => undefined)
+  : undefined
 const pageTitle = title
   ? `${title} · ${t('site.name')}`
   : `${t('site.name')} · ${t('site.tagline')}`
@@ -143,6 +151,7 @@ const footerGroups = [
     )}
   </head>
   <body
+    data-signed-in={member ? 'true' : undefined}
     class:list={[
       // A column at least as tall as the window: main grows, so the footer always sits at the bottom.
       'min-h-dvh overflow-x-hidden flex flex-col',
@@ -155,6 +164,13 @@ const footerGroups = [
         'bg-[linear-gradient(to_bottom,var(--color-sala-1),transparent_10%),radial-gradient(250%_250%_at_50%_-50%,color-mix(in_oklab,var(--color-glow)_var(--opacity-glow),transparent)_20%,transparent_58%)] bg-no-repeat bg-size-[100%_var(--size-page-glow)]',
     ]}
   >
+    {accountState && (
+      <script
+        type="application/json"
+        id="fenaki-account"
+        set:html={JSON.stringify(accountState).replace(/</g, '\\u003c')}
+      />
+    )}
     <a
       href="#main"
       class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:p-2 focus:bg-sala-1 focus:focus-ring rounded-sm"
@@ -205,10 +221,38 @@ const footerGroups = [
             toggleLabel: t('header.searchToggle'),
             clearLabel: t('header.searchClear'),
           }}
-          account={{
-            signIn: { label: t('header.signIn'), href: '#' },
-            signUp: { label: t('header.signUp'), href: '#' },
-          }}
+          account={
+            member
+              ? {
+                  member: {
+                    initial: Array.from(member.name || member.email)[0]?.toUpperCase() ?? '?',
+                    label: t('header.accountMenu.label'),
+                    links: [
+                      {
+                        label: t('header.accountMenu.myAccount'),
+                        href: paths.account(locale),
+                        current: Astro.url.pathname === paths.account(locale),
+                      },
+                      {
+                        label: t('header.accountMenu.history'),
+                        href: paths.history(locale),
+                        current: Astro.url.pathname === paths.history(locale),
+                      },
+                    ],
+                    signOut: {
+                      label: t('header.accountMenu.signOut'),
+                      action: '/api/account/logout',
+                    },
+                  },
+                }
+              : {
+                  signIn: {
+                    label: t('header.signIn'),
+                    href: paths.signIn(locale),
+                  },
+                  signUp: { label: t('header.signUp'), href: paths.signUp(locale) },
+                }
+          }
           menuLabel={t('header.menu')}
         />
       </div>
@@ -220,6 +264,7 @@ const footerGroups = [
       <slot />
     </main>
     {/* One island for every card on the page: the floating preview of the card under the pointer. */}
+    {member && <AccountSync client:idle locale={locale} />}
     {!landing && (
       <CardPreview
         client:idle

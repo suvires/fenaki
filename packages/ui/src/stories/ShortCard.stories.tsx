@@ -51,3 +51,12 @@ export const Stretched: Story = {
   args: { stretch: true },
   decorators: [(Story) => <div className="w-(--container-note)">{Story()}</div>],
 }
+
+/** A viewing in progress («Seguir viendo», the history): a thin bar at the foot of the image. */
+export const InProgress: Story = {
+  args: { image: backdrop, progress: 0.4, progressLabel: 'Visto al 40 %' },
+}
+export const InProgressPoster: Story = { args: { progress: 0.75, progressLabel: 'Visto al 75 %' } }
+export const Finished: Story = {
+  args: { image: backdrop, progress: 1, progressLabel: 'Visto al 100 %' },
+}

@@ -1,0 +1,39 @@
+---
+import { Button, Notice, PageHeader } from '@fenaki/ui'
+import { VerifyAccount } from '../../../islands/account/VerifyAccount.tsx'
+import Base from '../../../layouts/Base.astro'
+import { looksLikeToken } from '../../../lib/account/outcomes.ts'
+import { localeFrom, paths, translator } from '../../../lib/i18n.ts'
+
+const locale = localeFrom(Astro.params.locale)
+if (!locale) return Astro.rewrite('/404')
+
+const t = translator(locale)
+const token = Astro.url.searchParams.get('token')
+const signInHref = `${paths.signIn(locale)}?notice=verified`
+---
+
+<Base locale={locale} title={t('account.verify.title')} noindex>
+  <section class="grid gap-6 max-w-(--container-note) py-8">
+    <PageHeader title={t('account.verify.title')} />
+    {looksLikeToken(token) ? (
+      <VerifyAccount
+        client:load
+        locale={locale}
+        token={token}
+        signInHref={signInHref}
+        signedIn={Boolean(Astro.locals.member)}
+        homeHref={paths.home(locale)}
+      />
+    ) : (
+      <Notice tone="danger" role="alert" title={t('account.verify.failTitle')}>
+        <p class="m-0">{t('account.verify.failText')}</p>
+        <div>
+          <Button variant="secondary" href={paths.signIn(locale)}>
+            {t('account.verify.signIn')}
+          </Button>
+        </div>
+      </Notice>
+    )}
+  </section>
+</Base>

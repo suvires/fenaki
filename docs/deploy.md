@@ -193,6 +193,27 @@ Payload's jobs worker stops at once when a deploy replaces it. A job it was runn
 
 Other domains that only redirect to `fenaki.tv` (planned: `fenaki.es`, `fenakitv.es`, `fenakitv.com`, bought at the launch) need no server change. After buying them at OVHcloud, add them to `redirect_domains` in `infra/cloudflare/terraform.tfvars` and run `infra/cloudflare/tofu plan` and `apply`: OpenTofu creates each zone, a redirect of every URL (and its `www.`) to the same path on `fenaki.tv`, and records saying the domain sends no email. Then set the name servers from `tofu output name_servers` at OVHcloud.
 
+## Viewer accounts
+
+Viewers (collection `members`, separate from the staff `users`) sign up and in through the site, which calls the CMS server to server. Nothing new to configure beyond what exists; what the accounts rely on:
+
+| Where | Variable                                       | What for                                                                                                                                                                                                                         |
+| ----- | ---------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| web   | `CMS_URL`                                      | The CMS the account routes call (`/api/members/*`, `/api/list-items`, `/api/ratings`, `/api/viewings`). Internal address is fine: the browser never reaches it for accounts                                                      |
+| web   | `SITE_URL`                                     | The public address, `https://fenaki.tv`. Requests that change state are accepted only from this origin (or the host they were sent to). **Starting with `https://` also makes the session cookie `Secure` and named `__Host-…`** |
+| cms   | `WEB_URL`                                      | The public address again: base of the links in the verification and reset emails (`/es/cuenta/verificar?token=…`, `/es/cuenta/restablecer?token=…`)                                                                              |
+| cms   | `SMTP_HOST`, `SMTP_PORT`, `SMTP_TLS`, `SMTP_*` | Amazon SES, as for every Payload email. Without it the verification emails only go to the console and nobody can verify an account                                                                                               |
+
+The session cookie is set by the site, not by the CMS: `fenaki-session` (`__Host-fenaki-session` over HTTPS), `httpOnly`, `SameSite=Lax`, `Path=/`, no `Domain`, the Payload JWT inside, 30 days; the middleware renews it when under 14 days are left, and signing out revokes the token in the CMS. A signed-in response is sent with `Cache-Control: private, no-store`: do not put a cache rule on HTML in Cloudflare that ignores it.
+
+Rate limits are in memory in the web process (sign-up 5 per hour, sign-in 10 and password reset 5 per 10 minutes, per address). The address is `CF-Connecting-IP`, which Cloudflare sets and the tunnel passes on; this is only right while the tunnel is the only way in. The CMS also locks an account for 15 minutes after 5 failed sign-ins. A restart of the web container resets the counters.
+
+The CMS routes `POST /api/members` (sign-up), `/login`, `/forgot-password`, `/verify/:token` and `/resend-verification` are public by design (the site calls them server to server), but in production the CMS is **not** reachable from the internet: `infra/cloudflare/main.tf` puts all of `cms.fenaki.tv` behind Cloudflare Access except `/up` (health check) and `/api/media/file` (logos), so `/api/members/*` can only be called through the site, with its origin check and rate limit, and sign-up cannot be used from outside to find out whether an address is taken. **Never add `/api/members` (or any path under it) to the Access bypass list** (`cloudflare_zero_trust_access_application.cms_public`); a new bypass path needs the same review. Locally the CMS is open on its own port, which is fine for development.
+
+Astro's own origin check (`security.checkOrigin`) is on. Behind kamal-proxy the app sees `http://` and Astro would refuse a form posted from `https://fenaki.tv`, so `security.allowedDomains` makes it trust `X-Forwarded-Proto/Host` for the public address only. That is read when the site is built: the `SITE_URL` build argument (Dockerfile; `builder.args` in `config/deploy.yml`, set to the same address as the runtime `SITE_URL`) must match the domain, or sign-out from the browser returns 403. The e2e test `Astro origin check` covers it.
+
+The accounts' data is personal data (email, list, ratings, viewing history): it is in the database backups, which the privacy policy covers (apartado 2.6). Deleting an account deletes its rows; backups age out with their retention.
+
 ## Sales CRM mailbox
 
 The sales CRM (admin group «Comercial») sends outreach and reads replies through the mailbox `hola@fenaki.tv` itself, not through SES (which keeps Payload's account emails and listmonk). The settings are in `config/deploy.yml` for the CMS and jobs roles:

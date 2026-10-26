@@ -1,6 +1,6 @@
 import type { Payload } from 'payload'
 import { searchClient } from '../search/client.ts'
-import { SAMPLE_SHORTS, SAMPLE_SPONSOR } from './data.ts'
+import { SAMPLE_MEMBER, SAMPLE_SHORTS, SAMPLE_SPONSOR } from './data.ts'
 
 /**
  * Removes every sample document. People are removed only when no real short credits them:
@@ -15,6 +15,8 @@ export async function removeSamples(payload: Payload): Promise<void> {
     depth: 0,
   })
   const ids = shorts.docs.map((s) => s.id)
+  // The sample viewer goes first, with their list, ratings and viewings (a hook deletes those).
+  await payload.delete({ collection: 'members', where: { sample: { equals: true } } })
   await payload.delete({ collection: 'collections', where: { sample: { equals: true } } })
   await payload.delete({ collection: 'showcases', where: { sample: { equals: true } } })
   await payload.delete({ collection: 'media', where: { filename: { like: 'sample-logo' } } })
@@ -81,4 +83,22 @@ export async function runSearchSync(payload: Payload, log: (message: string) => 
     )
     log(`search indexes ready (${pending.results.length} tasks)`)
   }
+}
+
+/** Creates the sample viewer (verified, so no email is sent), if there is no such account yet. */
+export async function ensureSampleMember(
+  payload: Payload,
+  log: (message: string) => void,
+): Promise<void> {
+  const existing = await payload.count({
+    collection: 'members',
+    where: { email: { equals: SAMPLE_MEMBER.email } },
+  })
+  if (existing.totalDocs > 0) return
+  await payload.create({
+    collection: 'members',
+    data: { ...SAMPLE_MEMBER, _verified: true, sample: true },
+    disableVerificationEmail: true,
+  })
+  log(`created sample member ${SAMPLE_MEMBER.email}`)
 }

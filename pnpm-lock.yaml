@@ -239,6 +239,9 @@ importers:
       '@fenaki/i18n':
         specifier: workspace:*
         version: link:../../packages/i18n
+      '@fenaki/tokens':
+        specifier: workspace:*
+        version: link:../../packages/tokens
       '@fenaki/waitlist':
         specifier: workspace:*
         version: link:../../packages/waitlist

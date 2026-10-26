@@ -15,6 +15,15 @@ export interface PlayerGateProps {
   embedSrc?: string
   /** Accessible name of the player frame. */
   embedTitle?: string
+  /**
+   * The viewer left this short unfinished: the main button resumes (from `resume.embedSrc`, the
+   * player URL starting there) and `startOverLabel` plays from the start (`embedSrc`).
+   */
+  resume?: { label: string; embedSrc?: string }
+  /** «Empezar de nuevo», next to the resume button. */
+  startOverLabel?: string
+  /** Gets the player frame once it is in the page, and null when it goes: for progress tracking. */
+  onFrame?: (frame: HTMLIFrameElement | null) => void
   /** Extra attributes for the play button, such as the analytics event (`data-umami-event`). */
   playAttributes?: Record<`data-${string}`, string>
   className?: string
@@ -30,10 +39,16 @@ export function PlayerGate({
   loadedLabel,
   embedSrc,
   embedTitle,
+  resume,
+  startOverLabel,
+  onFrame,
   playAttributes,
   className,
 }: PlayerGateProps) {
-  const [loaded, setLoaded] = useState(false)
+  // Nothing loads until the viewer chooses; then it is the player URL they chose to start from.
+  const [started, setStarted] = useState<{ src?: string } | undefined>()
+  const loaded = started !== undefined
+  const src = started?.src
   return (
     <div
       className={cx(
@@ -42,13 +57,14 @@ export function PlayerGate({
       )}
     >
       {loaded ? (
-        embedSrc ? (
+        src ? (
           <>
             <span role="status" className="sr-only">
               {loadedLabel}
             </span>
             <iframe
-              src={embedSrc}
+              ref={onFrame}
+              src={src}
               title={embedTitle ?? title}
               className="absolute inset-0 size-full border-0"
               allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
@@ -73,11 +89,21 @@ export function PlayerGate({
               variant="primary"
               size="lg"
               icon="play"
-              onClick={() => setLoaded(true)}
+              onClick={() => setStarted({ src: resume ? resume.embedSrc : embedSrc })}
               {...playAttributes}
             >
-              {playLabel}
+              {resume ? resume.label : playLabel}
             </Button>
+            {resume && startOverLabel ? (
+              <Button
+                variant="secondary"
+                size="lg"
+                onClick={() => setStarted({ src: embedSrc })}
+                {...playAttributes}
+              >
+                {startOverLabel}
+              </Button>
+            ) : null}
             {moreLabel ? (
               <Button variant="ghost" href={moreHref ?? '#'}>
                 {moreLabel}

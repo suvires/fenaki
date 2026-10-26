@@ -1,10 +1,12 @@
 ---
 import { badgeClock } from '../../../lib/services.ts'
 import { createRichTranslator, formatCountry, formatYear } from '@fenaki/i18n'
-import { Badge, Duration, LicenseNote, PlayerGate, Rail, ShortCard } from '@fenaki/ui'
+import { Badge, Duration, LicenseNote, Rail, ShortCard } from '@fenaki/ui'
 import NotFound from '../../../components/NotFound.astro'
 import PeopleLinks from '../../../components/PeopleLinks.astro'
 import { MyListButton } from '../../../islands/MyListButton.tsx'
+import { ShortPlayer } from '../../../islands/ShortPlayer.tsx'
+import { loadAccountState, loadViewing } from '../../../lib/account/data.ts'
 import Base from '../../../layouts/Base.astro'
 import { toCard, toSavedShort } from '../../../lib/catalog.ts'
 import {
@@ -17,7 +19,8 @@ import {
   toCardSource,
 } from '../../../lib/cms.ts'
 import { EVENTS, eventAttributes } from '../../../lib/analytics.ts'
-import { embedPageUrl, embedUrl } from '../../../lib/embed.ts'
+import { embedPageUrl } from '../../../lib/embed.ts'
+import { clock, resumable } from '../../../lib/playerProgress.ts'
 import { videoObject } from '../../../lib/seo.ts'
 import { siteUrl } from '../../../lib/services.ts'
 import { localeFrom, paths, translator } from '../../../lib/i18n.ts'
@@ -29,7 +32,20 @@ const t = translator(locale)
 const short = Astro.params.slug ? await getShort(locale, Astro.params.slug) : undefined
 if (!short) Astro.response.status = 404
 
-const clock = badgeClock()
+const badges = badgeClock()
+// A signed-in viewer: what the account has of this short (saved, and where they stopped).
+const member = Astro.locals.member
+const [account, viewing] =
+  member && short
+    ? await Promise.all([
+        loadAccountState(member, locale).catch(() => undefined),
+        loadViewing(member, short.id).catch(() => undefined),
+      ])
+    : [undefined, undefined]
+const resumeAt =
+  viewing && !viewing.completed && resumable(viewing.position, viewing.duration)
+    ? viewing.position
+    : undefined
 const source = short ? playableSource(await listSources(short.id)) : undefined
 const license = source ? licenseOf(source) : undefined
 const provider = source ? t(`providers.${source.provider}`) : ''
@@ -92,22 +108,36 @@ const origin = [
   ) : (
     <article class="grid gap-6 max-w-article">
       <h1 class="sr-only">{short.title}</h1>
-      <PlayerGate
+      <ShortPlayer
         client:visible
+        locale={locale}
+        slug={short.slug}
         title={short.title}
         message={t('short.player.message', { provider })}
         playLabel={t('short.player.play')}
         loadedLabel={
           short.sample ? t('short.player.sample') : t('short.player.loaded', { provider })
         }
-        embedSrc={
-          source && !short.sample ? embedUrl(source.provider, source.externalId) : undefined
+        source={
+          source && !short.sample
+            ? { provider: source.provider, externalId: source.externalId }
+            : undefined
         }
         embedTitle={t('short.player.frameTitle', { provider, title: short.title })}
         playAttributes={eventAttributes(EVENTS.play, {
           short: short.slug,
           ...(source ? { provider: source.provider } : {}),
         })}
+        tracking={Boolean(member)}
+        resume={
+          resumeAt === undefined
+            ? undefined
+            : {
+                seconds: resumeAt,
+                label: t('short.player.resume', { time: clock(resumeAt, locale) }),
+                startOverLabel: t('short.player.startOver'),
+              }
+        }
       />
       <div class="flex flex-wrap items-center gap-3">
         {short.brandedContent && <Badge tone="branded">{t('badges.branded')}</Badge>}
@@ -125,6 +155,7 @@ const origin = [
           short={toSavedShort(card, locale)}
           label={t('short.addToList')}
           savedLabel={t('short.inMyList')}
+          initialSaved={account?.list.some((entry) => entry.slug === short.slug)}
         />
       </div>
       {short.synopsis && <p class="m-0 max-w-synopsis text-body-l">{short.synopsis}</p>}
@@ -186,7 +217,7 @@ const origin = [
         >
           {related.map((s) => (
             <ShortCard
-              {...toCard(toCardSource(s), locale, t, paths.short(locale, s.slug), clock)}
+              {...toCard(toCardSource(s), locale, t, paths.short(locale, s.slug), badges)}
             />
           ))}
         </Rail>

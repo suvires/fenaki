@@ -3,6 +3,7 @@ import react from '@astrojs/react'
 import { defaultLocale, locales } from '@fenaki/i18n'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig, envField } from 'astro/config'
+import { allowedDomains } from './src/lib/allowedDomains.ts'
 import { STATIC_DIRECTIVES, STYLE_ATTRIBUTES } from './src/lib/csp.ts'
 
 export default defineConfig({
@@ -14,6 +15,11 @@ export default defineConfig({
   // A <meta> CSP with the hashes of every script and style Astro emits (src/lib/csp.ts). Not
   // applied by `astro dev`: test it on a build.
   security: {
+    // Behind the TLS-terminating proxy (kamal-proxy sets X-Forwarded-Proto/Host) Astro trusts those
+    // headers only for the public address, so a form posted from https:// passes its origin check.
+    // Built for SITE_URL (a build argument in the Dockerfile); unset in development: no proxy.
+    // The account routes check the origin again themselves (src/lib/account/guards.ts).
+    allowedDomains: allowedDomains(process.env.SITE_URL),
     csp: {
       directives: [...STATIC_DIRECTIVES],
       scriptDirective: { resources: ["'self'"] },

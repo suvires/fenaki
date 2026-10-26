@@ -28,6 +28,10 @@ export interface ShortCardProps {
   slug?: string
   /** The short's type as the viewer reads it («Ficción»), for the preview. */
   typeLabel?: string
+  /** How much the viewer has seen, from 0 to 1: a thin bar at the foot of the image. */
+  progress?: number
+  /** Says it in words, for the card's accessible name: «Visto al 45 %». */
+  progressLabel?: string
   /** Fill the grid cell instead of the fixed rail width. */
   stretch?: boolean
   className?: string
@@ -55,6 +59,8 @@ export function ShortCard({
   badges,
   slug,
   typeLabel,
+  progress,
+  progressLabel,
   stretch = false,
   className,
 }: ShortCardProps) {
@@ -62,6 +68,7 @@ export function ShortCard({
   const branded = badges?.filter((badge) => badge.tone === 'branded') ?? []
   const others = badges?.filter((badge) => badge.tone !== 'branded') ?? []
   const previewable = Boolean(slug && href)
+  const seen = Math.min(1, Math.max(0, progress ?? 0))
   return (
     <Tag
       href={href}
@@ -109,6 +116,17 @@ export function ShortCard({
               <span className="text-card-title truncate">{title}</span>
             </span>
           ) : null}
+          {seen > 0 ? (
+            // SVG attributes, not a style attribute: the site's CSP does not allow those.
+            <svg
+              aria-hidden="true"
+              preserveAspectRatio="none"
+              className="absolute inset-x-0 bottom-0 w-full h-(--size-progress)"
+            >
+              <rect width="100%" height="100%" className="fill-sala-0/70" />
+              <rect width={`${seen * 100}%`} height="100%" className="fill-tungsteno" />
+            </svg>
+          ) : null}
           {branded.length > 0 ? (
             <span className="absolute right-2 top-2 flex flex-wrap justify-end gap-1">
               {branded.map((badge) => (
@@ -135,6 +153,7 @@ export function ShortCard({
         {seconds ? <Duration seconds={seconds} locale={locale} /> : null}
         {year ? `, ${year}` : null}
         {director ? `, ${director}` : null}
+        {seen > 0 && progressLabel ? `, ${progressLabel}` : null}
         {others.slice(0, 3).map((badge) => (
           <span key={badge.label}>
             {', '}

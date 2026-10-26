@@ -11,6 +11,7 @@ import * as migration_20261025_233011_ranking_global from './20261025_233011_ran
 import * as migration_20261026_002047_still_text_presentation from './20261026_002047_still_text_presentation';
 import * as migration_20261026_003244_home_page from './20261026_003244_home_page';
 import * as migration_20261026_012129_short_awards from './20261026_012129_short_awards';
+import * as migration_20261026_015039_accounts from './20261026_015039_accounts';
 
 export const migrations = [
   {
@@ -76,6 +77,11 @@ export const migrations = [
   {
     up: migration_20261026_012129_short_awards.up,
     down: migration_20261026_012129_short_awards.down,
-    name: '20261026_012129_short_awards'
+    name: '20261026_012129_short_awards',
+  },
+  {
+    up: migration_20261026_015039_accounts.up,
+    down: migration_20261026_015039_accounts.down,
+    name: '20261026_015039_accounts'
   },
 ];

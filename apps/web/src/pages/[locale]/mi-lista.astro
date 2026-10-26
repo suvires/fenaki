@@ -1,5 +1,6 @@
 ---
 import { MyListGrid } from '../../islands/MyListGrid.tsx'
+import { loadAccountState } from '../../lib/account/data.ts'
 import Base from '../../layouts/Base.astro'
 import { toCurrentShort } from '../../lib/catalog.ts'
 import { listShorts, toCardSource } from '../../lib/cms.ts'
@@ -10,6 +11,9 @@ const locale = localeFrom(Astro.params.locale)
 if (!locale) return Astro.rewrite('/404')
 
 const t = translator(locale)
+// Signed in, the list is the account's and is rendered here; signed out, the browser's.
+const member = Astro.locals.member
+const account = member ? await loadAccountState(member, locale).catch(() => undefined) : undefined
 // The whole published catalog: saved shorts show their current data, unpublished ones drop out.
 const current = Object.fromEntries(
   (await listShorts(locale, 1000)).map((s) => [
@@ -29,6 +33,7 @@ const current = Object.fromEntries(
       locale={locale}
       hrefBase={paths.short(locale, '')}
       current={current}
+      initial={account?.list}
     />
   </div>
 </Base>

@@ -4,6 +4,7 @@ import { CollectionHero, Rail, RankedItem, RankedRail, ShortCard, ShortHero } fr
 import { formatList, formatYear } from '@fenaki/i18n'
 import Landing from '../../components/Landing.astro'
 import { MyListButton } from '../../islands/MyListButton.tsx'
+import { loadAccountState, loadViewings } from '../../lib/account/data.ts'
 import { MyListRail } from '../../islands/MyListRail.tsx'
 import Base from '../../layouts/Base.astro'
 import { posterTone, toCard, toCurrentShort, toSavedShort } from '../../lib/catalog.ts'
@@ -31,6 +32,14 @@ if (!locale) return Astro.rewrite('/404')
 const t = translator(locale)
 const landing = siteMode === 'landing'
 const clock = badgeClock()
+// A signed-in viewer's list, ratings and unfinished viewings come from the account, rendered here.
+const member = landing ? undefined : Astro.locals.member
+const [account, unfinished] = member
+  ? await Promise.all([
+      loadAccountState(member, locale).catch(() => undefined),
+      loadViewings(member, locale, { unfinished: true, limit: 20 }).catch(() => []),
+    ])
+  : [undefined, []]
 const [shorts, collections] = landing
   ? [[], []]
   : await Promise.all([listShorts(locale), listCollections(locale)])
@@ -70,6 +79,13 @@ const rails: { key: string; title: string; href?: string; shorts: PublishedShort
       shorts: shortsOf(c),
     })),
 ].filter((rail) => rail.shorts.length > 0)
+// «Seguir viendo»: the unfinished viewings that are still published, newest first.
+const continueWatching = unfinished.flatMap((viewing) => {
+  const short = shorts.find((s) => s.slug === viewing.slug)
+  return short && viewing.duration > 0
+    ? [{ short, progress: Math.min(1, viewing.position / viewing.duration) }]
+    : []
+})
 // «Novedades» goes right under the hero and «Mi lista», above the featured collection.
 const latestRails = rails.filter((rail) => rail.key === 'latest')
 const otherRails = rails.filter((rail) => rail.key !== 'latest')
@@ -109,9 +125,25 @@ const otherRails = rails.filter((rail) => rail.key !== 'latest')
           short={toSavedShort(toCardSource(hero), locale)}
           label={t('short.addToList')}
           savedLabel={t('short.inMyList')}
+          initialSaved={account?.list.some((entry) => entry.slug === hero.slug)}
         />
       </ShortHero>
     </div>
+  )}
+  {/* «Seguir viendo»: only for a signed-in viewer, and only while something is unfinished. */}
+  {continueWatching.length > 0 && (
+    <Rail
+      arrows={{ previous: t('rail.previous'), next: t('rail.next') }}
+      title={t('home.continueWatching.title')}
+    >
+      {continueWatching.map(({ short, progress }) => (
+        <ShortCard
+          {...toCard(toCardSource(short), locale, t, paths.short(locale, short.slug), clock)}
+          progress={progress}
+          progressLabel={t('short.progress', { percent: Math.round(progress * 100) })}
+        />
+      ))}
+    </Rail>
   )}
   {/* Renders nothing until the viewer has saved something. */}
   {!landing && (
@@ -123,6 +155,7 @@ const otherRails = rails.filter((rail) => rail.key !== 'latest')
       arrows={{ previous: t('rail.previous'), next: t('rail.next') }}
       locale={locale}
       hrefBase={paths.short(locale, '')}
+      initial={account?.list}
       current={Object.fromEntries(
         shorts.map((s) => [s.slug, toCurrentShort(toCardSource(s), locale, t, clock)]),
       )}

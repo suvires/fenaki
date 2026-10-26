@@ -11,6 +11,21 @@ interface Link {
   current?: boolean
 }
 
+export type SiteHeaderAccount =
+  | { signIn: Link; signUp: Link }
+  | {
+      member: {
+        /** The first letter of their name or email, on the round button. */
+        initial: string
+        /** Accessible name of the round button: «Cuenta». */
+        label: string
+        /** «Mi cuenta», «Historial»… */
+        links: Link[]
+        /** A form posting to `action`, so signing out works without scripts. */
+        signOut: { label: string; action: string }
+      }
+    }
+
 export interface SiteHeaderProps {
   /** The logo's link and accessible name. */
   home: { href: string; label: string }
@@ -31,8 +46,11 @@ export interface SiteHeaderProps {
     /** Accessible name of the button that clears the text. */
     clearLabel: string
   }
-  /** «Iniciar sesión» (a link) and «Crear cuenta» (a primary button). */
-  account: { signIn: Link; signUp: Link }
+  /**
+   * Signed out: «Iniciar sesión» (a link) and «Crear cuenta» (a primary button). Signed in: a round
+   * button with the member's initial opens their menu.
+   */
+  account: SiteHeaderAccount
   /** Accessible name of the menu button on small screens. */
   menuLabel: string
   className?: string
@@ -60,10 +78,12 @@ export function SiteHeader({
   const [genresOpen, setGenresOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [accountOpen, setAccountOpen] = useState(false)
   // No transition until the search is first used: on load it must not animate into its closed state.
   const [searchUsed, setSearchUsed] = useState(false)
   const [query, setQuery] = useState('')
   const genresId = useId()
+  const accountId = useId()
   const searchId = useId()
   const menuId = useId()
   const searchInput = useRef<HTMLInputElement | null>(null)
@@ -95,6 +115,16 @@ export function SiteHeader({
     return () => document.removeEventListener('click', close)
   }, [genresOpen])
 
+  // A click outside closes the account menu.
+  useEffect(() => {
+    if (!accountOpen) return
+    const close = (event: MouseEvent) => {
+      if (!root.current?.contains(event.target as Node)) setAccountOpen(false)
+    }
+    document.addEventListener('click', close)
+    return () => document.removeEventListener('click', close)
+  }, [accountOpen])
+
   const onKeyDown = (event: KeyboardEvent) => {
     if (event.key !== 'Escape') return
     // Focus goes back to the magnifier, not lost with the folded field.
@@ -102,6 +132,7 @@ export function SiteHeader({
     setGenresOpen(false)
     setSearchOpen(false)
     setMenuOpen(false)
+    setAccountOpen(false)
   }
 
   const navigation = (where: 'bar' | 'menu') => (
@@ -157,14 +188,80 @@ export function SiteHeader({
     </ul>
   )
 
-  const accountLinks = (
-    <div className="flex flex-col md:flex-row md:items-center gap-4">
-      <a href={account.signIn.href} className={linkClass}>
-        {account.signIn.label}
-      </a>
-      <Button href={account.signUp.href}>{account.signUp.label}</Button>
-    </div>
+  const signOut = (member: Extract<SiteHeaderAccount, { member: unknown }>['member']) => (
+    <form method="post" action={member.signOut.action}>
+      <button
+        type="submit"
+        className={cx(linkClass, 'bg-transparent border-0 p-0 cursor-pointer text-left')}
+      >
+        {member.signOut.label}
+      </button>
+    </form>
   )
+
+  const accountLinks = (where: 'bar' | 'menu') => {
+    if (!('member' in account)) {
+      return (
+        <div className="flex flex-col md:flex-row md:items-center gap-4">
+          <a href={account.signIn.href} className={linkClass}>
+            {account.signIn.label}
+          </a>
+          <Button href={account.signUp.href}>{account.signUp.label}</Button>
+        </div>
+      )
+    }
+    const { member } = account
+    // In the folded menu the member's links are listed; in the bar they open from the round button.
+    if (where === 'menu')
+      return (
+        <ul className="m-0 p-0 list-none grid gap-4">
+          {member.links.map((link) => (
+            <li key={link.href}>
+              <a
+                href={link.href}
+                aria-current={link.current ? 'page' : undefined}
+                className={cx(linkClass, 'aria-[current=page]:text-tungsteno-text')}
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+          <li>{signOut(member)}</li>
+        </ul>
+      )
+    return (
+      <div className="relative">
+        <button
+          type="button"
+          aria-label={member.label}
+          aria-expanded={accountOpen}
+          aria-controls={accountId}
+          onClick={() => setAccountOpen((open) => !open)}
+          className="inline-flex items-center justify-center size-(--size-control-md) rounded-full border-0 bg-tungsteno text-on-tungsteno text-button uppercase cursor-pointer hover:bg-tungsteno-hover focus-visible:focus-ring"
+        >
+          {member.initial}
+        </button>
+        <ul
+          id={accountId}
+          hidden={!accountOpen}
+          className="m-0 mt-2 p-2 list-none grid gap-1 absolute right-0 top-full z-10 min-w-(--size-column) rounded-sm bg-sala-1 border border-line shadow-hover"
+        >
+          {member.links.map((link) => (
+            <li key={link.href}>
+              <a
+                href={link.href}
+                aria-current={link.current ? 'page' : undefined}
+                className={cx(linkClass, 'block px-2 py-1 aria-[current=page]:text-tungsteno-text')}
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+          <li className="px-2 py-1">{signOut(member)}</li>
+        </ul>
+      </div>
+    )
+  }
 
   return (
     <header ref={root} onKeyDown={onKeyDown} className={cx('grid gap-4', className)}>
@@ -249,7 +346,7 @@ export function SiteHeader({
               </button>
             ) : null}
           </form>
-          <div className="hidden md:block">{accountLinks}</div>
+          <div className="hidden md:block">{accountLinks('bar')}</div>
           <button
             type="button"
             aria-expanded={menuOpen}
@@ -263,7 +360,7 @@ export function SiteHeader({
       </div>
       <div id={menuId} hidden={!menuOpen} className="md:hidden grid gap-6 pb-2">
         <nav aria-label={navLabel}>{navigation('menu')}</nav>
-        {accountLinks}
+        {accountLinks('menu')}
       </div>
     </header>
   )

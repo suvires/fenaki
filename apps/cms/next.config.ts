@@ -21,7 +21,7 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   // The e2e tests run a second CMS next to the development one, in its own build directory.
   distDir: process.env.NEXT_DIST_DIR ?? '.next',
-  transpilePackages: ['@fenaki/i18n', '@fenaki/waitlist'],
+  transpilePackages: ['@fenaki/i18n', '@fenaki/tokens', '@fenaki/waitlist'],
   agentRules: false,
   poweredByHeader: false,
   headers: async () => [{ source: '/:path*', headers: securityHeaders }],
