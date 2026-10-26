@@ -61,7 +61,11 @@ export function ShortHero({
       className={cx(
         'relative isolate overflow-hidden grid grid-cols-1 items-end gap-8',
         'p-6 md:p-10 rounded-hero bg-sala-1 shadow-hero',
-        backdrop ? 'min-h-(--size-hero)' : 'md:grid-cols-[minmax(0,1fr)_auto]',
+        // With a still, the hero takes the still's own 16:9 shape from md up, so the image is shown
+        // whole; on small screens it keeps a minimum height for the text instead.
+        backdrop
+          ? 'min-h-(--size-hero) md:min-h-0 md:aspect-still'
+          : 'md:grid-cols-[minmax(0,1fr)_auto]',
         className,
       )}
     >
