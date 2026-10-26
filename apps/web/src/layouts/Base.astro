@@ -47,7 +47,7 @@ const {
   noindex = false,
   canonicalPath = Astro.url.pathname,
   alternates,
-  ogImage = `/og/${locale}/site.png`,
+  ogImage = paths.ogPage(locale, 'site'),
   ogType = 'website',
   jsonLd,
 } = Astro.props
