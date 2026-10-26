@@ -124,7 +124,7 @@ test('signing up sends a confirmation email that confirms the subscription in li
 
     await page.goto(link ?? '')
     await expect(
-      page.getByRole('heading', { level: 1, name: 'Este enlace ya no sirve' }),
+      page.getByRole('heading', { level: 1, name: 'Este enlace ya no funciona' }),
     ).toBeVisible()
   } finally {
     const subscriber = await listmonkSubscriber(email)

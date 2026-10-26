@@ -192,7 +192,7 @@
       "newsletter": "Si marcaste la selección semanal, la recibirás los {weekday} por la mañana cuando empiece."
     },
     "expired": {
-      "title": "Este enlace ya no sirve",
+      "title": "Este enlace ya no funciona",
       "text": "Ha caducado o ya se usó. Si quieres apuntarte, vuelve a escribir tu email.",
       "back": "Apúntate de nuevo"
     }
