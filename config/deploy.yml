@@ -103,10 +103,14 @@ servers:
         LISTMONK_FROM_EMAIL: FENAKI <hola@fenaki.tv>
         # Public address of listmonk: the unsubscribe links in emails point here.
         LISTMONK_PUBLIC_URL: https://lists.fenaki.tv
-        LISTMONK_SMTP_HOST: email-smtp.eu-west-1.amazonaws.com
-        LISTMONK_SMTP_PORT: 587
+        # Through the hola@fenaki.tv mailbox (OVHcloud) while Amazon SES is still in its sandbox, where it
+        # only delivers to verified addresses. Back to SES once production access is granted:
+        #   email-smtp.eu-west-1.amazonaws.com, 587, STARTTLS, SES_SMTP_USERNAME/PASSWORD.
+        LISTMONK_SMTP_HOST: smtp.mail.ovh.net
+        LISTMONK_SMTP_PORT: 465
         LISTMONK_SMTP_AUTH: login
-        LISTMONK_SMTP_TLS: STARTTLS
+        LISTMONK_SMTP_TLS: TLS
+        LISTMONK_SMTP_USERNAME: hola@fenaki.tv
         UMAMI_URL: http://fenaki-umami:3000
         UMAMI_SCRIPT_URL: https://stats.fenaki.tv/script.js
         UMAMI_WEBSITE_ID: 0b6c4f8e-2d7a-4e15-9a3c-7f2e1d5b8c64
@@ -114,8 +118,7 @@ servers:
         UMAMI_USERNAME: admin
       secret:
         - MEILISEARCH_SEARCH_KEY
-        - LISTMONK_SMTP_USERNAME:SES_SMTP_USERNAME
-        - LISTMONK_SMTP_PASSWORD:SES_SMTP_PASSWORD
+        - LISTMONK_SMTP_PASSWORD:MAILBOX_PASSWORD
         - UMAMI_PASSWORD:UMAMI_ADMIN_PASSWORD
   jobs:
     hosts:
