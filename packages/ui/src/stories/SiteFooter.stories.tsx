@@ -6,27 +6,13 @@ const meta = {
   component: SiteFooter,
   args: {
     label: 'Pie de página',
-    groups: [
-      {
-        title: 'Fenaki',
-        links: [
-          { label: 'Qué es Fenaki', href: '#what' },
-          { label: 'Cómo es legal', href: '#legal' },
-          { label: 'Preguntas frecuentes', href: '#faq' },
-        ],
-      },
-      {
-        title: 'Para cineastas',
-        links: [{ label: 'Pedir la retirada de un corto', href: '#takedown' }],
-      },
-      {
-        title: 'Legal',
-        links: [
-          { label: 'Aviso legal', href: '#legal-notice' },
-          { label: 'Política de privacidad', href: '#privacy' },
-          { label: 'Política de cookies', href: '#cookies' },
-        ],
-      },
+    links: [
+      { label: 'Todos los cortos', href: '#browse' },
+      { label: 'Pedir la retirada de un corto', href: '#takedown' },
+      { label: 'Aviso legal', href: '#legal-notice' },
+      { label: 'Política de privacidad', href: '#privacy' },
+      { label: 'Política de cookies', href: '#cookies' },
+      { label: 'Créditos', href: '#credits' },
     ],
     tagline: 'El mejor cine, en cortos.',
     brand: 'Fenaki',

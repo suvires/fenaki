@@ -42,16 +42,10 @@ test('the landing page replaces the home: the hero and the waitlist form', async
   // Before launch the shorts are not public: nothing on the page shows or links them.
   await expect(page.getByRole('link', { name: /Timecode/ })).toHaveCount(0)
   await expect(page.getByRole('searchbox')).toHaveCount(0)
-  // These tests run with a contact mailbox: proposals and sponsorship write to it.
-  await expect(page.getByRole('link', { name: 'Proponer un corto' }).first()).toHaveAttribute(
-    'href',
-    'mailto:hola@fenaki.tv?subject=Propuesta%20de%20corto',
-  )
+  // Before launch the footer only links the legal pages.
   await expect(
-    page.getByRole('navigation', { name: 'Pie de página' }).getByRole('link', {
-      name: 'Patrocinar una colección',
-    }),
-  ).toBeVisible()
+    page.getByRole('navigation', { name: 'Pie de página' }).getByRole('link'),
+  ).toHaveText(['Aviso legal', 'Política de privacidad', 'Política de cookies'])
 })
 
 test('the catalog routes are not public before launch', async ({ request }) => {
@@ -159,14 +153,8 @@ test('the legal pages are linked from the footer and marked as drafts', async ({
   await expect(page.getByText('REVISAR')).toHaveCount(0)
 })
 
-test('the credits page carries the TMDB attribution and is linked from the footer', async ({
-  page,
-}) => {
-  await page.goto('/es/')
-  await page
-    .getByRole('navigation', { name: 'Pie de página' })
-    .getByRole('link', { name: 'Créditos' })
-    .click()
+test('the credits page carries the TMDB attribution', async ({ page }) => {
+  await page.goto('/es/creditos')
   await expect(page).toHaveURL(/\/es\/creditos$/)
   await expect(page.getByRole('img', { name: 'The Movie Database (TMDB)' })).toBeVisible()
   await expect(

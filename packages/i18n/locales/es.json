@@ -230,12 +230,6 @@
   },
   "footer": {
     "label": "Pie de página",
-    "groups": {
-      "fenaki": "Fenaki",
-      "filmmakers": "Para cineastas",
-      "legal": "Legal",
-      "organizations": "Para organizaciones"
-    },
     "links": {
       "takedown": "Pedir la retirada de un corto",
       "legalNotice": "Aviso legal",

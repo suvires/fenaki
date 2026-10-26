@@ -62,41 +62,24 @@ const metaDescription = description ?? t('site.description')
 const canonical = absoluteUrl(siteUrl, canonicalPath)
 const image = absoluteUrl(siteUrl, ogImage)
 const contact = contactLinks(contactEmail, t)
-const footerGroups = [
-  // Before launch the catalog is not public: no link to it.
-  ...(landing
-    ? []
-    : [
-        {
-          title: t('footer.groups.fenaki'),
-          links: [{ label: t('footer.links.browse'), href: paths.browse(locale) }],
-        },
-      ]),
-  {
-    title: t('footer.groups.filmmakers'),
-    links: [
+const legalLinks = [
+  { label: t('footer.links.legalNotice'), href: paths.legal(locale, 'aviso-legal') },
+  { label: t('footer.links.privacy'), href: paths.legal(locale, 'privacidad') },
+  { label: t('footer.links.cookies'), href: paths.legal(locale, 'cookies') },
+]
+// Before launch the landing page only links the legal pages: there is no catalog to talk about.
+const footerLinks = landing
+  ? legalLinks
+  : [
+      { label: t('footer.links.browse'), href: paths.browse(locale) },
       ...(contact ? [contact.propose] : []),
       { label: t('footer.links.takedown'), href: paths.legal(locale, 'retirada-de-contenidos') },
-    ],
-  },
-  {
-    title: t('footer.groups.organizations'),
-    links: [
       { label: t('footer.links.sponsor'), href: paths.sponsor(locale, 'collection') },
       { label: t('footer.links.showcase'), href: paths.sponsor(locale, 'showcase') },
-    ],
-  },
-  {
-    title: t('footer.groups.legal'),
-    links: [
-      { label: t('footer.links.legalNotice'), href: paths.legal(locale, 'aviso-legal') },
-      { label: t('footer.links.privacy'), href: paths.legal(locale, 'privacidad') },
-      { label: t('footer.links.cookies'), href: paths.legal(locale, 'cookies') },
+      ...legalLinks,
       { label: t('footer.links.playerSettings'), href: paths.playerSettings(locale) },
       { label: t('footer.links.credits'), href: paths.credits(locale) },
-    ],
-  },
-]
+    ]
 ---
 
 <!doctype html>
@@ -365,7 +348,7 @@ const footerGroups = [
     <SiteFooter
       className="w-full mx-auto max-w-page px-4 md:px-8 pb-8"
       label={t('footer.label')}
-      groups={footerGroups}
+      links={footerLinks}
       tagline={t('footer.tagline')}
       brand={t('site.name')}
     />
