@@ -10,6 +10,8 @@ import { absoluteUrl, hreflangLinks, jsonLdScript, type Alternates } from '../li
 
 interface Props {
   locale: Locale
+  /** The light from above at the top of the page: the home page only. */
+  glow?: boolean
   title?: string
   description?: string
   /** Pages that only make sense from a link, such as the waitlist confirmation. */
@@ -27,6 +29,7 @@ interface Props {
 
 const {
   locale,
+  glow = false,
   title,
   description,
   noindex = false,
@@ -143,12 +146,12 @@ const footerGroups = [
   <body
     class:list={[
       'min-h-dvh overflow-x-hidden',
-      // Catalog pages: a light from above, like a screen glowing in a dark room. A huge ellipse
+      // The home page: a light from above, like a screen glowing in a dark room. A huge ellipse
       // centred above the page (radial, so it arcs: brighter in the middle than at the sides), in
       // the glow colour at the glow opacity, fading to transparent; and a black band behind the
       // header that fades within the first tenth. The ellipse reaches transparent at 58 % of its
       // radius, just above the area's bottom edge (60 % at its centre), so it never ends in a cut.
-      !landing &&
+      glow &&
         'bg-[linear-gradient(to_bottom,var(--color-sala-1),transparent_10%),radial-gradient(250%_250%_at_50%_-50%,color-mix(in_oklab,var(--color-glow)_var(--opacity-glow),transparent)_20%,transparent_58%)] bg-no-repeat bg-size-[100%_var(--size-page-glow)]',
     ]}
   >

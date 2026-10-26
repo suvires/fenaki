@@ -76,7 +76,7 @@ const latestRails = rails.filter((rail) => rail.key === 'latest')
 const otherRails = rails.filter((rail) => rail.key !== 'latest')
 ---
 
-<Base locale={locale} title={landing ? t('landing.title') : t('home.title')}>
+<Base locale={locale} title={landing ? t('landing.title') : t('home.title')} glow={!landing}>
   {landing && <Landing locale={locale} />}
   {!landing && hero && (
     // The light at the top of the page ends at this element's bottom edge (see Base.astro).
