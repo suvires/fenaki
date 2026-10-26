@@ -166,14 +166,19 @@ const footerLinks = landing
       {t('site.skipToContent')}
     </a>
     {landing ? (
-      <header class="w-full mx-auto max-w-page flex items-center px-4 md:px-8 pt-6">
-        <a
-          href={paths.home(locale)}
-          class="inline-flex text-ink rounded-xs focus-visible:focus-ring"
-        >
-          <Wordmark label={t('site.name')} className="h-6 w-auto" />
-        </a>
-      </header>
+      <div
+        data-site-header
+        class="sticky top-0 z-20 bg-transparent data-scrolled:bg-sala-1 transition-colors duration-(--duration-header) ease-standard motion-reduce:transition-none"
+      >
+        <header class="w-full mx-auto max-w-page flex items-center px-4 md:px-8 py-6">
+          <a
+            href={paths.home(locale)}
+            class="inline-flex text-ink rounded-xs focus-visible:focus-ring"
+          >
+            <Wordmark label={t('site.name')} className="h-6 w-auto" />
+          </a>
+        </header>
+      </div>
     ) : (
       <div
         data-site-header
@@ -299,8 +304,7 @@ const footerLinks = landing
     )}
     <script>
       // The header is see-through at the top and turns solid once the page has scrolled past
-      // the main area's top padding. Astro bundles it for every page; without the header (the landing
-      // page) it does nothing.
+      // the main area's top padding, in both modes (the landing page's header is only the wordmark).
       const header = document.querySelector<HTMLElement>('[data-site-header]')
       const main = document.getElementById('main')
       // The light at the top of catalog pages ends halfway below the element marked data-glow-end (the
