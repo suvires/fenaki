@@ -24,6 +24,11 @@ export interface PlayerGateProps {
   startOverLabel?: string
   /** Gets the player frame once it is in the page, and null when it goes: for progress tracking. */
   onFrame?: (frame: HTMLIFrameElement | null) => void
+  /**
+   * Asked before the player loads: it calls `play` once the viewer agrees (the page's consent
+   * dialog). Without it the player loads on the press.
+   */
+  confirmPlay?: (play: () => void) => void
   /** Extra attributes for the play button, such as the analytics event (`data-umami-event`). */
   playAttributes?: Record<`data-${string}`, string>
   className?: string
@@ -42,6 +47,7 @@ export function PlayerGate({
   resume,
   startOverLabel,
   onFrame,
+  confirmPlay,
   playAttributes,
   className,
 }: PlayerGateProps) {
@@ -49,6 +55,11 @@ export function PlayerGate({
   const [started, setStarted] = useState<{ src?: string } | undefined>()
   const loaded = started !== undefined
   const src = started?.src
+  const start = (from?: string) => {
+    const play = () => setStarted({ src: from })
+    if (confirmPlay) confirmPlay(play)
+    else play()
+  }
   return (
     <div
       className={cx(
@@ -89,7 +100,7 @@ export function PlayerGate({
               variant="primary"
               size="lg"
               icon="play"
-              onClick={() => setStarted({ src: resume ? resume.embedSrc : embedSrc })}
+              onClick={() => start(resume ? resume.embedSrc : embedSrc)}
               {...playAttributes}
             >
               {resume ? resume.label : playLabel}
@@ -98,7 +109,7 @@ export function PlayerGate({
               <Button
                 variant="secondary"
                 size="lg"
-                onClick={() => setStarted({ src: embedSrc })}
+                onClick={() => start(embedSrc)}
                 {...playAttributes}
               >
                 {startOverLabel}

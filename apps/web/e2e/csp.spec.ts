@@ -35,6 +35,7 @@ test('the catalog pages run under the policy', async ({ page }, testInfo) => {
 
   await visit(page, '/es/cortos/timecode')
   await page.getByRole('button', { name: 'Ver ahora' }).click()
+  await page.getByRole('button', { name: 'Aceptar y reproducir' }).click()
   await expect(page.getByRole('status')).toBeVisible()
 
   // The search island must be hydrated before typing, or the keystrokes are lost.

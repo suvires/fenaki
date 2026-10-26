@@ -98,13 +98,22 @@ Usamos **Umami**, instalado en nuestro propio servidor, para contar visitas, pá
 | Base jurídica | Interés legítimo en la seguridad del servicio (art. 6.1.f RGPD y considerando 49)                                                                                                   |
 | Conservación  | Registros del servidor: [30] días; errores en Sentry: según el plan contratado, [90] días como máximo                                                                               |
 
-### 2.9 Registro de tu consentimiento de cookies
+### 2.9 Tu elección sobre los reproductores
 
-Guardamos tu elección sobre cookies (qué categorías aceptas o rechazas, cuándo, y un identificador del consentimiento) para respetarla y poder demostrarla (art. 7.1 RGPD). Lo gestiona CookieYes. Base jurídica: obligación legal (art. 6.1.c RGPD). Conservación: [12 meses]. Más detalles en la [política de cookies](/es/cookies).
+Si marcas «Recordar mi elección» en el aviso del reproductor, lo guardamos solo en tu navegador (`fenaki:player-consent:v1`), sin enviarlo a nuestros servidores. Lo puedes retirar en «Preferencias de reproducción», al pie de cada página. No usamos un gestor de consentimiento externo. Más detalles en la [política de cookies](/es/cookies).
 
 ### 2.10 Reproductores de YouTube y Vimeo
 
-Si aceptas los contenidos de terceros, el reproductor de YouTube (Google) o de Vimeo se carga en la página y esas empresas reciben tu IP y datos de tu navegador, y pueden instalar sus propias cookies. Lo que hagan con esos datos es responsabilidad suya: consulta la [política de privacidad de Google](https://policies.google.com/privacy?hl=es) y la [de Vimeo](https://vimeo.com/privacy).
+Los cortos se ven en el reproductor oficial de YouTube (Google) o de Vimeo. No se carga nada de esas empresas hasta que pulsas «reproducir» en un corto y aceptas en el aviso que se abre, que te explica qué ocurre (salvo que hayas pedido recordar tu elección, ver 2.9). Al cargarse el reproductor:
+
+- **Esas empresas reciben tu dirección IP y datos técnicos de tu navegador** (tipo y versión, idioma, la página desde la que se carga el reproductor), como al visitar cualquier web.
+- **El reproductor guarda datos en tu navegador.** YouTube, en su modo de privacidad mejorada, guarda datos técnicos en el almacenamiento local; Vimeo, con la opción «no rastrear», solo cookies de seguridad de Cloudflare. El detalle está en la [política de cookies](/es/cookies).
+
+**Responsabilidad.** Fenaki decide insertar el reproductor en la página y, por eso, es corresponsable con Google o Vimeo de la recogida y transmisión de esos datos (sentencia _Fashion ID_, C-40/17). Lo que esas empresas hagan después con ellos es responsabilidad suya: consulta la [política de privacidad de Google](https://policies.google.com/privacy?hl=es) y la [de Vimeo](https://vimeo.com/privacy). [REVISAR: acuerdo de corresponsabilidad, art. 26 RGPD]
+
+**Base jurídica:** tu consentimiento (art. 6.1.a RGPD y art. 22.2 LSSI), que das al pulsar «Aceptar y reproducir» y puedes retirar en cualquier momento desde «Preferencias de reproducción». [REVISAR: consulta 7b]
+
+**Si tienes cuenta e iniciaste sesión,** Fenaki lee del reproductor el punto del corto por el que vas para ofrecerte «Seguir viendo» (ver 2.6). Sin sesión no se registra nada.
 
 ## 3. Datos de menores
 
@@ -123,7 +132,6 @@ No vendemos ni cedemos tus datos. Los proveedores siguientes los tratan por cuen
 | OVH SAS                                      | Servidor (VPS) donde funcionan la web, la base de datos, listmonk y Umami; dominios y buzón de correo    | Francia (UE)                       | UE                                                         | No                                                                                                                                                               |
 | Amazon Web Services EMEA SARL                | Envío de correos (Amazon SES): newsletter y correos de las cuentas                                       | Luxemburgo (UE); matriz en EE. UU. | Región de la UE (por ejemplo, Irlanda, Fráncfort o España) | Posible acceso desde EE. UU. por la matriz o soporte: Marco de Privacidad de Datos UE-EE. UU. (Amazon está certificada) y cláusulas contractuales tipo en su DPA |
 | Cloudflare, Inc.                             | DNS, CDN, protección frente a ataques y túnel de conexión: todo el tráfico del sitio pasa por Cloudflare | EE. UU.                            | Red global                                                 | Sí: Marco de Privacidad de Datos UE-EE. UU. (Cloudflare está certificada) y cláusulas contractuales tipo en su DPA                                               |
-| CookieYes Limited                            | Gestor de consentimiento y registro de consentimientos                                                   | Reino Unido                        |                                                            | Reino Unido: decisión de adecuación de la Comisión Europea                                                                                                       |
 | Functional Software, Inc. (Sentry)           | Seguimiento de errores                                                                                   | EE. UU.                            | Región de la UE (Alemania)                                 | Posible acceso desde EE. UU.: Marco de Privacidad de Datos UE-EE. UU. y/o cláusulas contractuales tipo                                                           |
 | Stripe Payments Europe, Limited              | Pagos                                                                                                    | Irlanda (UE)                       | UE y EE. UU.                                               | Sí, a Stripe, Inc.: Marco de Privacidad de Datos UE-EE. UU. y cláusulas contractuales tipo                                                                       |
 | [Cloudflare R2 o Backblaze B2]               | Copias de seguridad externas de la base de datos (incluyen los datos de suscriptores)                    | EE. UU.                            |                                                            |                                                                                                                                                                  |

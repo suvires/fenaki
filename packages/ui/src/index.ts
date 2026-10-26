@@ -12,6 +12,7 @@ export { Notice, type NoticeProps, type NoticeTone } from './components/Notice.t
 export { OfferCard, type OfferCardProps } from './components/OfferCard.tsx'
 export { PageHeader, type PageHeaderProps } from './components/PageHeader.tsx'
 export { Pagination, type PaginationProps } from './components/Pagination.tsx'
+export { Dialog, type DialogProps } from './components/Dialog.tsx'
 export { PlayerGate, type PlayerGateProps } from './components/PlayerGate.tsx'
 export { Poster, type PosterProps, type PosterTone } from './components/Poster.tsx'
 export { Prose, type ProseProps } from './components/Prose.tsx'

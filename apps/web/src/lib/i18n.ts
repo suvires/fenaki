@@ -43,6 +43,8 @@ export const paths = {
   waitlistConfirm: (locale: Locale) => `/${locale}/lista-de-espera/confirmar`,
   legal: (locale: Locale, page: LegalPage) => `/${locale}/${page}`,
   credits: (locale: Locale) => `/${locale}/creditos`,
+  /** Which third-party players load without asking (kept in the browser, never indexed). */
+  playerSettings: (locale: Locale) => `/${locale}/preferencias-de-reproduccion`,
   /** The generated Open Graph image of a document or page (see src/pages/og). */
   og: (locale: Locale, kind: 'cortos' | 'personas' | 'colecciones' | 'escaparates', slug: string) =>
     `/og/${locale}/${kind}/${slug}.png`,

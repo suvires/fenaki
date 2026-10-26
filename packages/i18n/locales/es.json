@@ -87,13 +87,34 @@
     "origin": "{country} · {year}",
     "player": {
       "play": "Ver ahora",
-      "message": "Este corto se reproduce desde {provider}. Al darle a reproducir, {provider} puede guardar cookies en tu navegador.",
+      "message": "Este corto se reproduce desde {provider}. Antes de cargar su reproductor, te contamos qué datos recibe.",
       "more": "Más sobre las cookies",
       "loaded": "Aquí se carga el reproductor de {provider}",
       "sample": "Este es un corto de ejemplo: no tiene un reproductor real.",
       "frameTitle": "Reproductor de {provider}: {title}",
       "resume": "Seguir viendo desde {time}",
-      "startOver": "Empezar de nuevo"
+      "startOver": "Empezar de nuevo",
+      "consent": {
+        "title": "Vas a ver este corto en el reproductor de {provider}",
+        "youtube": {
+          "intro": "El reproductor es de YouTube (Google) y se carga desde sus servidores. Al cargarlo:",
+          "ip": "YouTube recibe tu dirección IP y datos técnicos de tu navegador, como cualquier web que visitas.",
+          "storage": "Guarda algunos datos técnicos en tu navegador para que el reproductor funcione, como tus preferencias de subtítulos. No son cookies, pero la ley los trata igual.",
+          "mode": "Lo cargamos en su modo de privacidad mejorada: según Google, lo que veas aquí no influye en lo que te recomienda YouTube."
+        },
+        "vimeo": {
+          "intro": "El reproductor es de Vimeo y se carga desde sus servidores. Al cargarlo:",
+          "ip": "Vimeo recibe tu dirección IP y datos técnicos de tu navegador, como cualquier web que visitas.",
+          "mode": "Lo cargamos con la opción «no rastrear»: según Vimeo, no guarda cookies de seguimiento ni estadísticas de tu sesión.",
+          "storage": "Cloudflare, el servicio de seguridad de Vimeo, puede guardar cookies técnicas para frenar a los bots."
+        },
+        "fenaki": "Fenaki no pone cookies de publicidad ni de seguimiento.",
+        "policy": "Política de privacidad de {provider}",
+        "remember": "Recordar mi elección para los cortos de {provider}",
+        "accept": "Aceptar y reproducir",
+        "cancel": "Cancelar",
+        "change": "Puedes cambiarlo cuando quieras en «Preferencias de reproducción», al pie de la página."
+      }
     },
     "types": {
       "fiction": "Ficción",
@@ -318,7 +339,8 @@
       "sponsor": "Patrocinar una colección",
       "showcase": "Escaparates para festivales y escuelas",
       "browse": "Todos los cortos",
-      "credits": "Créditos"
+      "credits": "Créditos",
+      "playerSettings": "Preferencias de reproducción"
     },
     "tagline": "El mejor cine, en cortos."
   },
@@ -700,5 +722,14 @@
       "motto": "El mejor cine, en cortos.",
       "footer": "Recibes este mensaje porque alguien pidió cambiar la contraseña de la cuenta de fenaki.tv con esta dirección. Responsable del tratamiento y datos de contacto en el {legalNotice}. {privacyPolicy}"
     }
+  },
+  "playerSettings": {
+    "title": "Preferencias de reproducción",
+    "intro": "Los cortos se ven en el reproductor oficial de YouTube o Vimeo. Antes de cargarlo te preguntamos, salvo que hayas pedido que recordemos tu elección. Aquí puedes ver y retirar esas elecciones. Se guardan solo en este navegador.",
+    "allowed": "Se carga sin preguntar",
+    "ask": "Te preguntamos antes de cargarlo",
+    "withdraw": "Volver a preguntarme",
+    "more": "Qué datos recibe cada reproductor: {cookies}.",
+    "cookiesLink": "política de cookies"
   }
 }

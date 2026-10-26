@@ -76,7 +76,7 @@ Monorepo (pnpm + Turborepo): `apps/web` (Astro), `apps/cms` (Payload), `packages
 ### Legal constraints that affect code
 
 - Only embed from official channels (author, producer, festival); respect disabled embeds. Every short records its legal route.
-- Third-party embeds load only after cookie consent.
+- Third-party embeds load only after consent: pressing play opens a dialog that says what the provider receives (IP address, what its player stores in the browser) and the player loads on «Aceptar y reproducir». The viewer may have it remembered per provider (`localStorage`, withdrawn at `/es/preferencias-de-reproduccion`). No site-wide cookie banner until a cookie-based tool arrives (then CookieYes).
 - No ads or sponsorship inside or tied to the player; sponsorship attaches to the collection page, newsletter and site. Sponsored collections must exclude NC-licensed shorts.
 - Use the YouTube API for ingestion only and cache metadata in the database, not per page view.
 - Broken or privatized embeds found by the nightly checker hide the short automatically and flag it in the admin panel.

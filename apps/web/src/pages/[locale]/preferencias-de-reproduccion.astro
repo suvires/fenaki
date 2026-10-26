@@ -1,0 +1,31 @@
+---
+import { PlayerSettings } from '../../islands/PlayerSettings.tsx'
+import Base from '../../layouts/Base.astro'
+import { createRichTranslator } from '@fenaki/i18n'
+import { localeFrom, paths, translator } from '../../lib/i18n.ts'
+
+const locale = localeFrom(Astro.params.locale)
+if (!locale) return Astro.rewrite('/404')
+
+const t = translator(locale)
+const more = createRichTranslator(locale)('playerSettings.more', { cookies: 'link' as const })
+---
+
+<Base locale={locale} title={t('playerSettings.title')} noindex>
+  <section class="grid gap-6 max-w-article">
+    <h1 class="m-0 font-display text-display-l uppercase">{t('playerSettings.title')}</h1>
+    <p class="m-0 max-w-player-text text-body text-ink-muted">{t('playerSettings.intro')}</p>
+    <PlayerSettings client:load locale={locale} />
+    <p class="m-0 text-small text-ink-muted">
+      {more.map((piece) =>
+        piece === 'link' ? (
+          <a class="text-ink underline underline-offset-4" href={paths.legal(locale, 'cookies')}>
+            {t('playerSettings.cookiesLink')}
+          </a>
+        ) : (
+          piece
+        ),
+      )}
+    </p>
+  </section>
+</Base>
