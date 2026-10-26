@@ -1,6 +1,6 @@
 ---
 import type { Locale } from '@fenaki/i18n'
-import { Button, Rail, ShortCard } from '@fenaki/ui'
+import { Rail, ShortCard } from '@fenaki/ui'
 import { WaitlistForm } from '../islands/WaitlistForm.tsx'
 import { toCard } from '../lib/catalog.ts'
 import { listCollections, shortsOf, toCardSource } from '../lib/cms.ts'
@@ -85,11 +85,15 @@ const list = 'm-0 p-0 list-none grid gap-4 max-w-synopsis'
     {t('landing.hero.title')}
   </h1>
   <p class="m-0 max-w-hero-text text-body-l text-ink-muted">{t('landing.hero.lead')}</p>
-  <div class="grid gap-3 justify-items-start">
-    <Button size="lg" href={paths.landingSection(locale, 'waitlist')}>
-      {t('landing.hero.cta')}
-    </Button>
-    <p class="m-0 text-small text-ink-muted">{t('landing.hero.note')}</p>
+  <div id="waitlist" class="grid gap-3 max-w-search scroll-mt-8">
+    <WaitlistForm client:load locale={locale} />
+    <p class="m-0 text-small text-ink-muted">
+      <RichText
+        locale={locale}
+        messageKey="waitlist.privacy"
+        parts={{ legalNotice, privacyPolicy }}
+      />
+    </p>
   </div>
 </section>
 
@@ -168,21 +172,6 @@ const list = 'm-0 p-0 list-none grid gap-4 max-w-synopsis'
       </li>
     ))}
   </ul>
-</section>
-
-<section id="waitlist" class={`${section} max-w-search`} aria-labelledby="waitlist-title">
-  <h2 id="waitlist-title" class={heading}>
-    {t('waitlist.title')}
-  </h2>
-  <p class="m-0 text-body-l text-ink-muted">{t('waitlist.lead')}</p>
-  <WaitlistForm client:load locale={locale} />
-  <p class="m-0 text-small text-ink-muted">
-    <RichText
-      locale={locale}
-      messageKey="waitlist.privacy"
-      parts={{ legalNotice, privacyPolicy }}
-    />
-  </p>
 </section>
 
 <section id="faq" class={section}>

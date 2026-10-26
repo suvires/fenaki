@@ -164,9 +164,7 @@
     "title": "Cortometrajes gratis y legales en español",
     "hero": {
       "title": "El mejor cine, en cortos",
-      "lead": "Hay mucho cine corto publicado en abierto por quienes lo hicieron, pero está repartido entre canales, festivales y escuelas. Fenaki lo reúne en un solo sitio.",
-      "cta": "Avisarme cuando abra",
-      "note": "Un correo cuando abramos y, si quieres, una selección semanal. Sin cuenta, sin pagar."
+      "lead": "Hay mucho cine corto publicado en abierto por quienes lo hicieron, pero está repartido entre canales, festivales y escuelas. Fenaki lo reúne en un solo sitio."
     },
     "what": {
       "title": "Un catálogo de cortos con la comodidad de una plataforma de streaming",
@@ -258,7 +256,6 @@
   },
   "waitlist": {
     "title": "Te avisamos cuando abra",
-    "lead": "Déjanos tu correo. Te mandamos un mensaje para confirmarlo y, cuando Fenaki abra, otro para avisarte.",
     "email": {
       "label": "Correo electrónico",
       "placeholder": "nombre@ejemplo.com"
