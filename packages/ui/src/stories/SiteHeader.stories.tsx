@@ -72,3 +72,26 @@ export const CurrentPage: Story = {
     ],
   },
 }
+
+const signedIn = {
+  member: {
+    initial: 'A',
+    label: 'Cuenta',
+    links: [
+      { label: 'Mi cuenta', href: '#account' },
+      { label: 'Historial', href: '#history' },
+    ],
+    signOut: { label: 'Cerrar sesión', action: '#sign-out' },
+  },
+}
+
+/** Signed in: a round button with the initial replaces «Iniciar sesión» and «Crear cuenta». */
+export const SignedIn: Story = { args: { account: signedIn } }
+
+/** The account menu open. */
+export const AccountMenuOpen: Story = {
+  args: { account: signedIn },
+  play: async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Cuenta' }))
+  },
+}

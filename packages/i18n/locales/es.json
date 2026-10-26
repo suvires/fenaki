@@ -556,7 +556,9 @@
         "passwordMismatch": "Las dos contraseñas no coinciden.",
         "rateLimited": "Demasiados intentos. Espera unos minutos y vuelve a intentarlo.",
         "server": "No hemos podido completarlo. Vuelve a intentarlo en unos minutos.",
-        "session": "Tu sesión ha caducado. Inicia sesión de nuevo."
+        "session": "Tu sesión ha caducado. Inicia sesión de nuevo.",
+        "passwordLong": "La contraseña es demasiado larga: usa como máximo 200 caracteres.",
+        "network": "No hemos podido conectar. Revisa tu conexión y vuelve a intentarlo."
       },
       "working": "Un momento…"
     },
@@ -587,7 +589,7 @@
       },
       "error": {
         "invalid": "Correo o contraseña incorrectos. Tras varios intentos fallidos, la cuenta se bloquea unos minutos.",
-        "unverified": "Aún no has verificado tu correo. Abre el enlace que te enviamos al crear la cuenta."
+        "unverified": "Aún no has verificado tu correo. Abre el enlace que te enviamos al crear la cuenta; si no lo encuentras, crea la cuenta otra vez con el mismo correo y te mandamos otro."
       }
     },
     "verify": {
