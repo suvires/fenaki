@@ -202,11 +202,12 @@
     "confirm": {
       "subject": "Confirma tu email para que te avisemos",
       "preview": "Un clic y te avisaremos del lanzamiento de FENAKI.",
-      "intro": "Confirma tu email y te avisaremos del lanzamiento de FENAKI.",
+      "title": "Confirma tu email",
+      "intro": "Te avisaremos del lanzamiento de FENAKI.",
       "button": "Confirmar email",
       "fallback": "¿No funciona el botón? Copia este enlace en el navegador: {url}",
       "expiry": "El enlace caduca en 7 días. Si no te has apuntado tú, ignora este email: no volveremos a escribirte.",
-      "footer": "Recibes este email porque alguien lo apuntó en fenaki.tv. {privacyPolicy}"
+      "footer": "Te enviamos este email desde {site}. {privacyPolicy}"
     }
   },
   "legal": {
@@ -589,20 +590,22 @@
     "verify": {
       "subject": "Verifica tu email para activar tu cuenta",
       "preview": "Un clic y tu cuenta de FENAKI estará lista.",
-      "intro": "Verifica tu email para activar tu cuenta de FENAKI.",
+      "title": "Verifica tu email",
+      "intro": "Así activarás tu cuenta de FENAKI.",
       "button": "Verificar email",
       "fallback": "¿No funciona el botón? Copia este enlace en el navegador: {url}",
       "ignore": "Si no has creado tú la cuenta, ignora este email: sin verificar, no se activa.",
-      "footer": "Recibes este email porque alguien creó una cuenta en fenaki.tv con él. {privacyPolicy}"
+      "footer": "Te enviamos este email desde {site}. {privacyPolicy}"
     },
     "reset": {
       "subject": "Cambia tu contraseña de FENAKI",
       "preview": "El enlace caduca en 1 hora.",
+      "title": "Cambia tu contraseña",
       "intro": "Elige una contraseña nueva para tu cuenta de FENAKI.",
       "button": "Cambiar contraseña",
       "fallback": "¿No funciona el botón? Copia este enlace en el navegador: {url}",
       "ignore": "El enlace caduca en 1 hora. Si no lo has pedido tú, ignora este email: tu contraseña no cambia.",
-      "footer": "Recibes este email porque alguien pidió cambiar la contraseña de tu cuenta en fenaki.tv. {privacyPolicy}"
+      "footer": "Te enviamos este email desde {site}. {privacyPolicy}"
     }
   },
   "playerSettings": {

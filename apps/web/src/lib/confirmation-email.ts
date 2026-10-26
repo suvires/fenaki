@@ -59,6 +59,7 @@ export function confirmationEmail(locale: Locale): { subject: string; body: stri
   )
   const footer = render(
     rich('email.confirm.footer', {
+      site: link(SITE_URL, 'fenaki.tv'),
       privacyPolicy: link(`${SITE_URL}privacidad`, t('legal.links.privacyPolicyTitle')),
     }),
   )
@@ -76,11 +77,12 @@ export function confirmationEmail(locale: Locale): { subject: string; body: stri
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${color['sala-1']}">
 <tr><td align="center" style="padding:${space('8')} ${space('4')}">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:${width}">
-<tr><td style="padding:0 0 ${space('6')}"><img src="${LOGO_URL}" alt="FENAKI" width="85" height="28" style="display:block;border:0"></td></tr>
+<tr><td style="padding:0 0 ${space('6')}"><a href="${SITE_URL}"><img src="${LOGO_URL}" alt="FENAKI" width="85" height="28" style="display:block;border:0"></a></td></tr>
 </table>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:${width};background:${card['sala-0']};border-radius:${radius}">
 <tr><td style="padding:${space('8')}">
-${paragraph(escapeHtml(t('email.confirm.intro')), `${typeStyle('body-l')};font-weight:700`)}
+${paragraph(escapeHtml(t('email.confirm.title')), `${typeStyle('title')};margin-bottom:${space('2')}`)}
+${paragraph(escapeHtml(t('email.confirm.intro')), typeStyle('body-l'))}
 <p style="margin:${space('2')} 0 ${space('6')}"><a href="${CONFIRM_URL}" style="display:inline-block;padding:${space('3')} ${space('6')};background:${card.tungsteno};color:${card['on-tungsteno']};${typeStyle('button-lg')};text-decoration:none;border-radius:${pill}">${escapeHtml(t('email.confirm.button'))}</a></p>
 ${paragraph(fallback, `${typeStyle('small')};color:${card['ink-muted']};word-break:break-all`)}
 ${paragraph(escapeHtml(t('email.confirm.expiry')), `${typeStyle('small')};color:${card['ink-muted']};margin-bottom:0`)}

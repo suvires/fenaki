@@ -89,6 +89,7 @@ export function accountEmailHtml(
   const fallback = render(rich(key('fallback'), { url: link(url, url, card.ink) }))
   const footer = render(
     rich(key('footer'), {
+      site: link(`${origin}/${locale}/`, 'fenaki.tv'),
       privacyPolicy: link(`${origin}/${locale}/privacidad`, t('legal.links.privacyPolicyTitle')),
     }),
   )
@@ -106,11 +107,12 @@ export function accountEmailHtml(
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${color['sala-1']}">
 <tr><td align="center" style="padding:${space('8')} ${space('4')}">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:${width}">
-<tr><td style="padding:0 0 ${space('6')}"><img src="${escapeHtml(`${origin}/email/logo.png`)}" alt="FENAKI" width="85" height="28" style="display:block;border:0"></td></tr>
+<tr><td style="padding:0 0 ${space('6')}"><a href="${escapeHtml(`${origin}/${locale}/`)}"><img src="${escapeHtml(`${origin}/email/logo.png`)}" alt="FENAKI" width="85" height="28" style="display:block;border:0"></a></td></tr>
 </table>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:${width};background:${card['sala-0']};border-radius:${radius}">
 <tr><td style="padding:${space('8')}">
-${paragraph(escapeHtml(t(key('intro'))), `${typeStyle('body-l')};font-weight:700`)}
+${paragraph(escapeHtml(t(key('title'))), `${typeStyle('title')};margin-bottom:${space('2')}`)}
+${paragraph(escapeHtml(t(key('intro'))), typeStyle('body-l'))}
 <p style="margin:${space('2')} 0 ${space('6')}"><a href="${escapeHtml(url)}" style="display:inline-block;padding:${space('3')} ${space('6')};background:${card.tungsteno};color:${card['on-tungsteno']};${typeStyle('button-lg')};text-decoration:none;border-radius:${pill}">${escapeHtml(t(key('button')))}</a></p>
 ${paragraph(fallback, `${typeStyle('small')};color:${card['ink-muted']};word-break:break-all`)}
 ${paragraph(escapeHtml(t(key('ignore'))), `${typeStyle('small')};color:${card['ink-muted']};margin-bottom:0`)}
