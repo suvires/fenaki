@@ -46,16 +46,17 @@ export function confirmationEmail(locale: Locale): { subject: string; body: stri
   // A white page with the card in the web's own dark colours, and the web's button: neon pink with
   // dark text (5.2:1 on the pink; white on it would be 3.6:1, too low).
   const card = palettes.dark
-  const width = token(tokens.container, 'note')
+  const width = token(tokens.container, 'email')
 
-  const link = (href: string, label: string, ink = color.ink): Html => ({
-    html: `<a href="${href}" style="color:${ink};text-decoration:underline">${escapeHtml(label)}</a>`,
+  const link = (href: string, label: string, ink = color.ink, long = false): Html => ({
+    // A long URL may break anywhere; the words around it never do.
+    html: `<a href="${href}" style="color:${ink};text-decoration:underline${long ? ';word-break:break-all' : ''}">${escapeHtml(label)}</a>`,
   })
   const paragraph = (html: string, style = typeStyle('body')) =>
     `<p style="margin:0 0 ${space('4')};color:${card.ink};${style}">${html}</p>`
 
   const fallback = render(
-    rich('email.confirm.fallback', { url: link(CONFIRM_URL, CONFIRM_URL, card.ink) }),
+    rich('email.confirm.fallback', { url: link(CONFIRM_URL, CONFIRM_URL, card.ink, true) }),
   )
   const footer = render(
     rich('email.confirm.footer', {
@@ -83,8 +84,8 @@ export function confirmationEmail(locale: Locale): { subject: string; body: stri
 <tr><td style="padding:${space('8')}">
 ${paragraph(escapeHtml(t('email.confirm.title')), `${typeStyle('title')};margin-bottom:${space('2')}`)}
 ${paragraph(escapeHtml(t('email.confirm.intro')), typeStyle('body-l'))}
-<p style="margin:${space('2')} 0 ${space('6')}"><a href="${CONFIRM_URL}" style="display:inline-block;padding:${space('3')} ${space('6')};background:${card.tungsteno};color:${card['on-tungsteno']};${typeStyle('button-lg')};text-decoration:none;border-radius:${pill}">${escapeHtml(t('email.confirm.button'))}</a></p>
-${paragraph(fallback, `${typeStyle('small')};color:${card['ink-muted']};word-break:break-all`)}
+<p style="margin:${space('2')} 0 ${space('6')}"><a href="${CONFIRM_URL}" style="display:block;text-align:center;padding:${space('3')} ${space('6')};background:${card.tungsteno};color:${card['on-tungsteno']};${typeStyle('button-lg')};text-decoration:none;border-radius:${pill}">${escapeHtml(t('email.confirm.button'))}</a></p>
+${paragraph(fallback, `${typeStyle('small')};color:${card['ink-muted']}`)}
 ${paragraph(escapeHtml(t('email.confirm.expiry')), `${typeStyle('small')};color:${card['ink-muted']};margin-bottom:0`)}
 </td></tr>
 </table>

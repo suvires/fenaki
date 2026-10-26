@@ -77,16 +77,17 @@ export function accountEmailHtml(
   // A white page with the card in the web's own dark colours, and the web's button: neon pink with
   // dark text (5.2:1 on the pink; white on it would be 3.6:1, too low).
   const card = palettes.dark
-  const width = token(tokens.container, 'note')
+  const width = token(tokens.container, 'email')
   const key = (name: string) => `accountEmail.${kind}.${name}` as MessageKey
 
-  const link = (href: string, text: string, ink = color.ink): Html => ({
-    html: `<a href="${escapeHtml(href)}" style="color:${ink};text-decoration:underline">${escapeHtml(text)}</a>`,
+  const link = (href: string, text: string, ink = color.ink, long = false): Html => ({
+    // A long URL may break anywhere; the words around it never do.
+    html: `<a href="${escapeHtml(href)}" style="color:${ink};text-decoration:underline${long ? ';word-break:break-all' : ''}">${escapeHtml(text)}</a>`,
   })
   const paragraph = (html: string, style = typeStyle('body')) =>
     `<p style="margin:0 0 ${space('4')};color:${card.ink};${style}">${html}</p>`
 
-  const fallback = render(rich(key('fallback'), { url: link(url, url, card.ink) }))
+  const fallback = render(rich(key('fallback'), { url: link(url, url, card.ink, true) }))
   const footer = render(
     rich(key('footer'), {
       site: link(`${origin}/${locale}/`, 'fenaki.tv'),
@@ -113,8 +114,8 @@ export function accountEmailHtml(
 <tr><td style="padding:${space('8')}">
 ${paragraph(escapeHtml(t(key('title'))), `${typeStyle('title')};margin-bottom:${space('2')}`)}
 ${paragraph(escapeHtml(t(key('intro'))), typeStyle('body-l'))}
-<p style="margin:${space('2')} 0 ${space('6')}"><a href="${escapeHtml(url)}" style="display:inline-block;padding:${space('3')} ${space('6')};background:${card.tungsteno};color:${card['on-tungsteno']};${typeStyle('button-lg')};text-decoration:none;border-radius:${pill}">${escapeHtml(t(key('button')))}</a></p>
-${paragraph(fallback, `${typeStyle('small')};color:${card['ink-muted']};word-break:break-all`)}
+<p style="margin:${space('2')} 0 ${space('6')}"><a href="${escapeHtml(url)}" style="display:block;text-align:center;padding:${space('3')} ${space('6')};background:${card.tungsteno};color:${card['on-tungsteno']};${typeStyle('button-lg')};text-decoration:none;border-radius:${pill}">${escapeHtml(t(key('button')))}</a></p>
+${paragraph(fallback, `${typeStyle('small')};color:${card['ink-muted']}`)}
 ${paragraph(escapeHtml(t(key('ignore'))), `${typeStyle('small')};color:${card['ink-muted']};margin-bottom:0`)}
 </td></tr>
 </table>
