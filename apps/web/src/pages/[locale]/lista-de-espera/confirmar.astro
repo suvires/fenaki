@@ -30,8 +30,11 @@ const title =
 ---
 
 <Base locale={locale} title={title} noindex>
-  <section class="grid gap-4 max-w-synopsis py-8">
-    <h1 class="m-0 font-display text-display-l uppercase text-balance">{title}</h1>
+  {/* The landing page's narrow centred column, so the page reads as its continuation. */}
+  <section class="w-full max-w-landing mx-auto grid gap-6 py-8">
+    <h1 class="m-0 font-display text-display-l md:text-display-xl uppercase text-balance">
+      {title}
+    </h1>
     {result.status === 'confirmed' && (
       <>
         <p class="m-0 text-body-l">{t('waitlist.confirmed.text')}</p>
@@ -42,14 +45,13 @@ const title =
             })}
           </p>
         )}
-        <p class="m-0 text-body text-ink-muted">{t('waitlist.confirmed.building')}</p>
       </>
     )}
     {result.status === 'expired' && (
       <>
-        <p class="m-0 text-body-l text-ink-muted">{t('waitlist.expired.text')}</p>
+        <p class="m-0 text-body-l">{t('waitlist.expired.text')}</p>
         <div>
-          <Button variant="secondary" href={paths.landingSection(locale, 'waitlist')}>
+          <Button size="lg" href={paths.landingSection(locale, 'waitlist')}>
             {t('waitlist.expired.back')}
           </Button>
         </div>

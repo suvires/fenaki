@@ -189,13 +189,12 @@
     "confirmed": {
       "title": "Ya estás en la lista",
       "text": "Te escribiremos en el lanzamiento de FENAKI.",
-      "newsletter": "Si marcaste la selección semanal, la recibirás los {weekday} por la mañana cuando empiece.",
-      "building": "Mientras tanto, lo estamos construyendo en público, un día cada vez."
+      "newsletter": "Si marcaste la selección semanal, la recibirás los {weekday} por la mañana cuando empiece."
     },
     "expired": {
       "title": "Este enlace ya no sirve",
       "text": "Ha caducado o ya se usó. Si quieres apuntarte, vuelve a escribir tu email.",
-      "back": "Volver a la lista de espera"
+      "back": "Apúntate de nuevo"
     }
   },
   "email": {
