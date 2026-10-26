@@ -8,6 +8,7 @@ import { buildConfig } from 'payload'
 import sharp from 'sharp'
 import { Contacts } from './collections/Contacts.ts'
 import { InboxState } from './collections/InboxState.ts'
+import { HomePage } from './collections/HomePage.ts'
 import { Ranking } from './collections/Ranking.ts'
 import { Messages } from './collections/Messages.ts'
 import { Organizations } from './collections/Organizations.ts'
@@ -82,7 +83,7 @@ export default buildConfig({
     Messages,
     Users,
   ],
-  globals: [InboxState, Ranking],
+  globals: [InboxState, HomePage, Ranking],
   cors: [process.env.WEB_URL ?? 'http://localhost:4321'],
   // The schema changes only through migrations (`pnpm migrate`), in development too, so the
   // first deployment runs exactly what was tested locally.

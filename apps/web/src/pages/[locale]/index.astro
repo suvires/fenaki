@@ -15,6 +15,7 @@ import {
   toSavedShort,
 } from '../../lib/catalog.ts'
 import {
+  getHeroShort,
   getRanking,
   listCollections,
   listShorts,
@@ -50,8 +51,8 @@ const top = landing
       preview: previewEnabled(TOP10_PREVIEW, import.meta.env.PROD),
     })
 
-// For now the hero is the latest short; picking one from the admin panel comes later.
-const hero = shorts[0]
+// The hero: the short chosen in the admin panel (Portada), or else the latest one.
+const hero = (landing ? undefined : await getHeroShort(locale)) ?? shorts[0]
 const heroDirectors = hero ? peopleOf(hero, 'director') : []
 const heroBackdrop = hero ? stillUrlOf(hero) : undefined
 const heroStill = hero ? stillPresentationOf(hero) : undefined

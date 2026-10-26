@@ -60,6 +60,23 @@ export async function getRanking(locale: Locale): Promise<PublishedShort[]> {
   }
 }
 
+/** The short the home hero features, chosen in the admin panel, while it is published. */
+export async function getHeroShort(locale: Locale): Promise<PublishedShort | undefined> {
+  try {
+    const home = await get<{ heroShort?: number | Short | null }>('globals/home', {
+      locale,
+      depth: SHORT_DEPTH + 1,
+    })
+    const short = home.heroShort
+    return typeof short === 'object' && short?.status === 'published'
+      ? (short as PublishedShort)
+      : undefined
+  } catch {
+    // The hero falls back to the latest short.
+    return undefined
+  }
+}
+
 export async function getShort(locale: Locale, slug: string): Promise<PublishedShort | undefined> {
   const list = await get<List<PublishedShort>>('shorts', {
     locale,

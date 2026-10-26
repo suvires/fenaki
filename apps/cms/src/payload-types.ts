@@ -119,11 +119,13 @@ export interface Config {
   fallbackLocale: ('false' | 'none' | 'null') | false | null | 'es' | 'es'[];
   globals: {
     'crm-inbox': CrmInbox;
+    home: Home;
     ranking: Ranking;
     'payload-jobs-stats': PayloadJobsStat;
   };
   globalsSelect: {
     'crm-inbox': CrmInboxSelect<false> | CrmInboxSelect<true>;
+    home: HomeSelect<false> | HomeSelect<true>;
     ranking: RankingSelect<false> | RankingSelect<true>;
     'payload-jobs-stats': PayloadJobsStatsSelect<false> | PayloadJobsStatsSelect<true>;
   };
@@ -1376,6 +1378,19 @@ export interface CrmInbox {
   createdAt?: string | null;
 }
 /**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home".
+ */
+export interface Home {
+  id: number;
+  /**
+   * Empty: the latest published short. If the chosen one is unpublished, the latest one shows.
+   */
+  heroShort?: (number | null) | Short;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * Computed every night from the plays of the last 7 days. Read only.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1417,6 +1432,16 @@ export interface CrmInboxSelect<T extends boolean = true> {
   lastUid?: T;
   lastRunAt?: T;
   lastError?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home_select".
+ */
+export interface HomeSelect<T extends boolean = true> {
+  heroShort?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
