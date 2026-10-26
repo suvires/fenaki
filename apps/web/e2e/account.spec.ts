@@ -347,7 +347,7 @@ test('account pages are not indexed, the forms validate in the browser, and a ba
   await expect(page.getByText('La contraseña debe tener al menos 10 caracteres.')).toBeVisible()
 
   await open(page, '/es/cuenta/verificar?token=0123456789abcdef0123456789abcdef01234567')
-  await expect(page.getByRole('alert')).toContainText('El enlace no es válido o ya se usó')
+  await expect(page.getByRole('alert')).toContainText('El enlace no es válido o ya se utilizó')
   await open(page, '/es/cuenta/restablecer')
   await expect(page.getByRole('alert')).toContainText('El enlace no es válido o ha caducado')
 })

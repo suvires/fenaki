@@ -509,7 +509,7 @@
       "working": "Verificando tu email…",
       "okTitle": "Email verificado",
       "okText": "Tu cuenta está lista. Ya puedes iniciar sesión.",
-      "failTitle": "El enlace no es válido o ya se usó",
+      "failTitle": "El enlace no es válido o ya se utilizó",
       "failText": "Si ya verificaste tu email, inicia sesión. Si no, crea la cuenta otra vez para recibir un enlace nuevo.",
       "signIn": "Iniciar sesión"
     },
