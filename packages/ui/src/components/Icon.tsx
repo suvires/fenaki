@@ -1,3 +1,4 @@
+import { useId } from 'react'
 import { cx } from '../cx.ts'
 
 /**
@@ -40,16 +41,23 @@ const PATHS = {
  * The thumbs have a filled variant (a rating that is chosen). Same outline, drawn to be filled:
  * the cuff is narrowed and the hand starts further right, so that with the stroke they stay two
  * shapes with a hairline between them instead of merging into one block.
+ * Filled, the double thumbs-up draws its back thumb whole, offset up and left, with the front
+ * thumb's outline cut out of it (an SVG mask), so the two never merge into one shape.
  */
 const FILLED_PATHS = {
   'thumbs-up':
     'M4 11.5h2V20H4zM8.5 11.5 11 4.5a2.5 2.5 0 0 1 2.5 2.5v3.5h5.3a1.5 1.5 0 0 1 1.5 1.75l-1 6.5A2 2 0 0 1 17.3 20H8.5z',
   'thumbs-down':
     'M4 12.5h2V4H4zM8.5 12.5 11 19.5a2.5 2.5 0 0 0 2.5-2.5v-3.5h5.3a1.5 1.5 0 0 0 1.5-1.75l-1-6.5A2 2 0 0 0 17.3 4H8.5z',
-  // The back thumb is drawn down to the front one, so the two read as a stack.
+  // The front thumb only: the back one is the same shape, offset and cut around it (see below).
   'thumbs-up-double':
-    'M8.24 12.71h2V19h-2zM12.2 12.71 13.42 7.53a1.85 1.85 0 0 1 1.85 1.85v2.59h3.92a1.11 1.11 0 0 1 1.11 1.29l-.74 4.81A1.48 1.48 0 0 1 18.08 19H12.2zM4.04 10.51h2V16.8h-2zM8.04 12.9 9.22 5.33a1.85 1.85 0 0 1 1.85 1.85v5.72z',
+    'M8.24 12.71h2V19h-2zM12.2 12.71 13.42 7.53a1.85 1.85 0 0 1 1.85 1.85v2.59h3.92a1.11 1.11 0 0 1 1.11 1.29l-.74 4.81A1.48 1.48 0 0 1 18.08 19H12.2z',
 } as const
+
+/** Where the filled double thumbs-up draws its back thumb: the front one, up and to the left. */
+const BACK_THUMB = 'translate(-5.6 -3.4)'
+/** The gap cut around the front thumb, so the two filled thumbs never merge into one shape. */
+const BACK_THUMB_GAP = 4
 
 export type IconName = keyof typeof PATHS
 
@@ -83,6 +91,8 @@ export function Icon({
 }: IconProps) {
   const variant = chosen ? FILLED_PATHS[name as keyof typeof FILLED_PATHS] : undefined
   const filled = name === 'play' || variant !== undefined
+  const maskId = useId()
+  const stacked = name === 'thumbs-up-double' && variant !== undefined
   return (
     <svg
       className={cx('flex-none', SIZES[size], className)}
@@ -94,6 +104,18 @@ export function Icon({
       strokeLinecap="round"
       strokeLinejoin="round"
     >
+      {stacked ? (
+        <>
+          {/* The back thumb, with the front one's outline (plus a gap) cut out of it. */}
+          <mask id={maskId} maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+            <rect width="24" height="24" fill="white" stroke="none" />
+            <path d={variant} fill="black" stroke="black" strokeWidth={BACK_THUMB_GAP} />
+          </mask>
+          <g mask={`url(#${maskId})`}>
+            <path d={variant} transform={BACK_THUMB} />
+          </g>
+        </>
+      ) : null}
       <path d={variant ?? PATHS[name]} />
     </svg>
   )
