@@ -29,7 +29,7 @@ Fenaki es un catálogo curado de cortometrajes que se pueden ver gratis y de for
 - En el futuro podrá alojar en su propio servicio de vídeo cortos de dominio público, con licencia abierta (Creative Commons BY o BY-SA) o con cesión firmada por su titular. Cuando sea así, la ficha del corto lo indicará.
 - Indica en cada ficha la vía legal por la que el corto está en el catálogo y enlaza a su origen.
 
-El acceso al sitio es gratuito y no requiere registro. Algunas funciones (lista de espera, newsletter, apoyos económicos y, más adelante, cuentas de usuario) tienen sus propias condiciones, que se indican en el momento de usarlas.
+El acceso al sitio es gratuito y no requiere registro. Algunas funciones (lista de espera, newsletter, cuentas de usuario y, más adelante, apoyos económicos) tienen sus propias condiciones, que se indican en el momento de usarlas.
 
 ## 3. Condiciones de uso
 

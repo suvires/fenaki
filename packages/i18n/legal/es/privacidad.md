@@ -1,6 +1,6 @@
 # Política de privacidad
 
-Última actualización: 25 de octubre de 2026
+Última actualización: 26 de octubre de 2026
 
 En Fenaki tratamos los mínimos datos posibles. Puedes ver el catálogo sin registrarte, la analítica no usa cookies y los reproductores de YouTube y Vimeo solo se cargan si das tu consentimiento. Esta política explica qué datos tratamos, para qué, durante cuánto tiempo y qué derechos tienes, según el Reglamento (UE) 2016/679 (RGPD) y la Ley Orgánica 3/2018 de Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD).
 
@@ -67,18 +67,20 @@ En Fenaki tratamos los mínimos datos posibles. Puedes ver el catálogo sin regi
 
 Stripe también trata algunos datos como responsable independiente, por ejemplo para prevenir el fraude y cumplir la normativa de pagos. Consulta su [política de privacidad](https://stripe.com/es/privacy).
 
-### 2.6 Cuentas de usuario (próximamente)
+### 2.6 Cuentas de usuario
 
-Cuando Fenaki ofrezca cuentas (fase 3), esta política se actualizará antes de abrirlas. Está previsto tratar:
+|               |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Datos         | Correo electrónico, contraseña (la guardamos cifrada, con hash, nunca en claro), nombre si decides indicarlo (es opcional), fecha de creación de la cuenta y datos de acceso técnicos (intentos fallidos de inicio de sesión y sesiones abiertas). Con la sesión iniciada: tu lista «Mi lista» (los cortos que guardas y cuándo), tus valoraciones (me gusta, me encanta, no es para mí) y tu progreso e historial de reproducción (los cortos que has empezado a ver, el minuto en que te quedaste y si los terminaste) |
+| Finalidad     | Prestarte el servicio de cuenta: que puedas iniciar sesión, conservar tu lista y tus valoraciones, seguir viendo un corto donde lo dejaste, consultar tu historial y recibir los correos del propio servicio (verificación de la cuenta y recuperación de la contraseña). No usamos estos datos para publicidad ni para elaborar perfiles                                                                                                                                                                                |
+| Base jurídica | Ejecución del contrato (art. 6.1.b RGPD): la prestación del servicio de cuenta que solicitas al crearla                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| Conservación  | Mientras tu cuenta exista. Al borrarla desde «Mi cuenta», o si nos lo pides, eliminamos al momento la cuenta, tu lista, tus valoraciones y tu historial                                                                                                                                                                                                                                                                                                                                                                  |
+| Tus derechos  | Desde «Mi cuenta» puedes descargar tus datos en un archivo JSON (acceso y portabilidad), cambiar tu nombre y tu contraseña (rectificación) y borrar la cuenta con todo su contenido (supresión). El historial también se puede quitar elemento a elemento o borrar entero desde «Historial». El resto de derechos, como se explica en el apartado 6                                                                                                                                                                      |
+| Herramientas  | Servidor propio (OVHcloud) y Amazon SES para los correos                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 
-|               |                                                                                                                                                                                  |
-| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Datos         | Correo, contraseña cifrada (hash), idioma, mi lista, historial y progreso de reproducción, valoraciones y, si inicias sesión con Google o Apple, el identificador que te asignen |
-| Finalidad     | Prestarte el servicio de cuenta y sus funciones                                                                                                                                  |
-| Base jurídica | Ejecución del contrato (art. 6.1.b RGPD); recomendaciones personalizadas, si llegan, con la base que se determine                                                                |
-| Conservación  | Mientras la cuenta esté activa; se borra al darla de baja o tras [N] años de inactividad, con aviso previo                                                                       |
+Sin cuenta, o antes de iniciar sesión, tu lista y tus valoraciones se guardan solo en tu navegador y no llegan a nuestros servidores; tampoco registramos qué cortos ves ni por dónde vas. Al iniciar sesión por primera vez, lo que tu navegador había guardado se añade a tu cuenta y se borra del navegador. La sesión iniciada usa una cookie técnica (ver la [política de cookies](/es/cookies)).
 
-También se actualizará para el envío de cortos por autores (datos del autor, aceptación de la licencia de cesión).
+También se actualizará esta política para el envío de cortos por autores (datos del autor, aceptación de la licencia de cesión), antes de abrirlo.
 
 ### 2.7 Analítica del sitio (sin cookies)
 
@@ -106,7 +108,7 @@ Si aceptas los contenidos de terceros, el reproductor de YouTube (Google) o de V
 
 ## 3. Datos de menores
 
-Fenaki no está dirigido a menores de 14 años y no recogemos a sabiendas sus datos. Si tienes menos de 14 años, no te suscribas ni nos envíes datos sin el consentimiento de tus padres o tutores (art. 7 LOPDGDD).
+Fenaki no está dirigido a menores de 14 años y no recogemos a sabiendas sus datos. Si tienes menos de 14 años, no te suscribas, no crees una cuenta ni nos envíes datos sin el consentimiento de tus padres o tutores (art. 7 LOPDGDD).
 
 ## 4. Decisiones automatizadas
 
@@ -119,7 +121,7 @@ No vendemos ni cedemos tus datos. Los proveedores siguientes los tratan por cuen
 | Proveedor                                    | Servicio                                                                                                 | Sede de la entidad                 | Dónde se tratan los datos                                  | Transferencia internacional y garantía                                                                                                                           |
 | -------------------------------------------- | -------------------------------------------------------------------------------------------------------- | ---------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | OVH SAS                                      | Servidor (VPS) donde funcionan la web, la base de datos, listmonk y Umami; dominios y buzón de correo    | Francia (UE)                       | UE                                                         | No                                                                                                                                                               |
-| Amazon Web Services EMEA SARL                | Envío de correos (Amazon SES)                                                                            | Luxemburgo (UE); matriz en EE. UU. | Región de la UE (por ejemplo, Irlanda, Fráncfort o España) | Posible acceso desde EE. UU. por la matriz o soporte: Marco de Privacidad de Datos UE-EE. UU. (Amazon está certificada) y cláusulas contractuales tipo en su DPA |
+| Amazon Web Services EMEA SARL                | Envío de correos (Amazon SES): newsletter y correos de las cuentas                                       | Luxemburgo (UE); matriz en EE. UU. | Región de la UE (por ejemplo, Irlanda, Fráncfort o España) | Posible acceso desde EE. UU. por la matriz o soporte: Marco de Privacidad de Datos UE-EE. UU. (Amazon está certificada) y cláusulas contractuales tipo en su DPA |
 | Cloudflare, Inc.                             | DNS, CDN, protección frente a ataques y túnel de conexión: todo el tráfico del sitio pasa por Cloudflare | EE. UU.                            | Red global                                                 | Sí: Marco de Privacidad de Datos UE-EE. UU. (Cloudflare está certificada) y cláusulas contractuales tipo en su DPA                                               |
 | CookieYes Limited                            | Gestor de consentimiento y registro de consentimientos                                                   | Reino Unido                        |                                                            | Reino Unido: decisión de adecuación de la Comisión Europea                                                                                                       |
 | Functional Software, Inc. (Sentry)           | Seguimiento de errores                                                                                   | EE. UU.                            | Región de la UE (Alemania)                                 | Posible acceso desde EE. UU.: Marco de Privacidad de Datos UE-EE. UU. y/o cláusulas contractuales tipo                                                           |
@@ -144,7 +146,7 @@ Puedes ejercer en cualquier momento tus derechos de:
 - **Portabilidad:** recibir tus datos en un formato estructurado.
 - **Retirar tu consentimiento**, sin que afecte a lo tratado antes.
 
-**Cómo ejercerlos.** Escribe a hola@fenaki.tv o por carta a Calle Decano López Arjona, 18, 29140 Málaga (España), indicando qué derecho quieres ejercer. Si tenemos dudas razonables sobre tu identidad, podemos pedirte información adicional para confirmarla. Te responderemos en el plazo de un mes, ampliable dos meses más en casos complejos (art. 12 RGPD). Para darte de baja de la newsletter, basta con el enlace de cada correo.
+**Cómo ejercerlos.** Escribe a hola@fenaki.tv o por carta a Calle Decano López Arjona, 18, 29140 Málaga (España), indicando qué derecho quieres ejercer. Si tenemos dudas razonables sobre tu identidad, podemos pedirte información adicional para confirmarla. Te responderemos en el plazo de un mes, ampliable dos meses más en casos complejos (art. 12 RGPD). Para darte de baja de la newsletter, basta con el enlace de cada correo. Si tienes cuenta, puedes descargar tus datos y borrarla tú mismo desde «Mi cuenta», sin necesidad de escribirnos.
 
 **Reclamación ante la autoridad.** Si crees que no hemos tratado bien tus datos, puedes reclamar ante la Agencia Española de Protección de Datos (AEPD), C/ Jorge Juan 6, 28001 Madrid, en su sede electrónica: [sedeagpd.gob.es](https://sedeagpd.gob.es). Te agradeceremos que antes nos escribas, para intentar resolverlo.
 
@@ -154,4 +156,4 @@ Aplicamos medidas técnicas y organizativas adecuadas: conexión cifrada (HTTPS)
 
 ## 8. Cambios en esta política
 
-Si cambiamos esta política (por ejemplo, al abrir las cuentas de usuario), publicaremos la nueva versión con su fecha y, si el cambio es importante, te avisaremos por correo si estás suscrito.
+Si cambiamos esta política (por ejemplo, al abrir el envío de cortos por autores), publicaremos la nueva versión con su fecha y, si el cambio es importante, te avisaremos por correo si estás suscrito.
