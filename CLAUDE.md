@@ -101,6 +101,7 @@ Monorepo (pnpm + Turborepo): `apps/web` (Astro), `apps/cms` (Payload), `packages
 - No hardcoded user-facing strings in components. Every string comes from locale files (`locales/es.json`), with English keys.
 - The brand is always written **FENAKI**, in capitals, in every user-facing text (UI, legal pages, emails, sender names, labels). Lowercase only in the domain and addresses (`fenaki.tv`, `hola@fenaki.tv`) and in identifiers.
 - Say **email**, never «correo» or «correo electrónico», in every user-facing text (web, apps, emails).
+- Never pitch FENAKI as «gratis y legales» (or «gratuitos y legales») in marketing copy: titles, taglines, descriptions, OG cards, social posts. It has no pull. Lead with the tagline «El mejor cine, en cortos» and the curation. The legal route still belongs in legal texts and short pages, as a fact, not a selling point.
 - UI copy is neutral Spanish for all Spanish speakers: address the user as «tú», never «vosotros», and avoid Spain-only vocabulary. Locale code is `es`, not `es-ES`.
 - Locale-prefixed routes (`/es/...`) even while `es` is the only locale.
 - Format dates, durations and numbers with `Intl`.
