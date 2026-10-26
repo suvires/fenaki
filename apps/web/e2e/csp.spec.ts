@@ -29,11 +29,9 @@ test('the catalog pages run under the policy', async ({ page }, testInfo) => {
   const violations = watchViolations(page)
 
   await visit(page, '/es/')
-  // A hydrated island: the duration filters.
-  await page.getByRole('button', { name: 'Más de 15 min' }).click()
-  await expect(
-    page.getByRole('region', { name: 'Novedades' }).getByRole('link', { name: /Madre/ }),
-  ).toBeVisible()
+  // A hydrated island: the header's genres menu.
+  await page.getByRole('button', { name: 'Géneros' }).first().click()
+  await expect(page.getByRole('link', { name: 'Animación' }).first()).toBeVisible()
 
   await visit(page, '/es/cortos/timecode')
   await page.getByRole('button', { name: 'Ver ahora' }).click()

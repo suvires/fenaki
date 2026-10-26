@@ -42,11 +42,6 @@ test('the home page shows the latest short, the sponsored collection and the rai
   await expect(page.getByRole('link', { name: /Timecode/ }).first()).toBeVisible()
   // No launch date in the tests: nothing is «Nuevo» before the launch.
   await expect(page.getByText('Nuevo', { exact: true })).toHaveCount(0)
-
-  await page.getByRole('button', { name: 'Más de 15 min' }).click()
-  const latest = page.getByRole('region', { name: 'Novedades' })
-  await expect(latest.getByRole('link', { name: /Madre/ })).toBeVisible()
-  await expect(latest.getByRole('link', { name: /Cuerdas/ })).toBeHidden()
 })
 
 test('a short page loads no third-party player before the click', async ({ page }) => {

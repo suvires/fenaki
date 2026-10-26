@@ -21,7 +21,6 @@
   },
   "home": {
     "title": "Cortometrajes gratis y legales",
-    "filtersLabel": "Duración",
     "filters": {
       "short": "Menos de 5 min",
       "mid": "De 5 a 15 min",
@@ -44,8 +43,7 @@
       "title": "Lo más visto",
       "rank": "Puesto {rank}"
     },
-    "empty": "Todavía no hay cortos publicados.",
-    "noMatches": "Ningún corto coincide con este filtro."
+    "empty": "Todavía no hay cortos publicados."
   },
   "collection": {
     "eyebrow": {

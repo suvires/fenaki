@@ -130,15 +130,6 @@ export function toCard(
   }
 }
 
-/** Data attributes the home filters read to show or hide a card. */
-export function filterAttributes(short: CardSource, locale: Locale) {
-  return {
-    'data-card': '',
-    'data-band': durationBand(short.durationSeconds),
-    'data-subtitles': short.subtitles.includes(locale) ? 'yes' : 'no',
-  }
-}
-
 /** What «Mi lista» keeps of a short, so its rail can render cards without asking the CMS. */
 export function toSavedShort(short: CardSource, locale: Locale): NewSavedShort {
   return {

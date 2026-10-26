@@ -3,17 +3,10 @@ import { TOP10_PREVIEW } from 'astro:env/server'
 import { CollectionHero, Rail, RankedItem, RankedRail, ShortCard, ShortHero } from '@fenaki/ui'
 import { formatList, formatYear } from '@fenaki/i18n'
 import Landing from '../../components/Landing.astro'
-import { HomeFilters } from '../../islands/HomeFilters.tsx'
 import { MyListButton } from '../../islands/MyListButton.tsx'
 import { MyListRail } from '../../islands/MyListRail.tsx'
 import Base from '../../layouts/Base.astro'
-import {
-  filterAttributes,
-  posterTone,
-  toCard,
-  toCurrentShort,
-  toSavedShort,
-} from '../../lib/catalog.ts'
+import { posterTone, toCard, toCurrentShort, toSavedShort } from '../../lib/catalog.ts'
 import {
   getHeroShort,
   getRanking,
@@ -78,11 +71,9 @@ const rails: { key: string; title: string; href?: string; shorts: PublishedShort
       shorts: shortsOf(c),
     })),
 ].filter((rail) => rail.shorts.length > 0)
-
-const filterOptions = (['short', 'mid', 'long', 'subtitles'] as const).map((value) => ({
-  value,
-  label: t(`home.filters.${value}`),
-}))
+// «Novedades» goes right under the hero and «Mi lista», above the featured collection.
+const latestRails = rails.filter((rail) => rail.key === 'latest')
+const otherRails = rails.filter((rail) => rail.key !== 'latest')
 ---
 
 <Base locale={locale} title={landing ? t('landing.title') : t('home.title')}>
@@ -137,17 +128,26 @@ const filterOptions = (['short', 'mid', 'long', 'subtitles'] as const).map((valu
       )}
     />
   )}
-  {top.length > 0 && (
-    <RankedRail title={t('home.top10.title')}>
-      {top.map((short, index) => (
-        <RankedItem rank={index + 1} rankLabel={t('home.top10.rank', { rank: index + 1 })}>
-          <ShortCard
-            {...toCard(toCardSource(short), locale, t, paths.short(locale, short.slug), clock)}
-          />
-        </RankedItem>
-      ))}
-    </RankedRail>
+  {!landing && shorts.length === 0 && (
+    <p class="m-0 text-body-l text-ink-muted">{t('home.empty')}</p>
   )}
+  {!landing &&
+    latestRails.map((rail) => (
+      <div id={rail.key === 'latest' ? 'novedades' : undefined}>
+        <Rail
+          title={rail.title}
+          actionLabel={rail.href ? t('rail.seeAll') : undefined}
+          actionHref={rail.href}
+        >
+          {rail.shorts.map((short) => {
+            const card = toCardSource(short)
+            return (
+              <ShortCard {...toCard(card, locale, t, paths.short(locale, short.slug), clock)} />
+            )
+          })}
+        </Rail>
+      </div>
+    ))}
   {!landing && featured && (
     <CollectionHero
       headingLevel={hero ? 2 : 1}
@@ -166,34 +166,32 @@ const filterOptions = (['short', 'mid', 'long', 'subtitles'] as const).map((valu
       }))}
     />
   )}
-  {landing ? null : shorts.length === 0 ? (
-    <p class="m-0 text-body-l text-ink-muted">{t('home.empty')}</p>
-  ) : (
-    <>
-      <HomeFilters
-        client:idle
-        label={t('home.filtersLabel')}
-        options={filterOptions}
-        noMatchesLabel={t('home.noMatches')}
-      />
-      {rails.map((rail) => (
-        <div data-rail id={rail.key === 'latest' ? 'novedades' : undefined}>
-          <Rail
-            title={rail.title}
-            actionLabel={rail.href ? t('rail.seeAll') : undefined}
-            actionHref={rail.href}
-          >
-            {rail.shorts.map((short) => {
-              const card = toCardSource(short)
-              return (
-                <div {...filterAttributes(card, locale)}>
-                  <ShortCard {...toCard(card, locale, t, paths.short(locale, short.slug), clock)} />
-                </div>
-              )
-            })}
-          </Rail>
-        </div>
+  {top.length > 0 && (
+    <RankedRail title={t('home.top10.title')}>
+      {top.map((short, index) => (
+        <RankedItem rank={index + 1} rankLabel={t('home.top10.rank', { rank: index + 1 })}>
+          <ShortCard
+            {...toCard(toCardSource(short), locale, t, paths.short(locale, short.slug), clock)}
+          />
+        </RankedItem>
       ))}
-    </>
+    </RankedRail>
   )}
+  {!landing &&
+    otherRails.map((rail) => (
+      <div id={rail.key === 'latest' ? 'novedades' : undefined}>
+        <Rail
+          title={rail.title}
+          actionLabel={rail.href ? t('rail.seeAll') : undefined}
+          actionHref={rail.href}
+        >
+          {rail.shorts.map((short) => {
+            const card = toCardSource(short)
+            return (
+              <ShortCard {...toCard(card, locale, t, paths.short(locale, short.slug), clock)} />
+            )
+          })}
+        </Rail>
+      </div>
+    ))}
 </Base>

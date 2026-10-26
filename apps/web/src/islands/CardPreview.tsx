@@ -1,13 +1,6 @@
 import type { Locale } from '@fenaki/i18n'
 import { ShortPreview, type BadgeTone, type Rating, type ShortPreviewProps } from '@fenaki/ui'
-import {
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-  type CSSProperties,
-  type RefObject,
-} from 'react'
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react'
 import { createPortal } from 'react-dom'
 import {
   createPreviewTimer,
@@ -83,14 +76,12 @@ interface FloatingProps extends CardPreviewProps {
   data: PreviewData
   /** The card's box when the preview opened. */
   cardBox: Box
-  /** The page's timer: the panel tells it when the pointer enters or leaves. */
-  timer: RefObject<PreviewTimer<HTMLElement> | undefined>
 }
 
 type Phase = 'measure' | 'enter' | 'shown'
 
 /** The panel, placed over its card. It is measured hidden, starts at the card's box and grows. */
-function Floating({ data, cardBox, timer, locale, labels }: FloatingProps) {
+function Floating({ data, cardBox, locale, labels }: FloatingProps) {
   const { short } = data
   const panel = useRef<HTMLDivElement>(null)
   const [phase, setPhase] = useState<Phase>('measure')
@@ -172,8 +163,6 @@ function Floating({ data, cardBox, timer, locale, labels }: FloatingProps) {
       rating={rating}
       onRate={(value) => setRating(short.slug, value)}
       labels={labels}
-      onPointerEnter={() => timer.current?.enterPanel()}
-      onPointerLeave={() => timer.current?.leavePanel()}
     />,
     document.body,
   )
@@ -227,12 +216,21 @@ export function CardPreview(props: CardPreviewProps) {
 
     const cardOf = (target: EventTarget | null) =>
       target instanceof Element ? target.closest<HTMLElement>('[data-short-card]') : null
+    // The panel's enter and leave are read here too, from native events: React's own pointer
+    // enter/leave miss the move from a card rendered by another React root (the «Mi lista» rail)
+    // into this island's portal, and the panel closed under the pointer.
+    const panelOf = (target: EventTarget | null) =>
+      target instanceof Element ? target.closest<HTMLElement>('[data-short-preview]') : null
     const onOver = (event: PointerEvent) => {
       if (event.pointerType === 'touch') return
+      const panel = panelOf(event.target)
+      if (panel && !panel.contains(event.relatedTarget as Node | null)) next.enterPanel()
       const card = cardOf(event.target)
       if (card) next.enterCard(card)
     }
     const onOut = (event: PointerEvent) => {
+      const panel = panelOf(event.target)
+      if (panel && !panel.contains(event.relatedTarget as Node | null)) next.leavePanel()
       const card = cardOf(event.target)
       if (card && !card.contains(event.relatedTarget as Node | null)) next.leaveCard()
     }
@@ -264,5 +262,5 @@ export function CardPreview(props: CardPreviewProps) {
   }, [hoverable])
 
   if (!open) return null
-  return <Floating key={open.data.short.slug} {...props} {...open} timer={timer} />
+  return <Floating key={open.data.short.slug} {...props} {...open} />
 }
