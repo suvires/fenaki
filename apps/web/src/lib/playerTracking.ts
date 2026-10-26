@@ -57,6 +57,8 @@ export function trackPlayer({ frame, provider, slug, locale }: TrackOptions): ()
     const update = parsePlayerMessage(event.origin, event.data)
     if (!update) {
       // A Vimeo `ready` or a YouTube reply to `listening` without progress: the player is there.
+      // Vimeo drops what it was sent before `ready`, so the first answer is followed by one more ask.
+      if (!listening) ask()
       listening = true
       return
     }
