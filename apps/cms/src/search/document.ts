@@ -21,6 +21,10 @@ export interface ShortSearchDocument {
   posterTone: string
   /** Path of the card-sized still on the CMS origin, or null when the short has none. */
   still: string | null
+  /** Color of the text over the still (`light` on dark images), or null without a still. */
+  stillTextColor: 'light' | 'dark' | null
+  /** The still already carries the title. */
+  stillIncludesTitle: boolean
   noDialogue: boolean
   /** Made by or for a brand: cards show a «Contenido de marca» badge. */
   brandedContent: boolean
@@ -84,7 +88,12 @@ export interface IndexableShort {
   posterTone?: string | null
   still?:
     | number
-    | { url?: string | null; sizes?: { card?: { url?: string | null } | null } | null }
+    | {
+        url?: string | null
+        sizes?: { card?: { url?: string | null } | null } | null
+        textColor?: 'light' | 'dark' | null
+        includesTitle?: boolean | null
+      }
     | null
   noDialogue?: boolean | null
   brandedContent?: boolean | null
@@ -128,6 +137,9 @@ export function toSearchDocument(short: IndexableShort, typeLabel: string): Shor
       typeof short.still === 'object' && short.still
         ? (short.still.sizes?.card?.url ?? short.still.url ?? null)
         : null,
+    stillTextColor:
+      typeof short.still === 'object' && short.still ? (short.still.textColor ?? 'light') : null,
+    stillIncludesTitle: typeof short.still === 'object' && Boolean(short.still?.includesTitle),
     noDialogue: Boolean(short.noDialogue),
     brandedContent: Boolean(short.brandedContent),
     subtitles: [...subtitles],

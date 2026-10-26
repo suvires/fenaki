@@ -4,7 +4,7 @@
  * to the account instead.
  */
 
-import type { BadgeTone, PosterTone } from '@fenaki/ui'
+import type { BadgeTone, PosterTone, StillTextColor } from '@fenaki/ui'
 
 export const STORAGE_KEY = 'fenaki:my-list:v1'
 export const CHANGE_EVENT = 'fenaki:my-list'
@@ -20,6 +20,9 @@ export interface SavedShort {
   tone: PosterTone
   /** The card-sized still, when the short had one. */
   image?: string
+  /** Color of the text over the still, and whether the still already carries the title. */
+  imageTextColor?: StillTextColor
+  imageHasTitle?: boolean
   /** Epoch milliseconds. */
   savedAt: number
 }

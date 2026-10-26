@@ -7,6 +7,8 @@ export interface DurationProps {
   locale?: Locale
   /** Secondary color by default; false for the main text color. */
   muted?: boolean
+  /** Take the surrounding text color (over a still, which sets its own) instead of a token's. */
+  inherit?: boolean
   className?: string
 }
 
@@ -15,13 +17,14 @@ export function Duration({
   seconds,
   locale = defaultLocale,
   muted = true,
+  inherit = false,
   className,
 }: DurationProps) {
   return (
     <span
       className={cx(
         'font-mono text-timecode tabular-nums whitespace-nowrap',
-        muted ? 'text-ink-muted' : 'text-ink',
+        !inherit && (muted ? 'text-ink-muted' : 'text-ink'),
         className,
       )}
     >

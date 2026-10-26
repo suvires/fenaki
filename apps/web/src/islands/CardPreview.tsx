@@ -50,7 +50,7 @@ function box(rect: DOMRect): Box {
  * synopsis and the badges are already in its markup, so they are read from there.
  */
 function readCard(card: HTMLElement): PreviewData | undefined {
-  const { shortCard: slug, title, director, year, seconds, tone, type } = card.dataset
+  const { shortCard: slug, title, director, year, seconds, tone, type, imageText } = card.dataset
   const href = card.getAttribute('href')
   if (!slug || !title || !href) return undefined
   const badges = [...card.querySelectorAll<HTMLElement>('[data-card-badge]')]
@@ -69,6 +69,8 @@ function readCard(card: HTMLElement): PreviewData | undefined {
       seconds: Number(seconds) || 0,
       tone: posterTone(tone),
       image: card.querySelector('img')?.getAttribute('src') ?? undefined,
+      imageTextColor: imageText === 'dark' || imageText === 'light' ? imageText : undefined,
+      imageHasTitle: card.dataset.imageTitle !== undefined,
     },
     typeLabel: type,
     synopsis: card.querySelector('[data-card-synopsis]')?.textContent ?? undefined,
@@ -159,6 +161,8 @@ function Floating({ data, cardBox, timer, locale, labels }: FloatingProps) {
       locale={locale}
       tone={short.tone}
       image={short.image}
+      imageTextColor={short.imageTextColor}
+      imageHasTitle={short.imageHasTitle}
       typeLabel={data.typeLabel}
       synopsis={data.synopsis}
       badges={data.badges}

@@ -17,6 +17,39 @@ const BAR_MAX = 48
 /** Never keep less than this share of a side: an almost black frame is left as it is. */
 const MIN_KEPT = 0.5
 
+/** The colour of text laid over a still: `light` on dark images, `dark` on light ones. */
+export type TextColor = 'light' | 'dark'
+
+/** Where the title sits: the lower 40 % of the image, over its left 60 %. */
+const TEXT_REGION = { left: 0, top: 0.6, width: 0.6, height: 0.4 }
+/** Mean grey level (0-255, as encoded) of the text region above which dark text reads better. Biased high: light text is the default over mid tones. */
+const DARK_TEXT_ABOVE = 150
+const MEASURE_SIZE = { width: 160, height: 90 }
+
+/**
+ * Measures the region where text sits and decides the text colour: dark text over a light region,
+ * light text otherwise. Returns the choice and the region's mean grey level.
+ */
+export async function measureTextColor(input: Buffer): Promise<{ color: TextColor; mean: number }> {
+  const { width, height } = MEASURE_SIZE
+  // A fixed small size makes the region independent of the image's own size and orientation.
+  const small = await sharp(input).rotate().resize(width, height, { fit: 'fill' }).toBuffer()
+  const top = Math.round(height * TEXT_REGION.top)
+  // `stats()` reads the pipeline's input, so the region is rendered first.
+  const region = await sharp(small)
+    .extract({
+      left: TEXT_REGION.left,
+      top,
+      width: Math.round(width * TEXT_REGION.width),
+      height: height - top,
+    })
+    .greyscale()
+    .toBuffer()
+  const { channels } = await sharp(region).stats()
+  const mean = channels[0]?.mean ?? 0
+  return { color: mean > DARK_TEXT_ABOVE ? 'dark' : 'light', mean }
+}
+
 /** Where each provider keeps its thumbnails, best first. */
 export function thumbnailCandidates(
   provider: string,

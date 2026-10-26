@@ -243,6 +243,15 @@ export function stillCardUrlOf(short: Short): string | undefined {
   return cmsUrl(short.still.sizes?.card?.url ?? short.still.url)
 }
 
+/** How text sits over the short's still: its colour, and whether the image already has the title. */
+export function stillPresentationOf(short: Short): {
+  textColor: 'light' | 'dark'
+  includesTitle: boolean
+} {
+  const still = isObject<Still>(short.still) ? short.still : undefined
+  return { textColor: still?.textColor ?? 'light', includesTitle: Boolean(still?.includesTitle) }
+}
+
 /** A path served by the CMS (media) as an absolute URL. */
 export function cmsUrl(path: string | null | undefined): string | undefined {
   return path ? new URL(path, CMS_PUBLIC_URL || CMS_URL).toString() : undefined
@@ -283,6 +292,8 @@ export function toCardSource(short: PublishedShort): CardSource {
     durationSeconds: short.durationSeconds,
     posterTone: short.posterTone,
     still: stillCardUrlOf(short),
+    stillTextColor: stillPresentationOf(short).textColor,
+    stillIncludesTitle: stillPresentationOf(short).includesTitle,
     type: short.type,
     noDialogue: short.noDialogue,
     brandedContent: short.brandedContent,

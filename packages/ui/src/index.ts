@@ -20,6 +20,7 @@ export { RankedItem, RankedRail, type RankedItemProps } from './components/Ranke
 export { RankNumber, type RankNumberProps } from './components/RankNumber.tsx'
 export { RatingButtons, type Rating, type RatingButtonsProps } from './components/RatingButtons.tsx'
 export { SearchField, type SearchFieldProps } from './components/SearchField.tsx'
+export { stillTextClass, type StillTextColor } from './stillText.ts'
 export { ShortCard, type ShortCardProps } from './components/ShortCard.tsx'
 export { ShortPreview, type ShortPreviewProps } from './components/ShortPreview.tsx'
 export { ShortHero, type ShortHeroProps } from './components/ShortHero.tsx'

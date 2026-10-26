@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import type { Locale } from '@fenaki/i18n'
 import { cx } from '../cx.ts'
+import { stillTextClass, type StillTextColor } from '../stillText.ts'
 import { Button } from './Button.tsx'
 import { Duration } from './Duration.tsx'
 import { Poster, type PosterProps } from './Poster.tsx'
@@ -23,6 +24,10 @@ export interface ShortHeroProps {
   poster: Omit<PosterProps, 'className'>
   /** A still of the short served from Fenaki. Decorative (empty alt); it fills the hero and replaces the poster. */
   backdrop?: string
+  /** Color of the text over the backdrop: light on dark stills (the default), dark on light ones. */
+  backdropTextColor?: StillTextColor
+  /** The backdrop already carries the title: the heading stays for screen readers only. */
+  backdropHasTitle?: boolean
   /** 1 when it opens the page; 2 under another page title. */
   headingLevel?: 1 | 2
   className?: string
@@ -44,10 +49,13 @@ export function ShortHero({
   secondaryAction,
   poster,
   backdrop,
+  backdropTextColor,
+  backdropHasTitle = false,
   headingLevel = 1,
   className,
 }: ShortHeroProps) {
   const Heading = headingLevel === 1 ? 'h1' : 'h2'
+  const text = backdrop ? stillTextClass(backdropTextColor) : 'text-ink'
   return (
     <section
       className={cx(
@@ -58,30 +66,28 @@ export function ShortHero({
       )}
     >
       {backdrop ? (
-        <>
-          <img
-            src={backdrop}
-            alt=""
-            decoding="async"
-            fetchPriority="high"
-            className="absolute inset-0 -z-10 size-full object-cover"
-          />
-          {/* Darkens from the bottom, where the text sits, so it reads over any image. */}
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 -z-10 bg-linear-to-t from-sala-0 via-sala-0/(--opacity-scrim) to-transparent"
-          />
-        </>
+        <img
+          src={backdrop}
+          alt=""
+          decoding="async"
+          fetchPriority="high"
+          className="absolute inset-0 -z-10 size-full object-cover"
+        />
       ) : null}
-      <div className="grid gap-4 min-w-0">
+      <div className={cx('grid gap-4 min-w-0', text)}>
         {eyebrow ? (
           <p className="m-0 font-mono text-label uppercase text-tungsteno-text">{eyebrow}</p>
         ) : null}
-        <Heading className="m-0 font-display text-display-l md:text-display-xl uppercase text-balance">
+        <Heading
+          className={cx(
+            'm-0 font-display text-display-l md:text-display-xl uppercase text-balance',
+            backdrop && backdropHasTitle && 'sr-only',
+          )}
+        >
           {title}
         </Heading>
-        <p className="m-0 flex flex-wrap items-center gap-x-3 gap-y-1 text-meta text-ink">
-          <Duration seconds={seconds} locale={locale} muted={false} />
+        <p className="m-0 flex flex-wrap items-center gap-x-3 gap-y-1 text-meta">
+          <Duration seconds={seconds} locale={locale} inherit />
           {details.map((detail) => (
             <span key={detail} className="before:content-['·'] before:mr-3">
               {detail}
@@ -89,7 +95,7 @@ export function ShortHero({
           ))}
         </p>
         {synopsis ? (
-          <p className="m-0 max-w-hero-text text-body-l text-ink line-clamp-3">{synopsis}</p>
+          <p className="m-0 max-w-hero-text text-body-l line-clamp-3">{synopsis}</p>
         ) : null}
         <div className="flex flex-wrap gap-3">
           <Button variant="primary" size="lg" icon="play" href={ctaHref}>

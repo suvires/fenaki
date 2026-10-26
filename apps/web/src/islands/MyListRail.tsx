@@ -55,6 +55,8 @@ export function MyListRail({
           locale={locale}
           tone={item.tone}
           image={item.image}
+          imageTextColor={item.imageTextColor}
+          imageHasTitle={item.imageHasTitle}
           synopsis={item.synopsis}
           badges={item.badges}
           slug={item.slug}

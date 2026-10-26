@@ -182,6 +182,19 @@ describe('checkEmbeds stills', () => {
     expect(updates.find((u) => u.collection === 'stills')?.id).toBe(50)
   })
 
+  it("refreshes a still without sending the text colour: an editor's choice is kept by the collection hook", async () => {
+    const { req, updates } = fakeRequest({
+      shorts: [{ ...published, still: 50 }],
+      sources: [youtube],
+      stills: [{ id: 50, short: 1, origin: 'provider', textColor: 'dark', textColorSet: 'manual' }],
+    })
+    await checkEmbeds(req, withThumbnails({ 'maxresdefault.jpg': await letterboxed() }), 0)
+    const data = updates.find((u) => u.collection === 'stills')?.data ?? {}
+    expect(data).not.toHaveProperty('textColor')
+    expect(data).not.toHaveProperty('textColorSet')
+    expect(data).not.toHaveProperty('includesTitle')
+  })
+
   it('never touches a still supplied by the author', async () => {
     const { req, creates, updates, deletes } = fakeRequest({
       shorts: [{ ...published, still: 50 }],

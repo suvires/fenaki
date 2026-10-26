@@ -1,6 +1,7 @@
 import { defaultLocale, type Locale } from '@fenaki/i18n'
 import type { CSSProperties, PointerEventHandler, Ref } from 'react'
 import { cx } from '../cx.ts'
+import { stillTextClass, type StillTextColor } from '../stillText.ts'
 import { Badge, type BadgeTone } from './Badge.tsx'
 import { Duration } from './Duration.tsx'
 import { IconButton } from './IconButton.tsx'
@@ -18,6 +19,10 @@ export interface ShortPreviewProps {
   tone?: PosterTone
   /** A still of the short. Without it the preview shows the landscape typographic poster. */
   image?: string
+  /** Color of the title over the still: light on dark stills (the default), dark on light ones. */
+  imageTextColor?: StillTextColor
+  /** The still already carries the title: it is not painted over the image. */
+  imageHasTitle?: boolean
   /** «Ficción», «Animación»… */
   typeLabel?: string
   synopsis?: string
@@ -68,6 +73,8 @@ export function ShortPreview({
   locale = defaultLocale,
   tone,
   image,
+  imageTextColor,
+  imageHasTitle = false,
   typeLabel,
   synopsis,
   badges,
@@ -110,13 +117,16 @@ export function ShortPreview({
           <>
             {/* The image is rounded itself instead of clipped by its container (steadier in the visual baselines). */}
             <img src={image} alt="" className="size-full object-cover rounded-t-panel" />
-            <span
-              aria-hidden="true"
-              className="absolute inset-x-0 bottom-0 h-3/5 bg-linear-to-t from-sala-0 via-sala-0/(--opacity-scrim) to-transparent"
-            />
-            <span className="absolute inset-x-0 bottom-0 grid p-4 text-ink">
-              <span className="text-card-title truncate">{title}</span>
-            </span>
+            {imageHasTitle ? null : (
+              <span
+                className={cx(
+                  'absolute inset-x-0 bottom-0 grid p-4',
+                  stillTextClass(imageTextColor),
+                )}
+              >
+                <span className="text-card-title truncate">{title}</span>
+              </span>
+            )}
           </>
         ) : (
           <Poster

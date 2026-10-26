@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import backdrop from './assets/backdrop.jpg'
+import backdropLight from './assets/backdrop-light.jpg'
 import { ShortPreview } from '../components/ShortPreview.tsx'
 import { SHORTS } from './fixtures.ts'
 
@@ -33,8 +34,12 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-/** The still, with the title on its gradient. */
+/** The still, with the title over it. */
 export const WithImage: Story = { args: { image: backdrop } }
+/** A light still: the editor marked dark text. */
+export const WithLightImage: Story = { args: { image: backdropLight, imageTextColor: 'dark' } }
+/** The still already carries the title: nothing is painted over it. */
+export const ImageIncludesTitle: Story = { args: { image: backdrop, imageHasTitle: true } }
 /** Without a still: the landscape typographic poster. */
 export const WithPoster: Story = {}
 export const SavedInMyList: Story = { args: { image: backdrop, saved: true } }

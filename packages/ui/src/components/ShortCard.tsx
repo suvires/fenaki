@@ -1,5 +1,6 @@
 import type { Locale } from '@fenaki/i18n'
 import { cx } from '../cx.ts'
+import { stillTextClass, type StillTextColor } from '../stillText.ts'
 import { Badge, type BadgeTone } from './Badge.tsx'
 import { Duration } from './Duration.tsx'
 import { Poster, type PosterTone } from './Poster.tsx'
@@ -13,6 +14,10 @@ export interface ShortCardProps {
   tone?: PosterTone
   /** A still of the short served from Fenaki. Without it the card shows the typographic poster. */
   image?: string
+  /** Color of the text over the still: light on dark stills (the default), dark on light ones. */
+  imageTextColor?: StillTextColor
+  /** The still already carries the title: it is not painted over the image. */
+  imageHasTitle?: boolean
   /** The short's page. The whole card is one link. */
   href?: string
   /** Not shown on the card: kept in the markup for the floating preview. */
@@ -29,7 +34,7 @@ export interface ShortCardProps {
 }
 
 /**
- * A short in a rail or grid. At rest only the still and the title show (and «Contenido de marca»,
+ * A short in a rail or grid. At rest only the still and the title show (unless the still carries it already) (and «Contenido de marca»,
  * which must always be identifiable). The details are in the DOM but not on screen: its name reads
  * title, running time, year, director and badges once, and the page's preview island reads the
  * `data-*` attributes and the hidden synopsis to float the preview of a card on hover (devices
@@ -43,6 +48,8 @@ export function ShortCard({
   locale,
   tone,
   image,
+  imageTextColor,
+  imageHasTitle = false,
   href,
   synopsis,
   badges,
@@ -64,6 +71,8 @@ export function ShortCard({
       data-year={previewable ? year : undefined}
       data-seconds={previewable ? seconds : undefined}
       data-tone={previewable ? tone : undefined}
+      data-image-text={previewable && image ? imageTextColor : undefined}
+      data-image-title={previewable && image && imageHasTitle ? '' : undefined}
       data-type={previewable ? typeLabel : undefined}
       className={cx(
         'group relative block rounded-sm text-inherit no-underline outline-hidden',
@@ -93,16 +102,12 @@ export function ShortCard({
               />
             </div>
           )}
-          {image ? (
-            <>
-              <span
-                aria-hidden="true"
-                className="absolute inset-x-0 bottom-0 h-3/5 bg-linear-to-t from-sala-0 via-sala-0/(--opacity-scrim) to-transparent"
-              />
-              <span className="absolute inset-x-0 bottom-0 grid p-3 text-ink">
-                <span className="text-card-title truncate">{title}</span>
-              </span>
-            </>
+          {image && !imageHasTitle ? (
+            <span
+              className={cx('absolute inset-x-0 bottom-0 grid p-3', stillTextClass(imageTextColor))}
+            >
+              <span className="text-card-title truncate">{title}</span>
+            </span>
           ) : null}
           {branded.length > 0 ? (
             <span className="absolute right-2 top-2 flex flex-wrap justify-end gap-1">
@@ -125,8 +130,8 @@ export function ShortCard({
         />
       </div>
       <span className="sr-only">
-        {/* The poster is hidden from screen readers and carries the title, so the name starts with it. */}
-        {image ? null : `${title}, `}
+        {/* The poster is hidden from screen readers and carries the title, so the name starts with it. A still that carries it has no title text on screen either. */}
+        {image && !imageHasTitle ? null : `${title}, `}
         {seconds ? <Duration seconds={seconds} locale={locale} /> : null}
         {year ? `, ${year}` : null}
         {director ? `, ${director}` : null}
