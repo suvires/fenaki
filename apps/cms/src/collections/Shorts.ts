@@ -393,6 +393,18 @@ export const Shorts: CollectionConfig = {
         }
       },
     ],
+    // Viewers' list, ratings and viewings of a deleted short go with it, before the short itself.
+    beforeDelete: [
+      async ({ id, req }) => {
+        for (const collection of ['list-items', 'ratings', 'viewings'] as const)
+          await req.payload.delete({
+            collection,
+            where: { short: { equals: id } },
+            overrideAccess: true,
+            req,
+          })
+      },
+    ],
     afterDelete: [({ doc, req }) => queueIndexShort(req, doc.id)],
   },
 }

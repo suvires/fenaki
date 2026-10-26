@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { isAdmin, isAdminField, isAdminUser } from '../access.ts'
+import { isAdmin, isAdminField, isAdminUser, isStaffAccount } from '../access.ts'
 import { groups, label, options } from '../labels.ts'
 
 export const Users: CollectionConfig = {
@@ -11,7 +11,11 @@ export const Users: CollectionConfig = {
   access: {
     // Agents read themselves only; accounts and keys are managed by admins.
     read: ({ req }) =>
-      isAdminUser(req.user) ? true : req.user ? { id: { equals: req.user.id } } : false,
+      isAdminUser(req.user)
+        ? true
+        : isStaffAccount(req.user) && req.user
+          ? { id: { equals: req.user.id } }
+          : false,
     create: isAdmin,
     update: isAdmin,
     delete: isAdmin,

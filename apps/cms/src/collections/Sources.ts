@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { isAdmin, isAuthenticatedField } from '../access.ts'
+import { isAdmin, isAuthenticatedField, isStaffAccount } from '../access.ts'
 import { importKeyField } from '../fields/importKey.ts'
 import { checkEmbedsEndpoint } from '../jobs/checkEmbedsEndpoint.ts'
 import { queueIndexShort } from '../jobs/queue.ts'
@@ -28,7 +28,8 @@ export const Sources: CollectionConfig = {
   },
   endpoints: [checkEmbedsEndpoint],
   access: {
-    read: ({ req }) => (req.user ? true : { 'short.status': { equals: 'published' } }),
+    read: ({ req }) =>
+      isStaffAccount(req.user) ? true : { 'short.status': { equals: 'published' } },
     create: isAdmin,
     update: isAdmin,
     delete: isAdmin,

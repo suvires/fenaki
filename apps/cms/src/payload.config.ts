@@ -10,11 +10,14 @@ import { Contacts } from './collections/Contacts.ts'
 import { InboxState } from './collections/InboxState.ts'
 import { HomePage } from './collections/HomePage.ts'
 import { Ranking } from './collections/Ranking.ts'
+import { Ratings } from './collections/Ratings.ts'
 import { Messages } from './collections/Messages.ts'
 import { Organizations } from './collections/Organizations.ts'
 import { Collections } from './collections/Collections.ts'
 import { LicenseDocuments } from './collections/LicenseDocuments.ts'
 import { Licenses } from './collections/Licenses.ts'
+import { ListItems } from './collections/ListItems.ts'
+import { Members } from './collections/Members.ts'
 import { Media } from './collections/Media.ts'
 import { People } from './collections/People.ts'
 import { Shorts } from './collections/Shorts.ts'
@@ -23,6 +26,7 @@ import { Sources } from './collections/Sources.ts'
 import { Sponsors } from './collections/Sponsors.ts'
 import { Stills } from './collections/Stills.ts'
 import { Users } from './collections/Users.ts'
+import { Viewings } from './collections/Viewings.ts'
 import { emailAdapter } from './email.ts'
 import { checkEmbedsTask } from './jobs/checkEmbeds.ts'
 import { computeRankingTask } from './jobs/computeRanking.ts'
@@ -82,6 +86,10 @@ export default buildConfig({
     Contacts,
     Messages,
     Users,
+    Members,
+    ListItems,
+    Ratings,
+    Viewings,
   ],
   globals: [InboxState, HomePage, Ranking],
   cors: [process.env.WEB_URL ?? 'http://localhost:4321'],

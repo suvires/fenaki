@@ -135,3 +135,13 @@ export const SAMPLE_SHOWCASE = {
   /** Titles from SAMPLE_SHORTS, in display order. */
   shorts: ['Cuerdas', 'Alike', 'Madre'],
 }
+
+/**
+ * A viewer account for development and the e2e tests: verified, so it signs in at once. Test
+ * values, flagged as sample data; the real accounts are created by viewers through the site.
+ */
+export const SAMPLE_MEMBER = {
+  email: 'miembro@example.com',
+  password: 'fenaki-ejemplo-10',
+  name: 'Miembro de ejemplo',
+} as const

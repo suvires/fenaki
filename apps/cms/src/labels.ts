@@ -19,6 +19,7 @@ export const groups = {
   rights: label('Rights', 'Derechos'),
   sponsorship: label('Sponsorship', 'Patrocinio'),
   sales: label('Sales', 'Comercial'),
+  viewers: label('Viewers', 'Espectadores'),
   admin: label('Admin', 'Administración'),
 }
 
@@ -56,6 +57,14 @@ export const messages = {
     'Usa un código de país de dos letras en mayúsculas.',
   ),
   languageCode: label('Use a BCP 47 language code.', 'Usa un código de idioma BCP 47.'),
+  passwordTooShort: label(
+    'The password must have at least 10 characters.',
+    'La contraseña debe tener al menos 10 caracteres.',
+  ),
+  shortNotPublished: label(
+    'Only published shorts can be added.',
+    'Solo se pueden añadir cortos publicados.',
+  ),
   nonCommercialInSponsored: label(
     'A sponsored collection cannot include non-commercial (NC) shorts:',
     'Una colección patrocinada no puede incluir cortos con licencia no comercial (NC):',

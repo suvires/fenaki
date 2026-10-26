@@ -19,3 +19,7 @@ WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'fenaki_test')\gexec
 -- The CRM integration test (apps/cms/test/integration) runs against its own database too.
 SELECT 'CREATE DATABASE fenaki_crm_test OWNER fenaki'
 WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'fenaki_crm_test')\gexec
+
+-- The viewer accounts integration test (apps/cms/test/integration) runs against its own database too.
+SELECT 'CREATE DATABASE fenaki_accounts_test OWNER fenaki'
+WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'fenaki_accounts_test')\gexec

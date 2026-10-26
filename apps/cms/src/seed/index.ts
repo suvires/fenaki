@@ -7,7 +7,7 @@ import { getPayload } from 'payload'
 import { slugify } from '../fields/slug.ts'
 import sharp from 'sharp'
 import { SAMPLE_COLLECTION, SAMPLE_SHORTS, SAMPLE_SHOWCASE, SAMPLE_SPONSOR } from './data.ts'
-import { ensureAdmin, removeSamples, runSearchSync } from './shared.ts'
+import { ensureAdmin, ensureSampleMember, removeSamples, runSearchSync } from './shared.ts'
 
 const payload = await getPayload({ config })
 const log = (message: string) => payload.logger.info(`seed: ${message}`)
@@ -23,6 +23,7 @@ if (real.totalDocs > 0) {
 
 await removeSamples(payload)
 await ensureAdmin(payload, log)
+await ensureSampleMember(payload, log)
 
 const people = new Map<string, number>()
 for (const name of new Set(SAMPLE_SHORTS.flatMap((s) => s.directors))) {

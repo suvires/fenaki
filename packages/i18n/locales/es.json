@@ -43,7 +43,10 @@
       "title": "Lo más visto",
       "rank": "Puesto {rank}"
     },
-    "empty": "Todavía no hay cortos publicados."
+    "empty": "Todavía no hay cortos publicados.",
+    "continueWatching": {
+      "title": "Seguir viendo"
+    }
   },
   "collection": {
     "eyebrow": {
@@ -88,7 +91,9 @@
       "more": "Más sobre las cookies",
       "loaded": "Aquí se carga el reproductor de {provider}",
       "sample": "Este es un corto de ejemplo: no tiene un reproductor real.",
-      "frameTitle": "Reproductor de {provider}: {title}"
+      "frameTitle": "Reproductor de {provider}: {title}",
+      "resume": "Seguir viendo desde {time}",
+      "startOver": "Empezar de nuevo"
     },
     "types": {
       "fiction": "Ficción",
@@ -104,7 +109,8 @@
       "editor": "Montaje",
       "composer": "Música",
       "cast": "Reparto"
-    }
+    },
+    "progress": "Visto al {percent} %"
   },
   "license": {
     "routes": {
@@ -520,6 +526,177 @@
     "signUp": "Crear cuenta",
     "menu": "Menú",
     "searchToggle": "Buscar",
-    "searchClear": "Borrar búsqueda"
+    "searchClear": "Borrar búsqueda",
+    "accountMenu": {
+      "label": "Cuenta",
+      "myAccount": "Mi cuenta",
+      "history": "Historial",
+      "signOut": "Cerrar sesión"
+    }
+  },
+  "account": {
+    "common": {
+      "email": {
+        "label": "Correo electrónico",
+        "placeholder": "nombre@ejemplo.com"
+      },
+      "password": {
+        "label": "Contraseña",
+        "hint": "Mínimo 10 caracteres."
+      },
+      "name": {
+        "label": "Nombre (opcional)",
+        "hint": "Es solo para saludarte. Puedes dejarlo vacío."
+      },
+      "error": {
+        "email": "Ese correo no parece completo. Revisa que tenga @ y un dominio, por ejemplo nombre@ejemplo.com.",
+        "emailEmpty": "Escribe tu correo.",
+        "passwordEmpty": "Escribe tu contraseña.",
+        "passwordShort": "La contraseña debe tener al menos 10 caracteres.",
+        "passwordMismatch": "Las dos contraseñas no coinciden.",
+        "rateLimited": "Demasiados intentos. Espera unos minutos y vuelve a intentarlo.",
+        "server": "No hemos podido completarlo. Vuelve a intentarlo en unos minutos.",
+        "session": "Tu sesión ha caducado. Inicia sesión de nuevo."
+      },
+      "working": "Un momento…"
+    },
+    "signUp": {
+      "title": "Crea tu cuenta",
+      "lead": "Guarda tu lista y tus valoraciones, y retoma cada corto por donde lo dejaste, desde cualquier dispositivo.",
+      "submit": "Crear cuenta",
+      "hasAccount": "¿Ya tienes cuenta?",
+      "signInLink": "Inicia sesión",
+      "privacy": "Usamos tu correo y tus datos de uso solo para darte la cuenta, hasta que la borres. Más en la {privacyPolicy}.",
+      "done": {
+        "title": "Revisa tu correo",
+        "text": "Si {email} puede crear una cuenta, te hemos enviado un enlace para verificarla. Ábrelo para terminar.",
+        "help": "¿No llega? Mira en la carpeta de spam o de promociones."
+      }
+    },
+    "signIn": {
+      "title": "Inicia sesión",
+      "lead": "Entra para ver tu lista y seguir donde lo dejaste.",
+      "submit": "Iniciar sesión",
+      "forgot": "¿Olvidaste tu contraseña?",
+      "noAccount": "¿Aún no tienes cuenta?",
+      "signUpLink": "Crea una",
+      "notice": {
+        "verified": "Correo verificado. Ya puedes iniciar sesión.",
+        "reset": "Contraseña cambiada. Inicia sesión con la nueva.",
+        "deleted": "Tu cuenta se ha borrado."
+      },
+      "error": {
+        "invalid": "Correo o contraseña incorrectos. Tras varios intentos fallidos, la cuenta se bloquea unos minutos.",
+        "unverified": "Aún no has verificado tu correo. Abre el enlace que te enviamos al crear la cuenta."
+      }
+    },
+    "verify": {
+      "title": "Verificar tu correo",
+      "working": "Verificando tu correo…",
+      "okTitle": "Correo verificado",
+      "okText": "Tu cuenta está lista. Ya puedes iniciar sesión.",
+      "failTitle": "El enlace no es válido o ya se usó",
+      "failText": "Si ya verificaste tu correo, inicia sesión. Si no, crea la cuenta otra vez para recibir un enlace nuevo.",
+      "signIn": "Iniciar sesión"
+    },
+    "forgot": {
+      "title": "Recupera tu contraseña",
+      "lead": "Escribe tu correo y, si hay una cuenta, te enviaremos un enlace para elegir otra contraseña.",
+      "submit": "Enviar enlace",
+      "back": "Volver a iniciar sesión",
+      "done": {
+        "title": "Revisa tu correo",
+        "text": "Si hay una cuenta con ese correo, te hemos enviado un enlace. Caduca en 1 hora."
+      }
+    },
+    "reset": {
+      "title": "Elige una contraseña nueva",
+      "password": {
+        "label": "Contraseña nueva"
+      },
+      "repeat": {
+        "label": "Repite la contraseña nueva"
+      },
+      "submit": "Guardar contraseña",
+      "invalidTitle": "El enlace no es válido o ha caducado",
+      "invalidText": "Pide uno nuevo para elegir tu contraseña.",
+      "again": "Pedir otro enlace"
+    },
+    "settings": {
+      "title": "Mi cuenta",
+      "signedInAs": "Has iniciado sesión como {email}.",
+      "profile": {
+        "title": "Tus datos",
+        "submit": "Guardar",
+        "saved": "Guardado."
+      },
+      "password": {
+        "title": "Cambiar la contraseña",
+        "current": {
+          "label": "Contraseña actual"
+        },
+        "new": {
+          "label": "Contraseña nueva"
+        },
+        "submit": "Cambiar contraseña",
+        "saved": "Contraseña cambiada.",
+        "wrong": "La contraseña actual no es correcta."
+      },
+      "data": {
+        "title": "Tus datos en Fenaki",
+        "text": "Descarga una copia de tu cuenta, tu lista, tus valoraciones y tu historial en un archivo JSON.",
+        "download": "Descargar mis datos"
+      },
+      "delete": {
+        "title": "Borrar la cuenta",
+        "text": "Se borrarán tu cuenta, tu lista, tus valoraciones y tu historial. No se puede deshacer.",
+        "start": "Borrar mi cuenta",
+        "confirmTitle": "¿Seguro que quieres borrar tu cuenta?",
+        "confirmText": "Escribe tu contraseña para confirmar. Se borrará todo al momento.",
+        "confirm": "Sí, borrar mi cuenta",
+        "cancel": "Cancelar",
+        "wrong": "La contraseña no es correcta."
+      },
+      "signOut": "Cerrar sesión"
+    },
+    "history": {
+      "title": "Historial",
+      "lead": "Los cortos que has visto con la sesión iniciada, el último primero.",
+      "empty": "Todavía no has visto ningún corto con la sesión iniciada.",
+      "remove": "Quitar del historial",
+      "removeNamed": "Quitar {title} del historial",
+      "clear": "Borrar historial",
+      "clearConfirm": "¿Borrar todo el historial?",
+      "clearYes": "Sí, borrar todo",
+      "clearNo": "Cancelar"
+    }
+  },
+  "accountEmail": {
+    "verify": {
+      "subject": "Verifica tu correo en Fenaki",
+      "preview": "Un clic y tu cuenta estará lista.",
+      "greeting": "Hola:",
+      "intro": "Alguien, seguramente tú, ha creado una cuenta en Fenaki, un catálogo de cortometrajes gratis y legales en español.",
+      "action": "Para activarla, verifica tu correo:",
+      "button": "Verificar mi correo",
+      "fallback": "Si el botón no funciona, copia este enlace en el navegador: {url}",
+      "ignore": "Si no has sido tú, no hagas nada: sin verificar, la cuenta no se activa.",
+      "signature": "Fenaki",
+      "motto": "El mejor cine, en cortos.",
+      "footer": "Recibes este mensaje porque alguien creó una cuenta en fenaki.tv con esta dirección. Responsable del tratamiento y datos de contacto en el {legalNotice}. {privacyPolicy}"
+    },
+    "reset": {
+      "subject": "Elige una contraseña nueva en Fenaki",
+      "preview": "El enlace caduca en 1 hora.",
+      "greeting": "Hola:",
+      "intro": "Alguien, seguramente tú, ha pedido cambiar la contraseña de tu cuenta de Fenaki.",
+      "action": "Para elegir una nueva, pulsa el botón:",
+      "button": "Cambiar mi contraseña",
+      "fallback": "Si el botón no funciona, copia este enlace en el navegador: {url}",
+      "ignore": "El enlace caduca en 1 hora. Si no has sido tú, no hagas nada: tu contraseña seguirá siendo la misma.",
+      "signature": "Fenaki",
+      "motto": "El mejor cine, en cortos.",
+      "footer": "Recibes este mensaje porque alguien pidió cambiar la contraseña de la cuenta de fenaki.tv con esta dirección. Responsable del tratamiento y datos de contacto en el {legalNotice}. {privacyPolicy}"
+    }
   }
 }

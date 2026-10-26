@@ -64,6 +64,7 @@ export type SupportedTimezones =
 export interface Config {
   auth: {
     users: UserAuthOperations;
+    members: MemberAuthOperations;
   };
   blocks: {};
   collections: {
@@ -81,6 +82,10 @@ export interface Config {
     contacts: Contact;
     messages: Message;
     users: User;
+    members: Member;
+    'list-items': ListItem;
+    ratings: Rating;
+    viewings: Viewing;
     'payload-kv': PayloadKv;
     'payload-jobs': PayloadJob;
     'payload-locked-documents': PayloadLockedDocument;
@@ -107,6 +112,10 @@ export interface Config {
     contacts: ContactsSelect<false> | ContactsSelect<true>;
     messages: MessagesSelect<false> | MessagesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    members: MembersSelect<false> | MembersSelect<true>;
+    'list-items': ListItemsSelect<false> | ListItemsSelect<true>;
+    ratings: RatingsSelect<false> | RatingsSelect<true>;
+    viewings: ViewingsSelect<false> | ViewingsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -133,7 +142,7 @@ export interface Config {
   widgets: {
     collections: CollectionsWidget;
   };
-  user: User;
+  user: User | Member;
   jobs: {
     tasks: {
       indexShort: TaskIndexShort;
@@ -150,6 +159,24 @@ export interface Config {
   };
 }
 export interface UserAuthOperations {
+  forgotPassword: {
+    email: string;
+    password: string;
+  };
+  login: {
+    email: string;
+    password: string;
+  };
+  registerFirstUser: {
+    email: string;
+    password: string;
+  };
+  unlock: {
+    email: string;
+    password: string;
+  };
+}
+export interface MemberAuthOperations {
   forgotPassword: {
     email: string;
     password: string;
@@ -742,6 +769,88 @@ export interface User {
   collection: 'users';
 }
 /**
+ * Viewers with an account. Personal data: read only, and deleted when they ask.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "members".
+ */
+export interface Member {
+  id: number;
+  name?: string | null;
+  /**
+   * Sample account for development, not a real viewer.
+   */
+  sample?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  resetPasswordRequestedAt?: string | null;
+  _verified?: boolean | null;
+  _verificationToken?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
+  password?: string | null;
+  collection: 'members';
+}
+/**
+ * Personal data of viewers. Read only.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "list-items".
+ */
+export interface ListItem {
+  id: number;
+  member: number | Member;
+  short: number | Short;
+  savedAt: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Personal data of viewers. Read only.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ratings".
+ */
+export interface Rating {
+  id: number;
+  member: number | Member;
+  short: number | Short;
+  value: 'dislike' | 'like' | 'love';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Personal data of viewers. Read only.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "viewings".
+ */
+export interface Viewing {
+  id: number;
+  member: number | Member;
+  short: number | Short;
+  positionSeconds: number;
+  durationSeconds: number;
+  /**
+   * Set from 90 % of the duration, by the server.
+   */
+  completed?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -921,12 +1030,33 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: number | User;
+      } | null)
+    | ({
+        relationTo: 'members';
+        value: number | Member;
+      } | null)
+    | ({
+        relationTo: 'list-items';
+        value: number | ListItem;
+      } | null)
+    | ({
+        relationTo: 'ratings';
+        value: number | Rating;
+      } | null)
+    | ({
+        relationTo: 'viewings';
+        value: number | Viewing;
       } | null);
   globalSlug?: string | null;
-  user: {
-    relationTo: 'users';
-    value: number | User;
-  };
+  user:
+    | {
+        relationTo: 'users';
+        value: number | User;
+      }
+    | {
+        relationTo: 'members';
+        value: number | Member;
+      };
   updatedAt: string;
   createdAt: string;
 }
@@ -936,10 +1066,15 @@ export interface PayloadLockedDocument {
  */
 export interface PayloadPreference {
   id: number;
-  user: {
-    relationTo: 'users';
-    value: number | User;
-  };
+  user:
+    | {
+        relationTo: 'users';
+        value: number | User;
+      }
+    | {
+        relationTo: 'members';
+        value: number | Member;
+      };
   key?: string | null;
   value?:
     | {
@@ -1318,6 +1453,68 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "members_select".
+ */
+export interface MembersSelect<T extends boolean = true> {
+  name?: T;
+  sample?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  email?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  resetPasswordRequestedAt?: T;
+  _verified?: T;
+  _verificationToken?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
+  sessions?:
+    | T
+    | {
+        id?: T;
+        createdAt?: T;
+        expiresAt?: T;
+      };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "list-items_select".
+ */
+export interface ListItemsSelect<T extends boolean = true> {
+  member?: T;
+  short?: T;
+  savedAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ratings_select".
+ */
+export interface RatingsSelect<T extends boolean = true> {
+  member?: T;
+  short?: T;
+  value?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "viewings_select".
+ */
+export interface ViewingsSelect<T extends boolean = true> {
+  member?: T;
+  short?: T;
+  positionSeconds?: T;
+  durationSeconds?: T;
+  completed?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
