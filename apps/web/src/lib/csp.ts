@@ -10,7 +10,9 @@
  */
 
 /** The official players, framed only after the viewer presses play (lib/embed.ts). */
-export const PLAYER_ORIGINS = ['https://www.youtube-nocookie.com', 'https://player.vimeo.com']
+export const YOUTUBE_ORIGIN = 'https://www.youtube-nocookie.com'
+export const VIMEO_ORIGIN = 'https://player.vimeo.com'
+export const PLAYER_ORIGINS = [YOUTUBE_ORIGIN, VIMEO_ORIGIN]
 
 export const STATIC_DIRECTIVES = [
   "default-src 'self'",
