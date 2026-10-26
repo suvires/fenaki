@@ -53,15 +53,16 @@ const FILLED_PATHS = {
 } as const
 
 /**
- * The double thumbs-up is two single thumbs-up, cuff included, at 74 %: one up and to the left, one
- * down and to the right, in the 4–20.3 × 4.5–20 box of a single one. The back one has the front
+ * The double thumbs-up is two single thumbs-up, cuff included, at 74 %: the back one up and to the
+ * right, the front one down and to the left (so the back one's cuff is cut cleanly by the front
+ * hand, like the cuff of a single thumb), in the 4–20.3 × 4.5–20 box of a single one. The back one has the front
  * one's outline cut out of it (an SVG mask) with a gap, so outlined or filled they stay two thumbs.
  * Strokes are divided by the scale so they match the single thumbs.
  */
 const DOUBLE = {
   scale: 0.74,
-  back: 'translate(1.04 1.17) scale(0.74)',
-  front: 'translate(5.44 5.17) scale(0.74)',
+  back: 'translate(5.44 1.17) scale(0.74)',
+  front: 'translate(1.04 5.17) scale(0.74)',
   /** Gap cut around the front thumb, in its own (scaled) units. */
   gap: 5,
 } as const
