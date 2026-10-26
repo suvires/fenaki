@@ -177,7 +177,7 @@
     "submitting": "Enviando…",
     "privacy": "FENAKI usará tu correo solo para avisarte del lanzamiento. Puedes ejercer tus derechos y consultar más información en la {privacyPolicy}.",
     "error": {
-      "empty": "Escribe tu correo para apuntarte.",
+      "empty": "Escribe tu email para que te avisemos.",
       "invalid": "Ese correo no parece completo. Revisa que tenga @ y un dominio, por ejemplo nombre@ejemplo.com.",
       "server": "No hemos podido guardar tu correo. Vuelve a intentarlo en unos minutos."
     },

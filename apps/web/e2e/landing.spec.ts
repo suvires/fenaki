@@ -84,7 +84,7 @@ test('the waitlist form explains what is wrong with the address', async ({ page 
   await page.goto('/es/')
   const submit = page.getByRole('button', { name: 'Avísame' })
   await submit.click()
-  await expect(page.getByText('Escribe tu correo para apuntarte.')).toBeVisible()
+  await expect(page.getByText('Escribe tu email para que te avisemos.')).toBeVisible()
   await page.getByLabel('¿Quieres que te avisemos?').fill('ana@ejemplo')
   await submit.click()
   await expect(page.getByText('Ese correo no parece completo.', { exact: false })).toBeVisible()
