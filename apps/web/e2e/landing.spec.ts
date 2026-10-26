@@ -97,7 +97,8 @@ test('signing up sends a confirmation email that confirms the subscription in li
   await page.goto('/es/')
   await page.getByLabel('¿Quieres que te avisemos?').fill(email)
   await page.getByRole('button', { name: 'Avísame' }).click()
-  await expect(page.getByText('Revisa tu email')).toBeVisible()
+  await expect(page).toHaveURL(/\/es\/lista-de-espera\/revisa-tu-email$/)
+  await expect(page.getByRole('heading', { level: 1, name: 'Revisa tu email' })).toBeVisible()
   await expect(page.getByText(email)).toBeVisible()
 
   const message = await waitForEmail(email)

@@ -183,7 +183,9 @@
       "title": "Revisa tu email",
       "text": "Te hemos enviado un mensaje a {email}. Abre el enlace que contiene para confirmar que quieres apuntarte. Hasta que lo confirmes, no te enviaremos nada más.",
       "help": "¿No llega? Mira en la carpeta de spam o de promociones. El enlace caduca en 7 días.",
-      "resend": "Enviar otra vez"
+      "resend": "Enviar otra vez",
+      "resent": "Te lo hemos enviado otra vez.",
+      "textNoEmail": "Si acabas de apuntarte, te hemos enviado un mensaje. Abre el enlace que contiene para confirmar que quieres apuntarte."
     },
     "confirmed": {
       "title": "Ya estás en la lista",

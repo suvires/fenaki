@@ -40,6 +40,8 @@ export const paths = {
   /** A section of the landing page: its waitlist form. */
   landingSection: (locale: Locale, section: 'waitlist') => `/${locale}/#${section}`,
   waitlistConfirm: (locale: Locale) => `/${locale}/lista-de-espera/confirmar`,
+  /** Where the waitlist form goes once the confirmation email is on its way. */
+  waitlistPending: (locale: Locale) => `/${locale}/lista-de-espera/revisa-tu-email`,
   legal: (locale: Locale, page: LegalPage) => `/${locale}/${page}`,
   credits: (locale: Locale) => `/${locale}/creditos`,
   /** Which third-party players load without asking (kept in the browser, never indexed). */

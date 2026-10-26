@@ -1,18 +1,16 @@
-import { createRichTranslator, createTranslator, type Locale } from '@fenaki/i18n'
+import { createTranslator, type Locale } from '@fenaki/i18n'
 import { Button, Notice, TextField } from '@fenaki/ui'
-import { Fragment, useState, type SubmitEvent } from 'react'
+import { useState, type SubmitEvent } from 'react'
 import { EVENTS } from '../lib/analytics.ts'
 import { checkEmail } from '@fenaki/waitlist'
+import { paths } from '../lib/i18n.ts'
+import { rememberPending } from './WaitlistPending.tsx'
 
 interface WaitlistFormProps {
   locale: Locale
 }
 
-type State =
-  | { kind: 'idle' }
-  | { kind: 'submitting' }
-  | { kind: 'pending'; email: string; newsletter: boolean }
-  | { kind: 'failed' }
+type State = { kind: 'idle' } | { kind: 'submitting' } | { kind: 'failed' }
 
 declare global {
   interface Window {
@@ -22,11 +20,10 @@ declare global {
 
 /**
  * The waitlist form. Posts to /api/waitlist, which subscribes the address in listmonk with double
- * opt-in, and then asks the viewer to confirm from their inbox.
+ * opt-in, and then goes to the «Revisa tu email» page, which asks the viewer to confirm from their inbox.
  */
 export function WaitlistForm({ locale }: WaitlistFormProps) {
   const t = createTranslator(locale)
-  const rich = createRichTranslator(locale)
   const [state, setState] = useState<State>({ kind: 'idle' })
   const [fieldError, setFieldError] = useState<'empty' | 'invalid' | null>(null)
 
@@ -45,7 +42,7 @@ export function WaitlistForm({ locale }: WaitlistFormProps) {
         return false
       }
       if (!response.ok) throw new Error(String(response.status))
-      setState({ kind: 'pending', email, newsletter })
+      rememberPending(email)
       return true
     } catch {
       setState({ kind: 'failed' })
@@ -64,27 +61,9 @@ export function WaitlistForm({ locale }: WaitlistFormProps) {
     setFieldError(null)
     // Only the launch notice for now: the weekly selection is not offered on the form.
     const sent = await send(checked.email, false, String(form.get('website') ?? ''))
-    if (sent) window.umami?.track(EVENTS.waitlistSignup)
-  }
-
-  if (state.kind === 'pending') {
-    return (
-      <Notice role="status" title={t('waitlist.pending.title')}>
-        <p className="m-0">
-          {rich('waitlist.pending.text', {
-            email: <strong className="text-ink">{state.email}</strong>,
-          }).map((part, index) => (
-            <Fragment key={index}>{part}</Fragment>
-          ))}
-        </p>
-        <p className="m-0">{t('waitlist.pending.help')}</p>
-        <div>
-          <Button variant="secondary" onClick={() => send(state.email, state.newsletter)}>
-            {t('waitlist.pending.resend')}
-          </Button>
-        </div>
-      </Notice>
-    )
+    if (!sent) return
+    window.umami?.track(EVENTS.waitlistSignup)
+    window.location.assign(paths.waitlistPending(locale))
   }
 
   const submitting = state.kind === 'submitting'

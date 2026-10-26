@@ -1,0 +1,25 @@
+---
+import Base from '../../../layouts/Base.astro'
+import { WaitlistPending } from '../../../islands/WaitlistPending.tsx'
+import { localeFrom, paths, translator } from '../../../lib/i18n.ts'
+
+const locale = localeFrom(Astro.params.locale)
+if (!locale) return Astro.rewrite('/404')
+
+const t = translator(locale)
+const title = t('waitlist.pending.title')
+---
+
+<Base locale={locale} title={title} noindex backdrop>
+  {/* The landing page's narrow centred column, like the confirmation page that follows it. */}
+  <section class="w-full max-w-landing mx-auto grid gap-6 py-8">
+    <h1 class="m-0 font-display text-display-l md:text-display-xl uppercase text-balance">
+      {title}
+    </h1>
+    <WaitlistPending
+      client:only="react"
+      locale={locale}
+      backHref={paths.landingSection(locale, 'waitlist')}
+    />
+  </section>
+</Base>
