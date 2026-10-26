@@ -118,8 +118,9 @@ export function RatingButtons({
         aria-label={labels.rate}
         data-open={open ? '' : undefined}
         className={cx(
-          'absolute left-1/2 top-0 z-10 -translate-x-1/2 flex items-center gap-1 p-1',
-          'h-(--size-control-md) rounded-control bg-sala-2/(--opacity-pill) backdrop-blur-veil shadow-card',
+          // The pill's buttons are as big as the one it opens from, centred on it, with a little padding.
+          'absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 flex items-center gap-1 p-1',
+          'rounded-control bg-sala-2/(--opacity-pill) backdrop-blur-veil shadow-card',
           'transition-[opacity,visibility] duration-(--duration-press) ease-standard motion-reduce:transition-none',
           'invisible opacity-0 data-open:visible data-open:opacity-100',
         )}
@@ -138,7 +139,6 @@ export function RatingButtons({
               filled={value === choice.value}
               label={labels[choice.value]}
               variant="ghost"
-              size="sm"
               aria-pressed={value === choice.value}
               onClick={() => onChange?.(value === choice.value ? undefined : choice.value)}
             />
