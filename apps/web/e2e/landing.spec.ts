@@ -38,7 +38,7 @@ test('the landing page replaces the home: the hero and the waitlist form', async
   await expect(
     page.getByRole('heading', { level: 1, name: 'El mejor cine, en cortos', exact: true }),
   ).toBeVisible()
-  await expect(page.getByRole('button', { name: 'Apuntarme' })).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Avísame' })).toBeVisible()
   // Before launch the shorts are not public: nothing on the page shows or links them.
   await expect(page.getByRole('link', { name: /Timecode/ })).toHaveCount(0)
   await expect(page.getByRole('searchbox')).toHaveCount(0)
@@ -82,7 +82,7 @@ test('the sponsorship page is public before launch, with the contact links', asy
 
 test('the waitlist form explains what is wrong with the address', async ({ page }) => {
   await page.goto('/es/')
-  const submit = page.getByRole('button', { name: 'Apuntarme' })
+  const submit = page.getByRole('button', { name: 'Avísame' })
   await submit.click()
   await expect(page.getByText('Escribe tu correo para apuntarte.')).toBeVisible()
   await page.getByLabel('Correo electrónico').fill('ana@ejemplo')
@@ -96,7 +96,7 @@ test('signing up sends a confirmation email that confirms the subscription in li
   const email = `e2e+${Date.now()}@example.com`
   await page.goto('/es/')
   await page.getByLabel('Correo electrónico').fill(email)
-  await page.getByRole('button', { name: 'Apuntarme' }).click()
+  await page.getByRole('button', { name: 'Avísame' }).click()
   await expect(page.getByText('Revisa tu correo')).toBeVisible()
   await expect(page.getByText(email)).toBeVisible()
 

@@ -47,7 +47,8 @@ export function TextField({
       {action ? (
         <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_auto]">
           {field}
-          <div>{action}</div>
+          {/* Full width below the field on narrow screens, its own width beside it on wide ones. */}
+          <div className="grid md:block">{action}</div>
         </div>
       ) : (
         field

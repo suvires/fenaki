@@ -173,7 +173,7 @@
       "label": "Correo electrónico",
       "placeholder": "nombre@ejemplo.com"
     },
-    "submit": "Apuntarme",
+    "submit": "Avísame",
     "submitting": "Enviando…",
     "privacy": "FENAKI usará tu correo solo para avisarte del lanzamiento. Puedes ejercer tus derechos y consultar más información en la {privacyPolicy}.",
     "error": {

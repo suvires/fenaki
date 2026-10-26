@@ -35,7 +35,7 @@ export const WithAction: Story = {
   args: {
     action: (
       <Button type="submit" size="lg">
-        Apuntarme
+        Avísame
       </Button>
     ),
   },

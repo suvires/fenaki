@@ -27,7 +27,7 @@ export function SiteFooter({ label, links, brand, className }: SiteFooterProps) 
               <li key={link.href}>
                 <a
                   href={link.href}
-                  className="text-small text-ink underline underline-offset-4 hover:no-underline rounded-xs focus-visible:focus-ring"
+                  className="text-small text-ink no-underline hover:text-tungsteno-text rounded-xs focus-visible:focus-ring"
                 >
                   {link.label}
                 </a>
