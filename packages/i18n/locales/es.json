@@ -171,7 +171,7 @@
     "title": "Te avisamos cuando abra",
     "email": {
       "label": "¿Quieres que te avisemos?",
-      "placeholder": "nombre@ejemplo.com"
+      "placeholder": "Escribe tu email"
     },
     "submit": "Avísame",
     "submitting": "Enviando…",

@@ -99,6 +99,9 @@ export function WaitlistForm({ locale }: WaitlistFormProps) {
         required
         label={t('waitlist.email.label')}
         placeholder={t('waitlist.email.placeholder')}
+        // The visible label is a question and the instruction is the placeholder, which goes as you
+        // type: the field's name carries both, starting with the visible label (WCAG 2.5.3).
+        aria-label={`${t('waitlist.email.label')} ${t('waitlist.email.placeholder')}`}
         error={fieldError ? t(`waitlist.error.${fieldError}`) : undefined}
         onChange={() => setFieldError(null)}
         action={
