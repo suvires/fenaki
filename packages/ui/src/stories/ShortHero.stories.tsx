@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Button } from '../components/Button.tsx'
 import backdrop from './assets/backdrop.jpg'
+import backdropLight from './assets/backdrop-light.jpg'
 import { ShortHero } from '../components/ShortHero.tsx'
 
 const meta = {
@@ -48,3 +49,11 @@ export const InMyList: Story = {
 
 /** An abstract gradient made for the catalog: never a third-party film image. */
 export const WithBackdrop: Story = { args: { backdrop } }
+
+/** A light still: the editor marked dark text. */
+export const WithLightBackdrop: Story = {
+  args: { backdrop: backdropLight, backdropTextColor: 'dark' },
+}
+
+/** The still already carries the title: the heading stays for screen readers only. */
+export const BackdropIncludesTitle: Story = { args: { backdrop, backdropHasTitle: true } }

@@ -17,6 +17,7 @@
     "seed": "NODE_OPTIONS=--no-deprecation payload run src/seed/index.ts",
     "import:catalog": "NODE_OPTIONS=--no-deprecation payload run src/import/index.ts",
     "import:organizations": "NODE_OPTIONS=--no-deprecation payload run src/import/organizations.ts",
+    "backfill:still-text": "NODE_OPTIONS=--no-deprecation payload run src/ingest/backfillStillText.ts",
     "reindex": "NODE_OPTIONS=--no-deprecation payload run src/search/reindex.ts",
     "migrate": "NODE_OPTIONS=--no-deprecation payload migrate",
     "migrate:create": "NODE_OPTIONS=--no-deprecation payload migrate:create",

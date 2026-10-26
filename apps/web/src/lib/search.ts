@@ -17,6 +17,8 @@ export interface ShortHit {
   durationSeconds: number
   posterTone: string
   still?: string | null
+  stillTextColor?: 'light' | 'dark' | null
+  stillIncludesTitle?: boolean
   type: string
   noDialogue: boolean
   brandedContent?: boolean
@@ -92,6 +94,8 @@ function toCardSource(hit: ShortHit): CardSource {
     durationSeconds: hit.durationSeconds,
     posterTone: hit.posterTone,
     still: cmsUrl(hit.still),
+    stillTextColor: hit.stillTextColor,
+    stillIncludesTitle: hit.stillIncludesTitle,
     type: hit.type,
     noDialogue: hit.noDialogue,
     brandedContent: hit.brandedContent,

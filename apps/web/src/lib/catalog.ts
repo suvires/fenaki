@@ -13,6 +13,10 @@ export interface CardSource {
   posterTone?: string | null
   /** Absolute URL of the card-sized still, when the short has one. */
   still?: string | null
+  /** Color of the text over the still. */
+  stillTextColor?: 'light' | 'dark' | null
+  /** The still already carries the title. */
+  stillIncludesTitle?: boolean | null
   type: string
   noDialogue?: boolean | null
   brandedContent?: boolean | null
@@ -118,6 +122,8 @@ export function toCard(
     locale,
     tone: posterTone(short.posterTone),
     image: short.still ?? undefined,
+    imageTextColor: short.stillTextColor ?? undefined,
+    imageHasTitle: short.stillIncludesTitle ?? undefined,
     href,
     badges: badgesFor(short, locale, t, clock),
     typeLabel: typeLabel(short, t),
@@ -143,6 +149,8 @@ export function toSavedShort(short: CardSource, locale: Locale): NewSavedShort {
     seconds: short.durationSeconds,
     tone: posterTone(short.posterTone),
     image: short.still ?? undefined,
+    imageTextColor: short.stillTextColor ?? undefined,
+    imageHasTitle: short.stillIncludesTitle ?? undefined,
   }
 }
 

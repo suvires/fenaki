@@ -21,6 +21,7 @@ import {
   peopleOf,
   shortsOf,
   sponsorOf,
+  stillPresentationOf,
   stillUrlOf,
   toCardSource,
 } from '../../lib/cms.ts'
@@ -53,6 +54,7 @@ const top = landing
 const hero = shorts[0]
 const heroDirectors = hero ? peopleOf(hero, 'director') : []
 const heroBackdrop = hero ? stillUrlOf(hero) : undefined
+const heroStill = hero ? stillPresentationOf(hero) : undefined
 
 const featured = collections.find((c) => c.featured) ?? collections[0]
 const featuredShorts = featured ? shortsOf(featured) : []
@@ -106,6 +108,8 @@ const filterOptions = (['short', 'mid', 'long', 'subtitles'] as const).map((valu
           tone: posterTone(hero.posterTone),
         }}
         backdrop={heroBackdrop}
+        backdropTextColor={heroStill?.textColor}
+        backdropHasTitle={heroStill?.includesTitle}
       >
         <MyListButton
           slot="secondaryAction"

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import backdrop from './assets/backdrop.jpg'
+import backdropLight from './assets/backdrop-light.jpg'
 import { ShortCard } from '../components/ShortCard.tsx'
 import { SHORTS } from './fixtures.ts'
 
@@ -14,8 +15,12 @@ type Story = StoryObj<typeof meta>
 
 /** The typographic poster carries the title. The preview on hover is the page's island: see ShortPreview. */
 export const WithBadge: Story = {}
-/** At rest with the short's still: only the title, on a dark gradient. */
+/** At rest with the short's still: only the title, in light text over a dark image. */
 export const WithImage: Story = { args: { image: backdrop } }
+/** A light still: the editor marked dark text. */
+export const WithLightImage: Story = { args: { image: backdropLight, imageTextColor: 'dark' } }
+/** The still already carries the title (a poster): nothing is painted over it. */
+export const ImageIncludesTitle: Story = { args: { image: backdrop, imageHasTitle: true } }
 /** Branded content stays visible at rest. */
 export const BrandedWithImage: Story = {
   args: {

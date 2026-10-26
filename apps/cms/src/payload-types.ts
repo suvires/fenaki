@@ -410,6 +410,22 @@ export interface Still {
   source?: (number | null) | Source;
   fetchedAt?: string | null;
   /**
+   * Color of the title and details the site writes over this image (home hero, cards and hover preview). Measured on upload; if you change it, the nightly refresh no longer overwrites it.
+   */
+  textColor?: ('light' | 'dark') | null;
+  /**
+   * Tick it when the title is drawn on the image (a poster): cards and the preview then show no title over it, and the home hero keeps its heading for screen readers only.
+   */
+  includesTitle?: boolean | null;
+  /**
+   * What the lower left of the image measured, at the last upload or refresh.
+   */
+  textColorAuto?: ('light' | 'dark') | null;
+  /**
+   * Set to «By an editor» when you change the text color.
+   */
+  textColorSet?: ('auto' | 'manual') | null;
+  /**
    * Who granted the use of this still, and when. Internal.
    */
   permissionNote?: string | null;
@@ -1087,6 +1103,10 @@ export interface StillsSelect<T extends boolean = true> {
   origin?: T;
   source?: T;
   fetchedAt?: T;
+  textColor?: T;
+  includesTitle?: T;
+  textColorAuto?: T;
+  textColorSet?: T;
   permissionNote?: T;
   updatedAt?: T;
   createdAt?: T;
