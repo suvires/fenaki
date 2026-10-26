@@ -14,6 +14,10 @@ export default defineConfig({
   // A <meta> CSP with the hashes of every script and style Astro emits (src/lib/csp.ts). Not
   // applied by `astro dev`: test it on a build.
   security: {
+    // Off: behind the TLS-terminating proxy Astro sees an http:// URL and would refuse the
+    // sign-out form (Origin https://). Every state-changing account route checks the origin
+    // itself (src/lib/account/guards.ts); the other routes take JSON, which Astro does not check.
+    checkOrigin: false,
     csp: {
       directives: [...STATIC_DIRECTIVES],
       scriptDirective: { resources: ["'self'"] },
