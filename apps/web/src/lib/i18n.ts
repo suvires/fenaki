@@ -37,9 +37,8 @@ export const paths = {
     `/${locale}/patrocina${section ? `#${section === 'collection' ? 'coleccion' : 'escaparate'}` : ''}`,
   search: (locale: Locale, query?: string) =>
     `/${locale}/buscar${query ? `?q=${encodeURIComponent(query)}` : ''}`,
-  /** A section of the landing page: `what`, `legal`, `faq` or `waitlist`. */
-  landingSection: (locale: Locale, section: 'what' | 'legal' | 'faq' | 'waitlist') =>
-    `/${locale}/#${section}`,
+  /** A section of the landing page: its waitlist form. */
+  landingSection: (locale: Locale, section: 'waitlist') => `/${locale}/#${section}`,
   waitlistConfirm: (locale: Locale) => `/${locale}/lista-de-espera/confirmar`,
   legal: (locale: Locale, page: LegalPage) => `/${locale}/${page}`,
   credits: (locale: Locale) => `/${locale}/creditos`,

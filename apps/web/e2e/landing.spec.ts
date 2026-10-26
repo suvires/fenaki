@@ -33,16 +33,13 @@ async function listmonkSubscriber(email: string) {
   return data.results[0]
 }
 
-test('the landing page replaces the home and shows a launch collection', async ({ page }) => {
+test('the landing page replaces the home: the hero and the waitlist form', async ({ page }) => {
   await page.goto('/es/')
   await expect(
     page.getByRole('heading', { level: 1, name: 'El mejor cine, en cortos', exact: true }),
   ).toBeVisible()
-  await expect(page.getByText('Una de las colecciones de lanzamiento')).toBeVisible()
-  await expect(
-    page.getByRole('region', { name: 'Imprescindibles del corto español' }),
-  ).toBeVisible()
-  // Before launch the shorts are not public: the sample cards are not links.
+  await expect(page.getByRole('button', { name: 'Apuntarme' })).toBeVisible()
+  // Before launch the shorts are not public: nothing on the page shows or links them.
   await expect(page.getByRole('link', { name: /Timecode/ })).toHaveCount(0)
   await expect(page.getByRole('searchbox')).toHaveCount(0)
   // These tests run with a contact mailbox: proposals and sponsorship write to it.

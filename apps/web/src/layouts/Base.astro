@@ -63,17 +63,9 @@ const canonical = absoluteUrl(siteUrl, canonicalPath)
 const image = absoluteUrl(siteUrl, ogImage)
 const contact = contactLinks(contactEmail, t)
 const footerGroups = [
+  // Before launch the catalog is not public: no link to it.
   ...(landing
-    ? [
-        {
-          title: t('footer.groups.fenaki'),
-          links: [
-            { label: t('footer.links.what'), href: paths.landingSection(locale, 'what') },
-            { label: t('footer.links.legal'), href: paths.landingSection(locale, 'legal') },
-            { label: t('footer.links.faq'), href: paths.landingSection(locale, 'faq') },
-          ],
-        },
-      ]
+    ? []
     : [
         {
           title: t('footer.groups.fenaki'),

@@ -165,93 +165,6 @@
     "hero": {
       "title": "El mejor cine, en cortos",
       "lead": "Hay mucho cine corto publicado en abierto por quienes lo hicieron, pero está repartido entre canales, festivales y escuelas. Fenaki lo reúne en un solo sitio."
-    },
-    "what": {
-      "title": "Un catálogo de cortos con la comodidad de una plataforma de streaming",
-      "intro": "Hay mucho cine corto publicado en abierto por quienes lo hicieron, pero está repartido entre canales, festivales y escuelas. Fenaki lo reúne en un solo sitio:",
-      "curated": {
-        "title": "Elegidos uno a uno.",
-        "text": "Antes de entrar, cada corto se revisa: quién lo publica, si se puede ver legalmente, cuánto dura, en qué idioma está y quién lo hizo."
-      },
-      "details": {
-        "title": "Fichas completas.",
-        "text": "Quién lo dirige, año, país, duración, idioma, subtítulos y premios."
-      },
-      "filters": {
-        "title": "Filtros que sirven.",
-        "text": "Menos de 5 minutos, de 5 a 15 o más de 15. Hablado en español o con subtítulos en español hechos por personas."
-      },
-      "collections": {
-        "title": "Colecciones.",
-        "text": "Selecciones con un hilo: un festival, un tema, un país, una escuela."
-      }
-    },
-    "sample": {
-      "label": "Una de las colecciones de lanzamiento"
-    },
-    "legal": {
-      "title": "Gratis de ver no es libre de copiar",
-      "intro": "Fenaki no copia ni sube cortos de nadie. Cada corto llega por una de estas tres vías, y su ficha dice cuál:",
-      "official": {
-        "title": "Reproductor oficial.",
-        "text": "El corto se ve desde el canal oficial de quien tiene los derechos (autor, productora, distribuidora, festival o escuela), con su propio reproductor de YouTube o Vimeo. Las visitas cuentan para ese canal."
-      },
-      "open": {
-        "title": "Licencia abierta.",
-        "text": "Obras en dominio público o con licencias Creative Commons que lo permiten, con la atribución que pide la licencia."
-      },
-      "direct": {
-        "title": "Licencia directa.",
-        "text": "Cortos que sus autores nos ceden por escrito."
-      },
-      "atLaunch": "Al abrir, todos los cortos llegan por la primera vía.",
-      "takedown": "{yours} y prefieres que no esté en Fenaki, lo retiramos en un máximo de 48 horas, aunque venga de tu canal oficial.",
-      "takedownYours": "Si un corto es tuyo",
-      "takedownLink": "Pedir la retirada de un corto"
-    },
-    "audience": {
-      "title": "Para quién es",
-      "viewers": {
-        "title": "Para quien ve cine.",
-        "text": "Para descubrir cortos que no salen en tu inicio de YouTube, saber cuánto duran antes de darle a «Ver ahora» y encontrarlos otra vez."
-      },
-      "filmmakers": {
-        "title": "Para quien hace cine.",
-        "text": "Para que tu corto siga viéndose cuando termina su recorrido por festivales, con tu nombre completo en la ficha y las visitas en tu canal.",
-        "cta": "¿Quieres proponer un corto?"
-      },
-      "organizations": {
-        "title": "Para festivales, escuelas e instituciones.",
-        "text": "Para dar a tu selección un espacio propio: un escaparate permanente o una colección patrocinada, siempre identificada como tal."
-      }
-    },
-    "faq": {
-      "title": "Preguntas frecuentes",
-      "cost": {
-        "question": "¿Cuánto cuesta?",
-        "answer": "Nada. Ver cortos en Fenaki es gratis y no hace falta cuenta."
-      },
-      "funding": {
-        "question": "¿Cómo se financia?",
-        "answer": "Con colecciones patrocinadas por festivales, escuelas e instituciones culturales, que siempre se identifican como tales, y con los apoyos de quien quiera contribuir. Fenaki no vende publicidad dentro de los cortos ni junto al reproductor."
-      },
-      "players": {
-        "question": "¿Por qué los cortos se ven con el reproductor de YouTube o Vimeo?",
-        "answer": "Porque así se ven desde el canal oficial de quien tiene los derechos, y las visitas cuentan para ese canal. Esos reproductores usan cookies: antes de cargar uno, Fenaki te pregunta y te explica qué hace."
-      },
-      "selection": {
-        "question": "¿Qué cortos entran?",
-        "answer": "Cortos hablados en español, animaciones sin diálogos y cortos en otros idiomas con subtítulos en español hechos por personas. Los subtítulos automáticos no cuentan. Los cortos hechos por marcas llevan la etiqueta «Contenido de marca»."
-      },
-      "filmmakers": {
-        "question": "Hice un corto. ¿Cómo lo propongo o lo retiro?",
-        "answer": "Para retirarlo, usa {takedown}: respondemos en un máximo de 48 horas.",
-        "answerWithContact": "Para proponerlo, escríbenos desde {propose}. Para retirarlo, usa {takedown}: respondemos en un máximo de 48 horas."
-      },
-      "who": {
-        "question": "¿Quién está detrás?",
-        "answer": "Fenaki es un proyecto independiente que se construye en público, con inteligencia artificial como herramienta de trabajo. Los datos del titular están en el {legalNotice}."
-      }
     }
   },
   "waitlist": {
@@ -324,9 +237,6 @@
       "organizations": "Para organizaciones"
     },
     "links": {
-      "what": "Qué es Fenaki",
-      "legal": "Cómo es legal",
-      "faq": "Preguntas frecuentes",
       "takedown": "Pedir la retirada de un corto",
       "legalNotice": "Aviso legal",
       "privacy": "Política de privacidad",

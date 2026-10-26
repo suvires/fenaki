@@ -40,7 +40,7 @@ describe('createRichTranslator', () => {
 
   it('splits a message around the placeholders given as parts', () => {
     const link = { href: '/es/aviso-legal' }
-    const parts = rich('landing.faq.who.answer', { legalNotice: link })
+    const parts = rich('waitlist.privacy', { privacyPolicy: link }, { legalNotice: 'aviso legal' })
     expect(parts.at(-1)).toBe('.')
     expect(parts.at(-2)).toBe(link)
     expect(parts.filter((part) => typeof part !== 'string')).toHaveLength(1)
