@@ -3,7 +3,7 @@
     "name": "FENAKI",
     "domain": "fenaki.tv",
     "tagline": "El mejor cine, en cortos",
-    "description": "Cortometrajes gratis y legales, elegidos uno a uno y vistos desde los canales de sus autores.",
+    "description": "Los cortometrajes publicados en abierto por festivales, escuelas y autores, reunidos en un solo sitio.",
     "skipToContent": "Saltar al contenido",
     "home": "Inicio"
   },
@@ -20,7 +20,6 @@
     "unavailable": "La búsqueda no está disponible ahora. Prueba de nuevo en unos minutos."
   },
   "home": {
-    "title": "Cortometrajes gratis y legales",
     "filters": {
       "short": "Menos de 5 min",
       "mid": "De 5 a 15 min",
@@ -257,8 +256,8 @@
     },
     "shortsTitle": "Sus cortos",
     "description": {
-      "one": "{name}: {roles}. {count} corto gratis y legal en FENAKI.",
-      "other": "{name}: {roles}. {count} cortos gratis y legales en FENAKI."
+      "one": "{name}: {roles}. {count} corto en FENAKI.",
+      "other": "{name}: {roles}. {count} cortos en FENAKI."
     }
   },
   "browse": {
@@ -315,20 +314,20 @@
       "one": "Su selección · {count} corto",
       "other": "Su selección · {count} cortos"
     },
-    "description": "El escaparate de {name} en FENAKI: su selección de cortometrajes, gratis y legales."
+    "description": {
+      "festival": "Los cortos premiados y seleccionados en ediciones anteriores de {name}, para ver en FENAKI.",
+      "school": "Los cortos del alumnado de {name}, para ver en FENAKI.",
+      "institution": "Los cortometrajes que presenta {name}, para ver en FENAKI."
+    }
   },
   "sponsor": {
     "title": "Patrocina FENAKI",
     "eyebrow": "Para organizaciones",
-    "lead": "FENAKI es un catálogo curado de cortometrajes gratuitos y legales, con la experiencia de una plataforma de streaming. Reúne en un solo sitio cortos en español que hoy están dispersos entre canales oficiales, webs de festivales y archivos.",
+    "lead": "FENAKI reúne en un solo sitio los cortometrajes publicados en abierto que hoy están dispersos entre canales oficiales, webs de festivales y archivos, con la experiencia de una plataforma de streaming.",
     "pillars": {
-      "curated": {
-        "title": "Curado.",
-        "text": "Colecciones editoriales por tema, festival y autor."
-      },
-      "legal": {
-        "title": "Legal.",
-        "text": "Cada corto llega por una vía oficial (canal del autor, la productora o el festival, o licencia abierta), y la ficha lo indica."
+      "broad": {
+        "title": "Amplio.",
+        "text": "Cortos de festivales, escuelas, productoras y autores, en un solo catálogo."
       },
       "useful": {
         "title": "Útil.",
@@ -394,11 +393,11 @@
       "text": "Escríbenos con el producto que te interesa y te proponemos una llamada de 20 minutos. Si te encaja, reservamos tu plaza de fundador con un acuerdo de una página y una factura.",
       "soon": "Muy pronto tendrás aquí una dirección de contacto."
     },
-    "description": "Colecciones patrocinadas y escaparates para festivales, escuelas de cine e instituciones culturales en FENAKI, el catálogo de cortometrajes gratis y legales."
+    "description": "Colecciones patrocinadas y escaparates para festivales, escuelas de cine e instituciones culturales en FENAKI, el catálogo de cortometrajes."
   },
   "crm": {
     "footer": {
-      "identity": "FENAKI (fenaki.tv), catálogo de cortometrajes gratuitos y legales.",
+      "identity": "FENAKI (fenaki.tv), catálogo de cortometrajes.",
       "privacy": "Cómo tratamos tus datos: {url}",
       "optOut": "Si no quieres que volvamos a escribirte, responde «no» a este email y no lo haremos."
     }

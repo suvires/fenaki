@@ -1,4 +1,4 @@
-Fenaki is a curated catalog of free, legal short films with the browsing experience of a streaming service. The look is a darkened screening room: warm black walls, one projector-light accent, poster capitals for titles. Everything a viewer sees is built from these tokens and components; pages only compose them.
+FENAKI gathers the short films published openly by their makers, festivals and schools in one catalog, with the browsing experience of a streaming service. The look is a darkened screening room: warm black walls, one projector-light accent, poster capitals for titles. Everything a viewer sees is built from these tokens and components; pages only compose them.
 
 ## Content fundamentals
 

@@ -42,7 +42,7 @@ const offers = [
 
   <Prose>
     <ul>
-      {(['curated', 'legal', 'useful'] as const).map((key) => (
+      {(['broad', 'useful'] as const).map((key) => (
         <li>
           <strong>{t(`sponsor.pillars.${key}.title`)}</strong> {t(`sponsor.pillars.${key}.text`)}
         </li>

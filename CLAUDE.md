@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 # Fenaki
 
-Curated catalog of free, legally available short films with a streaming-style UX (fenaki.tv). Independent brand. Built in public as a 30-day challenge ("Día N de 30") with Claude Code.
+Catalog of short films that their makers, festivals and schools publish openly (free and legal to watch), gathered in one place with a streaming-style UX (fenaki.tv). It goes for volume, not curation. Independent brand. Built in public as a 30-day challenge ("Día N de 30") with Claude Code.
 
 - Product plan (Spanish): `private/plan/plan-de-desarrollo.md`
 - Daily challenge log (Spanish): `private/diario/`
@@ -13,7 +13,7 @@ Curated catalog of free, legally available short films with a streaming-style UX
 
 ## Working model
 
-The challenge is an experiment: Claude does all the work (code, catalog curation, content, social media, sales prep) and the user supervises, validates and proposes. Act proactively and bring results for validation instead of handing tasks back. Only acts that legally or contractually require the user's identity stay with them: signing contracts, issuing invoices (they bill as a Spanish autónomo), payments and creating accounts. Log every expense in `private/diario/gastos.md`, and keep the user's to-do list in `private/plan/tus-tareas.md` up to date (add tasks as they come up, tell the user when each is due).
+The challenge is an experiment: Claude does all the work (code, building the catalog, content, social media, sales prep) and the user supervises, validates and proposes. Act proactively and bring results for validation instead of handing tasks back. Only acts that legally or contractually require the user's identity stay with them: signing contracts, issuing invoices (they bill as a Spanish autónomo), payments and creating accounts. Log every expense in `private/diario/gastos.md`, and keep the user's to-do list in `private/plan/tus-tareas.md` up to date (add tasks as they come up, tell the user when each is due).
 
 ## Public repository
 
@@ -101,7 +101,7 @@ Monorepo (pnpm + Turborepo): `apps/web` (Astro), `apps/cms` (Payload), `packages
 - No hardcoded user-facing strings in components. Every string comes from locale files (`locales/es.json`), with English keys.
 - The brand is always written **FENAKI**, in capitals, in every user-facing text (UI, legal pages, emails, sender names, labels). Lowercase only in the domain and addresses (`fenaki.tv`, `hola@fenaki.tv`) and in identifiers.
 - Say **email**, never «correo» or «correo electrónico», in every user-facing text (web, apps, emails).
-- Never pitch FENAKI as «gratis y legales» (or «gratuitos y legales») in marketing copy: titles, taglines, descriptions, OG cards, social posts. It has no pull. Lead with the tagline «El mejor cine, en cortos» and the curation. The legal route still belongs in legal texts and short pages, as a fact, not a selling point.
+- Never pitch FENAKI as «gratis y legales» (or «gratuitos y legales») in marketing copy: titles, taglines, descriptions, OG cards, social posts. It has no pull. Lead with the tagline «El mejor cine, en cortos» and with having every short in one place. Never call FENAKI curated or say its shorts are «elegidos uno a uno»: it goes for volume. The legal route still belongs in legal texts and short pages, as a fact, not a selling point.
 - UI copy is neutral Spanish for all Spanish speakers: address the user as «tú», never «vosotros», and avoid Spain-only vocabulary. Locale code is `es`, not `es-ES`.
 - Locale-prefixed routes (`/es/...`) even while `es` is the only locale.
 - Format dates, durations and numbers with `Intl`.

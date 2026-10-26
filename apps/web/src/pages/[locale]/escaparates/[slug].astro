@@ -21,7 +21,7 @@ const presenter = showcase ? presenterOf(showcase) : undefined
 const kind = showcase ? t(`showcase.kinds.${showcase.kind}`) : ''
 const clock = badgeClock()
 const description = showcase
-  ? (showcase.intro ?? t('showcase.description', { name: showcase.name }))
+  ? (showcase.intro ?? t(`showcase.description.${showcase.kind}`, { name: showcase.name }))
   : undefined
 
 const jsonLd = showcase

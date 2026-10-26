@@ -15,7 +15,7 @@ En cumplimiento del artículo 10 de la Ley 34/2002, de 11 de julio, de servicios
 
 ## 2. Objeto
 
-FENAKI es un catálogo curado de cortometrajes que se pueden ver gratis y de forma legal. FENAKI:
+FENAKI es un catálogo de cortometrajes que se pueden ver gratis y de forma legal. FENAKI:
 
 - **No aloja vídeos de terceros.** Los cortos se reproducen mediante el reproductor oficial de YouTube o Vimeo (contenido «embebido»), desde el canal oficial de su autor, productora, distribuidora o festival.
 - Indica en cada ficha la vía legal por la que el corto está en el catálogo y enlaza a su origen.
