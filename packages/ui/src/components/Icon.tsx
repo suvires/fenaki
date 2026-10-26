@@ -26,7 +26,8 @@ const PATHS = {
   search: 'M10.5 16.5a6 6 0 1 1 0-12 6 6 0 0 1 0 12zM15 15l5 5',
   arrow: 'M4 12h16M14 6l6 6-6 6',
   chevron: 'M8.5 3.5 17 12l-8.5 8.5',
-  'chevron-down': 'M5.5 8.75 12 15.25l6.5-6.5',
+  // A V carries its weight in its open top: centred by its box it looks high, so it sits 1px lower.
+  'chevron-down': 'M5.5 9.75 12 16.25l6.5-6.5',
   // One outline, cuff and hand: no line between them. The cuff, the thumb's edge, the knuckle
   // curve, the palm and the heel back along the cuff's foot.
   'thumbs-up':
