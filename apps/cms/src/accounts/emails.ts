@@ -22,6 +22,14 @@ const escapeHtml = (text: string) =>
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;')
 
+/**
+ * Archivo where the email client loads web fonts (Apple Mail, Outlook for Mac, Thunderbird), Arial
+ * where it does not (Gmail, Outlook on Windows): never system-ui, which Outlook turns into Times.
+ */
+const FONT_STACK = '"Archivo Variable", Archivo, Arial, Helvetica, sans-serif'
+const fontFace = (url: string) =>
+  `@font-face{font-family:"Archivo Variable";src:url("${url}") format("woff2");font-weight:100 900;font-stretch:62% 125%;font-display:swap}`
+
 function token(group: { tokens: { name: string; value: string }[] }, name: string): string {
   const found = group.tokens.find((t) => t.name === name)
   if (!found) throw new Error(`Unknown token ${name}`)
@@ -81,8 +89,8 @@ export function accountEmailHtml(
   const key = (name: string) => `accountEmail.${kind}.${name}` as MessageKey
 
   const link = (href: string, text: string, ink = color.ink, long = false): Html => ({
-    // A long URL may break anywhere; the words around it never do.
-    html: `<a href="${escapeHtml(href)}" style="color:${ink};text-decoration:underline${long ? ';word-break:break-all' : ''}">${escapeHtml(text)}</a>`,
+    // A long URL starts on its own line and breaks only if it still does not fit.
+    html: `<a href="${escapeHtml(href)}" style="color:${ink};text-decoration:underline${long ? ';overflow-wrap:break-word;word-wrap:break-word' : ''}">${escapeHtml(text)}</a>`,
   })
   const paragraph = (html: string, style = typeStyle('body')) =>
     `<p style="margin:0 0 ${space('4')};color:${card.ink};${style}">${html}</p>`
@@ -101,9 +109,10 @@ export function accountEmailHtml(
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
+<style>${fontFace(`${origin}/email/archivo-latin.woff2`)}</style>
 <title>${escapeHtml(t(key('subject')))}</title>
 </head>
-<body style="margin:0;padding:0;background:${color['sala-1']};font-family:${escapeHtml(tokens.type.families.text)}">
+<body style="margin:0;padding:0;background:${color['sala-1']};font-family:${escapeHtml(FONT_STACK)}">
 <span style="display:none;max-height:0;overflow:hidden">${escapeHtml(t(key('preview')))}</span>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${color['sala-1']}">
 <tr><td align="center" style="padding:${space('8')} ${space('4')}">

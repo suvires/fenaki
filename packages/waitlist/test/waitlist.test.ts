@@ -111,6 +111,7 @@ describe('subscribe', () => {
         confirm_url: `https://fenaki.tv/es/lista-de-espera/confirmar?s=${UUID}`,
         site_url: 'https://fenaki.tv/es/',
         logo_url: 'https://fenaki.tv/email/logo.png',
+        font_url: 'https://fenaki.tv/email/archivo-latin.woff2',
       },
     ])
   })

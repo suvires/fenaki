@@ -2,7 +2,7 @@
  * The waitlist confirmation email, built from the locale file and the design tokens, in the light
  * palette (email is one of the few places it is for). The result is a listmonk transactional
  * template: listmonk fills `{{ .Tx.Data.confirm_url }}`, `{{ .Tx.Data.site_url }}` and
- * `{{ .Tx.Data.logo_url }}` when the web app sends it. `pnpm setup:services` uploads it.
+ * `{{ .Tx.Data.logo_url }}` and `{{ .Tx.Data.font_url }}` when the web app sends it. `pnpm setup:services` uploads it.
  */
 import { createRichTranslator, createTranslator, type Locale } from '@fenaki/i18n'
 import { palettes, tokens, type TypeStyle } from '@fenaki/tokens'
@@ -10,6 +10,7 @@ import { palettes, tokens, type TypeStyle } from '@fenaki/tokens'
 const CONFIRM_URL = '{{ .Tx.Data.confirm_url }}'
 const SITE_URL = '{{ .Tx.Data.site_url }}'
 const LOGO_URL = '{{ .Tx.Data.logo_url }}'
+const FONT_URL = '{{ .Tx.Data.font_url }}'
 
 const escapeHtml = (text: string) =>
   text
@@ -17,6 +18,14 @@ const escapeHtml = (text: string) =>
     .replaceAll('<', '&lt;')
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;')
+
+/**
+ * Archivo where the email client loads web fonts (Apple Mail, Outlook for Mac, Thunderbird), Arial
+ * where it does not (Gmail, Outlook on Windows): never system-ui, which Outlook turns into Times.
+ */
+const FONT_STACK = '"Archivo Variable", Archivo, Arial, Helvetica, sans-serif'
+const fontFace = (url: string) =>
+  `@font-face{font-family:"Archivo Variable";src:url("${url}") format("woff2");font-weight:100 900;font-stretch:62% 125%;font-display:swap}`
 
 function token(group: { tokens: { name: string; value: string }[] }, name: string): string {
   const found = group.tokens.find((t) => t.name === name)
@@ -49,8 +58,8 @@ export function confirmationEmail(locale: Locale): { subject: string; body: stri
   const width = token(tokens.container, 'email')
 
   const link = (href: string, label: string, ink = color.ink, long = false): Html => ({
-    // A long URL may break anywhere; the words around it never do.
-    html: `<a href="${href}" style="color:${ink};text-decoration:underline${long ? ';word-break:break-all' : ''}">${escapeHtml(label)}</a>`,
+    // A long URL starts on its own line and breaks only if it still does not fit.
+    html: `<a href="${href}" style="color:${ink};text-decoration:underline${long ? ';overflow-wrap:break-word;word-wrap:break-word' : ''}">${escapeHtml(label)}</a>`,
   })
   const paragraph = (html: string, style = typeStyle('body')) =>
     `<p style="margin:0 0 ${space('4')};color:${card.ink};${style}">${html}</p>`
@@ -71,9 +80,10 @@ export function confirmationEmail(locale: Locale): { subject: string; body: stri
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
+<style>${fontFace(FONT_URL)}</style>
 <title>${escapeHtml(t('email.confirm.subject'))}</title>
 </head>
-<body style="margin:0;padding:0;background:${color['sala-1']};font-family:${escapeHtml(tokens.type.families.text)}">
+<body style="margin:0;padding:0;background:${color['sala-1']};font-family:${escapeHtml(FONT_STACK)}">
 <span style="display:none;max-height:0;overflow:hidden">${escapeHtml(t('email.confirm.preview'))}</span>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${color['sala-1']}">
 <tr><td align="center" style="padding:${space('8')} ${space('4')}">

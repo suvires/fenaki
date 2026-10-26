@@ -20,6 +20,7 @@
     "@fenaki/tokens": "workspace:*",
     "@fenaki/ui": "workspace:*",
     "@fenaki/waitlist": "workspace:*",
+    "@fontsource-variable/archivo": "5.3.0",
     "@sentry/node": "11.9.0",
     "@tailwindcss/vite": "4.3.3",
     "astro": "7.4.2",
