@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Button } from '../components/Button.tsx'
 import { TextField } from '../components/TextField.tsx'
 
 const meta = {
@@ -27,4 +28,16 @@ export const WithError: Story = {
     error:
       'Ese correo no parece completo. Revisa que tenga @ y un dominio, por ejemplo nombre@ejemplo.com.',
   },
+}
+
+/** With the form's button beside the field (below it on narrow screens), as on the waitlist. */
+export const WithAction: Story = {
+  args: {
+    action: (
+      <Button type="submit" size="lg">
+        Apuntarme
+      </Button>
+    ),
+  },
+  decorators: [(Story) => <div className="max-w-note">{Story()}</div>],
 }

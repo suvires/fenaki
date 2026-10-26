@@ -173,12 +173,9 @@
       "label": "Correo electrónico",
       "placeholder": "nombre@ejemplo.com"
     },
-    "newsletter": {
-      "label": "Quiero recibir también la selección semanal de cortos. Puede incluir colecciones patrocinadas, siempre identificadas."
-    },
     "submit": "Apuntarme",
     "submitting": "Enviando…",
-    "privacy": "FENAKI usará tu correo para avisarte del lanzamiento y, si lo marcas, enviarte la selección semanal. Puedes ejercer tus derechos y consultar más información en la {privacyPolicy}.",
+    "privacy": "FENAKI usará tu correo solo para avisarte del lanzamiento. Puedes ejercer tus derechos y consultar más información en la {privacyPolicy}.",
     "error": {
       "empty": "Escribe tu correo para apuntarte.",
       "invalid": "Ese correo no parece completo. Revisa que tenga @ y un dominio, por ejemplo nombre@ejemplo.com.",
@@ -240,8 +237,7 @@
       "browse": "Todos los cortos",
       "credits": "Créditos",
       "playerSettings": "Preferencias de reproducción"
-    },
-    "tagline": "El mejor cine, en cortos"
+    }
   },
   "contact": {
     "propose": {

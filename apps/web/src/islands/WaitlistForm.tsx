@@ -1,5 +1,5 @@
 import { createRichTranslator, createTranslator, type Locale } from '@fenaki/i18n'
-import { Button, Checkbox, Notice, TextField } from '@fenaki/ui'
+import { Button, Notice, TextField } from '@fenaki/ui'
 import { Fragment, useState, type SubmitEvent } from 'react'
 import { EVENTS } from '../lib/analytics.ts'
 import { checkEmail } from '@fenaki/waitlist'
@@ -62,9 +62,9 @@ export function WaitlistForm({ locale }: WaitlistFormProps) {
       return
     }
     setFieldError(null)
-    const newsletter = form.get('newsletter') === 'on'
-    const sent = await send(checked.email, newsletter, String(form.get('website') ?? ''))
-    if (sent) window.umami?.track(EVENTS.waitlistSignup, { newsletter })
+    // Only the launch notice for now: the weekly selection is not offered on the form.
+    const sent = await send(checked.email, false, String(form.get('website') ?? ''))
+    if (sent) window.umami?.track(EVENTS.waitlistSignup)
   }
 
   if (state.kind === 'pending') {
@@ -101,18 +101,15 @@ export function WaitlistForm({ locale }: WaitlistFormProps) {
         placeholder={t('waitlist.email.placeholder')}
         error={fieldError ? t(`waitlist.error.${fieldError}`) : undefined}
         onChange={() => setFieldError(null)}
+        action={
+          <Button type="submit" size="lg" disabled={submitting} aria-busy={submitting}>
+            {submitting ? t('waitlist.submitting') : t('waitlist.submit')}
+          </Button>
+        }
       />
-      <Checkbox id="waitlist-newsletter" name="newsletter">
-        {t('waitlist.newsletter.label')}
-      </Checkbox>
       {/* A field people never see: bots fill it in, and the server ignores those requests. */}
       <div aria-hidden="true" className="hidden">
         <input type="text" name="website" tabIndex={-1} autoComplete="off" />
-      </div>
-      <div>
-        <Button type="submit" size="lg" disabled={submitting} aria-busy={submitting}>
-          {submitting ? t('waitlist.submitting') : t('waitlist.submit')}
-        </Button>
       </div>
       {state.kind === 'failed' ? (
         <Notice tone="danger" role="alert">

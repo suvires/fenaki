@@ -96,7 +96,6 @@ test('signing up sends a confirmation email that confirms the subscription in li
   const email = `e2e+${Date.now()}@example.com`
   await page.goto('/es/')
   await page.getByLabel('Correo electrónico').fill(email)
-  await page.getByLabel(/selección semanal/).check()
   await page.getByRole('button', { name: 'Apuntarme' }).click()
   await expect(page.getByText('Revisa tu correo')).toBeVisible()
   await expect(page.getByText(email)).toBeVisible()
@@ -110,19 +109,16 @@ test('signing up sends a confirmation email that confirms the subscription in li
   expect(link).toBeDefined()
 
   try {
+    // Only the launch notice: the form does not offer the weekly selection.
     expect((await listmonkSubscriber(email))?.lists.map((l) => l.subscription_status)).toEqual([
-      'unconfirmed',
       'unconfirmed',
     ])
     await page.goto(link ?? '')
     await expect(
       page.getByRole('heading', { level: 1, name: 'Ya estás en la lista' }),
     ).toBeVisible()
-    await expect(
-      page.getByText('la recibirás los viernes por la mañana cuando empiece'),
-    ).toBeVisible()
+    await expect(page.getByText('la recibirás los viernes por la mañana')).toHaveCount(0)
     expect((await listmonkSubscriber(email))?.lists.map((l) => l.subscription_status)).toEqual([
-      'confirmed',
       'confirmed',
     ])
 

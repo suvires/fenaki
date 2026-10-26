@@ -5,20 +5,17 @@ export interface SiteFooterProps {
   /** Accessible name of the footer navigation. */
   label: string
   links: { label: string; href: string }[]
-  /** The closing line under the links, after the brand's monogram. */
-  tagline: string
   /** Accessible name of the monogram: the brand name. */
   brand: string
   className?: string
 }
 
-/** The footer on every page: the motto as a headline over the monogram, and a flat row of links (legal pages and credits always among them). */
-export function SiteFooter({ label, links, tagline, brand, className }: SiteFooterProps) {
+/** The footer on every page: the monogram and a column of links (legal pages and credits always among them). */
+export function SiteFooter({ label, links, brand, className }: SiteFooterProps) {
   return (
     <footer className={cx('grid gap-8 pt-8', className)}>
       <div className="grid gap-8 md:grid-cols-[1fr_auto]">
         <div className="grid content-start gap-4">
-          <p className="m-0 font-display text-title uppercase text-balance">{tagline}</p>
           <Monogram
             label={brand}
             className="h-12 w-auto self-start justify-self-start text-tungsteno"
