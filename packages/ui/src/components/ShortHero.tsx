@@ -52,7 +52,7 @@ export function ShortHero({
     <section
       className={cx(
         'relative isolate overflow-hidden grid grid-cols-1 items-end gap-8',
-        'p-6 md:p-10 rounded-hero bg-sala-1',
+        'p-6 md:p-10 rounded-hero bg-sala-1 shadow-hero',
         backdrop ? 'min-h-(--size-hero)' : 'md:grid-cols-[minmax(0,1fr)_auto]',
         className,
       )}

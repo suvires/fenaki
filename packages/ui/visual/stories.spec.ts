@@ -19,6 +19,12 @@ for (const story of stories) {
     await page.goto(`/iframe.html?viewMode=story&id=${story.id}`)
     await page.locator('#storybook-root > *').first().waitFor()
     await page.evaluate(() => document.fonts.ready)
+    // Lazy images load on their own schedule: load and decode them all before the screenshot.
+    await page.evaluate(async () => {
+      const images = [...document.images]
+      for (const image of images) image.loading = 'eager'
+      await Promise.all(images.map((image) => image.decode().catch(() => undefined)))
+    })
     await expect(page).toHaveScreenshot(`${story.id}.png`, { fullPage: true })
   })
 }

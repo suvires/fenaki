@@ -15,8 +15,10 @@ export default defineConfig({
     ? [['github'], ['html', { open: 'never' }]]
     : [['list'], ['html', { open: 'never' }]],
   use: { baseURL: `http://localhost:${port}`, trace: 'retain-on-failure' },
-  // threshold 0: Playwright's default (0.2) lets subtle colour changes, like a token's opacity, pass unseen.
-  expect: { toHaveScreenshot: { animations: 'disabled', caret: 'hide', threshold: 0 } },
+  // Playwright's default threshold (0.2) let a token's opacity change pass unseen; 0 failed at random,
+  // as Chromium rasterizes rounded, scaled images a few levels differently from run to run (up to 5 of
+  // 255). 0.03 absorbs that and still catches any colour change of about 8 levels or more.
+  expect: { toHaveScreenshot: { animations: 'disabled', caret: 'hide', threshold: 0.03 } },
   projects: [
     {
       name: 'chromium',

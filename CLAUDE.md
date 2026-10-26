@@ -31,7 +31,7 @@ The monorepo is scaffolded and runs locally. Deployment is configured and rehear
 - `pnpm seed`: admin user, six sample shorts and one sponsored collection, all flagged as sample data (empty databases only; the e2e tests use it on their own database).
 - `pnpm lint`, `pnpm typecheck`, `pnpm test` (Vitest), `pnpm test:e2e` (Playwright smoke test), `pnpm build`.
 - `pnpm storybook`: the component catalog.
-- `pnpm test:visual` (`:update` to accept changes): screenshots of every story compared with committed baselines, in the Playwright Docker image; CI runs the same on every push and pull request. Any UI change needs updated baselines in the same commit, generated on arm64 only (no pixel tolerance). CI also runs lint, typecheck and test on every push and pull request.
+- `pnpm test:visual` (`:update` to accept changes): screenshots of every story compared with committed baselines, in the Playwright Docker image; CI runs the same on every push and pull request. Any UI change needs updated baselines in the same commit, generated on arm64 only (colour threshold 0.03: absorbs rasterization noise, catches real changes). CI also runs lint, typecheck and test on every push and pull request.
 - One test: `pnpm --filter <package> exec vitest run <file>` or `-t "<name>"`.
 
 After changing a Payload collection, run `pnpm --filter @fenaki/cms migrate:create <name>` and `pnpm --filter @fenaki/cms generate:types`, and commit the migration and `payload-types.ts`; the site imports those types.

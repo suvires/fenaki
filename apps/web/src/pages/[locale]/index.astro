@@ -85,35 +85,38 @@ const filterOptions = (['short', 'mid', 'long', 'subtitles'] as const).map((valu
 <Base locale={locale} title={landing ? t('landing.title') : t('home.title')}>
   {landing && <Landing locale={locale} />}
   {!landing && hero && (
-    <ShortHero
-      title={hero.title}
-      seconds={hero.durationSeconds}
-      locale={locale}
-      details={[
-        ...(heroDirectors.length > 0 ? [formatList(heroDirectors, locale)] : []),
-        ...(hero.year ? [formatYear(hero.year, locale)] : []),
-        t(`short.types.${hero.type}`),
-      ]}
-      synopsis={hero.synopsis ?? undefined}
-      ctaLabel={t('home.hero.cta')}
-      ctaHref={paths.short(locale, hero.slug)}
-      poster={{
-        title: hero.title,
-        director: heroDirectors.join(', '),
-        year: hero.year ?? undefined,
-        tone: posterTone(hero.posterTone),
-      }}
-      backdrop={heroBackdrop}
-    >
-      <MyListButton
-        slot="secondaryAction"
-        client:load
-        size="lg"
-        short={toSavedShort(toCardSource(hero), locale)}
-        label={t('short.addToList')}
-        savedLabel={t('short.inMyList')}
-      />
-    </ShortHero>
+    // The light at the top of the page ends at this element's bottom edge (see Base.astro).
+    <div data-glow-end>
+      <ShortHero
+        title={hero.title}
+        seconds={hero.durationSeconds}
+        locale={locale}
+        details={[
+          ...(heroDirectors.length > 0 ? [formatList(heroDirectors, locale)] : []),
+          ...(hero.year ? [formatYear(hero.year, locale)] : []),
+          t(`short.types.${hero.type}`),
+        ]}
+        synopsis={hero.synopsis ?? undefined}
+        ctaLabel={t('home.hero.cta')}
+        ctaHref={paths.short(locale, hero.slug)}
+        poster={{
+          title: hero.title,
+          director: heroDirectors.join(', '),
+          year: hero.year ?? undefined,
+          tone: posterTone(hero.posterTone),
+        }}
+        backdrop={heroBackdrop}
+      >
+        <MyListButton
+          slot="secondaryAction"
+          client:load
+          size="lg"
+          short={toSavedShort(toCardSource(hero), locale)}
+          label={t('short.addToList')}
+          savedLabel={t('short.inMyList')}
+        />
+      </ShortHero>
+    </div>
   )}
   {/* Renders nothing until the viewer has saved something. */}
   {!landing && (

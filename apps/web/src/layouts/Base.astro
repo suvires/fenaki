@@ -139,7 +139,18 @@ const footerGroups = [
       />
     )}
   </head>
-  <body class="min-h-dvh overflow-x-hidden">
+  <body
+    class:list={[
+      'min-h-dvh overflow-x-hidden',
+      // Catalog pages: a light from above, like a screen glowing in a dark room. A huge ellipse
+      // centred above the page (radial, so it arcs: brighter in the middle than at the sides), in
+      // the glow colour at the glow opacity, fading to transparent; and a black band behind the
+      // header that fades within the first tenth. The ellipse reaches transparent at 58 % of its
+      // radius, just above the area's bottom edge (60 % at its centre), so it never ends in a cut.
+      !landing &&
+        'bg-[linear-gradient(to_bottom,var(--color-sala-1),transparent_10%),radial-gradient(250%_250%_at_50%_-50%,color-mix(in_oklab,var(--color-glow)_var(--opacity-glow),transparent)_20%,transparent_58%)] bg-no-repeat bg-size-[100%_var(--size-page-glow)]',
+    ]}
+  >
     <a
       href="#main"
       class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:p-2 focus:bg-sala-1 focus:focus-ring rounded-sm"
@@ -156,7 +167,10 @@ const footerGroups = [
         </a>
       </header>
     ) : (
-      <div class="sticky top-0 z-20 bg-sala-0">
+      <div
+        data-site-header
+        class="sticky top-0 z-20 bg-transparent data-scrolled:bg-sala-1 transition-colors duration-(--duration-header) ease-standard motion-reduce:transition-none"
+      >
         <SiteHeader
           client:load
           className="mx-auto max-w-page px-4 md:px-8 py-6"
@@ -190,9 +204,47 @@ const footerGroups = [
         />
       </div>
     )}
-    <main id="main" class="mx-auto max-w-page grid gap-12 px-4 md:px-8 pb-8">
+    <main id="main" class="mx-auto max-w-page grid gap-12 px-4 md:px-8 pt-4 pb-8">
       <slot />
     </main>
+    <script>
+      // The header is see-through at the top and turns solid once the page has scrolled past
+      // the main area's top padding. Astro bundles it for every page; without the header (the landing
+      // page) it does nothing.
+      const header = document.querySelector<HTMLElement>('[data-site-header]')
+      const main = document.getElementById('main')
+      // The light at the top of catalog pages ends halfway below the element marked data-glow-end (the
+      // home hero); without one it keeps the --size-page-glow token's height.
+      const glowEnd = document.querySelector<HTMLElement>('[data-glow-end]')
+      if (glowEnd) {
+        const fit = () => {
+          // Halfway into the gap that follows it, so it fades out before the next block.
+          const gap = main ? parseFloat(getComputedStyle(main).rowGap) || 0 : 0
+          const bottom = glowEnd.getBoundingClientRect().bottom + window.scrollY + gap / 2
+          document.body.style.setProperty('--size-page-glow', `${Math.round(bottom)}px`)
+        }
+        fit()
+        new ResizeObserver(fit).observe(glowEnd)
+      }
+      if (header && main) {
+        let queued = false
+        const update = () => {
+          queued = false
+          const threshold = parseFloat(getComputedStyle(main).paddingTop) || 0
+          header.toggleAttribute('data-scrolled', window.scrollY > threshold)
+        }
+        update()
+        window.addEventListener(
+          'scroll',
+          () => {
+            if (queued) return
+            queued = true
+            requestAnimationFrame(update)
+          },
+          { passive: true },
+        )
+      }
+    </script>
     <SiteFooter
       className="mx-auto max-w-page px-4 md:px-8 pb-8"
       label={t('footer.label')}
