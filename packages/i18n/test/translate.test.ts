@@ -53,7 +53,7 @@ describe('createRichTranslator', () => {
         .startsWith('Te hemos enviado un mensaje a EMAIL.'),
     ).toBe(true)
     expect(rich('email.confirm.fallback', {}, { url: 'https://x' })).toEqual([
-      'Si el botón no funciona, copia este enlace en el navegador: ',
+      '¿No funciona el botón? Copia este enlace en el navegador: ',
       'https://x',
     ])
   })

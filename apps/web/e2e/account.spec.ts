@@ -41,21 +41,21 @@ const open = (page: Page, path: string) => page.goto(path, { waitUntil: 'network
 
 async function signUp(page: Page, email: string) {
   await open(page, '/es/crear-cuenta')
-  await page.getByLabel('Correo electrónico').fill(email)
+  await page.getByLabel('Email', { exact: true }).fill(email)
   await page.getByLabel('Contraseña', { exact: true }).fill(PASSWORD)
   await page.getByRole('main').getByRole('button', { name: 'Crear cuenta' }).click()
-  await expect(page.getByRole('status')).toContainText('Revisa tu correo')
+  await expect(page.getByRole('status')).toContainText('Revisa tu email')
 }
 
 async function verify(page: Page, email: string) {
-  const mail = await waitForEmail(email, 'Verifica tu correo')
+  const mail = await waitForEmail(email, 'Verifica tu email')
   await open(page, linkIn(mail, 'verificar'))
-  await expect(page.getByRole('status')).toContainText('Correo verificado')
+  await expect(page.getByRole('status')).toContainText('Email verificado')
 }
 
 async function signIn(page: Page, email: string, password = PASSWORD, next?: string) {
   await open(page, `/es/iniciar-sesion${next ? `?next=${encodeURIComponent(next)}` : ''}`)
-  await page.getByLabel('Correo electrónico').fill(email)
+  await page.getByLabel('Email', { exact: true }).fill(email)
   await page.getByLabel('Contraseña', { exact: true }).fill(password)
   await page.getByRole('main').getByRole('button', { name: 'Iniciar sesión' }).click()
 }
@@ -104,16 +104,16 @@ test('a viewer signs up, verifies, signs in, keeps a list, ratings and progress,
     await signUp(page, email)
     // Signing in before verifying says so.
     await signIn(page, email)
-    await expect(page.getByRole('alert')).toContainText('Aún no has verificado tu correo')
+    await expect(page.getByRole('alert')).toContainText('Aún no has verificado tu email')
     await verify(page, email)
     await page.getByRole('main').getByRole('link', { name: 'Iniciar sesión' }).click()
     await expect(page.getByRole('status')).toContainText(
-      'Correo verificado. Ya puedes iniciar sesión.',
+      'Email verificado. Ya puedes iniciar sesión.',
     )
   })
 
   await test.step('sign in: the header changes and the browser’s list moves to the account', async () => {
-    await page.getByLabel('Correo electrónico').fill(email)
+    await page.getByLabel('Email', { exact: true }).fill(email)
     await page.getByLabel('Contraseña', { exact: true }).fill(PASSWORD)
     await page.getByRole('main').getByRole('button', { name: 'Iniciar sesión' }).click()
     await expect(page).toHaveURL(/\/es\/$/)
@@ -257,7 +257,7 @@ test('a viewer signs up, verifies, signs in, keeps a list, ratings and progress,
     await expect(page).toHaveURL(/\/es\/iniciar-sesion\?next=%2Fes%2Fcuenta$/)
 
     // Signing in goes back to where the visitor was heading.
-    await page.getByLabel('Correo electrónico').fill(email)
+    await page.getByLabel('Email', { exact: true }).fill(email)
     await page.getByLabel('Contraseña', { exact: true }).fill(PASSWORD)
     await page.getByRole('main').getByRole('button', { name: 'Iniciar sesión' }).click()
     await expect(page).toHaveURL(/\/es\/cuenta$/)
@@ -269,12 +269,12 @@ test('a viewer signs up, verifies, signs in, keeps a list, ratings and progress,
     await page.getByRole('button', { name: 'Cuenta', exact: true }).click()
     await page.getByRole('banner').getByRole('button', { name: 'Cerrar sesión' }).click()
     await open(page, '/es/cuenta/recuperar')
-    await page.getByLabel('Correo electrónico').fill(email)
+    await page.getByLabel('Email', { exact: true }).fill(email)
     await page.getByRole('button', { name: 'Enviar enlace' }).click()
     await expect(page.getByRole('status')).toContainText(
-      'Si hay una cuenta con ese correo, te hemos enviado un enlace.',
+      'Si hay una cuenta con ese email, te hemos enviado un enlace.',
     )
-    const mail = await waitForEmail(email, 'Elige una contraseña nueva')
+    const mail = await waitForEmail(email, 'Cambia tu contraseña')
     await open(page, linkIn(mail, 'restablecer'))
     await page.getByLabel('Contraseña nueva', { exact: true }).fill('otra-clave-distinta-2')
     await page.getByLabel('Repite la contraseña nueva').fill('otra-clave-distinta-2')
@@ -284,7 +284,7 @@ test('a viewer signs up, verifies, signs in, keeps a list, ratings and progress,
 
     // The old one no longer works; the new one does.
     await signIn(page, email)
-    await expect(page.getByRole('alert')).toContainText('Correo o contraseña incorrectos')
+    await expect(page.getByRole('alert')).toContainText('Email o contraseña incorrectos')
     await signIn(page, email, 'otra-clave-distinta-2')
     await expect(page.getByRole('button', { name: 'Cuenta', exact: true })).toBeVisible()
   })
@@ -301,7 +301,7 @@ test('a viewer signs up, verifies, signs in, keeps a list, ratings and progress,
     await expect(page.getByRole('status')).toContainText('Tu cuenta se ha borrado')
 
     await signIn(page, email, 'otra-clave-distinta-2')
-    await expect(page.getByRole('alert')).toContainText('Correo o contraseña incorrectos')
+    await expect(page.getByRole('alert')).toContainText('Email o contraseña incorrectos')
   })
 
   expect(violations).toEqual([])
@@ -322,10 +322,10 @@ test('forgetting a password answers the same for an address without an account',
   page,
 }) => {
   await open(page, '/es/cuenta/recuperar')
-  await page.getByLabel('Correo electrónico').fill(uniqueEmail('nobody'))
+  await page.getByLabel('Email', { exact: true }).fill(uniqueEmail('nobody'))
   await page.getByRole('button', { name: 'Enviar enlace' }).click()
   await expect(page.getByRole('status')).toContainText(
-    'Si hay una cuenta con ese correo, te hemos enviado un enlace.',
+    'Si hay una cuenta con ese email, te hemos enviado un enlace.',
   )
 })
 
@@ -340,10 +340,10 @@ test('account pages are not indexed, the forms validate in the browser, and a ba
   expect(sitemap).not.toMatch(/crear-cuenta|iniciar-sesion|\/cuenta|historial/)
 
   await open(page, '/es/crear-cuenta')
-  await page.getByLabel('Correo electrónico').fill('sin-arroba')
+  await page.getByLabel('Email', { exact: true }).fill('sin-arroba')
   await page.getByLabel('Contraseña', { exact: true }).fill('corta')
   await page.getByRole('main').getByRole('button', { name: 'Crear cuenta' }).click()
-  await expect(page.getByText('Ese correo no parece completo.', { exact: false })).toBeVisible()
+  await expect(page.getByText('Ese email no parece completo.', { exact: false })).toBeVisible()
   await expect(page.getByText('La contraseña debe tener al menos 10 caracteres.')).toBeVisible()
 
   await open(page, '/es/cuenta/verificar?token=0123456789abcdef0123456789abcdef01234567')

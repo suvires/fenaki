@@ -128,6 +128,7 @@ export async function subscribe(client: Listmonk, input: SubscribeInput): Promis
     data: {
       confirm_url: confirmationUrl(input.siteUrl, input.locale, subscriber.uuid),
       site_url: new URL(`/${input.locale}/`, input.siteUrl).toString(),
+      logo_url: new URL('/email/logo.png', input.siteUrl).toString(),
     },
   })
 }

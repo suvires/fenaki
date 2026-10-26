@@ -167,50 +167,46 @@
     }
   },
   "waitlist": {
-    "title": "Te avisamos cuando abra",
+    "title": "Te avisaremos del lanzamiento",
     "email": {
       "label": "¿Quieres que te avisemos?",
       "placeholder": "Escribe tu email"
     },
     "submit": "Avísame",
     "submitting": "Enviando…",
-    "privacy": "FENAKI usará tu correo solo para avisarte del lanzamiento. Puedes ejercer tus derechos y consultar más información en la {privacyPolicy}.",
+    "privacy": "FENAKI usará tu email solo para avisarte del lanzamiento. Puedes ejercer tus derechos y consultar más información en la {privacyPolicy}.",
     "error": {
       "empty": "Escribe tu email para que te avisemos.",
-      "invalid": "Ese correo no parece completo. Revisa que tenga @ y un dominio, por ejemplo nombre@ejemplo.com.",
-      "server": "No hemos podido guardar tu correo. Vuelve a intentarlo en unos minutos."
+      "invalid": "Ese email no parece completo. Revisa que tenga @ y un dominio, por ejemplo nombre@ejemplo.com.",
+      "server": "No hemos podido guardar tu email. Vuelve a intentarlo en unos minutos."
     },
     "pending": {
-      "title": "Revisa tu correo",
+      "title": "Revisa tu email",
       "text": "Te hemos enviado un mensaje a {email}. Abre el enlace que contiene para confirmar que quieres apuntarte. Hasta que lo confirmes, no te enviaremos nada más.",
       "help": "¿No llega? Mira en la carpeta de spam o de promociones. El enlace caduca en 7 días.",
       "resend": "Enviar otra vez"
     },
     "confirmed": {
       "title": "Ya estás en la lista",
-      "text": "Te escribiremos cuando FENAKI abra.",
+      "text": "Te escribiremos en el lanzamiento de FENAKI.",
       "newsletter": "Si marcaste la selección semanal, la recibirás los {weekday} por la mañana cuando empiece.",
       "building": "Mientras tanto, lo estamos construyendo en público, un día cada vez."
     },
     "expired": {
       "title": "Este enlace ya no sirve",
-      "text": "Ha caducado o ya se usó. Si quieres apuntarte, vuelve a escribir tu correo.",
+      "text": "Ha caducado o ya se usó. Si quieres apuntarte, vuelve a escribir tu email.",
       "back": "Volver a la lista de espera"
     }
   },
   "email": {
     "confirm": {
-      "subject": "Confirma tu correo para la lista de FENAKI",
-      "preview": "Un clic y te avisamos cuando abra.",
-      "greeting": "Hola:",
-      "intro": "Alguien, seguramente tú, ha apuntado este correo a la lista de espera de FENAKI, un catálogo de cortometrajes gratis y legales en español.",
-      "action": "Para confirmarlo, pulsa el botón:",
-      "button": "Confirmar mi correo",
-      "fallback": "Si el botón no funciona, copia este enlace en el navegador: {url}",
-      "expiry": "El enlace caduca en 7 días. Si no has sido tú, no hagas nada: sin confirmar, no te volveremos a escribir y borraremos este correo de la lista.",
-      "signature": "FENAKI",
-      "motto": "El mejor cine, en cortos.",
-      "footer": "Recibes este mensaje porque alguien escribió esta dirección en fenaki.tv. Responsable del tratamiento y datos de contacto en el {legalNotice}. {privacyPolicy}"
+      "subject": "Confirma tu email para que te avisemos",
+      "preview": "Un clic y te avisaremos del lanzamiento de FENAKI.",
+      "intro": "Confirma tu email y te avisaremos del lanzamiento de FENAKI.",
+      "button": "Confirmar email",
+      "fallback": "¿No funciona el botón? Copia este enlace en el navegador: {url}",
+      "expiry": "El enlace caduca en 7 días. Si no te has apuntado tú, ignora este email: no volveremos a escribirte.",
+      "footer": "Recibes este email porque alguien lo apuntó en fenaki.tv. {privacyPolicy}"
     }
   },
   "legal": {
@@ -402,7 +398,7 @@
     "footer": {
       "identity": "FENAKI (fenaki.tv), catálogo de cortometrajes gratuitos y legales.",
       "privacy": "Cómo tratamos tus datos: {url}",
-      "optOut": "Si no quieres que volvamos a escribirte, responde «no» a este correo y no lo haremos."
+      "optOut": "Si no quieres que volvamos a escribirte, responde «no» a este email y no lo haremos."
     }
   },
   "seo": {
@@ -453,7 +449,7 @@
   "account": {
     "common": {
       "email": {
-        "label": "Correo electrónico",
+        "label": "Email",
         "placeholder": "nombre@ejemplo.com"
       },
       "password": {
@@ -465,8 +461,8 @@
         "hint": "Es solo para saludarte. Puedes dejarlo vacío."
       },
       "error": {
-        "email": "Ese correo no parece completo. Revisa que tenga @ y un dominio, por ejemplo nombre@ejemplo.com.",
-        "emailEmpty": "Escribe tu correo.",
+        "email": "Ese email no parece completo. Revisa que tenga @ y un dominio, por ejemplo nombre@ejemplo.com.",
+        "emailEmpty": "Escribe tu email.",
         "passwordEmpty": "Escribe tu contraseña.",
         "passwordShort": "La contraseña debe tener al menos 10 caracteres.",
         "passwordMismatch": "Las dos contraseñas no coinciden.",
@@ -484,9 +480,9 @@
       "submit": "Crear cuenta",
       "hasAccount": "¿Ya tienes cuenta?",
       "signInLink": "Inicia sesión",
-      "privacy": "Usamos tu correo y tus datos de uso solo para darte la cuenta, hasta que la borres. Más en la {privacyPolicy}.",
+      "privacy": "Usamos tu email y tus datos de uso solo para darte la cuenta, hasta que la borres. Más en la {privacyPolicy}.",
       "done": {
-        "title": "Revisa tu correo",
+        "title": "Revisa tu email",
         "text": "Si {email} puede crear una cuenta, te hemos enviado un enlace para verificarla. Ábrelo para terminar.",
         "help": "¿No llega? Mira en la carpeta de spam o de promociones."
       }
@@ -499,32 +495,32 @@
       "noAccount": "¿Aún no tienes cuenta?",
       "signUpLink": "Crea una",
       "notice": {
-        "verified": "Correo verificado. Ya puedes iniciar sesión.",
+        "verified": "Email verificado. Ya puedes iniciar sesión.",
         "reset": "Contraseña cambiada. Inicia sesión con la nueva.",
         "deleted": "Tu cuenta se ha borrado."
       },
       "error": {
-        "invalid": "Correo o contraseña incorrectos. Tras varios intentos fallidos, la cuenta se bloquea unos minutos.",
-        "unverified": "Aún no has verificado tu correo. Abre el enlace que te enviamos al crear la cuenta; si no lo encuentras, crea la cuenta otra vez con el mismo correo y te mandamos otro."
+        "invalid": "Email o contraseña incorrectos. Tras varios intentos fallidos, la cuenta se bloquea unos minutos.",
+        "unverified": "Aún no has verificado tu email. Abre el enlace que te enviamos al crear la cuenta; si no lo encuentras, crea la cuenta otra vez con el mismo email y te mandamos otro."
       }
     },
     "verify": {
-      "title": "Verificar tu correo",
-      "working": "Verificando tu correo…",
-      "okTitle": "Correo verificado",
+      "title": "Verificar tu email",
+      "working": "Verificando tu email…",
+      "okTitle": "Email verificado",
       "okText": "Tu cuenta está lista. Ya puedes iniciar sesión.",
       "failTitle": "El enlace no es válido o ya se usó",
-      "failText": "Si ya verificaste tu correo, inicia sesión. Si no, crea la cuenta otra vez para recibir un enlace nuevo.",
+      "failText": "Si ya verificaste tu email, inicia sesión. Si no, crea la cuenta otra vez para recibir un enlace nuevo.",
       "signIn": "Iniciar sesión"
     },
     "forgot": {
       "title": "Recupera tu contraseña",
-      "lead": "Escribe tu correo y, si hay una cuenta, te enviaremos un enlace para elegir otra contraseña.",
+      "lead": "Escribe tu email y, si hay una cuenta, te enviaremos un enlace para elegir otra contraseña.",
       "submit": "Enviar enlace",
       "back": "Volver a iniciar sesión",
       "done": {
-        "title": "Revisa tu correo",
-        "text": "Si hay una cuenta con ese correo, te hemos enviado un enlace. Caduca en 1 hora."
+        "title": "Revisa tu email",
+        "text": "Si hay una cuenta con ese email, te hemos enviado un enlace. Caduca en 1 hora."
       }
     },
     "reset": {
@@ -591,30 +587,22 @@
   },
   "accountEmail": {
     "verify": {
-      "subject": "Verifica tu correo en FENAKI",
-      "preview": "Un clic y tu cuenta estará lista.",
-      "greeting": "Hola:",
-      "intro": "Alguien, seguramente tú, ha creado una cuenta en FENAKI, un catálogo de cortometrajes gratis y legales en español.",
-      "action": "Para activarla, verifica tu correo:",
-      "button": "Verificar mi correo",
-      "fallback": "Si el botón no funciona, copia este enlace en el navegador: {url}",
-      "ignore": "Si no has sido tú, no hagas nada: sin verificar, la cuenta no se activa.",
-      "signature": "FENAKI",
-      "motto": "El mejor cine, en cortos.",
-      "footer": "Recibes este mensaje porque alguien creó una cuenta en fenaki.tv con esta dirección. Responsable del tratamiento y datos de contacto en el {legalNotice}. {privacyPolicy}"
+      "subject": "Verifica tu email para activar tu cuenta",
+      "preview": "Un clic y tu cuenta de FENAKI estará lista.",
+      "intro": "Verifica tu email para activar tu cuenta de FENAKI.",
+      "button": "Verificar email",
+      "fallback": "¿No funciona el botón? Copia este enlace en el navegador: {url}",
+      "ignore": "Si no has creado tú la cuenta, ignora este email: sin verificar, no se activa.",
+      "footer": "Recibes este email porque alguien creó una cuenta en fenaki.tv con él. {privacyPolicy}"
     },
     "reset": {
-      "subject": "Elige una contraseña nueva en FENAKI",
+      "subject": "Cambia tu contraseña de FENAKI",
       "preview": "El enlace caduca en 1 hora.",
-      "greeting": "Hola:",
-      "intro": "Alguien, seguramente tú, ha pedido cambiar la contraseña de tu cuenta de FENAKI.",
-      "action": "Para elegir una nueva, pulsa el botón:",
-      "button": "Cambiar mi contraseña",
-      "fallback": "Si el botón no funciona, copia este enlace en el navegador: {url}",
-      "ignore": "El enlace caduca en 1 hora. Si no has sido tú, no hagas nada: tu contraseña seguirá siendo la misma.",
-      "signature": "FENAKI",
-      "motto": "El mejor cine, en cortos.",
-      "footer": "Recibes este mensaje porque alguien pidió cambiar la contraseña de la cuenta de fenaki.tv con esta dirección. Responsable del tratamiento y datos de contacto en el {legalNotice}. {privacyPolicy}"
+      "intro": "Elige una contraseña nueva para tu cuenta de FENAKI.",
+      "button": "Cambiar contraseña",
+      "fallback": "¿No funciona el botón? Copia este enlace en el navegador: {url}",
+      "ignore": "El enlace caduca en 1 hora. Si no lo has pedido tú, ignora este email: tu contraseña no cambia.",
+      "footer": "Recibes este email porque alguien pidió cambiar la contraseña de tu cuenta en fenaki.tv. {privacyPolicy}"
     }
   },
   "playerSettings": {

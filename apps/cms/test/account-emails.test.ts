@@ -25,12 +25,13 @@ describe('account emails', () => {
   it('are in Spanish, in the light palette, with the link as button and as fallback text', () => {
     const url = 'https://fenaki.tv/es/cuenta/verificar?token=abc&x=1'
     const html = accountEmailHtml('verify', url, 'es', 'https://fenaki.tv')
-    expect(accountEmailSubject('verify')).toBe('Verifica tu correo en FENAKI')
+    expect(accountEmailSubject('verify')).toBe('Verifica tu email para activar tu cuenta')
     expect(html).toContain('lang="es"')
     expect(html).toContain('name="color-scheme" content="light"')
     // Escaped inside attributes, so the query string survives.
     expect(html).toContain('href="https://fenaki.tv/es/cuenta/verificar?token=abc&amp;x=1"')
-    expect(html).toContain('Verificar mi correo')
+    expect(html).toContain('Verificar email')
+    expect(html).toContain('src="https://fenaki.tv/email/logo.png"')
     expect(html).toContain('https://fenaki.tv/es/privacidad')
     expect(html).not.toMatch(/\b(vosotros|vuestr)/i)
   })
@@ -38,7 +39,7 @@ describe('account emails', () => {
   it('tell the reset link lasts one hour', () => {
     const html = accountEmailHtml('reset', 'https://fenaki.tv/es/cuenta/restablecer?token=t')
     expect(html).toContain('caduca en 1 hora')
-    expect(accountEmailSubject('reset')).toBe('Elige una contraseña nueva en FENAKI')
+    expect(accountEmailSubject('reset')).toBe('Cambia tu contraseña de FENAKI')
   })
 })
 

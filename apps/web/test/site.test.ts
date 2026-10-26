@@ -8,8 +8,9 @@ import { isHiddenInMode } from '../src/lib/site-mode.ts'
 describe('confirmationEmail', () => {
   it('uses the locale copy and leaves the link to listmonk', () => {
     const { subject, body } = confirmationEmail('es')
-    expect(subject).toBe('Confirma tu correo para la lista de FENAKI')
-    expect(body).toContain('Confirmar mi correo')
+    expect(subject).toBe('Confirma tu email para que te avisemos')
+    expect(body).toContain('Confirmar email')
+    expect(body).toContain('src="{{ .Tx.Data.logo_url }}"')
     expect(body).toContain('href="{{ .Tx.Data.confirm_url }}"')
     expect(body).toContain('{{ .Tx.Data.site_url }}privacidad')
     expect(body).not.toMatch(/\{(legalNotice|privacyPolicy|url)\}/)

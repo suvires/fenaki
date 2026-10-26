@@ -87,7 +87,7 @@ test('the waitlist form explains what is wrong with the address', async ({ page 
   await expect(page.getByText('Escribe tu email para que te avisemos.')).toBeVisible()
   await page.getByLabel('¿Quieres que te avisemos?').fill('ana@ejemplo')
   await submit.click()
-  await expect(page.getByText('Ese correo no parece completo.', { exact: false })).toBeVisible()
+  await expect(page.getByText('Ese email no parece completo.', { exact: false })).toBeVisible()
 })
 
 test('signing up sends a confirmation email that confirms the subscription in listmonk', async ({
@@ -97,11 +97,11 @@ test('signing up sends a confirmation email that confirms the subscription in li
   await page.goto('/es/')
   await page.getByLabel('¿Quieres que te avisemos?').fill(email)
   await page.getByRole('button', { name: 'Avísame' }).click()
-  await expect(page.getByText('Revisa tu correo')).toBeVisible()
+  await expect(page.getByText('Revisa tu email')).toBeVisible()
   await expect(page.getByText(email)).toBeVisible()
 
   const message = await waitForEmail(email)
-  expect(message.Subject).toBe('Confirma tu correo para la lista de FENAKI')
+  expect(message.Subject).toBe('Confirma tu email para que te avisemos')
   const origin = new URL(page.url()).origin.replace(/[./]/g, '\\$&')
   const link = new RegExp(`href="(${origin}/es/lista-de-espera/confirmar\\?s=[^"]+)"`).exec(
     message.HTML,

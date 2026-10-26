@@ -72,20 +72,23 @@ export function accountEmailHtml(
   const rich = createRichTranslator(locale)
   const color = palettes.light
   const space = (name: string) => token(tokens.spacing, `space-${name}`)
-  const radius = token(tokens.radius, 'radius-sm')
+  const radius = token(tokens.radius, 'radius-hero')
+  const pill = token(tokens.radius, 'radius-full')
+  // A white page with the card in the web's own dark colours, and the web's button: neon pink with
+  // dark text (5.2:1 on the pink; white on it would be 3.6:1, too low).
+  const card = palettes.dark
   const width = token(tokens.container, 'note')
   const key = (name: string) => `accountEmail.${kind}.${name}` as MessageKey
 
-  const link = (href: string, text: string): Html => ({
-    html: `<a href="${escapeHtml(href)}" style="color:${color.ink};text-decoration:underline">${escapeHtml(text)}</a>`,
+  const link = (href: string, text: string, ink = color.ink): Html => ({
+    html: `<a href="${escapeHtml(href)}" style="color:${ink};text-decoration:underline">${escapeHtml(text)}</a>`,
   })
   const paragraph = (html: string, style = typeStyle('body')) =>
-    `<p style="margin:0 0 ${space('4')};color:${color.ink};${style}">${html}</p>`
+    `<p style="margin:0 0 ${space('4')};color:${card.ink};${style}">${html}</p>`
 
-  const fallback = render(rich(key('fallback'), { url: link(url, url) }))
+  const fallback = render(rich(key('fallback'), { url: link(url, url, card.ink) }))
   const footer = render(
     rich(key('footer'), {
-      legalNotice: link(`${origin}/${locale}/aviso-legal`, t('legal.links.legalNotice')),
       privacyPolicy: link(`${origin}/${locale}/privacidad`, t('legal.links.privacyPolicyTitle')),
     }),
   )
@@ -98,19 +101,19 @@ export function accountEmailHtml(
 <meta name="color-scheme" content="light">
 <title>${escapeHtml(t(key('subject')))}</title>
 </head>
-<body style="margin:0;padding:0;background:${color['sala-0']};font-family:${escapeHtml(tokens.type.families.text)}">
+<body style="margin:0;padding:0;background:${color['sala-1']};font-family:${escapeHtml(tokens.type.families.text)}">
 <span style="display:none;max-height:0;overflow:hidden">${escapeHtml(t(key('preview')))}</span>
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${color['sala-0']}">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${color['sala-1']}">
 <tr><td align="center" style="padding:${space('8')} ${space('4')}">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:${width};background:${color['sala-1']};border:1px solid ${color.line};border-radius:${radius}">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:${width}">
+<tr><td style="padding:0 0 ${space('6')}"><img src="${escapeHtml(`${origin}/email/logo.png`)}" alt="FENAKI" width="85" height="28" style="display:block;border:0"></td></tr>
+</table>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:${width};background:${card['sala-0']};border-radius:${radius}">
 <tr><td style="padding:${space('8')}">
-${paragraph(escapeHtml(t(key('greeting'))))}
-${paragraph(escapeHtml(t(key('intro'))))}
-${paragraph(escapeHtml(t(key('action'))))}
-<p style="margin:0 0 ${space('6')}"><a href="${escapeHtml(url)}" style="display:inline-block;padding:${space('3')} ${space('6')};background:${color.tungsteno};color:${color['on-tungsteno']};${typeStyle('button-lg')};text-decoration:none;border-radius:${radius}">${escapeHtml(t(key('button')))}</a></p>
-${paragraph(fallback, `${typeStyle('small')};color:${color['ink-muted']};word-break:break-all`)}
-${paragraph(escapeHtml(t(key('ignore'))))}
-${paragraph(`${escapeHtml(t(key('signature')))}<br>${escapeHtml(t(key('motto')))}`)}
+${paragraph(escapeHtml(t(key('intro'))), `${typeStyle('body-l')};font-weight:700`)}
+<p style="margin:${space('2')} 0 ${space('6')}"><a href="${escapeHtml(url)}" style="display:inline-block;padding:${space('3')} ${space('6')};background:${card.tungsteno};color:${card['on-tungsteno']};${typeStyle('button-lg')};text-decoration:none;border-radius:${pill}">${escapeHtml(t(key('button')))}</a></p>
+${paragraph(fallback, `${typeStyle('small')};color:${card['ink-muted']};word-break:break-all`)}
+${paragraph(escapeHtml(t(key('ignore'))), `${typeStyle('small')};color:${card['ink-muted']};margin-bottom:0`)}
 </td></tr>
 </table>
 <p style="max-width:${width};margin:${space('4')} auto 0;${typeStyle('meta')};color:${color['ink-muted']}">${footer}</p>

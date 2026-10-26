@@ -56,7 +56,7 @@ test('the landing page and the waitlist form run under the policy', async ({ pag
   // A hydrated island: the form validates in the browser.
   await page.getByLabel('¿Quieres que te avisemos?').fill('ana@ejemplo')
   await page.getByRole('button', { name: 'Avísame' }).click()
-  await expect(page.getByText('Ese correo no parece completo.', { exact: false })).toBeVisible()
+  await expect(page.getByText('Ese email no parece completo.', { exact: false })).toBeVisible()
 
   expect(violations).toEqual([])
 })

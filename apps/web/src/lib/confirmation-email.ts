@@ -1,14 +1,15 @@
 /**
  * The waitlist confirmation email, built from the locale file and the design tokens, in the light
  * palette (email is one of the few places it is for). The result is a listmonk transactional
- * template: listmonk fills `{{ .Tx.Data.confirm_url }}` and `{{ .Tx.Data.site_url }}` when the web
- * app sends it. `pnpm setup:services` uploads it.
+ * template: listmonk fills `{{ .Tx.Data.confirm_url }}`, `{{ .Tx.Data.site_url }}` and
+ * `{{ .Tx.Data.logo_url }}` when the web app sends it. `pnpm setup:services` uploads it.
  */
 import { createRichTranslator, createTranslator, type Locale } from '@fenaki/i18n'
 import { palettes, tokens, type TypeStyle } from '@fenaki/tokens'
 
 const CONFIRM_URL = '{{ .Tx.Data.confirm_url }}'
 const SITE_URL = '{{ .Tx.Data.site_url }}'
+const LOGO_URL = '{{ .Tx.Data.logo_url }}'
 
 const escapeHtml = (text: string) =>
   text
@@ -40,19 +41,24 @@ export function confirmationEmail(locale: Locale): { subject: string; body: stri
   const rich = createRichTranslator(locale)
   const color = palettes.light
   const space = (name: string) => token(tokens.spacing, `space-${name}`)
-  const radius = token(tokens.radius, 'radius-sm')
+  const radius = token(tokens.radius, 'radius-hero')
+  const pill = token(tokens.radius, 'radius-full')
+  // A white page with the card in the web's own dark colours, and the web's button: neon pink with
+  // dark text (5.2:1 on the pink; white on it would be 3.6:1, too low).
+  const card = palettes.dark
   const width = token(tokens.container, 'note')
 
-  const link = (href: string, label: string): Html => ({
-    html: `<a href="${href}" style="color:${color.ink};text-decoration:underline">${escapeHtml(label)}</a>`,
+  const link = (href: string, label: string, ink = color.ink): Html => ({
+    html: `<a href="${href}" style="color:${ink};text-decoration:underline">${escapeHtml(label)}</a>`,
   })
   const paragraph = (html: string, style = typeStyle('body')) =>
-    `<p style="margin:0 0 ${space('4')};color:${color.ink};${style}">${html}</p>`
+    `<p style="margin:0 0 ${space('4')};color:${card.ink};${style}">${html}</p>`
 
-  const fallback = render(rich('email.confirm.fallback', { url: link(CONFIRM_URL, CONFIRM_URL) }))
+  const fallback = render(
+    rich('email.confirm.fallback', { url: link(CONFIRM_URL, CONFIRM_URL, card.ink) }),
+  )
   const footer = render(
     rich('email.confirm.footer', {
-      legalNotice: link(`${SITE_URL}aviso-legal`, t('legal.links.legalNotice')),
       privacyPolicy: link(`${SITE_URL}privacidad`, t('legal.links.privacyPolicyTitle')),
     }),
   )
@@ -65,19 +71,19 @@ export function confirmationEmail(locale: Locale): { subject: string; body: stri
 <meta name="color-scheme" content="light">
 <title>${escapeHtml(t('email.confirm.subject'))}</title>
 </head>
-<body style="margin:0;padding:0;background:${color['sala-0']};font-family:${escapeHtml(tokens.type.families.text)}">
+<body style="margin:0;padding:0;background:${color['sala-1']};font-family:${escapeHtml(tokens.type.families.text)}">
 <span style="display:none;max-height:0;overflow:hidden">${escapeHtml(t('email.confirm.preview'))}</span>
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${color['sala-0']}">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${color['sala-1']}">
 <tr><td align="center" style="padding:${space('8')} ${space('4')}">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:${width};background:${color['sala-1']};border:1px solid ${color.line};border-radius:${radius}">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:${width}">
+<tr><td style="padding:0 0 ${space('6')}"><img src="${LOGO_URL}" alt="FENAKI" width="85" height="28" style="display:block;border:0"></td></tr>
+</table>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:${width};background:${card['sala-0']};border-radius:${radius}">
 <tr><td style="padding:${space('8')}">
-${paragraph(escapeHtml(t('email.confirm.greeting')))}
-${paragraph(escapeHtml(t('email.confirm.intro')))}
-${paragraph(escapeHtml(t('email.confirm.action')))}
-<p style="margin:0 0 ${space('6')}"><a href="${CONFIRM_URL}" style="display:inline-block;padding:${space('3')} ${space('6')};background:${color.tungsteno};color:${color['on-tungsteno']};${typeStyle('button-lg')};text-decoration:none;border-radius:${radius}">${escapeHtml(t('email.confirm.button'))}</a></p>
-${paragraph(fallback, `${typeStyle('small')};color:${color['ink-muted']};word-break:break-all`)}
-${paragraph(escapeHtml(t('email.confirm.expiry')))}
-${paragraph(`${escapeHtml(t('email.confirm.signature'))}<br>${escapeHtml(t('email.confirm.motto'))}`)}
+${paragraph(escapeHtml(t('email.confirm.intro')), `${typeStyle('body-l')};font-weight:700`)}
+<p style="margin:${space('2')} 0 ${space('6')}"><a href="${CONFIRM_URL}" style="display:inline-block;padding:${space('3')} ${space('6')};background:${card.tungsteno};color:${card['on-tungsteno']};${typeStyle('button-lg')};text-decoration:none;border-radius:${pill}">${escapeHtml(t('email.confirm.button'))}</a></p>
+${paragraph(fallback, `${typeStyle('small')};color:${card['ink-muted']};word-break:break-all`)}
+${paragraph(escapeHtml(t('email.confirm.expiry')), `${typeStyle('small')};color:${card['ink-muted']};margin-bottom:0`)}
 </td></tr>
 </table>
 <p style="max-width:${width};margin:${space('4')} auto 0;${typeStyle('meta')};color:${color['ink-muted']}">${footer}</p>
