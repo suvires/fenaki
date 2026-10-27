@@ -134,6 +134,25 @@ Components follow Brad Frost's atomic design. Each file sits in the folder of it
 
 Never build a one-off button or card inside a page: add or change the component here.
 
+## Editorial typography
+
+Every piece that announces something (a page head, the landing page, an email, a social post) stacks the same four roles. Web, emails and social pieces share them; the brand book (`design/system/README.md`) has the same rules for people who design outside the code.
+
+| Role                 | Type                                                                                                        | In the system                                                               |
+| -------------------- | ----------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| **Kicker** (eyebrow) | Text family, weight 500, uppercase, letter-spacing 0.06em, accent text colour.                              | `font-text text-label uppercase text-accent`                                |
+| **Headline**         | Display family (Archivo condensed, `wdth` 75), weight 800, uppercase, line height 0.92. No final full stop. | `AccentHeadline` (`size="xl"`, or `responsive`: display-l on small screens) |
+| **Lead**             | `body-l`, weight 400, in the primary text colour (white): never muted under a headline.                     | `text-body-l text-primary`                                                  |
+| **Secondary**        | Contact lines, counters, footnotes: `small`, in the muted text colour.                                      | `text-small text-secondary`                                                 |
+
+**Two-tone headlines.** A display headline is the text colour; exactly one span, the closing phrase that carries the payoff, takes the accent text colour: «El mejor cine, **en cortos**». Never the whole headline, never the brand name, at most one span per headline. `AccentHeadline` enforces the three rules. In code, the headline is one translatable string with an `{accent}` placeholder and a second string for the accent (`landing.hero.title` and `landing.hero.titleAccent`), so each language puts the accent where its closing phrase falls. Titles that are content (a short's or a collection's name) are not headlines in this sense and stay one colour.
+
+Today the site's eyebrows use `font-mono` (the same Archivo with tabular figures, so only digits differ); new pieces follow the table.
+
+### Social pieces
+
+Carousels (1080×1350) and cards (1200×675) use these same roles, scaled up from the web's sizes (display-xl 64px, body-l 17px, label 12px, small 14px) and keeping their proportions: about ×2 on a carousel slide (headline 128px, lead 34px, kicker 24px, secondary 28px) and ×1.5 on a card (96px, 26px, 18px, 21px). Same families, weights, case, tracking and colours, on the canvas colour; one two-tone headline per piece.
+
 ## Storybook
 
 The sidebar follows the levels: **Foundations** (colour in both modes with semantic and primitive swatches, typography, spacing, radius, shadow, motion, component tokens, iconography and the brand marks), **Atoms**, **Molecules**, **Organisms** and **Pages**. The foundations pages are generated from `@fenaki/tokens`, so they change with the tokens. Every story is screenshotted by `pnpm test:visual`; baselines are keyed by story id (`atoms-button--primary.png`), so renaming a story or its title means regenerating them.

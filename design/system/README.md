@@ -32,6 +32,15 @@ Token names below are the semantic tokens of `packages/tokens` (`packages/ui/REA
 - `text` (Archivo at its normal width): everything people read. `body-l` for synopses, `body` by default, the card title under posters, `meta` for directors and secondary data.
 - `mono` (Archivo with tabular figures): the timecode voice. `timecode` for durations, `label` (uppercase, tracked) for badges, eyebrows and the sponsor label.
 
+**Editorial roles.** Every piece that announces something (the web, emails, social posts) stacks four roles:
+
+- **Kicker** (eyebrow): Archivo in its text voice, weight 500, uppercase, tracked 0.06em, in the accent colour.
+- **Headline**: display capitals (Archivo condensed, 800), line height 0.92, no final full stop. Two-tone: the headline is white and exactly one span, the closing phrase that carries the payoff, is in the accent colour: «El mejor cine, **en cortos**». Never the whole headline, never the brand name, never two spans.
+- **Lead** under a headline: `body-l`, regular, white, as on the landing page.
+- **Secondary** (contact lines, counters, footnotes): `small`, in `text.secondary`.
+
+**Social pieces.** Carousels (1080×1350) and cards (1200×675) use the same roles scaled up, keeping the web's proportions: about ×2 on a carousel slide (headline 128px, lead 34px, kicker 24px, secondary 28px) and ×1.5 on a card (96px, 26px, 18px, 21px), on the page colour, with one two-tone headline per piece.
+
 **Spacing and layout.** 4px base. Cards in a rail sit `spacing.4` apart; rails are `spacing.12` apart; the page gutter is at least `spacing.4`. Rails scroll horizontally with snap; the page itself never scrolls sideways.
 
 **Shape.** Screens are rectangles: `radius.sm` (4px) is the largest corner on any poster, still or card; panels at card scale take `radius.md` and the heroes and the player `radius.lg`. `radius.xs` for badges. `radius.full` for filter chips, and the controls' own `control.radius`.
