@@ -8,6 +8,9 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   icon?: IconName
   /** Renders a link that looks like a button. */
   href?: string
+  /** For a link: where it opens and how it relates to the page (`_blank`, `noopener noreferrer`). */
+  target?: string
+  rel?: string
   /** The ground the button sits on. `sponsored` turns a secondary button into an on-sponsored outline. */
   surface?: 'default' | 'sponsored'
   children: ReactNode
@@ -31,6 +34,8 @@ export function Button({
   size = 'md',
   icon,
   href,
+  target,
+  rel,
   surface = 'default',
   className,
   children,
@@ -60,7 +65,13 @@ export function Button({
   )
   if (href) {
     return (
-      <a href={href} className={classes} {...(rest as Record<string, unknown>)}>
+      <a
+        href={href}
+        target={target}
+        rel={rel}
+        className={classes}
+        {...(rest as Record<string, unknown>)}
+      >
         {content}
       </a>
     )

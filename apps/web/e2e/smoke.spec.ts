@@ -57,6 +57,16 @@ test('a short page loads no third-party player before the click', async ({ page 
   await expect(page.getByRole('region', { name: 'Si te ha gustado' })).toBeVisible()
   await expect(page.locator('iframe')).toHaveCount(0)
 
+  // Sharing opens the links to each network; none of them loads anything from the network.
+  await page.getByRole('button', { name: 'Compartir' }).click()
+  const share = page.getByRole('dialog', { name: 'Compartir «Timecode»' })
+  await expect(share.getByRole('link', { name: 'WhatsApp' })).toHaveAttribute(
+    'href',
+    /^https:\/\/wa\.me\/\?text=.*cortos%2Ftimecode$/,
+  )
+  await share.getByRole('button', { name: 'Cerrar' }).click()
+  await expect(share).toBeHidden()
+
   // The play button asks first: nothing loads until the viewer accepts in the dialog.
   await page.getByRole('button', { name: 'Ver ahora' }).click()
   const dialog = page.getByRole('dialog', {

@@ -1,7 +1,7 @@
 ---
 import { badgeClock } from '../../../lib/services.ts'
 import { formatCountry, formatYear } from '@fenaki/i18n'
-import { Rail, ShortCard } from '@fenaki/ui'
+import { Rail, ShareButton, ShortCard } from '@fenaki/ui'
 import NotFound from '../../../components/NotFound.astro'
 import PeopleLinks from '../../../components/PeopleLinks.astro'
 import { MyListButton } from '../../../islands/MyListButton.tsx'
@@ -25,6 +25,8 @@ import { embedPageUrl } from '../../../lib/embed.ts'
 import { clock, resumable } from '../../../lib/playerProgress.ts'
 import { videoObject } from '../../../lib/seo.ts'
 import { siteUrl } from '../../../lib/services.ts'
+import { shareTargets } from '../../../lib/share.ts'
+import { absoluteUrl } from '../../../lib/seo.ts'
 import { localeFrom, paths, translator } from '../../../lib/i18n.ts'
 
 const locale = localeFrom(Astro.params.locale)
@@ -90,6 +92,18 @@ const jsonLd = short
       directors: directors.map((d) => ({ name: d.name, url: paths.person(locale, d.slug) })),
     })
   : undefined
+
+// Sharing: the page's address on the public site, and one link per network or messaging app.
+const shareUrl = short ? absoluteUrl(siteUrl, paths.short(locale, short.slug)) : ''
+const shareText = short ? t('short.share.text', { title: short.title }) : ''
+const share = short
+  ? shareTargets(
+      shareUrl,
+      shareText,
+      (network) => t(`short.share.networks.${network}`),
+      (network) => eventAttributes(EVENTS.share, { short: short.slug, network }),
+    )
+  : []
 
 // The hero's details line, as on the home page: directors (linked), year, country, type, and
 // what the viewer needs to know about the language.
@@ -175,6 +189,20 @@ const details = short
           label={t('short.addToList')}
           savedLabel={t('short.inMyList')}
           initialSaved={account?.list.some((entry) => entry.slug === short.slug)}
+        />
+        <ShareButton
+          slot="secondaryAction"
+          client:idle
+          label={t('short.share.label')}
+          url={shareUrl}
+          title={short.title}
+          text={shareText}
+          targets={share}
+          dialogTitle={t('short.share.dialogTitle', { title: short.title })}
+          copyLabel={t('short.share.copy')}
+          copiedLabel={t('short.share.copied')}
+          moreLabel={t('short.share.more')}
+          closeLabel={t('short.share.close')}
         />
       </ShortPlayer>
       <div class="grid gap-8 max-w-article empty:hidden">

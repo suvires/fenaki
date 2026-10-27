@@ -8,6 +8,7 @@ export const EVENTS = {
   waitlistSignup: 'waitlist-signup',
   play: 'play',
   sponsorClick: 'sponsor-click',
+  share: 'share',
 } as const
 
 export function eventAttributes(

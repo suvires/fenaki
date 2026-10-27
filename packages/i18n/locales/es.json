@@ -70,6 +70,25 @@
     "love": "¡Me encanta!"
   },
   "short": {
+    "share": {
+      "label": "Compartir",
+      "dialogTitle": "Compartir «{title}»",
+      "text": "Mira «{title}» en FENAKI",
+      "copy": "Copiar enlace",
+      "copied": "Enlace copiado",
+      "more": "Más opciones",
+      "close": "Cerrar",
+      "networks": {
+        "whatsapp": "WhatsApp",
+        "telegram": "Telegram",
+        "x": "X",
+        "facebook": "Facebook",
+        "bluesky": "Bluesky",
+        "threads": "Threads",
+        "linkedin": "LinkedIn",
+        "email": "Email"
+      }
+    },
     "directedBy": "Dirigido por {names}",
     "credits": "Créditos",
     "awards": "Premios",
