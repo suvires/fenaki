@@ -12,6 +12,7 @@ import * as migration_20261026_002047_still_text_presentation from './20261026_0
 import * as migration_20261026_003244_home_page from './20261026_003244_home_page';
 import * as migration_20261026_012129_short_awards from './20261026_012129_short_awards';
 import * as migration_20261026_015039_accounts from './20261026_015039_accounts';
+import * as migration_20261027_081705_channels from './20261027_081705_channels';
 
 export const migrations = [
   {
@@ -82,6 +83,11 @@ export const migrations = [
   {
     up: migration_20261026_015039_accounts.up,
     down: migration_20261026_015039_accounts.down,
-    name: '20261026_015039_accounts'
+    name: '20261026_015039_accounts',
+  },
+  {
+    up: migration_20261027_081705_channels.up,
+    down: migration_20261027_081705_channels.down,
+    name: '20261027_081705_channels'
   },
 ];

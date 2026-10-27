@@ -371,6 +371,22 @@ export const Shorts: CollectionConfig = {
       index: true,
       admin: { position: 'sidebar', description: common.sampleHelp },
     },
+    {
+      name: 'ingestChannel',
+      label: label('Scanned channel', 'Canal de búsqueda'),
+      type: 'relationship',
+      relationTo: 'channels',
+      index: true,
+      access: { read: isAuthenticatedField },
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+        description: label(
+          'Set when the channel scan added it, so the review queue can be filtered by channel.',
+          'Se fija cuando la búsqueda de un canal lo añade, para poder filtrar la cola de revisión por canal.',
+        ),
+      },
+    },
     importKeyField(),
   ],
   hooks: {

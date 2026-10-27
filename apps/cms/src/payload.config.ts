@@ -6,6 +6,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { buildConfig } from 'payload'
 import sharp from 'sharp'
+import { Channels } from './collections/Channels.ts'
 import { Contacts } from './collections/Contacts.ts'
 import { InboxState } from './collections/InboxState.ts'
 import { HomePage } from './collections/HomePage.ts'
@@ -30,6 +31,7 @@ import { Viewings } from './collections/Viewings.ts'
 import { emailAdapter } from './email.ts'
 import { checkEmbedsTask } from './jobs/checkEmbeds.ts'
 import { computeRankingTask } from './jobs/computeRanking.ts'
+import { scanChannelsTask } from './jobs/scanChannels.ts'
 import { indexShortTask } from './jobs/indexShort.ts'
 import { purgeWaitlistTask } from './jobs/purgeWaitlist.ts'
 import { syncInboxTask } from './jobs/syncInbox.ts'
@@ -74,6 +76,7 @@ export default buildConfig({
   collections: [
     Shorts,
     Sources,
+    Channels,
     People,
     Collections,
     Showcases,
@@ -102,7 +105,14 @@ export default buildConfig({
   }),
   // Jobs run in a separate process (`pnpm --filter @fenaki/cms jobs`), never inside the web server.
   jobs: {
-    tasks: [indexShortTask, purgeWaitlistTask, checkEmbedsTask, computeRankingTask, syncInboxTask],
+    tasks: [
+      indexShortTask,
+      purgeWaitlistTask,
+      checkEmbedsTask,
+      computeRankingTask,
+      syncInboxTask,
+      scanChannelsTask,
+    ],
     deleteJobOnComplete: true,
   },
   // SMTP (Amazon SES in production) when SMTP_HOST is set; otherwise emails go to the console.
