@@ -75,12 +75,18 @@ export function fakeRequest(options: FakeOptions = {}) {
   const creates: { collection: string; data: Record<string, unknown> }[] = []
   const updates: { collection: string; id: number; data: Record<string, unknown> }[] = []
   const warnings: string[] = []
+  const queued: { task: string; input: unknown }[] = []
   const ledger: Doc[] = [...(options.ledger ?? [])]
   const sources = options.sources ?? []
   const channels = options.channels ?? []
   let nextId = 100
   const payload = {
     logger: { info: () => {}, warn: (message: string) => warnings.push(message) },
+    jobs: {
+      queue: async (args: { task: string; input: unknown }) => {
+        queued.push({ task: args.task, input: args.input })
+      },
+    },
     find: async ({
       collection,
       where,
@@ -149,6 +155,7 @@ export function fakeRequest(options: FakeOptions = {}) {
     updates,
     warnings,
     ledger,
+    queued,
   }
 }
 

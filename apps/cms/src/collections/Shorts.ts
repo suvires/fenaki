@@ -1,7 +1,9 @@
 import type { CollectionConfig, PayloadRequest, Validate } from 'payload'
 import { isAdmin, isAuthenticatedField, publishedOrAuthenticated } from '../access.ts'
+import { aiReviewField } from '../fields/aiReview.ts'
 import { importKeyField } from '../fields/importKey.ts'
 import { requiredToPublish } from '../fields/requiredToPublish.ts'
+import { analyzeShortEndpoint, applyReviewEndpoint } from '../ai/endpoints.ts'
 import { addFromUrlEndpoint } from '../ingest/addFromUrl.ts'
 import { slugField } from '../fields/slug.ts'
 import { statusField } from '../fields/status.ts'
@@ -47,11 +49,18 @@ export const Shorts: CollectionConfig = {
   labels: { singular: label('Short', 'Corto'), plural: label('Shorts', 'Cortos') },
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'year', 'durationSeconds', 'status', 'sample'],
+    defaultColumns: [
+      'title',
+      'year',
+      'durationSeconds',
+      'status',
+      'aiReview.recommendation',
+      'sample',
+    ],
     group: groups.catalog,
     components: { beforeListTable: ['/admin/AddFromUrl.tsx#AddFromUrl'] },
   },
-  endpoints: [addFromUrlEndpoint],
+  endpoints: [addFromUrlEndpoint, analyzeShortEndpoint, applyReviewEndpoint],
   access: {
     read: publishedOrAuthenticated,
     create: isAdmin,
@@ -421,6 +430,7 @@ export const Shorts: CollectionConfig = {
         ),
       },
     },
+    aiReviewField,
     importKeyField(),
   ],
   hooks: {

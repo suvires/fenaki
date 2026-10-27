@@ -33,6 +33,7 @@ import { Viewings } from './collections/Viewings.ts'
 import { emailAdapter } from './email.ts'
 import { checkEmbedsTask } from './jobs/checkEmbeds.ts'
 import { computeRankingTask } from './jobs/computeRanking.ts'
+import { reviewBacklogTask, reviewShortTask } from './jobs/reviewShorts.ts'
 import { scanChannelsTask } from './jobs/scanChannels.ts'
 import { indexShortTask } from './jobs/indexShort.ts'
 import { purgeWaitlistTask } from './jobs/purgeWaitlist.ts'
@@ -115,6 +116,8 @@ export default buildConfig({
       computeRankingTask,
       syncInboxTask,
       scanChannelsTask,
+      reviewShortTask,
+      reviewBacklogTask,
     ],
     deleteJobOnComplete: true,
   },

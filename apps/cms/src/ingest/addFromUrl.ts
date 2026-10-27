@@ -1,6 +1,7 @@
 import type { Endpoint, PayloadRequest } from 'payload'
 import { isAdminUser } from '../access.ts'
 import { inLanguage, label, type AdminLabel } from '../labels.ts'
+import { queueShortReview } from '../jobs/queue.ts'
 import { unplayableReason } from './check.ts'
 import { createShortWithSource } from './createShort.ts'
 import { fetchVideoMetadata, ingestKeys } from './metadata.ts'
@@ -69,6 +70,8 @@ export async function addShortFromUrl(
   if (reason) return { ok: false, status: 422, error: reason }
 
   const created = await createShortWithSource(req, metadata, { origin: 'Added from a URL' })
+  // The editor is about to open it: the proposal is requested now, not with the nightly batch.
+  await queueShortReview(req, created.shortId).catch(() => undefined)
   return { ok: true, ...created }
 }
 

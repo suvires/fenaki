@@ -30,6 +30,7 @@ beforeEach(() => {
   process.env.YOUTUBE_API_KEY = 'k'
   delete process.env.TMDB_API_KEY
   delete process.env.VIMEO_ACCESS_TOKEN
+  delete process.env.ANTHROPIC_API_KEY
 })
 afterEach(() => {
   process.env = { ...savedEnv }
@@ -253,6 +254,43 @@ describe('YouTube backlog', () => {
     })
     expect(calls.find((call) => call.startsWith('videos:a'))).not.toContain('a0')
     expect(shortsOf(creates)).toHaveLength(8)
+  })
+})
+
+describe('AI review of new shorts', () => {
+  const channelRoutes = (count: number) => {
+    const ids = Array.from({ length: count }, (_, i) => `v${i}`)
+    return fakeFetch({
+      [`${YT}/channels`]: { body: ytChannel() },
+      [`${YT}/playlistItems`]: {
+        body: ytPage(ids.map((id) => [id, '2026-10-26T10:00:00Z'])),
+      },
+      [`${YT}/videos`]: { body: { items: ids.map((id) => ytVideo(id)) } },
+    })
+  }
+
+  it('queues one review per short added, when there is a key and only a few', async () => {
+    process.env.ANTHROPIC_API_KEY = 'sk-test'
+    const { fn } = channelRoutes(3)
+    const { req, queued } = fakeRequest()
+    await scanChannel(req, channel(), fn, 0)
+    expect(queued.map((job) => job.task)).toEqual(['reviewShort', 'reviewShort', 'reviewShort'])
+  })
+
+  it('leaves a big haul to the nightly batch', async () => {
+    process.env.ANTHROPIC_API_KEY = 'sk-test'
+    const { fn } = channelRoutes(11)
+    const { req, queued } = fakeRequest()
+    const summary = await scanChannel(req, channel(), fn, 0)
+    expect(summary.added).toBe(11)
+    expect(queued).toEqual([])
+  })
+
+  it('queues nothing without a key', async () => {
+    const { fn } = channelRoutes(2)
+    const { req, queued } = fakeRequest()
+    await scanChannel(req, channel(), fn, 0)
+    expect(queued).toEqual([])
   })
 })
 

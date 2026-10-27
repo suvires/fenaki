@@ -14,6 +14,7 @@ import { buildMetadata, ingestKeys, type IngestKeys, type VideoMetadata } from '
 import { fetchOEmbed, type Fetch, type OEmbedResult } from '../oembed.ts'
 import { parseVideoUrl, type VideoRef } from '../url.ts'
 import { fetchYouTubeVideos, type YouTubeVideo } from '../youtube.ts'
+import { queueShortReview } from '../../jobs/queue.ts'
 import { isSettled, ledgerRetries, ledgerRows, recordVideo, touchSeen } from './ledger.ts'
 import { skipReason, SKIP_REASONS, type Candidate, type SkipReason } from './rules.ts'
 import {
@@ -31,6 +32,12 @@ const PAUSE_MS = 300
 
 /** The most videos one channel's run lists. A longer backlog resumes where it stopped next run. */
 export const MAX_VIDEOS_PER_RUN = 2000
+
+/**
+ * A scan that adds this many shorts or fewer asks for each one's AI review at once; a bigger
+ * haul (a backlog) is left to the nightly batch, which costs half as much.
+ */
+export const REVIEW_NOW_LIMIT = 10
 
 export type Outcome = SkipReason | 'failed'
 
@@ -408,6 +415,7 @@ export async function scanChannel(
   const maxVideos = options.maxVideos ?? MAX_VIDEOS_PER_RUN
   let found = 0
   let added = 0
+  const addedShortIds: number[] = []
 
   /** Judges videos the ledger has not settled and records what became of each. */
   const judgeAndRecord = async (items: Listed[], rows: Map<string, ScannedVideo>) => {
@@ -439,12 +447,13 @@ export async function scanChannel(
       }
       try {
         const metadata = await evaluated.build()
-        await createShortWithSource(req, metadata, {
+        const created = await createShortWithSource(req, metadata, {
           origin: `Added by the scan of the channel «${channel.name}»`,
           channel: originOf(channel),
           defaultLanguage: channel.defaultLanguage,
         })
         added += 1
+        addedShortIds.push(created.shortId)
       } catch (error) {
         tally('failed')
         req.payload.logger.warn(
@@ -579,6 +588,12 @@ export async function scanChannel(
     }
     if (full && listedCount >= maxVideos) break
   }
+
+  if (addedShortIds.length <= REVIEW_NOW_LIMIT)
+    for (const shortId of addedShortIds)
+      await queueShortReview(req, shortId).catch((error: Error) =>
+        req.payload.logger.warn(`scanChannels: could not queue the AI review: ${error.message}`),
+      )
 
   const complete = full ? reachedEnd : true
   const note =

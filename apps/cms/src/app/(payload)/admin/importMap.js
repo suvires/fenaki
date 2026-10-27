@@ -1,3 +1,4 @@
+import { AiReviewActions as AiReviewActions_0f302bd49ea594c3586d538ebee090df } from '../../../admin/AiReviewActions.tsx'
 import { AddFromUrl as AddFromUrl_3ba5ba4a37450a5cec563e5df488254c } from '../../../admin/AddFromUrl.tsx'
 import { ScanChannelButton as ScanChannelButton_5c0b89f0d04fdcfa016903a9e1440f25 } from '../../../admin/ScanChannelButton.tsx'
 import { ChannelLedger as ChannelLedger_8e685dc97402b9991e22df823485299c } from '../../../admin/ChannelLedger.tsx'
@@ -11,6 +12,7 @@ import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } f
 
 /** @type import('payload').ImportMap */
 export const importMap = {
+  '/admin/AiReviewActions.tsx#AiReviewActions': AiReviewActions_0f302bd49ea594c3586d538ebee090df,
   '/admin/AddFromUrl.tsx#AddFromUrl': AddFromUrl_3ba5ba4a37450a5cec563e5df488254c,
   '/admin/ScanChannelButton.tsx#ScanChannelButton':
     ScanChannelButton_5c0b89f0d04fdcfa016903a9e1440f25,
