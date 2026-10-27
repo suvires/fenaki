@@ -59,193 +59,210 @@ export type SupportedTimezones =
   | 'Pacific/Guam'
   | 'Pacific/Noumea'
   | 'Pacific/Auckland'
-  | 'Pacific/Fiji';
+  | 'Pacific/Fiji'
 
 export interface Config {
   auth: {
-    users: UserAuthOperations;
-    members: MemberAuthOperations;
-  };
-  blocks: {};
+    users: UserAuthOperations
+    members: MemberAuthOperations
+  }
+  blocks: {}
   collections: {
-    shorts: Short;
-    sources: Source;
-    channels: Channel;
-    people: Person;
-    collections: Collection;
-    showcases: Showcase;
-    media: Media;
-    stills: Still;
-    licenses: License;
-    'license-documents': LicenseDocument;
-    sponsors: Sponsor;
-    organizations: Organization;
-    contacts: Contact;
-    messages: Message;
-    users: User;
-    members: Member;
-    'list-items': ListItem;
-    ratings: Rating;
-    viewings: Viewing;
-    'payload-kv': PayloadKv;
-    'payload-jobs': PayloadJob;
-    'payload-locked-documents': PayloadLockedDocument;
-    'payload-preferences': PayloadPreference;
-    'payload-migrations': PayloadMigration;
-  };
+    shorts: Short
+    sources: Source
+    channels: Channel
+    'scanned-videos': ScannedVideo
+    people: Person
+    collections: Collection
+    showcases: Showcase
+    media: Media
+    stills: Still
+    licenses: License
+    'license-documents': LicenseDocument
+    sponsors: Sponsor
+    organizations: Organization
+    contacts: Contact
+    messages: Message
+    users: User
+    members: Member
+    'list-items': ListItem
+    ratings: Rating
+    viewings: Viewing
+    'payload-kv': PayloadKv
+    'payload-jobs': PayloadJob
+    'payload-locked-documents': PayloadLockedDocument
+    'payload-preferences': PayloadPreference
+    'payload-migrations': PayloadMigration
+  }
   collectionsJoins: {
     shorts: {
-      sources: 'sources';
-    };
-  };
+      sources: 'sources'
+    }
+    channels: {
+      scannedVideos: 'scanned-videos'
+    }
+  }
   collectionsSelect: {
-    shorts: ShortsSelect<false> | ShortsSelect<true>;
-    sources: SourcesSelect<false> | SourcesSelect<true>;
-    channels: ChannelsSelect<false> | ChannelsSelect<true>;
-    people: PeopleSelect<false> | PeopleSelect<true>;
-    collections: CollectionsSelect<false> | CollectionsSelect<true>;
-    showcases: ShowcasesSelect<false> | ShowcasesSelect<true>;
-    media: MediaSelect<false> | MediaSelect<true>;
-    stills: StillsSelect<false> | StillsSelect<true>;
-    licenses: LicensesSelect<false> | LicensesSelect<true>;
-    'license-documents': LicenseDocumentsSelect<false> | LicenseDocumentsSelect<true>;
-    sponsors: SponsorsSelect<false> | SponsorsSelect<true>;
-    organizations: OrganizationsSelect<false> | OrganizationsSelect<true>;
-    contacts: ContactsSelect<false> | ContactsSelect<true>;
-    messages: MessagesSelect<false> | MessagesSelect<true>;
-    users: UsersSelect<false> | UsersSelect<true>;
-    members: MembersSelect<false> | MembersSelect<true>;
-    'list-items': ListItemsSelect<false> | ListItemsSelect<true>;
-    ratings: RatingsSelect<false> | RatingsSelect<true>;
-    viewings: ViewingsSelect<false> | ViewingsSelect<true>;
-    'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
-    'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
-    'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
-    'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
-    'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
-  };
+    shorts: ShortsSelect<false> | ShortsSelect<true>
+    sources: SourcesSelect<false> | SourcesSelect<true>
+    channels: ChannelsSelect<false> | ChannelsSelect<true>
+    'scanned-videos': ScannedVideosSelect<false> | ScannedVideosSelect<true>
+    people: PeopleSelect<false> | PeopleSelect<true>
+    collections: CollectionsSelect<false> | CollectionsSelect<true>
+    showcases: ShowcasesSelect<false> | ShowcasesSelect<true>
+    media: MediaSelect<false> | MediaSelect<true>
+    stills: StillsSelect<false> | StillsSelect<true>
+    licenses: LicensesSelect<false> | LicensesSelect<true>
+    'license-documents': LicenseDocumentsSelect<false> | LicenseDocumentsSelect<true>
+    sponsors: SponsorsSelect<false> | SponsorsSelect<true>
+    organizations: OrganizationsSelect<false> | OrganizationsSelect<true>
+    contacts: ContactsSelect<false> | ContactsSelect<true>
+    messages: MessagesSelect<false> | MessagesSelect<true>
+    users: UsersSelect<false> | UsersSelect<true>
+    members: MembersSelect<false> | MembersSelect<true>
+    'list-items': ListItemsSelect<false> | ListItemsSelect<true>
+    ratings: RatingsSelect<false> | RatingsSelect<true>
+    viewings: ViewingsSelect<false> | ViewingsSelect<true>
+    'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>
+    'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>
+    'payload-locked-documents':
+      PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>
+    'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>
+    'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>
+  }
   db: {
-    defaultIDType: number;
-  };
-  fallbackLocale: ('false' | 'none' | 'null') | false | null | 'es' | 'es'[];
+    defaultIDType: number
+  }
+  fallbackLocale: ('false' | 'none' | 'null') | false | null | 'es' | 'es'[]
   globals: {
-    'crm-inbox': CrmInbox;
-    home: Home;
-    ranking: Ranking;
-    'payload-jobs-stats': PayloadJobsStat;
-  };
+    'crm-inbox': CrmInbox
+    home: Home
+    ranking: Ranking
+    'catalog-settings': CatalogSetting
+    'payload-jobs-stats': PayloadJobsStat
+  }
   globalsSelect: {
-    'crm-inbox': CrmInboxSelect<false> | CrmInboxSelect<true>;
-    home: HomeSelect<false> | HomeSelect<true>;
-    ranking: RankingSelect<false> | RankingSelect<true>;
-    'payload-jobs-stats': PayloadJobsStatsSelect<false> | PayloadJobsStatsSelect<true>;
-  };
-  locale: 'es';
+    'crm-inbox': CrmInboxSelect<false> | CrmInboxSelect<true>
+    home: HomeSelect<false> | HomeSelect<true>
+    ranking: RankingSelect<false> | RankingSelect<true>
+    'catalog-settings': CatalogSettingsSelect<false> | CatalogSettingsSelect<true>
+    'payload-jobs-stats': PayloadJobsStatsSelect<false> | PayloadJobsStatsSelect<true>
+  }
+  locale: 'es'
   widgets: {
-    collections: CollectionsWidget;
-  };
-  user: User | Member;
+    collections: CollectionsWidget
+  }
+  user: User | Member
   jobs: {
     tasks: {
-      indexShort: TaskIndexShort;
-      purgeWaitlist: TaskPurgeWaitlist;
-      checkEmbeds: TaskCheckEmbeds;
-      computeRanking: TaskComputeRanking;
-      syncInbox: TaskSyncInbox;
-      scanChannels: TaskScanChannels;
+      indexShort: TaskIndexShort
+      purgeWaitlist: TaskPurgeWaitlist
+      checkEmbeds: TaskCheckEmbeds
+      computeRanking: TaskComputeRanking
+      syncInbox: TaskSyncInbox
+      scanChannels: TaskScanChannels
       inline: {
-        input: unknown;
-        output: unknown;
-      };
-    };
-    workflows: unknown;
-  };
+        input: unknown
+        output: unknown
+      }
+    }
+    workflows: unknown
+  }
 }
 export interface UserAuthOperations {
   forgotPassword: {
-    email: string;
-    password: string;
-  };
+    email: string
+    password: string
+  }
   login: {
-    email: string;
-    password: string;
-  };
+    email: string
+    password: string
+  }
   registerFirstUser: {
-    email: string;
-    password: string;
-  };
+    email: string
+    password: string
+  }
   unlock: {
-    email: string;
-    password: string;
-  };
+    email: string
+    password: string
+  }
 }
 export interface MemberAuthOperations {
   forgotPassword: {
-    email: string;
-    password: string;
-  };
+    email: string
+    password: string
+  }
   login: {
-    email: string;
-    password: string;
-  };
+    email: string
+    password: string
+  }
   registerFirstUser: {
-    email: string;
-    password: string;
-  };
+    email: string
+    password: string
+  }
   unlock: {
-    email: string;
-    password: string;
-  };
+    email: string
+    password: string
+  }
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "shorts".
  */
 export interface Short {
-  id: number;
-  title: string;
+  id: number
+  title: string
   /**
    * Part of the URL. Generated from the title when left empty.
    */
-  slug: string;
-  synopsis?: string | null;
+  slug: string
+  synopsis?: string | null
   /**
    * Running time in seconds.
    */
-  durationSeconds?: number | null;
-  year?: number | null;
+  durationSeconds?: number | null
+  year?: number | null
   /**
    * ISO 3166-1 alpha-2 code, e.g. ES.
    */
-  country?: string | null;
+  country?: string | null
   /**
    * BCP 47 code, e.g. es. Use zxx for no dialogue.
    */
-  originalLanguage?: string | null;
-  type?: ('fiction' | 'documentary' | 'animation' | 'experimental') | null;
-  noDialogue?: boolean | null;
+  originalLanguage?: string | null
+  /**
+   * BCP 47 codes, when more than one language is spoken. The first one goes in the original language.
+   */
+  otherLanguages?: string[] | null
+  /**
+   * An editor’s value is never replaced by the scan or the AI.
+   */
+  languageSource?: ('provider' | 'channel' | 'ai' | 'editor') | null
+  type?: ('fiction' | 'documentary' | 'animation' | 'experimental') | null
+  noDialogue?: boolean | null
   /**
    * Typographic poster tone until the short has cleared art.
    */
-  posterTone?: ('sala' | 'tungsteno' | 'plata') | null;
+  posterTone?: ('sala' | 'tungsteno' | 'plata') | null
   /**
    * Made by or for a brand. Shown with a «Contenido de marca» badge, and never in a sponsored collection.
    */
-  brandedContent?: boolean | null;
+  brandedContent?: boolean | null
   /**
    * The brand behind the short, e.g. Fundación Telefónica.
    */
-  brand?: string | null;
+  brand?: string | null
   /**
    * People and their role on this short.
    */
   credits?:
     | {
-        person: number | Person;
-        role: 'director' | 'writer' | 'producer' | 'cinematographer' | 'editor' | 'composer' | 'cast';
-        id?: string | null;
+        person: number | Person
+        role:
+          'director' | 'writer' | 'producer' | 'cinematographer' | 'editor' | 'composer' | 'cast'
+        id?: string | null
       }[]
-    | null;
+    | null
   /**
    * Only awards and nominations a source states, with that source. The year is the ceremony year.
    */
@@ -254,257 +271,367 @@ export interface Short {
         /**
          * E.g. «Goya al mejor cortometraje de animación».
          */
-        name: string;
-        result: 'won' | 'nominated' | 'selected' | 'shortlisted';
-        year?: number | null;
+        name: string
+        result: 'won' | 'nominated' | 'selected' | 'shortlisted'
+        year?: number | null
         /**
          * The page that states it (the awards body, the festival, specialised press).
          */
-        source: string;
-        id?: string | null;
+        source: string
+        id?: string | null
       }[]
-    | null;
+    | null
   /**
    * Where the short plays from. Each source has its own license.
    */
   sources?: {
-    docs?: (number | Source)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  status: 'draft' | 'review' | 'published' | 'withdrawn';
+    docs?: (number | Source)[]
+    hasNextPage?: boolean
+    totalDocs?: number
+  }
+  status: 'draft' | 'review' | 'published' | 'withdrawn'
   /**
    * Set by the nightly embed checker, which withdrew the short. Clear it and publish again once a source plays.
    */
-  hiddenReason?: ('broken' | 'private' | 'not-embeddable' | 'age-restricted') | null;
-  hiddenAt?: string | null;
+  hiddenReason?: ('broken' | 'private' | 'not-embeddable' | 'age-restricted') | null
+  hiddenAt?: string | null
   /**
    * Set when first published.
    */
-  publishedAt?: string | null;
+  publishedAt?: string | null
   /**
    * The still the site shows behind the short. The nightly checker keeps a provider thumbnail here; one supplied by the author is never replaced.
    */
-  still?: (number | null) | Still;
+  still?: (number | null) | Still
   /**
    * The film on The Movie Database, when it is there.
    */
-  tmdbId?: number | null;
+  tmdbId?: number | null
   /**
    * Sample data for development, not a catalog entry.
    */
-  sample?: boolean | null;
+  sample?: boolean | null
   /**
    * Set when the channel scan added it, so the review queue can be filtered by channel.
    */
-  ingestChannel?: (number | null) | Channel;
+  ingestChannel?: (number | null) | Channel
   /**
    * Set by the catalog import. Re-running the import updates this document.
    */
-  importKey?: string | null;
-  updatedAt: string;
-  createdAt: string;
+  importKey?: string | null
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "people".
  */
 export interface Person {
-  id: number;
-  name: string;
+  id: number
+  name: string
   /**
    * Part of the URL. Generated from the title when left empty.
    */
-  slug: string;
-  bio?: string | null;
+  slug: string
+  bio?: string | null
   /**
    * Set by the catalog import. Re-running the import updates this document.
    */
-  importKey?: string | null;
-  updatedAt: string;
-  createdAt: string;
+  importKey?: string | null
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "sources".
  */
 export interface Source {
-  id: number;
-  short: number | Short;
-  provider: 'youtube' | 'vimeo' | 'bunny';
-  externalId: string;
+  id: number
+  short: number | Short
+  provider: 'youtube' | 'vimeo' | 'bunny'
+  externalId: string
   /**
    * Public page of the video on the provider.
    */
-  url?: string | null;
+  url?: string | null
   /**
    * Only official channels (author, producer, distributor, festival, school or institution) enter the catalog. The legal route of an embed depends on it.
    */
   channel?: {
-    name?: string | null;
-    kind?: ('author' | 'producer' | 'distributor' | 'festival' | 'school' | 'institution') | null;
-    url?: string | null;
+    name?: string | null
+    kind?: ('author' | 'producer' | 'distributor' | 'festival' | 'school' | 'institution') | null
+    url?: string | null
     /**
      * Filled from the provider when available.
      */
-    externalId?: string | null;
-  };
+    externalId?: string | null
+  }
   /**
    * What shows the channel belongs to the rights holder (links from the official website, the festival or the credits), and when it was checked. Required to publish the short.
    */
-  officialEvidence?: string | null;
+  officialEvidence?: string | null
   /**
-   * BCP 47 codes of the available subtitles, e.g. es, en.
+   * BCP 47 codes of the available human-made subtitles, e.g. es, en.
    */
-  subtitles?: string[] | null;
-  embeddable?: boolean | null;
+  subtitles?: string[] | null
+  /**
+   * BCP 47 codes of subtitles the provider generates.
+   */
+  autoSubtitles?: string[] | null
+  /**
+   * YouTube only says whether a track exists, not its language. Empty: unknown.
+   */
+  captions?: ('yes' | 'no') | null
+  subtitlesSource?: ('provider' | 'ai' | 'editor') | null
+  embeddable?: boolean | null
   /**
    * Set by the nightly embed checker.
    */
-  status: 'unchecked' | 'ok' | 'broken' | 'private';
-  lastCheckedAt?: string | null;
+  status: 'unchecked' | 'ok' | 'broken' | 'private'
+  lastCheckedAt?: string | null
   /**
    * Age-restricted videos do not play embedded.
    */
-  ageRestricted?: boolean | null;
+  ageRestricted?: boolean | null
   /**
    * When the checker first found it unplayable.
    */
-  problemSince?: string | null;
+  problemSince?: string | null
   /**
    * What the last check found, in the checker’s words.
    */
-  checkNote?: string | null;
+  checkNote?: string | null
   /**
    * Where the checker downloads the still from (Vimeo). Visitors never load it: FENAKI serves its own copy from the Stills collection.
    */
-  thumbnailUrl?: string | null;
-  uploadedAt?: string | null;
+  thumbnailUrl?: string | null
+  uploadedAt?: string | null
+  /**
+   * What the channel wrote about the video. Never shown to visitors: it is raw material for the editor and the AI review.
+   */
+  providerDescription?: string | null
   /**
    * Set when the channel scan added it, so the review queue can be filtered by channel.
    */
-  ingestChannel?: (number | null) | Channel;
-  license: number | License;
+  ingestChannel?: (number | null) | Channel
+  license: number | License
   /**
    * Set by the catalog import. Re-running the import updates this document.
    */
-  importKey?: string | null;
-  updatedAt: string;
-  createdAt: string;
+  importKey?: string | null
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "channels".
  */
 export interface Channel {
-  id: number;
+  id: number
   /**
    * YouTube (@name, /channel/UC…) or Vimeo (user or channel). The provider and the channel ID are filled in when you save.
    */
-  url: string;
+  url: string
   /**
    * Filled in from the provider when left empty.
    */
-  name?: string | null;
-  provider: 'youtube' | 'vimeo';
-  externalId?: string | null;
-  kind: 'author' | 'producer' | 'distributor' | 'festival' | 'school' | 'institution';
-  organization?: (number | null) | Organization;
+  name?: string | null
+  provider: 'youtube' | 'vimeo'
+  externalId?: string | null
+  kind: 'author' | 'producer' | 'distributor' | 'festival' | 'school' | 'institution'
+  organization?: (number | null) | Organization
   /**
    * What shows the channel belongs to the rights holder (links from the official website, the festival or the credits), and when it was checked. Copied to every short the scan adds.
    */
-  officialEvidence?: string | null;
+  officialEvidence?: string | null
   /**
    * The nightly scan only looks at active channels.
    */
-  active?: boolean | null;
-  minDurationSeconds: number;
-  maxDurationSeconds: number;
+  active?: boolean | null
+  minDurationSeconds: number
+  maxDurationSeconds: number
   /**
    * BCP 47 code, e.g. es. Used when the provider does not say.
    */
-  defaultLanguage?: string | null;
-  lastScannedAt?: string | null;
+  defaultLanguage?: string | null
+  /**
+   * Until the scan has read the channel back to its first video, each night continues the backlog where it stopped.
+   */
+  backlogComplete?: boolean | null
+  /**
+   * The next scan reads the channel from its newest video to its first, skipping what the scanned videos already settled. Cleared when it gets to the end.
+   */
+  rescanAll?: boolean | null
+  /**
+   * Where the next scan resumes (set when a run stops at its per-run limit).
+   */
+  backlogCursor?: string | null
+  lastScannedAt?: string | null
   /**
    * How many videos the last scan found, added and skipped, and why.
    */
-  lastScanNote?: string | null;
-  updatedAt: string;
-  createdAt: string;
+  lastScanNote?: string | null
+  /**
+   * Every video the scans looked at, and why the skipped ones were left out. Open one to bring it in by hand or to look at it again.
+   */
+  scannedVideos?: {
+    docs?: (number | ScannedVideo)[]
+    hasNextPage?: boolean
+    totalDocs?: number
+  }
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "organizations".
  */
 export interface Organization {
-  id: number;
-  name: string;
-  type: 'festival' | 'school' | 'brand' | 'distributor' | 'producer' | 'author' | 'media' | 'institution' | 'other';
-  priority?: ('A' | 'B' | 'C') | null;
-  status: 'to_contact' | 'contacted' | 'replied' | 'proposal' | 'negotiation' | 'won' | 'lost' | 'not_interested';
-  reason: 'sales' | 'rights';
+  id: number
+  name: string
+  type:
+    | 'festival'
+    | 'school'
+    | 'brand'
+    | 'distributor'
+    | 'producer'
+    | 'author'
+    | 'media'
+    | 'institution'
+    | 'other'
+  priority?: ('A' | 'B' | 'C') | null
+  status:
+    | 'to_contact'
+    | 'contacted'
+    | 'replied'
+    | 'proposal'
+    | 'negotiation'
+    | 'won'
+    | 'lost'
+    | 'not_interested'
+  reason: 'sales' | 'rights'
   /**
    * The shorts this holder can unlock, and what we ask for each.
    */
   works?:
     | {
-        title: string;
-        url?: string | null;
-        request: 'permission' | 'confirm_channel' | 'official_upload';
-        why?: string | null;
-        id?: string | null;
+        title: string
+        url?: string | null
+        request: 'permission' | 'confirm_channel' | 'official_upload'
+        why?: string | null
+        id?: string | null
       }[]
-    | null;
-  country?: string | null;
-  city?: string | null;
-  website?: string | null;
+    | null
+  country?: string | null
+  city?: string | null
+  website?: string | null
   /**
    * URL or address where they publish that they accept proposals.
    */
-  proposalsChannel?: string | null;
-  nextEdition?: string | null;
-  whyFits?: string | null;
-  recommendedProduct?: ('showcase' | 'collection' | 'sponsorship' | 'other') | null;
-  source?: string | null;
-  notes?: string | null;
-  lastContactDate?: string | null;
-  nextFollowUpDate?: string | null;
+  proposalsChannel?: string | null
+  nextEdition?: string | null
+  whyFits?: string | null
+  recommendedProduct?: ('showcase' | 'collection' | 'sponsorship' | 'other') | null
+  source?: string | null
+  notes?: string | null
+  lastContactDate?: string | null
+  nextFollowUpDate?: string | null
   /**
    * Link the sponsor when this organization buys.
    */
-  sponsor?: (number | null) | Sponsor;
-  updatedAt: string;
-  createdAt: string;
+  sponsor?: (number | null) | Sponsor
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "sponsors".
  */
 export interface Sponsor {
-  id: number;
+  id: number
   /**
    * As credited publicly.
    */
-  name: string;
-  website?: string | null;
+  name: string
+  website?: string | null
   /**
    * Internal. Never shown publicly.
    */
-  notes?: string | null;
-  updatedAt: string;
-  createdAt: string;
+  notes?: string | null
+  updatedAt: string
+  createdAt: string
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "scanned-videos".
+ */
+export interface ScannedVideo {
+  id: number
+  channel?: (number | null) | Channel
+  provider: 'youtube' | 'vimeo'
+  externalId: string
+  url?: string | null
+  title?: string | null
+  durationSeconds?: number | null
+  publishedAt?: string | null
+  outcome: 'added' | 'skipped'
+  /**
+   * Failed videos are retried by the next scan; the rest are not looked at again unless re-evaluated.
+   */
+  skipReason?:
+    | (
+        | 'duplicate'
+        | 'private'
+        | 'not-embeddable'
+        | 'age-restricted'
+        | 'unavailable'
+        | 'unknown-duration'
+        | 'too-short'
+        | 'too-long'
+        | 'not-a-short'
+        | 'not-in-catalog-language'
+        | 'failed'
+      )
+    | null
+  short?: (number | null) | Short
+  note?: string | null
+  /**
+   * ISO 639-1 codes, or zxx for no dialogue. Empty when nobody said.
+   */
+  spokenLanguages?: string[] | null
+  /**
+   * Languages of human-made subtitles.
+   */
+  subtitles?: string[] | null
+  /**
+   * Languages of automatic subtitles.
+   */
+  autoSubtitles?: string[] | null
+  /**
+   * YouTube only says whether a track exists, not its language.
+   */
+  captions?: ('yes' | 'no') | null
+  languageSource?: ('provider' | 'channel' | 'ai' | 'editor') | null
+  firstSeenAt?: string | null
+  lastSeenAt?: string | null
+  /**
+   * The next scan of the channel judges it again with the current rules, then clears this.
+   */
+  reevaluate?: boolean | null
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "licenses".
  */
 export interface License {
-  id: number;
+  id: number
   /**
    * Internal name.
    */
-  name: string;
-  route: 'embed' | 'open' | 'direct';
+  name: string
+  route: 'embed' | 'open' | 'direct'
   type:
     | 'platform-terms'
     | 'cc-by'
@@ -515,322 +642,322 @@ export interface License {
     | 'cc-by-nc-nd'
     | 'cc0'
     | 'public-domain'
-    | 'direct-agreement';
+    | 'direct-agreement'
   /**
    * The credit the license requires, word for word.
    */
-  attribution?: string | null;
-  signedDocument?: (number | null) | LicenseDocument;
-  startsAt?: string | null;
-  endsAt?: string | null;
+  attribution?: string | null
+  signedDocument?: (number | null) | LicenseDocument
+  startsAt?: string | null
+  endsAt?: string | null
   /**
    * Internal. Never shown publicly.
    */
-  notes?: string | null;
+  notes?: string | null
   /**
    * Set by the catalog import. Re-running the import updates this document.
    */
-  importKey?: string | null;
-  updatedAt: string;
-  createdAt: string;
+  importKey?: string | null
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "license-documents".
  */
 export interface LicenseDocument {
-  id: number;
-  title: string;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
+  id: number
+  title: string
+  updatedAt: string
+  createdAt: string
+  url?: string | null
+  thumbnailURL?: string | null
+  filename?: string | null
+  mimeType?: string | null
+  filesize?: number | null
+  width?: number | null
+  height?: number | null
+  focalX?: number | null
+  focalY?: number | null
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "stills".
  */
 export interface Still {
-  id: number;
-  short: number | Short;
+  id: number
+  short: number | Short
   /**
    * Provider stills are refreshed every night. Author stills are never touched by the checker.
    */
-  origin: 'provider' | 'author';
+  origin: 'provider' | 'author'
   /**
    * The source the thumbnail was downloaded from.
    */
-  source?: (number | null) | Source;
-  fetchedAt?: string | null;
+  source?: (number | null) | Source
+  fetchedAt?: string | null
   /**
    * Color of the title and details the site writes over this image (home hero, cards and hover preview). Measured on upload; if you change it, the nightly refresh no longer overwrites it.
    */
-  textColor?: ('light' | 'dark') | null;
+  textColor?: ('light' | 'dark') | null
   /**
    * Tick it when the title is drawn on the image (a poster): cards and the preview then show no title over it, and the home hero keeps its heading for screen readers only.
    */
-  includesTitle?: boolean | null;
+  includesTitle?: boolean | null
   /**
    * What the lower left of the image measured, at the last upload or refresh.
    */
-  textColorAuto?: ('light' | 'dark') | null;
+  textColorAuto?: ('light' | 'dark') | null
   /**
    * Set to «By an editor» when you change the text color.
    */
-  textColorSet?: ('auto' | 'manual') | null;
+  textColorSet?: ('auto' | 'manual') | null
   /**
    * Who granted the use of this still, and when. Internal.
    */
-  permissionNote?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
+  permissionNote?: string | null
+  updatedAt: string
+  createdAt: string
+  url?: string | null
+  thumbnailURL?: string | null
+  filename?: string | null
+  mimeType?: string | null
+  filesize?: number | null
+  width?: number | null
+  height?: number | null
+  focalX?: number | null
+  focalY?: number | null
   sizes?: {
     hero?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
+      url?: string | null
+      width?: number | null
+      height?: number | null
+      mimeType?: string | null
+      filesize?: number | null
+      filename?: string | null
+    }
     card?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-  };
+      url?: string | null
+      width?: number | null
+      height?: number | null
+      mimeType?: string | null
+      filesize?: number | null
+      filename?: string | null
+    }
+  }
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "collections".
  */
 export interface Collection {
-  id: number;
-  title: string;
+  id: number
+  title: string
   /**
    * Part of the URL. Generated from the title when left empty.
    */
-  slug: string;
-  description?: string | null;
+  slug: string
+  description?: string | null
   /**
    * In display order. Drag to reorder.
    */
-  shorts?: (number | Short)[] | null;
+  shorts?: (number | Short)[] | null
   /**
    * Shown as the hero on the home page.
    */
-  featured?: boolean | null;
-  status: 'draft' | 'published';
+  featured?: boolean | null
+  status: 'draft' | 'published'
   /**
    * Shorts under a non-commercial license and branded content cannot be in a sponsored collection.
    */
-  sponsor?: (number | null) | Sponsor;
-  sponsorshipStartsAt?: string | null;
-  sponsorshipEndsAt?: string | null;
+  sponsor?: (number | null) | Sponsor
+  sponsorshipStartsAt?: string | null
+  sponsorshipEndsAt?: string | null
   /**
    * Sample data for development, not a catalog entry.
    */
-  sample?: boolean | null;
+  sample?: boolean | null
   /**
    * Set by the catalog import. Re-running the import updates this document.
    */
-  importKey?: string | null;
-  updatedAt: string;
-  createdAt: string;
+  importKey?: string | null
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "showcases".
  */
 export interface Showcase {
-  id: number;
+  id: number
   /**
    * As it presents itself.
    */
-  name: string;
+  name: string
   /**
    * Part of the URL. Generated from the title when left empty.
    */
-  slug: string;
-  kind: 'festival' | 'school' | 'institution';
-  website?: string | null;
-  logo?: (number | null) | Media;
+  slug: string
+  kind: 'festival' | 'school' | 'institution'
+  website?: string | null
+  logo?: (number | null) | Media
   /**
    * Two or three sentences about the organization and its selection.
    */
-  intro?: string | null;
+  intro?: string | null
   /**
    * In display order. Only shorts on official channels; never non-commercial (NC) ones.
    */
-  shorts?: (number | Short)[] | null;
+  shorts?: (number | Short)[] | null
   /**
    * Festivals show past editions or awards only. Tick it once you have checked every short; it is required to publish.
    */
-  offCircuitConfirmed?: boolean | null;
+  offCircuitConfirmed?: boolean | null
   /**
    * Optional credit in the page header. Branded shorts cannot be in a presented showcase.
    */
-  presentedBy?: (number | null) | Sponsor;
-  status: 'draft' | 'published';
+  presentedBy?: (number | null) | Sponsor
+  status: 'draft' | 'published'
   /**
    * Sample data for development, not a catalog entry.
    */
-  sample?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
+  sample?: boolean | null
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
 export interface Media {
-  id: number;
+  id: number
   /**
    * What the image says, for people who cannot see it. For a logo, the organization’s name.
    */
-  alt: string;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
+  alt: string
+  updatedAt: string
+  createdAt: string
+  url?: string | null
+  thumbnailURL?: string | null
+  filename?: string | null
+  mimeType?: string | null
+  filesize?: number | null
+  width?: number | null
+  height?: number | null
+  focalX?: number | null
+  focalY?: number | null
   sizes?: {
     logo?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-  };
+      url?: string | null
+      width?: number | null
+      height?: number | null
+      mimeType?: string | null
+      filesize?: number | null
+      filename?: string | null
+    }
+  }
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "contacts".
  */
 export interface Contact {
-  id: number;
-  email: string;
-  name?: string | null;
-  role?: string | null;
-  organization: number | Organization;
-  legalBasis: 'published_for_proposals' | 'existing_relationship' | 'wrote_first' | 'other';
+  id: number
+  email: string
+  name?: string | null
+  role?: string | null
+  organization: number | Organization
+  legalBasis: 'published_for_proposals' | 'existing_relationship' | 'wrote_first' | 'other'
   /**
    * Where the basis can be checked: the page that publishes the address, the earlier thread…
    */
-  legalEvidence: string;
+  legalEvidence: string
   /**
    * Nothing is ever sent to a contact with this mark.
    */
-  doNotContact?: boolean | null;
-  doNotContactDate?: string | null;
-  doNotContactReason?: string | null;
-  updatedAt: string;
-  createdAt: string;
+  doNotContact?: boolean | null
+  doNotContactDate?: string | null
+  doNotContactReason?: string | null
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "messages".
  */
 export interface Message {
-  id: number;
-  direction: 'outbound' | 'inbound';
-  status: 'draft' | 'approved' | 'sending' | 'sent' | 'failed' | 'received';
-  organization: number | Organization;
-  contact?: (number | null) | Contact;
-  subject: string;
+  id: number
+  direction: 'outbound' | 'inbound'
+  status: 'draft' | 'approved' | 'sending' | 'sent' | 'failed' | 'received'
+  organization: number | Organization
+  contact?: (number | null) | Contact
+  subject: string
   /**
    * Plain text. The footer (who we are, privacy, how to opt out) is added when sending.
    */
-  body: string;
+  body: string
   /**
    * Pick the received message you answer: the email is threaded under it.
    */
-  replyingTo?: (number | null) | Message;
+  replyingTo?: (number | null) | Message
   /**
    * Set on the organization when the email goes out. Empty: 7 days later.
    */
-  followUpDate?: string | null;
+  followUpDate?: string | null
   /**
    * For received messages: tick once the reply has been dealt with.
    */
-  handled?: boolean | null;
-  sentAt?: string | null;
-  receivedAt?: string | null;
-  messageId?: string | null;
-  inReplyTo?: string | null;
-  references?: string | null;
-  error?: string | null;
-  approvedBy?: (number | null) | User;
-  approvedAt?: string | null;
+  handled?: boolean | null
+  sentAt?: string | null
+  receivedAt?: string | null
+  messageId?: string | null
+  inReplyTo?: string | null
+  references?: string | null
+  error?: string | null
+  approvedBy?: (number | null) | User
+  approvedAt?: string | null
   attachmentNames?:
     | {
-        name?: string | null;
-        id?: string | null;
+        name?: string | null
+        id?: string | null
       }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
+    | null
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
-  id: number;
+  id: number
   /**
    * Agents work on the sales CRM and draft emails; only admins approve and send, and change the catalog.
    */
-  role: 'admin' | 'agent';
-  updatedAt: string;
-  createdAt: string;
-  enableAPIKey?: boolean | null;
-  apiKey?: string | null;
-  apiKeyIndex?: string | null;
-  hasAPIKey?: boolean | null;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  resetPasswordRequestedAt?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
+  role: 'admin' | 'agent'
+  updatedAt: string
+  createdAt: string
+  enableAPIKey?: boolean | null
+  apiKey?: string | null
+  apiKeyIndex?: string | null
+  hasAPIKey?: boolean | null
+  email: string
+  resetPasswordToken?: string | null
+  resetPasswordExpiration?: string | null
+  salt?: string | null
+  hash?: string | null
+  resetPasswordRequestedAt?: string | null
+  loginAttempts?: number | null
+  lockUntil?: string | null
   sessions?:
     | {
-        id: string;
-        createdAt?: string | null;
-        expiresAt: string;
+        id: string
+        createdAt?: string | null
+        expiresAt: string
       }[]
-    | null;
-  password?: string | null;
-  collection: 'users';
+    | null
+  password?: string | null
+  collection: 'users'
 }
 /**
  * Viewers with an account. Personal data: read only, and deleted when they ask.
@@ -839,33 +966,33 @@ export interface User {
  * via the `definition` "members".
  */
 export interface Member {
-  id: number;
-  name?: string | null;
+  id: number
+  name?: string | null
   /**
    * Sample account for development, not a real viewer.
    */
-  sample?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  resetPasswordRequestedAt?: string | null;
-  _verified?: boolean | null;
-  _verificationToken?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
+  sample?: boolean | null
+  updatedAt: string
+  createdAt: string
+  email: string
+  resetPasswordToken?: string | null
+  resetPasswordExpiration?: string | null
+  salt?: string | null
+  hash?: string | null
+  resetPasswordRequestedAt?: string | null
+  _verified?: boolean | null
+  _verificationToken?: string | null
+  loginAttempts?: number | null
+  lockUntil?: string | null
   sessions?:
     | {
-        id: string;
-        createdAt?: string | null;
-        expiresAt: string;
+        id: string
+        createdAt?: string | null
+        expiresAt: string
       }[]
-    | null;
-  password?: string | null;
-  collection: 'members';
+    | null
+  password?: string | null
+  collection: 'members'
 }
 /**
  * Personal data of viewers. Read only.
@@ -874,12 +1001,12 @@ export interface Member {
  * via the `definition` "list-items".
  */
 export interface ListItem {
-  id: number;
-  member: number | Member;
-  short: number | Short;
-  savedAt: string;
-  updatedAt: string;
-  createdAt: string;
+  id: number
+  member: number | Member
+  short: number | Short
+  savedAt: string
+  updatedAt: string
+  createdAt: string
 }
 /**
  * Personal data of viewers. Read only.
@@ -888,12 +1015,12 @@ export interface ListItem {
  * via the `definition` "ratings".
  */
 export interface Rating {
-  id: number;
-  member: number | Member;
-  short: number | Short;
-  value: 'dislike' | 'like' | 'love';
-  updatedAt: string;
-  createdAt: string;
+  id: number
+  member: number | Member
+  short: number | Short
+  value: 'dislike' | 'like' | 'love'
+  updatedAt: string
+  createdAt: string
 }
 /**
  * Personal data of viewers. Read only.
@@ -902,821 +1029,876 @@ export interface Rating {
  * via the `definition` "viewings".
  */
 export interface Viewing {
-  id: number;
-  member: number | Member;
-  short: number | Short;
-  positionSeconds: number;
-  durationSeconds: number;
+  id: number
+  member: number | Member
+  short: number | Short
+  positionSeconds: number
+  durationSeconds: number
   /**
    * Set from 90 % of the duration, by the server.
    */
-  completed?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
+  completed?: boolean | null
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
-  id: number;
-  key: string;
+  id: number
+  key: string
   data:
     | {
-        [k: string]: unknown;
+        [k: string]: unknown
       }
     | unknown[]
     | string
     | number
     | boolean
-    | null;
+    | null
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-jobs".
  */
 export interface PayloadJob {
-  id: number;
+  id: number
   /**
    * Input data provided to the job
    */
   input?:
     | {
-        [k: string]: unknown;
+        [k: string]: unknown
       }
     | unknown[]
     | string
     | number
     | boolean
-    | null;
+    | null
   taskStatus?:
     | {
-        [k: string]: unknown;
+        [k: string]: unknown
       }
     | unknown[]
     | string
     | number
     | boolean
-    | null;
-  completedAt?: string | null;
-  totalTried?: number | null;
+    | null
+  completedAt?: string | null
+  totalTried?: number | null
   /**
    * If hasError is true this job will not be retried
    */
-  hasError?: boolean | null;
+  hasError?: boolean | null
   /**
    * If hasError is true, this is the error that caused it
    */
   error?:
     | {
-        [k: string]: unknown;
+        [k: string]: unknown
       }
     | unknown[]
     | string
     | number
     | boolean
-    | null;
+    | null
   /**
    * Task execution log
    */
   log?:
     | {
-        executedAt: string;
-        completedAt: string;
+        executedAt: string
+        completedAt: string
         taskSlug:
-          'inline' | 'indexShort' | 'purgeWaitlist' | 'checkEmbeds' | 'computeRanking' | 'syncInbox' | 'scanChannels';
-        taskID: string;
+          | 'inline'
+          | 'indexShort'
+          | 'purgeWaitlist'
+          | 'checkEmbeds'
+          | 'computeRanking'
+          | 'syncInbox'
+          | 'scanChannels'
+        taskID: string
         input?:
           | {
-              [k: string]: unknown;
+              [k: string]: unknown
             }
           | unknown[]
           | string
           | number
           | boolean
-          | null;
+          | null
         output?:
           | {
-              [k: string]: unknown;
+              [k: string]: unknown
             }
           | unknown[]
           | string
           | number
           | boolean
-          | null;
-        state: 'failed' | 'succeeded';
+          | null
+        state: 'failed' | 'succeeded'
         error?:
           | {
-              [k: string]: unknown;
+              [k: string]: unknown
             }
           | unknown[]
           | string
           | number
           | boolean
-          | null;
-        id?: string | null;
+          | null
+        id?: string | null
       }[]
-    | null;
+    | null
   taskSlug?:
-    | ('inline' | 'indexShort' | 'purgeWaitlist' | 'checkEmbeds' | 'computeRanking' | 'syncInbox' | 'scanChannels')
-    | null;
-  queue?: string | null;
-  waitUntil?: string | null;
-  processing?: boolean | null;
+    | (
+        | 'inline'
+        | 'indexShort'
+        | 'purgeWaitlist'
+        | 'checkEmbeds'
+        | 'computeRanking'
+        | 'syncInbox'
+        | 'scanChannels'
+      )
+    | null
+  queue?: string | null
+  waitUntil?: string | null
+  processing?: boolean | null
   meta?:
     | {
-        [k: string]: unknown;
+        [k: string]: unknown
       }
     | unknown[]
     | string
     | number
     | boolean
-    | null;
-  updatedAt: string;
-  createdAt: string;
+    | null
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: number;
+  id: number
   document?:
     | ({
-        relationTo: 'shorts';
-        value: number | Short;
+        relationTo: 'shorts'
+        value: number | Short
       } | null)
     | ({
-        relationTo: 'sources';
-        value: number | Source;
+        relationTo: 'sources'
+        value: number | Source
       } | null)
     | ({
-        relationTo: 'channels';
-        value: number | Channel;
+        relationTo: 'channels'
+        value: number | Channel
       } | null)
     | ({
-        relationTo: 'people';
-        value: number | Person;
+        relationTo: 'scanned-videos'
+        value: number | ScannedVideo
       } | null)
     | ({
-        relationTo: 'collections';
-        value: number | Collection;
+        relationTo: 'people'
+        value: number | Person
       } | null)
     | ({
-        relationTo: 'showcases';
-        value: number | Showcase;
+        relationTo: 'collections'
+        value: number | Collection
       } | null)
     | ({
-        relationTo: 'media';
-        value: number | Media;
+        relationTo: 'showcases'
+        value: number | Showcase
       } | null)
     | ({
-        relationTo: 'stills';
-        value: number | Still;
+        relationTo: 'media'
+        value: number | Media
       } | null)
     | ({
-        relationTo: 'licenses';
-        value: number | License;
+        relationTo: 'stills'
+        value: number | Still
       } | null)
     | ({
-        relationTo: 'license-documents';
-        value: number | LicenseDocument;
+        relationTo: 'licenses'
+        value: number | License
       } | null)
     | ({
-        relationTo: 'sponsors';
-        value: number | Sponsor;
+        relationTo: 'license-documents'
+        value: number | LicenseDocument
       } | null)
     | ({
-        relationTo: 'organizations';
-        value: number | Organization;
+        relationTo: 'sponsors'
+        value: number | Sponsor
       } | null)
     | ({
-        relationTo: 'contacts';
-        value: number | Contact;
+        relationTo: 'organizations'
+        value: number | Organization
       } | null)
     | ({
-        relationTo: 'messages';
-        value: number | Message;
+        relationTo: 'contacts'
+        value: number | Contact
       } | null)
     | ({
-        relationTo: 'users';
-        value: number | User;
+        relationTo: 'messages'
+        value: number | Message
       } | null)
     | ({
-        relationTo: 'members';
-        value: number | Member;
+        relationTo: 'users'
+        value: number | User
       } | null)
     | ({
-        relationTo: 'list-items';
-        value: number | ListItem;
+        relationTo: 'members'
+        value: number | Member
       } | null)
     | ({
-        relationTo: 'ratings';
-        value: number | Rating;
+        relationTo: 'list-items'
+        value: number | ListItem
       } | null)
     | ({
-        relationTo: 'viewings';
-        value: number | Viewing;
-      } | null);
-  globalSlug?: string | null;
+        relationTo: 'ratings'
+        value: number | Rating
+      } | null)
+    | ({
+        relationTo: 'viewings'
+        value: number | Viewing
+      } | null)
+  globalSlug?: string | null
   user:
     | {
-        relationTo: 'users';
-        value: number | User;
+        relationTo: 'users'
+        value: number | User
       }
     | {
-        relationTo: 'members';
-        value: number | Member;
-      };
-  updatedAt: string;
-  createdAt: string;
+        relationTo: 'members'
+        value: number | Member
+      }
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: number;
+  id: number
   user:
     | {
-        relationTo: 'users';
-        value: number | User;
+        relationTo: 'users'
+        value: number | User
       }
     | {
-        relationTo: 'members';
-        value: number | Member;
-      };
-  key?: string | null;
+        relationTo: 'members'
+        value: number | Member
+      }
+  key?: string | null
   value?:
     | {
-        [k: string]: unknown;
+        [k: string]: unknown
       }
     | unknown[]
     | string
     | number
     | boolean
-    | null;
-  updatedAt: string;
-  createdAt: string;
+    | null
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: number;
-  name?: string | null;
-  batch?: number | null;
-  updatedAt: string;
-  createdAt: string;
+  id: number
+  name?: string | null
+  batch?: number | null
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "shorts_select".
  */
 export interface ShortsSelect<T extends boolean = true> {
-  title?: T;
-  slug?: T;
-  synopsis?: T;
-  durationSeconds?: T;
-  year?: T;
-  country?: T;
-  originalLanguage?: T;
-  type?: T;
-  noDialogue?: T;
-  posterTone?: T;
-  brandedContent?: T;
-  brand?: T;
+  title?: T
+  slug?: T
+  synopsis?: T
+  durationSeconds?: T
+  year?: T
+  country?: T
+  originalLanguage?: T
+  otherLanguages?: T
+  languageSource?: T
+  type?: T
+  noDialogue?: T
+  posterTone?: T
+  brandedContent?: T
+  brand?: T
   credits?:
     | T
     | {
-        person?: T;
-        role?: T;
-        id?: T;
-      };
+        person?: T
+        role?: T
+        id?: T
+      }
   awards?:
     | T
     | {
-        name?: T;
-        result?: T;
-        year?: T;
-        source?: T;
-        id?: T;
-      };
-  sources?: T;
-  status?: T;
-  hiddenReason?: T;
-  hiddenAt?: T;
-  publishedAt?: T;
-  still?: T;
-  tmdbId?: T;
-  sample?: T;
-  ingestChannel?: T;
-  importKey?: T;
-  updatedAt?: T;
-  createdAt?: T;
+        name?: T
+        result?: T
+        year?: T
+        source?: T
+        id?: T
+      }
+  sources?: T
+  status?: T
+  hiddenReason?: T
+  hiddenAt?: T
+  publishedAt?: T
+  still?: T
+  tmdbId?: T
+  sample?: T
+  ingestChannel?: T
+  importKey?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "sources_select".
  */
 export interface SourcesSelect<T extends boolean = true> {
-  short?: T;
-  provider?: T;
-  externalId?: T;
-  url?: T;
+  short?: T
+  provider?: T
+  externalId?: T
+  url?: T
   channel?:
     | T
     | {
-        name?: T;
-        kind?: T;
-        url?: T;
-        externalId?: T;
-      };
-  officialEvidence?: T;
-  subtitles?: T;
-  embeddable?: T;
-  status?: T;
-  lastCheckedAt?: T;
-  ageRestricted?: T;
-  problemSince?: T;
-  checkNote?: T;
-  thumbnailUrl?: T;
-  uploadedAt?: T;
-  ingestChannel?: T;
-  license?: T;
-  importKey?: T;
-  updatedAt?: T;
-  createdAt?: T;
+        name?: T
+        kind?: T
+        url?: T
+        externalId?: T
+      }
+  officialEvidence?: T
+  subtitles?: T
+  autoSubtitles?: T
+  captions?: T
+  subtitlesSource?: T
+  embeddable?: T
+  status?: T
+  lastCheckedAt?: T
+  ageRestricted?: T
+  problemSince?: T
+  checkNote?: T
+  thumbnailUrl?: T
+  uploadedAt?: T
+  providerDescription?: T
+  ingestChannel?: T
+  license?: T
+  importKey?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "channels_select".
  */
 export interface ChannelsSelect<T extends boolean = true> {
-  url?: T;
-  name?: T;
-  provider?: T;
-  externalId?: T;
-  kind?: T;
-  organization?: T;
-  officialEvidence?: T;
-  active?: T;
-  minDurationSeconds?: T;
-  maxDurationSeconds?: T;
-  defaultLanguage?: T;
-  lastScannedAt?: T;
-  lastScanNote?: T;
-  updatedAt?: T;
-  createdAt?: T;
+  url?: T
+  name?: T
+  provider?: T
+  externalId?: T
+  kind?: T
+  organization?: T
+  officialEvidence?: T
+  active?: T
+  minDurationSeconds?: T
+  maxDurationSeconds?: T
+  defaultLanguage?: T
+  backlogComplete?: T
+  rescanAll?: T
+  backlogCursor?: T
+  lastScannedAt?: T
+  lastScanNote?: T
+  scannedVideos?: T
+  updatedAt?: T
+  createdAt?: T
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "scanned-videos_select".
+ */
+export interface ScannedVideosSelect<T extends boolean = true> {
+  channel?: T
+  provider?: T
+  externalId?: T
+  url?: T
+  title?: T
+  durationSeconds?: T
+  publishedAt?: T
+  outcome?: T
+  skipReason?: T
+  short?: T
+  note?: T
+  spokenLanguages?: T
+  subtitles?: T
+  autoSubtitles?: T
+  captions?: T
+  languageSource?: T
+  firstSeenAt?: T
+  lastSeenAt?: T
+  reevaluate?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "people_select".
  */
 export interface PeopleSelect<T extends boolean = true> {
-  name?: T;
-  slug?: T;
-  bio?: T;
-  importKey?: T;
-  updatedAt?: T;
-  createdAt?: T;
+  name?: T
+  slug?: T
+  bio?: T
+  importKey?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "collections_select".
  */
 export interface CollectionsSelect<T extends boolean = true> {
-  title?: T;
-  slug?: T;
-  description?: T;
-  shorts?: T;
-  featured?: T;
-  status?: T;
-  sponsor?: T;
-  sponsorshipStartsAt?: T;
-  sponsorshipEndsAt?: T;
-  sample?: T;
-  importKey?: T;
-  updatedAt?: T;
-  createdAt?: T;
+  title?: T
+  slug?: T
+  description?: T
+  shorts?: T
+  featured?: T
+  status?: T
+  sponsor?: T
+  sponsorshipStartsAt?: T
+  sponsorshipEndsAt?: T
+  sample?: T
+  importKey?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "showcases_select".
  */
 export interface ShowcasesSelect<T extends boolean = true> {
-  name?: T;
-  slug?: T;
-  kind?: T;
-  website?: T;
-  logo?: T;
-  intro?: T;
-  shorts?: T;
-  offCircuitConfirmed?: T;
-  presentedBy?: T;
-  status?: T;
-  sample?: T;
-  updatedAt?: T;
-  createdAt?: T;
+  name?: T
+  slug?: T
+  kind?: T
+  website?: T
+  logo?: T
+  intro?: T
+  shorts?: T
+  offCircuitConfirmed?: T
+  presentedBy?: T
+  status?: T
+  sample?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
-  alt?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  url?: T;
-  thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
-  width?: T;
-  height?: T;
-  focalX?: T;
-  focalY?: T;
+  alt?: T
+  updatedAt?: T
+  createdAt?: T
+  url?: T
+  thumbnailURL?: T
+  filename?: T
+  mimeType?: T
+  filesize?: T
+  width?: T
+  height?: T
+  focalX?: T
+  focalY?: T
   sizes?:
     | T
     | {
         logo?:
           | T
           | {
-              url?: T;
-              width?: T;
-              height?: T;
-              mimeType?: T;
-              filesize?: T;
-              filename?: T;
-            };
-      };
+              url?: T
+              width?: T
+              height?: T
+              mimeType?: T
+              filesize?: T
+              filename?: T
+            }
+      }
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "stills_select".
  */
 export interface StillsSelect<T extends boolean = true> {
-  short?: T;
-  origin?: T;
-  source?: T;
-  fetchedAt?: T;
-  textColor?: T;
-  includesTitle?: T;
-  textColorAuto?: T;
-  textColorSet?: T;
-  permissionNote?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  url?: T;
-  thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
-  width?: T;
-  height?: T;
-  focalX?: T;
-  focalY?: T;
+  short?: T
+  origin?: T
+  source?: T
+  fetchedAt?: T
+  textColor?: T
+  includesTitle?: T
+  textColorAuto?: T
+  textColorSet?: T
+  permissionNote?: T
+  updatedAt?: T
+  createdAt?: T
+  url?: T
+  thumbnailURL?: T
+  filename?: T
+  mimeType?: T
+  filesize?: T
+  width?: T
+  height?: T
+  focalX?: T
+  focalY?: T
   sizes?:
     | T
     | {
         hero?:
           | T
           | {
-              url?: T;
-              width?: T;
-              height?: T;
-              mimeType?: T;
-              filesize?: T;
-              filename?: T;
-            };
+              url?: T
+              width?: T
+              height?: T
+              mimeType?: T
+              filesize?: T
+              filename?: T
+            }
         card?:
           | T
           | {
-              url?: T;
-              width?: T;
-              height?: T;
-              mimeType?: T;
-              filesize?: T;
-              filename?: T;
-            };
-      };
+              url?: T
+              width?: T
+              height?: T
+              mimeType?: T
+              filesize?: T
+              filename?: T
+            }
+      }
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "licenses_select".
  */
 export interface LicensesSelect<T extends boolean = true> {
-  name?: T;
-  route?: T;
-  type?: T;
-  attribution?: T;
-  signedDocument?: T;
-  startsAt?: T;
-  endsAt?: T;
-  notes?: T;
-  importKey?: T;
-  updatedAt?: T;
-  createdAt?: T;
+  name?: T
+  route?: T
+  type?: T
+  attribution?: T
+  signedDocument?: T
+  startsAt?: T
+  endsAt?: T
+  notes?: T
+  importKey?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "license-documents_select".
  */
 export interface LicenseDocumentsSelect<T extends boolean = true> {
-  title?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  url?: T;
-  thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
-  width?: T;
-  height?: T;
-  focalX?: T;
-  focalY?: T;
+  title?: T
+  updatedAt?: T
+  createdAt?: T
+  url?: T
+  thumbnailURL?: T
+  filename?: T
+  mimeType?: T
+  filesize?: T
+  width?: T
+  height?: T
+  focalX?: T
+  focalY?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "sponsors_select".
  */
 export interface SponsorsSelect<T extends boolean = true> {
-  name?: T;
-  website?: T;
-  notes?: T;
-  updatedAt?: T;
-  createdAt?: T;
+  name?: T
+  website?: T
+  notes?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "organizations_select".
  */
 export interface OrganizationsSelect<T extends boolean = true> {
-  name?: T;
-  type?: T;
-  priority?: T;
-  status?: T;
-  reason?: T;
+  name?: T
+  type?: T
+  priority?: T
+  status?: T
+  reason?: T
   works?:
     | T
     | {
-        title?: T;
-        url?: T;
-        request?: T;
-        why?: T;
-        id?: T;
-      };
-  country?: T;
-  city?: T;
-  website?: T;
-  proposalsChannel?: T;
-  nextEdition?: T;
-  whyFits?: T;
-  recommendedProduct?: T;
-  source?: T;
-  notes?: T;
-  lastContactDate?: T;
-  nextFollowUpDate?: T;
-  sponsor?: T;
-  updatedAt?: T;
-  createdAt?: T;
+        title?: T
+        url?: T
+        request?: T
+        why?: T
+        id?: T
+      }
+  country?: T
+  city?: T
+  website?: T
+  proposalsChannel?: T
+  nextEdition?: T
+  whyFits?: T
+  recommendedProduct?: T
+  source?: T
+  notes?: T
+  lastContactDate?: T
+  nextFollowUpDate?: T
+  sponsor?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "contacts_select".
  */
 export interface ContactsSelect<T extends boolean = true> {
-  email?: T;
-  name?: T;
-  role?: T;
-  organization?: T;
-  legalBasis?: T;
-  legalEvidence?: T;
-  doNotContact?: T;
-  doNotContactDate?: T;
-  doNotContactReason?: T;
-  updatedAt?: T;
-  createdAt?: T;
+  email?: T
+  name?: T
+  role?: T
+  organization?: T
+  legalBasis?: T
+  legalEvidence?: T
+  doNotContact?: T
+  doNotContactDate?: T
+  doNotContactReason?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "messages_select".
  */
 export interface MessagesSelect<T extends boolean = true> {
-  direction?: T;
-  status?: T;
-  organization?: T;
-  contact?: T;
-  subject?: T;
-  body?: T;
-  replyingTo?: T;
-  followUpDate?: T;
-  handled?: T;
-  sentAt?: T;
-  receivedAt?: T;
-  messageId?: T;
-  inReplyTo?: T;
-  references?: T;
-  error?: T;
-  approvedBy?: T;
-  approvedAt?: T;
+  direction?: T
+  status?: T
+  organization?: T
+  contact?: T
+  subject?: T
+  body?: T
+  replyingTo?: T
+  followUpDate?: T
+  handled?: T
+  sentAt?: T
+  receivedAt?: T
+  messageId?: T
+  inReplyTo?: T
+  references?: T
+  error?: T
+  approvedBy?: T
+  approvedAt?: T
   attachmentNames?:
     | T
     | {
-        name?: T;
-        id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
+        name?: T
+        id?: T
+      }
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
-  role?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  enableAPIKey?: T;
-  apiKey?: T;
-  apiKeyIndex?: T;
-  hasAPIKey?: T;
-  email?: T;
-  resetPasswordToken?: T;
-  resetPasswordExpiration?: T;
-  salt?: T;
-  hash?: T;
-  resetPasswordRequestedAt?: T;
-  loginAttempts?: T;
-  lockUntil?: T;
+  role?: T
+  updatedAt?: T
+  createdAt?: T
+  enableAPIKey?: T
+  apiKey?: T
+  apiKeyIndex?: T
+  hasAPIKey?: T
+  email?: T
+  resetPasswordToken?: T
+  resetPasswordExpiration?: T
+  salt?: T
+  hash?: T
+  resetPasswordRequestedAt?: T
+  loginAttempts?: T
+  lockUntil?: T
   sessions?:
     | T
     | {
-        id?: T;
-        createdAt?: T;
-        expiresAt?: T;
-      };
+        id?: T
+        createdAt?: T
+        expiresAt?: T
+      }
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "members_select".
  */
 export interface MembersSelect<T extends boolean = true> {
-  name?: T;
-  sample?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  email?: T;
-  resetPasswordToken?: T;
-  resetPasswordExpiration?: T;
-  salt?: T;
-  hash?: T;
-  resetPasswordRequestedAt?: T;
-  _verified?: T;
-  _verificationToken?: T;
-  loginAttempts?: T;
-  lockUntil?: T;
+  name?: T
+  sample?: T
+  updatedAt?: T
+  createdAt?: T
+  email?: T
+  resetPasswordToken?: T
+  resetPasswordExpiration?: T
+  salt?: T
+  hash?: T
+  resetPasswordRequestedAt?: T
+  _verified?: T
+  _verificationToken?: T
+  loginAttempts?: T
+  lockUntil?: T
   sessions?:
     | T
     | {
-        id?: T;
-        createdAt?: T;
-        expiresAt?: T;
-      };
+        id?: T
+        createdAt?: T
+        expiresAt?: T
+      }
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "list-items_select".
  */
 export interface ListItemsSelect<T extends boolean = true> {
-  member?: T;
-  short?: T;
-  savedAt?: T;
-  updatedAt?: T;
-  createdAt?: T;
+  member?: T
+  short?: T
+  savedAt?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ratings_select".
  */
 export interface RatingsSelect<T extends boolean = true> {
-  member?: T;
-  short?: T;
-  value?: T;
-  updatedAt?: T;
-  createdAt?: T;
+  member?: T
+  short?: T
+  value?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "viewings_select".
  */
 export interface ViewingsSelect<T extends boolean = true> {
-  member?: T;
-  short?: T;
-  positionSeconds?: T;
-  durationSeconds?: T;
-  completed?: T;
-  updatedAt?: T;
-  createdAt?: T;
+  member?: T
+  short?: T
+  positionSeconds?: T
+  durationSeconds?: T
+  completed?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
-  key?: T;
-  data?: T;
+  key?: T
+  data?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-jobs_select".
  */
 export interface PayloadJobsSelect<T extends boolean = true> {
-  input?: T;
-  taskStatus?: T;
-  completedAt?: T;
-  totalTried?: T;
-  hasError?: T;
-  error?: T;
+  input?: T
+  taskStatus?: T
+  completedAt?: T
+  totalTried?: T
+  hasError?: T
+  error?: T
   log?:
     | T
     | {
-        executedAt?: T;
-        completedAt?: T;
-        taskSlug?: T;
-        taskID?: T;
-        input?: T;
-        output?: T;
-        state?: T;
-        error?: T;
-        id?: T;
-      };
-  taskSlug?: T;
-  queue?: T;
-  waitUntil?: T;
-  processing?: T;
-  meta?: T;
-  updatedAt?: T;
-  createdAt?: T;
+        executedAt?: T
+        completedAt?: T
+        taskSlug?: T
+        taskID?: T
+        input?: T
+        output?: T
+        state?: T
+        error?: T
+        id?: T
+      }
+  taskSlug?: T
+  queue?: T
+  waitUntil?: T
+  processing?: T
+  meta?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents_select".
  */
 export interface PayloadLockedDocumentsSelect<T extends boolean = true> {
-  document?: T;
-  globalSlug?: T;
-  user?: T;
-  updatedAt?: T;
-  createdAt?: T;
+  document?: T
+  globalSlug?: T
+  user?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-preferences_select".
  */
 export interface PayloadPreferencesSelect<T extends boolean = true> {
-  user?: T;
-  key?: T;
-  value?: T;
-  updatedAt?: T;
-  createdAt?: T;
+  user?: T
+  key?: T
+  value?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-migrations_select".
  */
 export interface PayloadMigrationsSelect<T extends boolean = true> {
-  name?: T;
-  batch?: T;
-  updatedAt?: T;
-  createdAt?: T;
+  name?: T
+  batch?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "crm-inbox".
  */
 export interface CrmInbox {
-  id: number;
-  uidValidity?: string | null;
-  lastUid?: number | null;
-  lastRunAt?: string | null;
-  lastError?: string | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
+  id: number
+  uidValidity?: string | null
+  lastUid?: number | null
+  lastRunAt?: string | null
+  lastError?: string | null
+  updatedAt?: string | null
+  createdAt?: string | null
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "home".
  */
 export interface Home {
-  id: number;
+  id: number
   /**
    * Empty: the latest published short. If the chosen one is unpublished, the latest one shows.
    */
-  heroShort?: (number | null) | Short;
-  updatedAt?: string | null;
-  createdAt?: string | null;
+  heroShort?: (number | null) | Short
+  updatedAt?: string | null
+  createdAt?: string | null
 }
 /**
  * Computed every night from the plays of the last 7 days. Read only.
@@ -1725,77 +1907,100 @@ export interface Home {
  * via the `definition` "ranking".
  */
 export interface Ranking {
-  id: number;
-  shorts?: (number | Short)[] | null;
-  computedAt?: string | null;
-  windowStart?: string | null;
-  windowEnd?: string | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
+  id: number
+  shorts?: (number | Short)[] | null
+  computedAt?: string | null
+  windowStart?: string | null
+  windowEnd?: string | null
+  updatedAt?: string | null
+  createdAt?: string | null
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "catalog-settings".
+ */
+export interface CatalogSetting {
+  id: number
+  /**
+   * BCP 47 codes. A scanned short enters when it is spoken in one of them, has no dialogue, or has subtitles in one. The others stay in the scanned videos, with their language.
+   */
+  catalogLanguages?: string[] | null
+  updatedAt?: string | null
+  createdAt?: string | null
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-jobs-stats".
  */
 export interface PayloadJobsStat {
-  id: number;
+  id: number
   stats?:
     | {
-        [k: string]: unknown;
+        [k: string]: unknown
       }
     | unknown[]
     | string
     | number
     | boolean
-    | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
+    | null
+  updatedAt?: string | null
+  createdAt?: string | null
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "crm-inbox_select".
  */
 export interface CrmInboxSelect<T extends boolean = true> {
-  uidValidity?: T;
-  lastUid?: T;
-  lastRunAt?: T;
-  lastError?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
+  uidValidity?: T
+  lastUid?: T
+  lastRunAt?: T
+  lastError?: T
+  updatedAt?: T
+  createdAt?: T
+  globalType?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "home_select".
  */
 export interface HomeSelect<T extends boolean = true> {
-  heroShort?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
+  heroShort?: T
+  updatedAt?: T
+  createdAt?: T
+  globalType?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ranking_select".
  */
 export interface RankingSelect<T extends boolean = true> {
-  shorts?: T;
-  computedAt?: T;
-  windowStart?: T;
-  windowEnd?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
+  shorts?: T
+  computedAt?: T
+  windowStart?: T
+  windowEnd?: T
+  updatedAt?: T
+  createdAt?: T
+  globalType?: T
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "catalog-settings_select".
+ */
+export interface CatalogSettingsSelect<T extends boolean = true> {
+  catalogLanguages?: T
+  updatedAt?: T
+  createdAt?: T
+  globalType?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-jobs-stats_select".
  */
 export interface PayloadJobsStatsSelect<T extends boolean = true> {
-  stats?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
+  stats?: T
+  updatedAt?: T
+  createdAt?: T
+  globalType?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1803,9 +2008,9 @@ export interface PayloadJobsStatsSelect<T extends boolean = true> {
  */
 export interface CollectionsWidget {
   data?: {
-    [k: string]: unknown;
-  };
-  width: 'full';
+    [k: string]: unknown
+  }
+  width: 'full'
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1813,80 +2018,81 @@ export interface CollectionsWidget {
  */
 export interface TaskIndexShort {
   input: {
-    shortId: number;
-  };
+    shortId: number
+  }
   output: {
-    action: string;
-  };
+    action: string
+  }
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "TaskPurgeWaitlist".
  */
 export interface TaskPurgeWaitlist {
-  input?: unknown;
+  input?: unknown
   output: {
-    deleted: number;
-    unsubscribed: number;
-  };
+    deleted: number
+    unsubscribed: number
+  }
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "TaskCheckEmbeds".
  */
 export interface TaskCheckEmbeds {
-  input?: unknown;
+  input?: unknown
   output: {
-    checked: number;
-    problems: number;
-    inconclusive: number;
-    hidden: number;
-    stills: number;
-  };
+    checked: number
+    problems: number
+    inconclusive: number
+    hidden: number
+    stills: number
+  }
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "TaskComputeRanking".
  */
 export interface TaskComputeRanking {
-  input?: unknown;
+  input?: unknown
   output: {
-    skipped: boolean;
-    ranked: number;
-  };
+    skipped: boolean
+    ranked: number
+  }
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "TaskSyncInbox".
  */
 export interface TaskSyncInbox {
-  input?: unknown;
+  input?: unknown
   output: {
-    stored: number;
-    seen: number;
-    skipped: boolean;
-  };
+    stored: number
+    seen: number
+    skipped: boolean
+  }
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "TaskScanChannels".
  */
 export interface TaskScanChannels {
-  input?: unknown;
+  input: {
+    channelId?: number | null
+  }
   output: {
-    channels: number;
-    failed: number;
-    added: number;
-  };
+    channels: number
+    failed: number
+    added: number
+  }
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "auth".
  */
 export interface Auth {
-  [k: string]: unknown;
+  [k: string]: unknown
 }
-
 
 declare module 'payload' {
   export interface GeneratedTypes extends Config {}

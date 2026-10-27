@@ -13,6 +13,14 @@ export interface YouTubeVideo {
   publishedAt: string | null
   /** BCP 47, when the uploader set it. */
   audioLanguage: string | null
+  /** BCP 47 of the title and description, when the uploader set it. */
+  defaultLanguage: string | null
+  /**
+   * `contentDetails.caption`: some caption track exists. The languages of the tracks are not in
+   * `videos.list`; `captions.list` has them but costs 50 quota units and needs the owner's OAuth.
+   */
+  hasCaptions: boolean
+  description: string | null
   thumbnailUrl: string | null
 }
 
@@ -32,10 +40,12 @@ interface ApiVideo {
     channelId?: string
     channelTitle?: string
     publishedAt?: string
+    description?: string
+    defaultLanguage?: string
     defaultAudioLanguage?: string
     thumbnails?: Record<string, { url?: string }>
   }
-  contentDetails?: { duration?: string; contentRating?: { ytRating?: string } }
+  contentDetails?: { duration?: string; caption?: string; contentRating?: { ytRating?: string } }
   status?: { embeddable?: boolean; privacyStatus?: string }
 }
 
@@ -52,6 +62,9 @@ export function toYouTubeVideo(item: ApiVideo): YouTubeVideo {
     ageRestricted: item.contentDetails?.contentRating?.ytRating === 'ytAgeRestricted',
     publishedAt: item.snippet?.publishedAt ?? null,
     audioLanguage: item.snippet?.defaultAudioLanguage ?? null,
+    defaultLanguage: item.snippet?.defaultLanguage ?? null,
+    hasCaptions: item.contentDetails?.caption === 'true',
+    description: item.snippet?.description || null,
     thumbnailUrl: (thumbs.maxres ?? thumbs.high ?? thumbs.medium ?? thumbs.default)?.url ?? null,
   }
 }

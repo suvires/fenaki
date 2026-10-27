@@ -6,6 +6,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { buildConfig } from 'payload'
 import sharp from 'sharp'
+import { CatalogSettings } from './collections/CatalogSettings.ts'
 import { Channels } from './collections/Channels.ts'
 import { Contacts } from './collections/Contacts.ts'
 import { InboxState } from './collections/InboxState.ts'
@@ -22,6 +23,7 @@ import { Members } from './collections/Members.ts'
 import { Media } from './collections/Media.ts'
 import { People } from './collections/People.ts'
 import { Shorts } from './collections/Shorts.ts'
+import { ScannedVideos } from './collections/ScannedVideos.ts'
 import { Showcases } from './collections/Showcases.ts'
 import { Sources } from './collections/Sources.ts'
 import { Sponsors } from './collections/Sponsors.ts'
@@ -77,6 +79,7 @@ export default buildConfig({
     Shorts,
     Sources,
     Channels,
+    ScannedVideos,
     People,
     Collections,
     Showcases,
@@ -94,7 +97,7 @@ export default buildConfig({
     Ratings,
     Viewings,
   ],
-  globals: [InboxState, HomePage, Ranking],
+  globals: [InboxState, HomePage, Ranking, CatalogSettings],
   cors: [process.env.WEB_URL ?? 'http://localhost:4321'],
   // The schema changes only through migrations (`pnpm migrate`), in development too, so the
   // first deployment runs exactly what was tested locally.

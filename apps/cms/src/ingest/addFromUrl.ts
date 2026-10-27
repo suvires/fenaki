@@ -7,7 +7,7 @@ import { fetchVideoMetadata, ingestKeys } from './metadata.ts'
 import type { Fetch } from './oembed.ts'
 import { parseVideoUrl } from './url.ts'
 
-const errors = {
+export const addFromUrlErrors = {
   unauthorized: label('Sign in to add shorts.', 'Inicia sesión para añadir cortos.'),
   invalidUrl: label(
     'Paste the URL of a YouTube or Vimeo video.',
@@ -32,7 +32,7 @@ const errors = {
 
 export type AddResult =
   | { ok: true; shortId: number; title: string }
-  | { ok: false; status: number; error: keyof typeof errors; shortId?: number }
+  | { ok: false; status: number; error: keyof typeof addFromUrlErrors; shortId?: number }
 
 /**
  * Creates a short and its source from a video URL, filled with what the providers say, waiting
@@ -79,13 +79,16 @@ export const addFromUrlEndpoint: Endpoint = {
   handler: async (req) => {
     const language = req.i18n?.language
     if (!isAdminUser(req.user))
-      return Response.json({ error: inLanguage(errors.unauthorized, language) }, { status: 401 })
+      return Response.json(
+        { error: inLanguage(addFromUrlErrors.unauthorized, language) },
+        { status: 401 },
+      )
     const body = (await req.json?.().catch(() => ({}))) as { url?: unknown } | undefined
     const result = await addShortFromUrl(req, typeof body?.url === 'string' ? body.url : '')
     if (result.ok)
       return Response.json({ id: result.shortId, title: result.title }, { status: 201 })
     return Response.json(
-      { error: inLanguage(errors[result.error], language), id: result.shortId },
+      { error: inLanguage(addFromUrlErrors[result.error], language), id: result.shortId },
       { status: result.status },
     )
   },

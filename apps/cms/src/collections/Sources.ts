@@ -145,10 +145,52 @@ export const Sources: CollectionConfig = {
       hasMany: true,
       admin: {
         description: label(
-          'BCP 47 codes of the available subtitles, e.g. es, en.',
-          'Códigos BCP 47 de los subtítulos disponibles, por ejemplo es, en.',
+          'BCP 47 codes of the available human-made subtitles, e.g. es, en.',
+          'Códigos BCP 47 de los subtítulos hechos por personas, por ejemplo es, en.',
         ),
       },
+    },
+    {
+      type: 'row',
+      fields: [
+        {
+          name: 'autoSubtitles',
+          label: label('Automatic subtitles', 'Subtítulos automáticos'),
+          type: 'text',
+          hasMany: true,
+          admin: {
+            description: label(
+              'BCP 47 codes of subtitles the provider generates.',
+              'Códigos BCP 47 de los subtítulos que genera el proveedor.',
+            ),
+          },
+        },
+        {
+          name: 'captions',
+          label: label('Caption track', 'Pista de subtítulos'),
+          type: 'select',
+          options: options({
+            yes: label('The provider says there is one', 'El proveedor dice que hay'),
+            no: label('None', 'Ninguna'),
+          }),
+          admin: {
+            description: label(
+              'YouTube only says whether a track exists, not its language. Empty: unknown.',
+              'YouTube solo dice si existe una pista, no su idioma. Vacío: se desconoce.',
+            ),
+          },
+        },
+        {
+          name: 'subtitlesSource',
+          label: label('Where the subtitles come from', 'De dónde salen los subtítulos'),
+          type: 'select',
+          options: options({
+            provider: label('Provider metadata', 'Metadatos del proveedor'),
+            ai: label('AI analysis', 'Análisis de la IA'),
+            editor: label('An editor', 'Un editor'),
+          }),
+        },
+      ],
     },
     {
       type: 'row',
@@ -247,6 +289,18 @@ export const Sources: CollectionConfig = {
           type: 'date',
         },
       ],
+    },
+    {
+      name: 'providerDescription',
+      label: label('Provider description', 'Descripción del proveedor'),
+      type: 'textarea',
+      access: { read: isAuthenticatedField },
+      admin: {
+        description: label(
+          'What the channel wrote about the video. Never shown to visitors: it is raw material for the editor and the AI review.',
+          'Lo que el canal escribió sobre el vídeo. Nunca se muestra a los visitantes: es material para el editor y la revisión con IA.',
+        ),
+      },
     },
     {
       name: 'ingestChannel',

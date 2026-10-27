@@ -14,6 +14,7 @@ import * as migration_20261026_012129_short_awards from './20261026_012129_short
 import * as migration_20261026_015039_accounts from './20261026_015039_accounts';
 import * as migration_20261027_081705_channels from './20261027_081705_channels';
 import * as migration_20261027_095840_crm_rights from './20261027_095840_crm_rights';
+import * as migration_20261027_111231_ledger_and_languages from './20261027_111231_ledger_and_languages';
 
 export const migrations = [
   {
@@ -94,6 +95,11 @@ export const migrations = [
   {
     up: migration_20261027_095840_crm_rights.up,
     down: migration_20261027_095840_crm_rights.down,
-    name: '20261027_095840_crm_rights'
+    name: '20261027_095840_crm_rights',
+  },
+  {
+    up: migration_20261027_111231_ledger_and_languages.up,
+    down: migration_20261027_111231_ledger_and_languages.down,
+    name: '20261027_111231_ledger_and_languages'
   },
 ];

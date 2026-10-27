@@ -116,6 +116,40 @@ export const Shorts: CollectionConfig = {
       type: 'row',
       fields: [
         {
+          name: 'otherLanguages',
+          label: label('Other spoken languages', 'Otros idiomas hablados'),
+          type: 'text',
+          hasMany: true,
+          admin: {
+            description: label(
+              'BCP 47 codes, when more than one language is spoken. The first one goes in the original language.',
+              'Códigos BCP 47, cuando se hablan varios idiomas. El primero va en el idioma original.',
+            ),
+          },
+        },
+        {
+          name: 'languageSource',
+          label: label('Where the languages come from', 'De dónde salen los idiomas'),
+          type: 'select',
+          options: options({
+            provider: label('Provider metadata', 'Metadatos del proveedor'),
+            channel: label('The channel’s default language', 'Idioma por defecto del canal'),
+            ai: label('AI analysis', 'Análisis de la IA'),
+            editor: label('An editor', 'Un editor'),
+          }),
+          admin: {
+            description: label(
+              'An editor’s value is never replaced by the scan or the AI.',
+              'El valor de un editor nunca lo sustituye la búsqueda ni la IA.',
+            ),
+          },
+        },
+      ],
+    },
+    {
+      type: 'row',
+      fields: [
+        {
           name: 'type',
           label: label('Type', 'Tipo'),
           type: 'select',
