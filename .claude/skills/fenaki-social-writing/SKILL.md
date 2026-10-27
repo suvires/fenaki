@@ -17,6 +17,7 @@ description: Write and schedule FENAKI's social media posts (the «FENAKI en 7 d
 - Never tell the reader how to read the piece («pasa rápido», «desliza»).
 - No personification either: not «el navegador habla con el panel», «que el texto diga la verdad», «lo que sobra se vuelve en contra». Write what happens: «el navegador no se conecta al panel», «para que sea exacto».
 - **Exact claims.** «No usamos cookies que necesiten tu permiso», not «no usamos cookies»: the account session is a cookie. Check every absolute against the code before writing it.
+- Numbers of five digits or more group thousands with a non-breaking space, not a full stop: «37 000», «casi 14 000» (RAE); four digits go together («1832», «5000»). In specs and posts use U+00A0 so the number never breaks across lines.
 - Spanish punctuation: no comma after «pero» when the subject follows («…tu permiso, pero los reproductores…»).
 - **Say when, not «hoy».** Day N goes out a day or more later: «El segundo día desarrollamos…», not «Hoy…».
 
