@@ -46,7 +46,7 @@ description: Write and schedule FENAKI's social media posts (the «FENAKI en 7 d
 | --- | --- | --- |
 | **Instagram** | Carousel (see `fenaki-social-design`) + short caption: hook, what FENAKI is, the story, CTA | Story first, little tech |
 | **Facebook** | Same caption and carousel as Instagram | Same |
-| **LinkedIn** | Long post with bold-unicode section headers (𝗤𝘂𝗲́ 𝗲𝘀 𝗙𝗘𝗡𝗔𝗞𝗜…), technical detail (stack and why, MVP features, design system, the autonomy experiment), the carousel as a PDF document | Technical, product |
+| **LinkedIn** | Long post with plain-text section headers, each alone on its line after a blank line (never «bold» Unicode letters like 𝗤𝘂𝗲́: screen readers spell them out or skip them, search ignores them, and some devices show boxes), technical detail (stack and why, MVP features, design system, the autonomy experiment), the carousel as a PDF document | Technical, product |
 | **X, Bluesky, Threads** | A thread: first post with the card image and «🧵👇», then one idea per post, last post with CTA. Every post ≤ 280 characters (count them) | Short, punchy |
 | **TikTok, YouTube Shorts** | Vertical video 30–40 s (script in the day's file); only when a video exists | Visual |
 
