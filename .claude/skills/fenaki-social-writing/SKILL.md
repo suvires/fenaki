@@ -12,6 +12,7 @@ description: Write and schedule FENAKI's social media posts (the «FENAKI en 7 d
 - Clear and direct, with storytelling: a hook, a story, the facts, an ending. No hype, no superlatives, no emoji walls (one 🎬 at most).
 - **Literal, not metaphorical.** Say what happened: «hizo moverse unos dibujos al girar», not «los dibujos cobraban vida». Facts carry the story.
 - **Impersonal for how things worked**: «Se hacía girar frente a un espejo y, mirando por las rendijas, se veía a la pareja bailar», not «lo girabas y veías».
+- **Results, not process.** Say what the viewer gets («antes de cargarlos, te explicamos qué datos reciben y te pedimos permiso»), not how we got there (measuring in a clean browser, agents in branches, what a legal notice requires).
 - Short sentences, one idea each. If a slide or a post reads long, cut an idea, don't compress it.
 - Never tell the reader how to read the piece («pasa rápido», «desliza»).
 
