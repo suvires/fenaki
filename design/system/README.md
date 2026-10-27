@@ -39,7 +39,7 @@ Token names below are the semantic tokens of `packages/tokens` (`packages/ui/REA
 - **Lead** under a headline: `body-l`, regular, white, as on the landing page.
 - **Secondary** (contact lines, counters, footnotes): `small`, in `text.secondary`.
 
-**Social pieces.** Carousels (1080×1350) and cards (1200×675) use the same roles, on the page colour, with one two-tone headline per piece. On a slide: headline 146px, lead 48px, kicker 40px, secondary 32px (a card uses about 0.62 of those); see `packages/ui/README.md` and the `fenaki-social-design` skill.
+**Social pieces.** Carousels (1080×1350) and cards (1200×675) use the same roles, on the page colour, with all-white headlines (the accent colour only for the kicker and the domain). On a slide: headline 146px, lead 44px, kicker 40px, secondary 32px (a card uses about 0.62 of those); see `packages/ui/README.md` and the `fenaki-social-design` skill.
 
 **Spacing and layout.** 4px base. Cards in a rail sit `spacing.4` apart; rails are `spacing.12` apart; the page gutter is at least `spacing.4`. Rails scroll horizontally with snap; the page itself never scrolls sideways.
 

@@ -23,7 +23,7 @@ Keep each day's pieces in `private/diario/anexos/redes/dia-NN/`, next to its `sp
 | --- | --- | --- |
 | **Headline** | Archivo display: weight 800, uppercase, condensed (`wdth` 75), line-height 0.92, white (`text-primary`) | 146 px (96 px when it shares the slide with an illustration) |
 | **Kicker** (eyebrow) | Archivo weight 500, uppercase, letter-spacing 0.06 em, accent colour | 40 px |
-| **Lead** (under the headline) | Archivo weight 400, line-height 1.35, white | 48 px (40 px under an illustration) |
+| **Lead** (under the headline) | Archivo weight 400, line-height 1.35, white | 44 px on every slide |
 | **Secondary** (contact line, counter «N / total →», footnotes) | Archivo weight 400, muted grey (`text-secondary`) | 32 px |
 | **Domain** | `fenaki.tv`, lowercase, weight 700, accent colour | 88 px |
 
@@ -62,7 +62,7 @@ node .claude/skills/fenaki-social-design/render.mjs private/diario/anexos/redes/
   "slides": [
     { "bg": "catalog", "headline": "El mejor cine, en cortos", "lead": "…" },
     { "bg": "catalog", "kicker": "Día N de 7", "headline": "Construir FENAKI en una semana", "lead": "…" },
-    { "bg": "glow", "disc": true, "headline": "Fenaquistiscopio 1832", "headlineSize": 96, "lead": "…", "leadSize": 40 },
+    { "bg": "glow", "disc": true, "headline": "Fenaquistiscopio 1832", "headlineSize": 96, "lead": "…", },
     { "bg": "catalog", "headline": "Apúntate al lanzamiento", "lead": "…", "domain": true, "secondary": "¿Diriges un festival…" }
   ],
   "card": { "bg": "catalog", "kicker": "Día N de 7", "headline": "…" }

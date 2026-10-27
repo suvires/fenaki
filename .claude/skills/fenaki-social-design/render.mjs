@@ -19,7 +19,7 @@ const shot = (await readFile(`${root}apps/web/src/assets/landing-catalog.webp`))
 const wm = `data:image/svg+xml;base64,${Buffer.from((await readFile(`${root}packages/ui/src/assets/wordmark.svg`, 'utf8')).replace(/currentColor/g, c['text-primary'])).toString('base64')}`
 
 // Typographic roles (same as the web): see SKILL.md.
-const SIZE = { headline: 146, kicker: 40, lead: 48, secondary: 32, domain: 88 }
+const SIZE = { headline: 146, kicker: 40, lead: 44, secondary: 32, domain: 88 }
 
 function figure(t) {
   // One phase of a jump: crouch → take-off → top → landing. Drawn upright, feet at y=0.
