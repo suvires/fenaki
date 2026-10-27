@@ -36,7 +36,7 @@ description: Write and schedule FENAKI's social media posts (the «FENAKI en 7 d
 
 ## The challenge framing
 
-«FENAKI en 7 días»: build and launch FENAKI in one week with AI. The experiment is that the AI works autonomously; the human part is **giving it access to what it cannot do by itself** (creating accounts, paying for the domain and the server, handing over keys). From there it manages: code, server, deployments, catalog, posts. Do not frame it as «the AI proposes, a person decides» except where a human really decides (publishing a short, approving a post).
+«FENAKI en 7 días»: build and launch FENAKI in one week with AI. The experiment is that the AI works autonomously; the human part is **giving it access to what it cannot do by itself** (creating accounts, paying for the domain and the server, handing over keys). From there it manages: code, server, deployments, catalog, posts. Do not frame it as «the AI proposes, a person decides» except where a human really decides (approving a post, the few doubtful shorts). Since 27 oct 2026 the AI also decides which shorts are published or discarded; only doubtful cases (signs of a re-upload, rights) go to the person.
 
 ## Every post
 
