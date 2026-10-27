@@ -15,7 +15,7 @@ description: Write and schedule FENAKI's social media posts (the «FENAKI en 7 d
 
 - **FENAKI** in capitals, always. `fenaki.tv` and `hola@fenaki.tv` in lowercase.
 - **email**, never «correo».
-- **Lanzamiento** for the launch («Apúntate al lanzamiento», «te avisamos del lanzamiento»), as the web and the waitlist emails say. Not «estreno», not «abrir las puertas», no door metaphors at all.
+- **Lanzamiento** for the launch («Apúntate al lanzamiento», «te avisaremos del lanzamiento»; future tense, never «te avisamos»), as the web and the waitlist emails say. Not «estreno», not «abrir las puertas», no door metaphors at all.
 - Inclusive nouns: **cineastas**, «quienes los dirigen»; not «autores» or «directores» as a generic.
 - The tagline: **«El mejor cine, en cortos»**. What FENAKI is: the shorts that filmmakers, festivals and schools publish openly are spread across YouTube, Vimeo and festival sites; FENAKI gathers them in one place, with the experience of a streaming platform.
 - Never pitch «gratis y legales» (no pull) and never call FENAKI curated or its shorts «elegidos uno a uno»: it goes for volume. Legality is a fact for the legal pages, not a selling point.
