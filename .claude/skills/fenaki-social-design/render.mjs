@@ -19,7 +19,7 @@ const shot = (await readFile(`${root}apps/web/src/assets/landing-catalog.webp`))
 const wm = `data:image/svg+xml;base64,${Buffer.from((await readFile(`${root}packages/ui/src/assets/wordmark.svg`, 'utf8')).replace(/currentColor/g, c['text-primary'])).toString('base64')}`
 
 // Typographic roles (same as the web): see SKILL.md.
-const SIZE = { headline: 146, kicker: 40, lead: 44, secondary: 32, domain: 88 }
+const SIZE = { headline: 136, kicker: 40, lead: 44, secondary: 32, domain: 88 }
 
 function figure(t) {
   // One phase of a jump: crouch → take-off → top → landing. Drawn upright, feet at y=0.
@@ -73,7 +73,7 @@ const css = (w, h, catalog, scale) => `@font-face{font-family:A;src:url(data:fon
 function body(s, i, total, card) {
   const k = card ? 0.62 : 1
   const words = Array.isArray(s.headline) ? s.headline.join(' ') : (s.headline ?? '')
-  const hl = !words ? '' : `<h1 class="headline" style="font-size:${Math.round((s.headlineSize ?? SIZE.headline) * k)}px">${esc(words)}</h1>`
+  const hl = !words ? '' : `<h1 class="headline" style="font-size:${Math.round((s.headlineSize ?? SIZE.headline) * k)}px">${esc(words).replace(/\n/g, '<br>')}</h1>`
   const text = [
     s.kicker ? `<div class="kicker" style="font-size:${Math.round(SIZE.kicker * (card ? 0.8 : 1))}px">${esc(s.kicker)}</div>` : '',
     hl,
@@ -102,7 +102,12 @@ for (const [index, s] of (spec.slides ?? []).entries()) {
     const right = box.getBoundingClientRect().right - pad
     const wide = [...box.querySelectorAll('h1,p,div')].some((el) => el.scrollWidth > el.clientWidth + 1 || el.getBoundingClientRect().right > right + 1)
     const tall = box.scrollHeight > box.clientHeight + 1 ? box.scrollHeight - box.clientHeight : 0
-    return tall || (wide ? 'horizontal' : 0)
+    // A headline with explicit line breaks must keep exactly those lines.
+    const h1 = box.querySelector('h1')
+    const breaks = h1 ? h1.querySelectorAll('br').length + 1 : 0
+    const lines = h1 ? Math.round(h1.getBoundingClientRect().height / (parseFloat(getComputedStyle(h1).fontSize) * 0.92)) : 0
+    const wraps = breaks > 1 && lines > breaks ? 'headline wraps' : 0
+    return tall || (wide ? 'horizontal' : 0) || wraps
   })
   if (overflow) console.warn(`slide ${index + 1}: content overflows (${overflow}${typeof overflow === 'number' ? 'px' : ''}) — shorten the text or lower headlineSize`)
   await page.screenshot({ path: `${spec.out}/carrusel-${index + 1}.png` }); await page.close()

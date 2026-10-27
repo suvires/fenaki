@@ -21,7 +21,7 @@ Keep each day's pieces in `private/diario/anexos/redes/dia-NN/`, next to its `sp
 
 | Role | Style | Carousel size |
 | --- | --- | --- |
-| **Headline** | Archivo display: weight 800, uppercase, condensed (`wdth` 75), line-height 0.92, white (`text-primary`) | 146 px (96 px when it shares the slide with an illustration) |
+| **Headline** | Archivo display: weight 800, uppercase, condensed (`wdth` 75), line-height 0.92, white (`text-primary`) | 136 px, the size at which «El mejor cine,» fills one line (smaller only for a single long word, e.g. «Fenaquistiscopio» at 104 px). Break lines with `\n` in the spec |
 | **Kicker** (eyebrow) | Archivo weight 500, uppercase, letter-spacing 0.06 em, accent colour | 40 px |
 | **Lead** (under the headline) | Archivo weight 400, line-height 1.35, white | 44 px on every slide |
 | **Secondary** (contact line, counter «N / total →», footnotes) | Archivo weight 400, muted grey (`text-secondary`) | 32 px |
