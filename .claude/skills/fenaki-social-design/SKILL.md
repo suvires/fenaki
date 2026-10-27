@@ -21,11 +21,11 @@ Keep each day's pieces in `private/diario/anexos/redes/dia-NN/`, next to its `sp
 
 | Role | Style | Carousel size |
 | --- | --- | --- |
-| **Headline** | Archivo display: weight 800, uppercase, condensed (`wdth` 75), line-height 0.92, white (`ink`) | 146 px (96 px when it shares the slide with an illustration) |
-| **Accent in the headline** | The closing phrase that carries the payoff, in the accent colour (`tungsteno`). Exactly one span per headline; never the whole headline, never the brand name | — |
+| **Headline** | Archivo display: weight 800, uppercase, condensed (`wdth` 75), line-height 0.92, white (`text-primary`) | 146 px (96 px when it shares the slide with an illustration) |
+| **Accent in the headline** | The closing phrase that carries the payoff, in the accent text colour (`text-accent`). Exactly one span per headline; never the whole headline, never the brand name | — |
 | **Kicker** (eyebrow) | Archivo weight 500, uppercase, letter-spacing 0.06 em, accent colour | 40 px |
 | **Lead** (under the headline) | Archivo weight 400, line-height 1.35, white | 48 px (40 px under an illustration) |
-| **Secondary** (contact line, counter «N / total →», footnotes) | Archivo weight 400, muted grey (`ink-muted`) | 32 px |
+| **Secondary** (contact line, counter «N / total →», footnotes) | Archivo weight 400, muted grey (`text-secondary`) | 32 px |
 | **Domain** | `fenaki.tv`, lowercase, weight 700, accent colour | 88 px |
 
 Rules:

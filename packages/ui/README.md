@@ -151,7 +151,7 @@ Today the site's eyebrows use `font-mono` (the same Archivo with tabular figures
 
 ### Social pieces
 
-Carousels (1080×1350) and cards (1200×675) use these same roles, scaled up from the web's sizes (display-xl 64px, body-l 17px, label 12px, small 14px) and keeping their proportions: about ×2 on a carousel slide (headline 128px, lead 34px, kicker 24px, secondary 28px) and ×1.5 on a card (96px, 26px, 18px, 21px). Same families, weights, case, tracking and colours, on the canvas colour; one two-tone headline per piece.
+Carousels (1080×1350) and cards (1200×675) use these same roles: same families, weights, case, tracking and colours, on the canvas colour, with one two-tone headline per piece. A phone shows a slide at about a third of its size, so the sizes are larger than a straight scale of the web's: on a carousel slide, headline 146px (96px beside an illustration), lead 48px (40px beside an illustration), kicker 40px, secondary 32px, domain 88px; a card uses about 0.62 of those. The renderer and the rules for posts are Claude Code skills: `.claude/skills/fenaki-social-design` (images) and `.claude/skills/fenaki-social-writing` (texts).
 
 ## Storybook
 
