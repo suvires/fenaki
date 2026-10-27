@@ -1,4 +1,4 @@
-import type { ShortCardProps } from '../components/ShortCard.tsx'
+import type { ShortCardProps } from '../molecules/ShortCard.tsx'
 
 /** The sample shorts from the design system previews. Spanish labels stand in for locale strings. */
 export const SHORTS: ShortCardProps[] = [

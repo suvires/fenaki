@@ -1,41 +1,58 @@
-export { Badge, type BadgeProps, type BadgeTone } from './components/Badge.tsx'
-export { Button, type ButtonProps } from './components/Button.tsx'
-export { Checkbox, type CheckboxProps } from './components/Checkbox.tsx'
-export { CollectionHero, type CollectionHeroProps } from './components/CollectionHero.tsx'
-export { Duration, type DurationProps } from './components/Duration.tsx'
-export { FacetGroup, type FacetGroupProps, type FacetOption } from './components/FacetGroup.tsx'
-export { FilterChips, type FilterChipsProps } from './components/FilterChips.tsx'
-export { IconButton, type IconButtonProps } from './components/IconButton.tsx'
-export { Icon, type IconName, type IconProps } from './components/Icon.tsx'
-export { LicenseNote, type LicenseNoteProps, type LicenseRoute } from './components/LicenseNote.tsx'
-export { Notice, type NoticeProps, type NoticeTone } from './components/Notice.tsx'
-export { OfferCard, type OfferCardProps } from './components/OfferCard.tsx'
-export { PageHeader, type PageHeaderProps } from './components/PageHeader.tsx'
-export { Pagination, type PaginationProps } from './components/Pagination.tsx'
-export { Dialog, type DialogProps } from './components/Dialog.tsx'
-export { PlayerGate, type PlayerGateProps } from './components/PlayerGate.tsx'
-export { Poster, type PosterProps, type PosterTone } from './components/Poster.tsx'
-export { Prose, type ProseProps } from './components/Prose.tsx'
-export { Rail, type RailProps } from './components/Rail.tsx'
-export { RankedItem, RankedRail, type RankedItemProps } from './components/RankedRail.tsx'
-export { RankNumber, type RankNumberProps } from './components/RankNumber.tsx'
-export { RatingButtons, type Rating, type RatingButtonsProps } from './components/RatingButtons.tsx'
-export { SearchField, type SearchFieldProps } from './components/SearchField.tsx'
-export { stillTextClass, type StillTextColor } from './stillText.ts'
-export { ShortCard, type ShortCardProps } from './components/ShortCard.tsx'
-export { ShortPreview, type ShortPreviewProps } from './components/ShortPreview.tsx'
-export { ShortHero, type ShortHeroProps } from './components/ShortHero.tsx'
-export { ShortGrid, type ShortGridProps } from './components/ShortGrid.tsx'
-export { ShowcaseHero, type ShowcaseHeroProps } from './components/ShowcaseHero.tsx'
-export { SiteFooter, type SiteFooterProps } from './components/SiteFooter.tsx'
-export { Tooltip, type TooltipProps } from './components/Tooltip.tsx'
-export { TmdbLogo, type TmdbLogoProps } from './components/TmdbLogo.tsx'
-export { SponsorCredit, type SponsorCreditProps } from './components/SponsorCredit.tsx'
-export { TextField, type TextFieldProps } from './components/TextField.tsx'
-export { Wordmark, type WordmarkProps } from './components/Wordmark.tsx'
-export { Monogram, type MonogramProps } from './components/Monogram.tsx'
+/**
+ * The public API of @fenaki/ui, by atomic level (packages/ui/README.md explains the levels).
+ * Every component keeps its name here wherever its file lives.
+ */
+
+// Foundations: icons, brand marks and helpers.
+export { Icon, type IconName, type IconProps } from './foundations/Icon.tsx'
+export { Monogram, type MonogramProps } from './foundations/Monogram.tsx'
+export { TmdbLogo, type TmdbLogoProps } from './foundations/TmdbLogo.tsx'
+export { Wordmark, type WordmarkProps } from './foundations/Wordmark.tsx'
+export { stillTextClass, type StillTextColor } from './foundations/stillText.ts'
+
+// Atoms: the smallest working parts.
+export {
+  AccentHeadline,
+  type AccentHeadlineProps,
+  type HeadlineAccent,
+} from './atoms/AccentHeadline.tsx'
+export { Badge, type BadgeProps, type BadgeTone } from './atoms/Badge.tsx'
+export { Button, type ButtonProps } from './atoms/Button.tsx'
+export { Duration, type DurationProps } from './atoms/Duration.tsx'
+export { IconButton, type IconButtonProps } from './atoms/IconButton.tsx'
+export { Poster, type PosterProps, type PosterTone } from './atoms/Poster.tsx'
+export { Prose, type ProseProps } from './atoms/Prose.tsx'
+export { RankNumber, type RankNumberProps } from './atoms/RankNumber.tsx'
+export { SearchField, type SearchFieldProps } from './atoms/SearchField.tsx'
+export { Tooltip, type TooltipProps } from './atoms/Tooltip.tsx'
+
+// Molecules: a few atoms working as one unit.
+export { Checkbox, type CheckboxProps } from './molecules/Checkbox.tsx'
+export { FacetGroup, type FacetGroupProps, type FacetOption } from './molecules/FacetGroup.tsx'
+export { FilterChips, type FilterChipsProps } from './molecules/FilterChips.tsx'
+export { LicenseNote, type LicenseNoteProps, type LicenseRoute } from './molecules/LicenseNote.tsx'
+export { Notice, type NoticeProps, type NoticeTone } from './molecules/Notice.tsx'
+export { OfferCard, type OfferCardProps } from './molecules/OfferCard.tsx'
+export { PageHeader, type PageHeaderProps } from './molecules/PageHeader.tsx'
+export { Pagination, type PaginationProps } from './molecules/Pagination.tsx'
+export { RatingButtons, type Rating, type RatingButtonsProps } from './molecules/RatingButtons.tsx'
+export { ShortCard, type ShortCardProps } from './molecules/ShortCard.tsx'
+export { SponsorCredit, type SponsorCreditProps } from './molecules/SponsorCredit.tsx'
+export { TextField, type TextFieldProps } from './molecules/TextField.tsx'
+
+// Organisms: whole sections of a page.
+export { CollectionHero, type CollectionHeroProps } from './organisms/CollectionHero.tsx'
+export { Dialog, type DialogProps } from './organisms/Dialog.tsx'
+export { PlayerGate, type PlayerGateProps } from './organisms/PlayerGate.tsx'
+export { Rail, type RailProps } from './organisms/Rail.tsx'
+export { RankedItem, RankedRail, type RankedItemProps } from './organisms/RankedRail.tsx'
+export { ShortGrid, type ShortGridProps } from './organisms/ShortGrid.tsx'
+export { ShortHero, type ShortHeroProps } from './organisms/ShortHero.tsx'
+export { ShortPreview, type ShortPreviewProps } from './organisms/ShortPreview.tsx'
+export { ShowcaseHero, type ShowcaseHeroProps } from './organisms/ShowcaseHero.tsx'
+export { SiteFooter, type SiteFooterProps } from './organisms/SiteFooter.tsx'
 export {
   SiteHeader,
   type SiteHeaderAccount,
   type SiteHeaderProps,
-} from './components/SiteHeader.tsx'
+} from './organisms/SiteHeader.tsx'

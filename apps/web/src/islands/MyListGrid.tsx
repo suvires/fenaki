@@ -36,7 +36,7 @@ export function MyListGrid({ emptyHint, locale, hrefBase, current, initial }: My
     return subscribe(sync)
   }, [current])
 
-  if (items.length === 0) return <p className="m-0 text-body-l text-ink-muted">{emptyHint}</p>
+  if (items.length === 0) return <p className="m-0 text-body-l text-secondary">{emptyHint}</p>
   return (
     <ShortGrid
       items={items.map((item) => ({

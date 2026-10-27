@@ -9,19 +9,19 @@
 
 @layer base {
   html {
-    background-color: var(--color-sala-0);
-    color: var(--color-ink);
+    background-color: var(--background-color-canvas);
+    color: var(--text-color-primary);
     font-family: var(--font-text);
     font-size: var(--text-body);
     line-height: var(--text-body--line-height);
     word-spacing: var(--word-spacing);
     -webkit-font-smoothing: antialiased;
     /* The site header stays fixed at the top: anchors land below it. */
-    scroll-padding-top: var(--size-header);
+    scroll-padding-top: var(--site-header-height);
   }
 }
 
-/* Keyboard and TV-remote focus: a sala-0 gap, then a 2px tungsteno ring. Never removed. */
+/* Keyboard and TV-remote focus: a dark gap, then a 2px accent ring. Never removed. */
 @utility focus-ring {
   outline: 2px solid transparent;
   box-shadow: var(--shadow-focus-ring);
@@ -30,8 +30,8 @@
 /* Film-perforation strip on the left edge of a typographic poster, drawn in --perf. */
 @utility perforation {
   background-image: linear-gradient(
-    var(--perf) 0 var(--size-perforation-hole),
-    transparent var(--size-perforation-hole) calc(2 * var(--size-perforation-hole))
+    var(--perf) 0 var(--poster-perforation-hole),
+    transparent var(--poster-perforation-hole) calc(2 * var(--poster-perforation-hole))
   );
-  background-size: var(--size-perforation) calc(2 * var(--size-perforation-hole));
+  background-size: var(--poster-perforation-width) calc(2 * var(--poster-perforation-hole));
 }

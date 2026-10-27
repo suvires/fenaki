@@ -4,14 +4,14 @@ Curated catalog of free, legally available short films with a streaming-style UX
 
 This repository is a pnpm + Turborepo monorepo:
 
-| Path              | What it is                                                                                         |
-| ----------------- | -------------------------------------------------------------------------------------------------- |
-| `apps/web`        | Public site: Astro with SSR (Node adapter), locale-prefixed routes, React islands.                 |
-| `apps/cms`        | Payload CMS 3 (Next.js): admin panel, REST API, background jobs, seed.                             |
-| `packages/tokens` | Design tokens. `tokens.json` is the single source; a build script generates the Tailwind v4 theme. |
-| `packages/ui`     | React components on tokens and Radix primitives, with Storybook.                                   |
-| `packages/i18n`   | Locale files with typed access, and `Intl` formatting helpers.                                     |
-| `design/system`   | The validated design reference the packages were ported from. Read only.                           |
+| Path              | What it is                                                                                                                   |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `apps/web`        | Public site: Astro with SSR (Node adapter), locale-prefixed routes, React islands.                                           |
+| `apps/cms`        | Payload CMS 3 (Next.js): admin panel, REST API, background jobs, seed.                                                       |
+| `packages/tokens` | Design tokens in three tiers (W3C DTCG). `tokens.json` is the single source; a build script generates the Tailwind v4 theme. |
+| `packages/ui`     | React components on tokens and Radix primitives, by atomic level, with Storybook. See its README.                            |
+| `packages/i18n`   | Locale files with typed access, and `Intl` formatting helpers.                                                               |
+| `design/system`   | The validated design reference the packages were ported from. Read only.                                                     |
 
 ## Requirements
 

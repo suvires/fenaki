@@ -14,13 +14,13 @@ const more = createRichTranslator(locale)('playerSettings.more', { cookies: 'lin
 <Base locale={locale} title={t('playerSettings.title')} noindex>
   <section class="grid gap-6 max-w-article">
     <h1 class="m-0 font-display text-display-l uppercase">{t('playerSettings.title')}</h1>
-    <p class="m-0 max-w-player-text text-body text-ink-muted">{t('playerSettings.intro')}</p>
+    <p class="m-0 max-w-player-text text-body text-secondary">{t('playerSettings.intro')}</p>
     <PlayerSettings client:load locale={locale} />
-    <p class="m-0 text-small text-ink-muted">
+    <p class="m-0 text-small text-secondary">
       {more.map((piece) =>
         piece === 'link' ? (
           <a
-            class="text-ink underline underline-offset-4 hover:no-underline"
+            class="text-primary underline underline-offset-4 hover:no-underline"
             href={paths.legal(locale, 'cookies')}
           >
             {t('playerSettings.cookiesLink')}

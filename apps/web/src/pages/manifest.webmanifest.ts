@@ -10,7 +10,7 @@ import { MANIFEST_ICON_SIZES } from './icon-[size].png.ts'
  */
 export const GET: APIRoute = () => {
   const t = translator(defaultLocale)
-  const ground = palettes.dark['sala-0']
+  const ground = palettes.dark['background-canvas']
   const manifest = {
     name: t('site.name'),
     short_name: t('site.name'),

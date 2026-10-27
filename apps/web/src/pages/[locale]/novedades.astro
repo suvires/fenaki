@@ -28,7 +28,7 @@ const rails = GENRES.map((type) => ({
     {/* No visible title: the header marks the page. The heading stays for screen readers. */}
     <h1 class="sr-only">{t('home.rails.latest')}</h1>
     {rails.length === 0 ? (
-      <p class="m-0 text-body-l text-ink-muted">{t('home.empty')}</p>
+      <p class="m-0 text-body-l text-secondary">{t('home.empty')}</p>
     ) : (
       rails.map((rail) => (
         <Rail

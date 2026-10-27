@@ -147,7 +147,7 @@ const origin = [
           <Badge tone="info">{t('badges.subtitles', { language: locale.toUpperCase() })}</Badge>
         )}
         {short.noDialogue && <Badge>{t('badges.noDialogue')}</Badge>}
-        {origin && <span class="text-meta text-ink-muted">{origin}</span>}
+        {origin && <span class="text-meta text-secondary">{origin}</span>}
       </div>
       <div>
         <MyListButton
@@ -160,7 +160,7 @@ const origin = [
       </div>
       {short.synopsis && <p class="m-0 max-w-synopsis text-body-l">{short.synopsis}</p>}
       {directors.length > 0 && (
-        <p class="m-0 text-ink-muted">
+        <p class="m-0 text-secondary">
           {directedBy.map((piece) =>
             piece === true ? <PeopleLinks locale={locale} people={directors} /> : piece,
           )}
@@ -175,7 +175,7 @@ const origin = [
             {awards.map((award) => (
               <li class="grid">
                 <span>{award.name}</span>
-                <span class="text-meta text-ink-muted">
+                <span class="text-meta text-secondary">
                   {[
                     t(`short.awardResults.${award.result}`),
                     award.year && formatYear(award.year, locale),
@@ -196,7 +196,7 @@ const origin = [
           <dl class="m-0 grid grid-cols-[max-content_1fr] gap-x-4 gap-y-1 text-body">
             {credits.map((credit) => (
               <>
-                <dt class="text-ink-muted">{t(`short.roles.${credit.role}`)}</dt>
+                <dt class="text-secondary">{t(`short.roles.${credit.role}`)}</dt>
                 <dd class="m-0">
                   <PeopleLinks locale={locale} people={credit.people} />
                 </dd>

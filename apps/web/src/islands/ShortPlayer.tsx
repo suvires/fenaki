@@ -157,7 +157,7 @@ function ConsentDialog({ locale, provider, open, onCancel, onAccept }: ConsentDi
           href={POLICIES[provider]}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-ink underline underline-offset-4 hover:no-underline rounded-xs focus-visible:focus-ring"
+          className="text-primary underline underline-offset-4 hover:no-underline rounded-xs focus-visible:focus-ring"
         >
           {t('short.player.consent.policy', { provider: name })}
         </a>

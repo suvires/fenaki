@@ -72,7 +72,7 @@ export function ForgotForm({ locale, signInHref }: ForgotFormProps) {
         </Notice>
       ) : null}
       <p className="m-0 text-small">
-        <a className="text-ink" href={signInHref}>
+        <a className="text-primary" href={signInHref}>
           {t('account.forgot.back')}
         </a>
       </p>

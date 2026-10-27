@@ -204,8 +204,8 @@ export function CardPreview(props: CardPreviewProps) {
   useEffect(() => {
     if (!hoverable) return
     const next = createPreviewTimer<HTMLElement>({
-      openDelay: token('--delay-preview', 450),
-      closeDelay: token('--delay-preview-close', 150),
+      openDelay: token('--short-preview-delay-open', 450),
+      closeDelay: token('--short-preview-delay-close', 150),
       onOpen: (card) => {
         const data = readCard(card)
         setOpen(data ? { data, cardBox: box(card.getBoundingClientRect()) } : undefined)

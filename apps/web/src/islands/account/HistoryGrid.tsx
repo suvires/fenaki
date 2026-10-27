@@ -34,14 +34,14 @@ export function HistoryGrid({ locale, items: initial }: HistoryGridProps) {
   }
 
   if (items.length === 0)
-    return <p className="m-0 text-body-l text-ink-muted">{t('account.history.empty')}</p>
+    return <p className="m-0 text-body-l text-secondary">{t('account.history.empty')}</p>
 
   return (
     <div className="grid gap-6">
       <div className="flex flex-wrap items-center gap-3">
         {confirming ? (
           <>
-            <span role="status" className="text-ink-muted">
+            <span role="status" className="text-secondary">
               {t('account.history.clearConfirm')}
             </span>
             <Button size="sm" onClick={clear}>

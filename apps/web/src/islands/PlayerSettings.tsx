@@ -25,11 +25,11 @@ export function PlayerSettings({ locale }: PlayerSettingsProps) {
         <li
           key={provider}
           data-player-provider={provider}
-          className="flex flex-wrap items-center justify-between gap-3 rounded-panel bg-sala-1 p-4"
+          className="flex flex-wrap items-center justify-between gap-3 rounded-md bg-raised p-4"
         >
           <div className="grid gap-1">
-            <span className="text-body text-ink">{t(`providers.${provider}`)}</span>
-            <span className="text-meta text-ink-muted">
+            <span className="text-body text-primary">{t(`providers.${provider}`)}</span>
+            <span className="text-meta text-secondary">
               {remembered[provider] ? t('playerSettings.allowed') : t('playerSettings.ask')}
             </span>
           </div>

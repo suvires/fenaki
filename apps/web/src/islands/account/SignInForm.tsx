@@ -99,13 +99,13 @@ export function SignInForm({ locale, next, forgotHref, signUpHref, notice }: Sig
         ) : null}
       </form>
       <p className="m-0 text-small">
-        <a className="text-ink" href={forgotHref}>
+        <a className="text-primary" href={forgotHref}>
           {t('account.signIn.forgot')}
         </a>
       </p>
-      <p className="m-0 text-small text-ink-muted">
+      <p className="m-0 text-small text-secondary">
         {t('account.signIn.noAccount')}{' '}
-        <a className="text-ink" href={signUpHref}>
+        <a className="text-primary" href={signUpHref}>
           {t('account.signIn.signUpLink')}
         </a>
       </p>

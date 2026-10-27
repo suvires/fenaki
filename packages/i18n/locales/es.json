@@ -161,7 +161,8 @@
   },
   "landing": {
     "hero": {
-      "title": "El mejor cine, en cortos",
+      "title": "El mejor cine, {accent}",
+      "titleAccent": "en cortos",
       "lead": "Los cortometrajes publicados en abierto están repartidos entre diferentes canales, festivales y escuelas; FENAKI los reúne en un solo sitio."
     }
   },

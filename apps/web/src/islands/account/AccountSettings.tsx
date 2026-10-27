@@ -93,7 +93,7 @@ export function AccountSettings({
         description={t('account.settings.signedInAs', { email })}
       />
 
-      <section className="grid gap-4 max-w-(--container-note)" aria-labelledby="account-profile">
+      <section className="grid gap-4 max-w-(--container-narrow)" aria-labelledby="account-profile">
         <h2 id="account-profile" className={heading}>
           {t('account.settings.profile.title')}
         </h2>
@@ -123,7 +123,7 @@ export function AccountSettings({
         </form>
       </section>
 
-      <section className="grid gap-4 max-w-(--container-note)" aria-labelledby="account-password">
+      <section className="grid gap-4 max-w-(--container-narrow)" aria-labelledby="account-password">
         <h2 id="account-password" className={heading}>
           {t('account.settings.password.title')}
         </h2>
@@ -163,11 +163,11 @@ export function AccountSettings({
         </form>
       </section>
 
-      <section className="grid gap-4 max-w-(--container-note)" aria-labelledby="account-data">
+      <section className="grid gap-4 max-w-(--container-narrow)" aria-labelledby="account-data">
         <h2 id="account-data" className={heading}>
           {t('account.settings.data.title')}
         </h2>
-        <p className="m-0 text-ink-muted">{t('account.settings.data.text')}</p>
+        <p className="m-0 text-secondary">{t('account.settings.data.text')}</p>
         <div>
           <Button variant="secondary" href={exportHref}>
             {t('account.settings.data.download')}
@@ -175,11 +175,11 @@ export function AccountSettings({
         </div>
       </section>
 
-      <section className="grid gap-4 max-w-(--container-note)" aria-labelledby="account-delete">
+      <section className="grid gap-4 max-w-(--container-narrow)" aria-labelledby="account-delete">
         <h2 id="account-delete" className={heading}>
           {t('account.settings.delete.title')}
         </h2>
-        <p className="m-0 text-ink-muted">{t('account.settings.delete.text')}</p>
+        <p className="m-0 text-secondary">{t('account.settings.delete.text')}</p>
         {deleting === 'idle' ? (
           <div>
             <Button variant="secondary" onClick={() => setDeleting('confirm')}>
@@ -219,7 +219,7 @@ export function AccountSettings({
         )}
       </section>
 
-      <section className="grid gap-4 max-w-(--container-note)">
+      <section className="grid gap-4 max-w-(--container-narrow)">
         <form method="post" action={signOutAction}>
           <Button type="submit" variant="secondary">
             {t('account.settings.signOut')}

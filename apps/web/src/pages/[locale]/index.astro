@@ -162,7 +162,7 @@ const otherRails = rails.filter((rail) => rail.key !== 'latest')
     />
   )}
   {!landing && shorts.length === 0 && (
-    <p class="m-0 text-body-l text-ink-muted">{t('home.empty')}</p>
+    <p class="m-0 text-body-l text-secondary">{t('home.empty')}</p>
   )}
   {!landing &&
     latestRails.map((rail) => (

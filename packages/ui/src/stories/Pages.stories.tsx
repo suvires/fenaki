@@ -1,14 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Badge } from '../components/Badge.tsx'
-import { Button } from '../components/Button.tsx'
-import { CollectionHero } from '../components/CollectionHero.tsx'
-import { Duration } from '../components/Duration.tsx'
-import { FilterChips } from '../components/FilterChips.tsx'
-import { LicenseNote } from '../components/LicenseNote.tsx'
-import { PlayerGate } from '../components/PlayerGate.tsx'
-import { Rail } from '../components/Rail.tsx'
-import { SearchField } from '../components/SearchField.tsx'
-import { ShortCard } from '../components/ShortCard.tsx'
+import { Badge } from '../atoms/Badge.tsx'
+import { Button } from '../atoms/Button.tsx'
+import { CollectionHero } from '../organisms/CollectionHero.tsx'
+import { Duration } from '../atoms/Duration.tsx'
+import { FilterChips } from '../molecules/FilterChips.tsx'
+import { LicenseNote } from '../molecules/LicenseNote.tsx'
+import { PlayerGate } from '../organisms/PlayerGate.tsx'
+import { Rail } from '../organisms/Rail.tsx'
+import { SearchField } from '../atoms/SearchField.tsx'
+import { ShortCard } from '../molecules/ShortCard.tsx'
 import { SHORTS } from './fixtures.ts'
 
 /** Showcases composed only from system components, as in design/system. Not components to import. */
@@ -79,13 +79,13 @@ export const Short: Story = {
         <Duration seconds={900} />
         <Badge>Ficción</Badge>
         <Badge tone="info">Sub ES</Badge>
-        <span className="text-meta text-ink-muted">España · 2016</span>
+        <span className="text-meta text-secondary">España · 2016</span>
       </div>
       <p className="m-0 max-w-synopsis text-body-l">
         Luna y Diego son los vigilantes de un aparcamiento. Ella trabaja de día y él de noche, y
         solo se cruzan en el cambio de turno.
       </p>
-      <p className="m-0 text-ink-muted">Dirigido por Juanjo Giménez</p>
+      <p className="m-0 text-secondary">Dirigido por Juanjo Giménez</p>
       <div className="flex flex-wrap items-center gap-3">
         <Button variant="secondary" icon="plus">
           Añadir a mi lista

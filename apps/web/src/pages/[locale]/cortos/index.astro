@@ -122,7 +122,7 @@ const jsonLd =
     description={t('browse.description')}
   />
   {!result ? (
-    <p role="status" class="m-0 text-body-l text-ink-muted">
+    <p role="status" class="m-0 text-body-l text-secondary">
       {t('browse.unavailable')}
     </p>
   ) : (
@@ -134,7 +134,7 @@ const jsonLd =
       </section>
       <div class="grid gap-4">
         <div class="flex flex-wrap items-center gap-4">
-          <p role="status" class="m-0 text-body text-ink-muted">
+          <p role="status" class="m-0 text-body text-secondary">
             {result.total === 0
               ? t('browse.empty')
               : filtered
