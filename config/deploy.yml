@@ -20,9 +20,13 @@ x-cms-env: &cms-env
   clear:
     PAYLOAD_PUBLIC_SERVER_URL: https://cms.fenaki.tv
     WEB_URL: https://fenaki.tv
-    SMTP_HOST: email-smtp.eu-west-1.amazonaws.com
-    SMTP_PORT: 587
-    SMTP_TLS: STARTTLS
+    # Account emails (verification, password) go through the hola@fenaki.tv mailbox (OVHcloud) while
+    # Amazon SES is in its sandbox, like the waitlist's. Back to SES once production access is granted:
+    #   email-smtp.eu-west-1.amazonaws.com, 587, STARTTLS, SES_SMTP_USERNAME/PASSWORD.
+    SMTP_HOST: smtp.mail.ovh.net
+    SMTP_PORT: 465
+    SMTP_TLS: TLS
+    SMTP_USERNAME: hola@fenaki.tv
     EMAIL_FROM_ADDRESS: hola@fenaki.tv
     EMAIL_FROM_NAME: FENAKI
     # The sales CRM's own mailbox (hola@fenaki.tv, OVHcloud Zimbra): outreach goes out through its
@@ -41,8 +45,7 @@ x-cms-env: &cms-env
     - DATABASE_URL
     - PAYLOAD_SECRET
     - MEILISEARCH_ADMIN_KEY:MEILI_MASTER_KEY
-    - SMTP_USERNAME:SES_SMTP_USERNAME
-    - SMTP_PASSWORD:SES_SMTP_PASSWORD
+    - SMTP_PASSWORD:MAILBOX_PASSWORD
     - MAILBOX_PASSWORD
     - UMAMI_PASSWORD:UMAMI_ADMIN_PASSWORD
     # Optional metadata APIs for «Add from URL» and the nightly embed checker (03:00 UTC).
