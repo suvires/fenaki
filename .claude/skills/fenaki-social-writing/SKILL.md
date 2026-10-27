@@ -10,6 +10,10 @@ description: Write and schedule FENAKI's social media posts (the «FENAKI en 7 d
 - FENAKI speaks as a brand, in the first person plural («construimos», «nos hemos propuesto»), never as a person. The owner never appears.
 - Address the reader as «tú», in neutral Spanish for every Spanish speaker: no «vosotros», no Spain-only vocabulary.
 - Clear and direct, with storytelling: a hook, a story, the facts, an ending. No hype, no superlatives, no emoji walls (one 🎬 at most).
+- **Literal, not metaphorical.** Say what happened: «hizo moverse unos dibujos al girar», not «los dibujos cobraban vida». Facts carry the story.
+- **Impersonal for how things worked**: «Se hacía girar frente a un espejo y, mirando por las rendijas, se veía a la pareja bailar», not «lo girabas y veías».
+- Short sentences, one idea each. If a slide or a post reads long, cut an idea, don't compress it.
+- Never tell the reader how to read the piece («pasa rápido», «desliza»).
 
 ## Vocabulary (must match the web and the emails)
 
@@ -17,9 +21,11 @@ description: Write and schedule FENAKI's social media posts (the «FENAKI en 7 d
 - **email**, never «correo».
 - **Lanzamiento** for the launch («Apúntate al lanzamiento», «te avisaremos del lanzamiento»; future tense, never «te avisamos»), as the web and the waitlist emails say. Not «estreno», not «abrir las puertas», no door metaphors at all.
 - Inclusive nouns: **cineastas**, «quienes los dirigen»; not «autores» or «directores» as a generic.
-- The tagline: **«El mejor cine, en cortos»**. What FENAKI is: the shorts that filmmakers, festivals and schools publish openly are spread across YouTube, Vimeo and festival sites; FENAKI gathers them in one place, with the experience of a streaming platform.
+- The tagline: **«El mejor cine, en cortos»**. What FENAKI is, in these words: «Los cortos que cineastas, festivales y escuelas publican en abierto están repartidos por diferentes canales. FENAKI los reúne en un solo sitio, con la experiencia de una plataforma de streaming.» («diferentes canales», not a list of platforms; «con la experiencia de», not «como»).
+- The challenge in copy: «construir FENAKI en una semana» («FENAKI en 7 días» is the series name; «Día N de 7» is the kicker).
 - Never pitch «gratis y legales» (no pull) and never call FENAKI curated or its shorts «elegidos uno a uno»: it goes for volume. Legality is a fact for the legal pages, not a selling point.
-- Never mention the project's earlier name. The naming story starts at «buscábamos un nombre con gancho» and ends at the phenakistiscope (1832, Plateau and Stampfer; Greek «engañar al ojo»; loops of a second: the first shorts).
+- Never mention the project's earlier name. The naming story starts at «buscábamos un nombre con gancho» and centres on the word: **fenaquistiscopio**, the disc that in 1832 made drawings move as it spun (Plateau and Stampfer), Greek for «engañar al ojo», hence FENAKI. Its loops lasted about a second: the first shorts. Reference wording: «Así se llamó el disco que, en 1832, hizo moverse unos dibujos al girar. En griego significa «engañar al ojo», y de ahí viene FENAKI.»
+- Images get the exact credit, and the text must not mix them up: the waltzing couple is Eadweard Muybridge's disc (1893, Library of Congress), not the 1832 original.
 - No fixed launch date in posts: the challenge ends on day 7 (Saturday 31 Oct 2026) at the latest; «si estamos listos antes, abrimos antes».
 
 ## The challenge framing
@@ -46,7 +52,8 @@ description: Write and schedule FENAKI's social media posts (the «FENAKI en 7 d
 
 ## Workflow
 
-1. Draft the day in `private/diario/posts-dia-NN.md`: the common message, then each network's text, then the slide list.
+1. Draft the day in `private/diario/posts-dia-NN.md`: the common message, each network's text, and the final slide list (kept in sync with `spec.json`; delete superseded versions instead of striking them through).
+   Every network says the same facts with the same words as the slides; when a slide changes, update the texts in the same pass. Count the characters of every thread post with a script, not by eye.
 2. Make the images with `fenaki-social-design`.
 3. **Send texts and images to the user and wait for explicit approval.** Publishing is public and in the brand's name: never post or schedule without it, and ask again for each post.
 4. Schedule with Postiz (MCP tools `mcp__postiz__*` or the `postiz` CLI; see the `postiz` skill). Every image must be uploaded through Postiz first (`postiz upload` / `uploadFromUrlTool`); raw paths are rejected. The connected channels are Instagram (standalone), Facebook page, Threads, X, LinkedIn page, YouTube, TikTok (business) and Bluesky; list them with `integrationList`.

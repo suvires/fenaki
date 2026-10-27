@@ -71,7 +71,7 @@ const css = (w, h, catalog, scale) => `@font-face{font-family:A;src:url(data:fon
 .kicker{font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:${c['text-accent']}}
 .lead{font-weight:400;line-height:1.35;color:${c['text-primary']}}
 .secondary{font-weight:400;line-height:1.4;color:${c['text-secondary']}}
-.domain{font-weight:700;color:${c['text-accent']}}
+.domain{font-weight:400;color:${c['text-accent']}}
 .stack{display:flex;flex-direction:column;gap:${Math.round(32 * scale)}px}`
 function body(s, i, total, card) {
   const k = card ? 0.62 : 1
