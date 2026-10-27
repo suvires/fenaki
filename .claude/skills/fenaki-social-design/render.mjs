@@ -38,10 +38,10 @@ function figure(t) {
 /** The phenakistiscope disc: 8 phases of a jumping figure, slits and a spin arrow. */
 function disc(size) {
   const r = 500, n = 8, p = []
-  p.push(`<circle r="${r}" fill="${c['background-muted']}" stroke="${c['border-strong']}" stroke-width="5"/>`)
-  // The slit band, as on Plateau's discs, and a dotted decorative ring inside it.
+  // The disc on the page colour, with the slit band around its edge, as on Plateau's discs.
+  p.push(`<circle r="${r}" fill="none" stroke="${c['border-strong']}" stroke-width="5"/>`)
   p.push(`<circle r="${r - 52}" fill="none" stroke="${c['background-raised']}" stroke-width="104"/>`)
-  for (let i = 0; i < 48; i++) p.push(`<circle r="5" cx="0" cy="${-(r - 120)}" fill="${c['border-strong']}" transform="rotate(${i * 7.5})"/>`)
+  p.push(`<circle r="${r - 104}" fill="none" stroke="${c['border-subtle']}" stroke-width="3"/>`)
   for (let i = 0; i < n; i++) {
     const a = (i / n) * 360
     p.push(`<rect x="-12" y="${-r + 12}" width="24" height="80" rx="12" fill="${c['background-canvas']}" transform="rotate(${a})"/>`)
