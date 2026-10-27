@@ -29,7 +29,7 @@ DTCG structure: `$value`, `$type` (inherited from groups), `$description`, `{dot
 
 ### Naming rules
 
-- English, lower case, kebab-case; named by role, never by look or metaphor (`background.raised`, not `sala-1`). The brand's metaphors (the room, the tungsten marquee, the curtain) stay in the brand book as prose.
+- English, lower case, kebab-case; named by role, never by look or metaphor (`background.raised`, not «sala»). The brand's metaphors (the room, the tungsten marquee, the curtain) stay in the brand book as prose.
 - Groups go from general to specific: `color.text.on-accent`, `component.short-card.progress-height`.
 - Scales use t-shirt sizes where the steps are relative (`radius.xs` … `lg`, `shadow.sm` … `lg`, `size.icon.xs` … `xl`) and Tailwind's step numbers for spacing (`spacing.4` = 16px).
 - `subtle` is the tinted ground of a colour, `on-*` is what sits on a fill, `inverse` is the opposite of the default (a fill in the text colour, text over a light still).
@@ -140,9 +140,9 @@ The sidebar follows the levels: **Foundations** (colour in both modes with seman
 
 ## Migration from the first token names (October 2026)
 
-The first tokens were named after the brand's metaphors (`sala`, `tungsteno`, `telón`, `plata`) and mixed tiers. They were renamed with no visual change: every old variable resolves to the same value as its successor, and the screenshots of every story, site page, OG image and email matched before and after. `packages/tokens/scripts/migration.ts` is the full record and `scripts/codemod.ts` applied it. Two props changed with them: `Button`'s `surface` (`'sala' | 'telon'` is now `'default' | 'sponsored'`) and `IconButton`'s `veil` variant (now `translucent`). The poster tones (`sala`, `tungsteno`, `plata`, `telon`) keep their names because they are stored with each short; they are content values, not tokens.
-
 <!-- old-names:start -->
+
+The first tokens were named after the brand's metaphors (`sala`, `tungsteno`, `telón`, `plata`) and mixed tiers. They were renamed with no visual change: every old variable resolves to the same value as its successor, and the screenshots of every story, site page, OG image and email matched before and after. `packages/tokens/scripts/migration.ts` is the full record and `scripts/codemod.ts` applied it. Two props changed with them: `Button`'s `surface` (`'sala' | 'telon'` is now `'default' | 'sponsored'`) and `IconButton`'s `veil` variant (now `translucent`). The poster tones (`sala`, `tungsteno`, `plata`, `telon`) keep their names because they are stored with each short; they are content values, not tokens.
 
 #### Colour
 
