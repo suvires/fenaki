@@ -1,9 +1,19 @@
 import type { CollectionConfig } from 'payload'
 import { isAdmin, isStaff } from '../access.ts'
-import { ORGANIZATION_TYPES, PIPELINE, PRIORITIES, PRODUCTS } from '../crm/constants.ts'
+import {
+  ORGANIZATION_TYPES,
+  PIPELINE,
+  PRIORITIES,
+  PRODUCTS,
+  REASONS,
+  RIGHTS_REQUESTS,
+} from '../crm/constants.ts'
 import { groups, label, options } from '../labels.ts'
 
-/** The festivals, schools, brands and institutions the outreach is aimed at. Never public. */
+/**
+ * The festivals, schools, brands and institutions the outreach is aimed at, and the rights holders
+ * FENAKI writes to about a short it cannot include yet. Never public.
+ */
 export const Organizations: CollectionConfig = {
   slug: 'organizations',
   labels: {
@@ -13,7 +23,7 @@ export const Organizations: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     group: groups.sales,
-    defaultColumns: ['name', 'type', 'priority', 'status', 'nextFollowUpDate'],
+    defaultColumns: ['name', 'reason', 'type', 'priority', 'status', 'nextFollowUpDate'],
     listSearchableFields: ['name', 'city', 'website'],
   },
   access: { read: isStaff, create: isStaff, update: isStaff, delete: isAdmin },
@@ -50,6 +60,44 @@ export const Organizations: CollectionConfig = {
       ],
     },
     {
+      name: 'reason',
+      label: label('Why we write', 'Motivo del contacto'),
+      type: 'select',
+      required: true,
+      defaultValue: 'sales',
+      index: true,
+      options: options(REASONS),
+    },
+    {
+      name: 'works',
+      label: label('Shorts', 'Cortos'),
+      type: 'array',
+      admin: {
+        condition: (data) => data?.reason === 'rights',
+        description: label(
+          'The shorts this holder can unlock, and what we ask for each.',
+          'Los cortos que este titular puede desbloquear y qué le pedimos por cada uno.',
+        ),
+      },
+      fields: [
+        {
+          type: 'row',
+          fields: [
+            { name: 'title', label: label('Title', 'Título'), type: 'text', required: true },
+            { name: 'url', label: label('Where it is now', 'Dónde está ahora'), type: 'text' },
+            {
+              name: 'request',
+              label: label('What we ask', 'Qué pedimos'),
+              type: 'select',
+              required: true,
+              options: options(RIGHTS_REQUESTS),
+            },
+          ],
+        },
+        { name: 'why', label: label('Why', 'Por qué'), type: 'textarea' },
+      ],
+    },
+    {
       type: 'row',
       fields: [
         { name: 'country', label: label('Country', 'País'), type: 'text' },
@@ -79,6 +127,7 @@ export const Organizations: CollectionConfig = {
       label: label('Recommended product', 'Producto recomendado'),
       type: 'select',
       options: options(PRODUCTS),
+      admin: { condition: (data) => data?.reason !== 'rights' },
     },
     { name: 'source', label: label('Source', 'Fuente'), type: 'text' },
     { name: 'notes', label: label('Notes', 'Notas'), type: 'textarea' },

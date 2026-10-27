@@ -439,9 +439,22 @@ export interface Channel {
 export interface Organization {
   id: number;
   name: string;
-  type: 'festival' | 'school' | 'brand' | 'distributor' | 'institution' | 'other';
+  type: 'festival' | 'school' | 'brand' | 'distributor' | 'producer' | 'author' | 'media' | 'institution' | 'other';
   priority?: ('A' | 'B' | 'C') | null;
   status: 'to_contact' | 'contacted' | 'replied' | 'proposal' | 'negotiation' | 'won' | 'lost' | 'not_interested';
+  reason: 'sales' | 'rights';
+  /**
+   * The shorts this holder can unlock, and what we ask for each.
+   */
+  works?:
+    | {
+        title: string;
+        url?: string | null;
+        request: 'permission' | 'confirm_channel' | 'official_upload';
+        why?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   country?: string | null;
   city?: string | null;
   website?: string | null;
@@ -1444,6 +1457,16 @@ export interface OrganizationsSelect<T extends boolean = true> {
   type?: T;
   priority?: T;
   status?: T;
+  reason?: T;
+  works?:
+    | T
+    | {
+        title?: T;
+        url?: T;
+        request?: T;
+        why?: T;
+        id?: T;
+      };
   country?: T;
   city?: T;
   website?: T;

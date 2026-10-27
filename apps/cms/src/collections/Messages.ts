@@ -155,7 +155,7 @@ export const Messages: CollectionConfig = {
       admin: {
         description: label(
           'Pick the received message you answer: the email is threaded under it.',
-          'Elige el mensaje recibido al que respondes: el correo se enlaza a su hilo.',
+          'Elige el mensaje recibido al que respondes: el email se enlaza a su hilo.',
         ),
       },
     },

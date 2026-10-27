@@ -4,7 +4,7 @@ export const crmErrors = {
   forbidden: label('Only an admin can do this.', 'Solo un administrador puede hacerlo.'),
   'agent-cannot-approve': label(
     'An agent cannot approve or send emails: leave the message as a draft for an admin.',
-    'Un agente no puede aprobar ni enviar correos: deja el mensaje como borrador para un administrador.',
+    'Un agente no puede aprobar ni enviar emails: deja el mensaje como borrador para un administrador.',
   ),
   'agent-only-drafts': label(
     'An agent can only edit messages that are still drafts.',
@@ -45,10 +45,10 @@ export const crmErrors = {
   ),
   notApproved: label('The message is not approved.', 'El mensaje no está aprobado.'),
   notOutbound: label('Only outbound messages are sent.', 'Solo se envían mensajes salientes.'),
-  noContactEmail: label('The contact has no email address.', 'El contacto no tiene correo.'),
+  noContactEmail: label('The contact has no email address.', 'El contacto no tiene email.'),
   dailyLimit: label(
     'The daily limit of emails was reached; try again tomorrow.',
-    'Se alcanzó el límite diario de correos; inténtalo mañana.',
+    'Se alcanzó el límite diario de emails; inténtalo mañana.',
   ),
   notConfigured: label(
     'The CRM mailbox is not configured (MAILBOX_* variables).',
@@ -56,7 +56,7 @@ export const crmErrors = {
   ),
   busy: label('This message is already being sent.', 'Este mensaje ya se está enviando.'),
   notFound: label('Message not found.', 'Mensaje no encontrado.'),
-  sendFailed: label('The email could not be sent:', 'No se pudo enviar el correo:'),
+  sendFailed: label('The email could not be sent:', 'No se pudo enviar el email:'),
 } satisfies Record<string, AdminLabel>
 
 export type CrmErrorCode = keyof typeof crmErrors

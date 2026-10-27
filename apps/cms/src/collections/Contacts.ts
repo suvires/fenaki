@@ -39,7 +39,7 @@ export const Contacts: CollectionConfig = {
     ],
   },
   fields: [
-    { name: 'email', label: label('Email', 'Correo'), type: 'email', required: true, unique: true },
+    { name: 'email', label: label('Email', 'Email'), type: 'email', required: true, unique: true },
     {
       type: 'row',
       fields: [

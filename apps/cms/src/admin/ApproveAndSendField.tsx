@@ -7,7 +7,7 @@ import { ApproveAndSendButton } from './ApproveAndSendButton.tsx'
 const text = {
   save: label(
     'Save your changes first: the email sent is the saved one.',
-    'Guarda primero tus cambios: se envía el correo guardado.',
+    'Guarda primero tus cambios: se envía el email guardado.',
   ),
   waiting: label(
     'Waiting for an admin to approve and send it.',

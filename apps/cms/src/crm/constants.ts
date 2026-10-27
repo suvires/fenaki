@@ -5,6 +5,9 @@ export const ORGANIZATION_TYPES = {
   school: label('School', 'Escuela'),
   brand: label('Brand', 'Marca'),
   distributor: label('Distributor', 'Distribuidora'),
+  producer: label('Producer or studio', 'Productora o estudio'),
+  author: label('Author', 'Autor o autora'),
+  media: label('Media or TV', 'Medio o televisión'),
   institution: label('Institution', 'Institución'),
   other: label('Other', 'Otro'),
 } satisfies Record<string, AdminLabel>
@@ -13,6 +16,23 @@ export const PRIORITIES = {
   A: label('A (first)', 'A (primero)'),
   B: label('B', 'B'),
   C: label('C (later)', 'C (después)'),
+} satisfies Record<string, AdminLabel>
+
+/** Why FENAKI writes to an organization: to sell, or about the rights to a short. */
+export const REASONS = {
+  sales: label('Sales', 'Comercial'),
+  rights: label('Rights to a short', 'Derechos de un corto'),
+} satisfies Record<string, AdminLabel>
+export type Reason = keyof typeof REASONS
+
+/** What FENAKI asks a rights holder for, short by short. */
+export const RIGHTS_REQUESTS = {
+  permission: label('Permission to embed it', 'Autorización para insertarlo'),
+  confirm_channel: label('Confirm the channel is theirs', 'Confirmar que el canal es suyo'),
+  official_upload: label(
+    'Publish it on their own channel (only re-uploads exist)',
+    'Que lo publique en su canal (solo hay resubidas)',
+  ),
 } satisfies Record<string, AdminLabel>
 
 export const PRODUCTS = {

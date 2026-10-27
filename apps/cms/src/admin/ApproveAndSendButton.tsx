@@ -5,10 +5,10 @@ import { inLanguage, label } from '../labels.ts'
 
 const text = {
   run: label('Approve and send', 'Aprobar y enviar'),
-  sent: label('Email sent.', 'Correo enviado.'),
+  sent: label('Email sent.', 'Email enviado.'),
   copy: label(
     'Email sent, but its copy could not be saved in the Sent folder:',
-    'Correo enviado, pero no se pudo guardar su copia en Enviados:',
+    'Email enviado, pero no se pudo guardar su copia en Enviados:',
   ),
 }
 
