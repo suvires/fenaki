@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 # Fenaki
 
-Catalog of short films that their makers, festivals and schools publish openly (free and legal to watch), gathered in one place with a streaming-style UX (fenaki.tv). It goes for volume, not curation. Independent brand. Built in public as a 30-day challenge ("Día N de 30") with Claude Code.
+Catalog of short films that their makers, festivals and schools publish openly (free and legal to watch), gathered in one place with a streaming-style UX (fenaki.tv). It goes for volume, not curation. Independent brand. Built in public as a 7-day challenge with Claude Code: «FENAKI en 7 días» («Día N de 7»), from 25 to 31 Oct 2026, launch on day 7. Revenue (first sponsors) is the next chapter, with no countdown.
 
 - Product plan (Spanish): `private/plan/plan-de-desarrollo.md`
 - Daily challenge log (Spanish): `private/diario/`
