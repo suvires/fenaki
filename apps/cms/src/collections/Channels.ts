@@ -13,8 +13,11 @@ import type { CHANNEL_KINDS } from './Sources.ts'
 
 export const CHANNEL_PROVIDERS = ['youtube', 'vimeo'] as const
 
-/** The shortest and longest running times the scanner takes for a short, in seconds. */
-export const DEFAULT_MIN_SECONDS = 120
+/**
+ * The shortest and longest running times the scanner takes for a short, in seconds. No minimum:
+ * shorts of a minute or less exist, and the AI review tells them from teasers and promos.
+ */
+export const DEFAULT_MIN_SECONDS = 0
 export const DEFAULT_MAX_SECONDS = 2700
 
 const errors = {
