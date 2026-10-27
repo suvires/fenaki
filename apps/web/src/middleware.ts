@@ -6,7 +6,8 @@ import { siteMode } from './lib/services.ts'
 import { isHiddenInMode } from './lib/site-mode.ts'
 
 /** Static files and generated images never depend on who is signed in. */
-const NO_SESSION = /^\/(_astro\/|og\/|up$|favicon|apple-touch-icon|robots\.txt|sitemap)/
+const NO_SESSION =
+  /^\/(_astro\/|og\/|up$|favicon|apple-touch-icon|icon-|manifest\.webmanifest$|robots\.txt|sitemap)/
 
 function setPrivate(headers: Headers) {
   headers.set('Cache-Control', 'private, no-store')

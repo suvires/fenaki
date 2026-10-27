@@ -160,3 +160,21 @@ test('the credits page carries the TMDB attribution', async ({ page }) => {
     page.getByText('This product uses the TMDB API but is not endorsed or certified by TMDB.'),
   ).toBeVisible()
 })
+
+test('the site can be installed: a manifest with its icons', async ({ page, request }) => {
+  await page.goto('/es/')
+  const href = await page.locator('link[rel="manifest"]').getAttribute('href')
+  expect(href).toBe('/manifest.webmanifest')
+  const manifest = (await (await request.get(href ?? '')).json()) as {
+    name: string
+    start_url: string
+    display: string
+    icons: { src: string; sizes: string }[]
+  }
+  expect(manifest).toMatchObject({ name: 'FENAKI', start_url: '/es/', display: 'standalone' })
+  for (const icon of manifest.icons) {
+    const response = await request.get(icon.src)
+    expect(response.status()).toBe(200)
+    expect(response.headers()['content-type']).toBe('image/png')
+  }
+})

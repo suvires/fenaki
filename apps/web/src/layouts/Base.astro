@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css'
 import type { Locale } from '@fenaki/i18n'
+import { palettes } from '@fenaki/tokens'
 import { SiteFooter, SiteHeader, Wordmark } from '@fenaki/ui'
 import catalogShot from '../assets/landing-catalog.webp'
 import { AccountSync } from '../islands/account/AccountSync.tsx'
@@ -101,6 +102,8 @@ const footerLinks = landing
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content={palettes.dark['sala-0']} />
     <meta name="color-scheme" content="dark" />
     <title>{pageTitle}</title>
     <meta name="description" content={metaDescription} />
