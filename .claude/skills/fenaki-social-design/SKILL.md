@@ -73,4 +73,6 @@ It reads the tokens from `@fenaki/tokens` and the fonts from `apps/web`'s depend
 
 ## Before showing it
 
+The renderer warns when a slide's content overflows. Keep a slide to a headline of at most four lines (lower `headlineSize`, e.g. 120, for long headlines) and a lead of at most three lines; split the idea into two slides or move it to the post text rather than squeezing.
+
 Open every PNG and check: nothing overflows or wraps badly (a lone word on the last line of a headline), the accent is on the payoff, no full stops on headlines, FENAKI in capitals and the domain lowercase, no recognisable third-party image. Send the images to the user for approval before anything is scheduled.

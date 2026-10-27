@@ -78,6 +78,12 @@ const total = spec.slides?.length ?? 0
 for (const [index, s] of (spec.slides ?? []).entries()) {
   const page = await browser.newPage({ viewport: { width: 1080, height: 1350 } })
   await page.setContent(html(1080, 1350, s, index + 1, total, false)); await page.waitForTimeout(300)
+  // Nothing may overflow the slide: the content column must fit, with the counter or footer inside.
+  const overflow = await page.evaluate(() => {
+    const box = document.querySelector('.in')
+    return box.scrollHeight > box.clientHeight + 1 ? box.scrollHeight - box.clientHeight : 0
+  })
+  if (overflow) console.warn(`slide ${index + 1}: content overflows by ${overflow}px — shorten the text or lower headlineSize`)
   await page.screenshot({ path: `${spec.out}/carrusel-${index + 1}.png` }); await page.close()
 }
 if (spec.pdf && total) {
