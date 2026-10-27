@@ -5,6 +5,7 @@ import { common, groups, label, options } from '../labels.ts'
 
 export const LICENSE_TYPES = [
   'platform-terms',
+  'platform-terms-nc',
   'cc-by',
   'cc-by-sa',
   'cc-by-nd',
@@ -18,9 +19,13 @@ export const LICENSE_TYPES = [
 
 export type LicenseType = (typeof LICENSE_TYPES)[number]
 
-/** Non-commercial licenses: their shorts can never be part of a sponsored collection. */
+/**
+ * Non-commercial licenses: their shorts can never be part of a sponsored collection. Besides the
+ * CC NC licenses, an official embed whose uploader holds the rights only for non-commercial use
+ * (a festival whose terms let it publish the entries «sin fines comerciales»).
+ */
 export function isNonCommercial(type: string | null | undefined): boolean {
-  return typeof type === 'string' && type.startsWith('cc-by-nc')
+  return typeof type === 'string' && (type.startsWith('cc-by-nc') || type === 'platform-terms-nc')
 }
 
 export const Licenses: CollectionConfig = {
@@ -64,6 +69,10 @@ export const Licenses: CollectionConfig = {
             'platform-terms': label(
               'Platform terms (embed)',
               'Condiciones de la plataforma (embed)',
+            ),
+            'platform-terms-nc': label(
+              'Platform terms (embed), non-commercial use only',
+              'Condiciones de la plataforma (embed), solo uso no comercial',
             ),
             'cc-by': label('CC BY', 'CC BY'),
             'cc-by-sa': label('CC BY-SA', 'CC BY-SA'),

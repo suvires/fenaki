@@ -653,6 +653,7 @@ export interface License {
   route: 'embed' | 'open' | 'direct';
   type:
     | 'platform-terms'
+    | 'platform-terms-nc'
     | 'cc-by'
     | 'cc-by-sa'
     | 'cc-by-nd'

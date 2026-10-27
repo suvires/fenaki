@@ -17,6 +17,7 @@ import * as migration_20261027_095840_crm_rights from './20261027_095840_crm_rig
 import * as migration_20261027_111231_ledger_and_languages from './20261027_111231_ledger_and_languages';
 import * as migration_20261027_112208_ai_review from './20261027_112208_ai_review';
 import * as migration_20261027_174600_channel_min_duration from './20261027_174600_channel_min_duration';
+import * as migration_20261027_183754_license_platform_terms_nc from './20261027_183754_license_platform_terms_nc';
 
 export const migrations = [
   {
@@ -112,6 +113,11 @@ export const migrations = [
   {
     up: migration_20261027_174600_channel_min_duration.up,
     down: migration_20261027_174600_channel_min_duration.down,
-    name: '20261027_174600_channel_min_duration'
+    name: '20261027_174600_channel_min_duration',
+  },
+  {
+    up: migration_20261027_183754_license_platform_terms_nc.up,
+    down: migration_20261027_183754_license_platform_terms_nc.down,
+    name: '20261027_183754_license_platform_terms_nc'
   },
 ];

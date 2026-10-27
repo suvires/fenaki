@@ -91,4 +91,8 @@ describe('isNonCommercial', () => {
     expect(isNonCommercial('platform-terms')).toBe(false)
     expect(isNonCommercial(null)).toBe(false)
   })
+
+  it('flags an official embed limited to non-commercial use', () => {
+    expect(isNonCommercial('platform-terms-nc')).toBe(true)
+  })
 })
