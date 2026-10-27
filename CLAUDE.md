@@ -62,13 +62,13 @@ When choosing technology, compare the real alternatives and pick what fits best 
 
 ### Design system
 
-All UI goes through the design system (validated). Three layers:
+All UI goes through the design system (validated); `packages/ui/README.md` has the architecture, naming rules and classification. Three layers:
 
-- `packages/tokens`: single source of design tokens (color, type, spacing, radius, shadow, motion), exposed as CSS variables in Tailwind v4 `@theme`; later also generated for the native apps.
-- `packages/ui`: React components built on accessible primitives (Radix / shadcn/ui), using tokens only. Astro renders them as static HTML and hydrates only interactive islands.
-- Storybook as the living catalog, with accessibility and visual regression tests.
+- `packages/tokens`: `tokens.json`, the single source, in the W3C DTCG format and three tiers: primitives (raw palettes and scales, `--base-*`, never used directly), semantic tokens named by role in English (what components use) and component tokens. The build emits the Tailwind v4 theme, so utilities read by role: `bg-canvas`, `bg-raised`, `text-secondary`, `border-subtle`, `bg-accent`, `text-on-sponsored`. Later also generated for the native apps.
+- `packages/ui`: React components on accessible primitives (Radix), using tokens only, in atomic folders (`foundations`, `atoms`, `molecules`, `organisms`), each exported by name from `@fenaki/ui`. Astro renders them as static HTML and hydrates only interactive islands.
+- Storybook as the living catalog (sidebar by level, foundations pages generated from the tokens), with accessibility and visual regression tests.
 
-The validated visual direction lives in `design/system/`: brand book (`README.md`), tokens (`tokens.json`, compiled to `tokens.css`), a prototype component bundle with guidelines and previews, and a local gallery (`index.html`). Port it into `packages/tokens` and `packages/ui` when scaffolding; from then on the packages are the source of truth. The product (web, apps, TV) is dark only, with no theme switcher; the light palette is only for the newsletter, the sponsor dossier and print/PDF documents. Never hardcode a color, size or font, and never build a one-off button or card inside a page: add or change the component in `packages/ui`.
+`design/system/` holds the brand book (`README.md`) and the validated prototype the packages were ported from (frozen: its own tokens and bundle keep the first names); the packages are the source of truth. Token names never use the brand metaphors (sala, tungsteno, telón); `packages/tokens/test/old-names.test.ts` fails on the old names. The product (web, apps, TV) is dark only, with no theme switcher; the light mode is only for the newsletter, the sponsor dossier and print/PDF documents. Never hardcode a color, size or font, and never build a one-off button or card inside a page: add or change the component in `packages/ui`.
 
 Monorepo (pnpm + Turborepo): `apps/web` (Astro), `apps/cms` (Payload), `packages/tokens`, `packages/ui`, `packages/i18n`.
 

@@ -1,5 +1,7 @@
 FENAKI gathers the short films published openly by their makers, festivals and schools in one catalog, with the browsing experience of a streaming service. The look is a darkened screening room: warm black walls, one projector-light accent, poster capitals for titles. Everything a viewer sees is built from these tokens and components; pages only compose them.
 
+The components and tokens themselves live in `packages/tokens` and `packages/ui` (`packages/ui/README.md`), the source of truth. The prototype in this folder (`tokens.json`, `tokens.css`, `components/`, `index.html`) is the validated direction they were ported from, kept as it was: it still uses the first token names.
+
 ## Content fundamentals
 
 - Write in neutral Spanish that works in Spain and Latin America. Address the viewer as «tú», never «vosotros». Avoid Spain-only words («móvil», «ordenador», «molar»).
@@ -12,31 +14,33 @@ FENAKI gathers the short films published openly by their makers, festivals and s
 
 ## Visual foundations
 
-**Color.** The web and the apps are dark only (`dark`, «Sala»), with no theme switcher, like every streaming service: posters and video read best on dark. The light palette (`light`, «Vestíbulo») is not a product theme: use it only for the newsletter, the sponsor dossier and printed or PDF documents. Tokens are named by role, so a light product theme could be switched on later without touching components.
+Token names below are the semantic tokens of `packages/tokens` (`packages/ui/README.md` explains the tiers and the utilities). The metaphors stay here, as a description of the look: they are not token names.
 
-- Pages sit on `sala-0`. Raised areas use `sala-1`; posters without art, secondary buttons and hover fills use `sala-2`.
-- `tungsteno` is neon pink, like a cinema marquee (#ff1f8e on the dark theme, #c2005f on the light palette; the token keeps its first name), and the only action color: primary buttons, the active state, the focus ring. One primary button per view, besides «Crear cuenta» in the site header. Never use it as decoration or as a large background other than the `tungsteno` poster tone.
-- `telon` (the curtain) is reserved for sponsored collections: their hero and posters. If a screen is wine, someone paid for it, and the `SponsorCredit` says who.
-- `plata` (the silver screen) marks legal and informational facts: the license route, subtitle badges.
-- Text is `ink` or `ink-muted` on the `sala` surfaces, `on-tungsteno` on tungsteno, `on-telon` on telon. Never white or black literals.
-- Hairlines are `line`; anything a person operates (inputs, chips, secondary buttons) has a `line-strong` border.
+**Color.** The web and the apps are dark only (the dark mode, «Sala»), with no theme switcher, like every streaming service: posters and video read best on dark. The light mode («Vestíbulo») is not a product theme: use it only for the newsletter, the sponsor dossier and printed or PDF documents. Tokens are named by role, so a light product theme could be switched on later without touching components.
+
+- Pages sit on `background.canvas`, the darkened room. Raised areas use `background.raised`; posters without art, secondary buttons and hover fills use `background.muted`.
+- `accent` is neon pink, like the tungsten lights of a cinema marquee (#ff1f8e in the dark mode, #c2005f in the light one), and the only action color: primary buttons, the active state, the focus ring. One primary button per view, besides «Crear cuenta» in the site header. Never use it as decoration or as a large background other than the accent poster tone.
+- `sponsored` is the curtain (el telón), wine, reserved for sponsored collections: their hero and posters. If a screen is wine, someone paid for it, and the `SponsorCredit` says who.
+- `info` is the silver screen: it marks legal and informational facts, the license route, subtitle badges.
+- Text is `text.primary` or `text.secondary` on the surfaces, `text.on-accent` on the accent, `text.on-sponsored` on the sponsored color. Never white or black literals.
+- Hairlines are `border.subtle`; anything a person operates (inputs, chips, secondary buttons) has a `border.strong` edge.
 - `danger` appears only with a word next to it.
 
-**Type.** Three families, each with one job.
+**Type.** One family, Archivo, in three voices.
 
-- `display` (Big Shoulders): condensed poster capitals for titles: `display-xl` for the collection hero, `display-l` for a short's page and the player, `title` for rail headings, `poster` on typographic posters. Always uppercase.
-- `text` (Atkinson Hyperlegible Next): everything people read. `body-l` for synopses, `body` by default, `card-title` under posters, `meta` for directors and secondary data.
-- `mono` (Atkinson Hyperlegible Mono): the timecode voice. `timecode` for durations, `label` (uppercase, tracked) for badges, eyebrows and the sponsor label.
+- `display` (Archivo at 75 % width): condensed poster capitals for titles: `display-xl` for the collection hero, `display-l` for a short's page and the player, `title` for rail headings, the poster's own title style on typographic posters. Always uppercase.
+- `text` (Archivo at its normal width): everything people read. `body-l` for synopses, `body` by default, the card title under posters, `meta` for directors and secondary data.
+- `mono` (Archivo with tabular figures): the timecode voice. `timecode` for durations, `label` (uppercase, tracked) for badges, eyebrows and the sponsor label.
 
-**Spacing and layout.** 4px base. Cards in a rail sit `space-4` apart; rails are `space-12` apart; the page gutter is at least `space-4`. Rails scroll horizontally with snap; the page itself never scrolls sideways.
+**Spacing and layout.** 4px base. Cards in a rail sit `spacing.4` apart; rails are `spacing.12` apart; the page gutter is at least `spacing.4`. Rails scroll horizontally with snap; the page itself never scrolls sideways.
 
-**Shape.** Screens are rectangles: `radius-sm` (4px) is the largest corner on any poster, still or card. `radius-xs` for badges. `radius-full` only for filter chips.
+**Shape.** Screens are rectangles: `radius.sm` (4px) is the largest corner on any poster, still or card; panels at card scale take `radius.md` and the heroes and the player `radius.lg`. `radius.xs` for badges. `radius.full` for filter chips, and the controls' own `control.radius`.
 
-**Imagery.** Posters are `ratio-poster` (2:3), stills and the player `ratio-still` (16:9). A short's still comes only from the `stills` collection: the provider's thumbnail, cached on Fenaki's server and refreshed nightly, or one supplied by the author. Without a still it shows a typographic `Poster`: title in poster capitals, director and year, with a film-perforation strip on the left edge. Never use a frame grabbed from a video, and the OG image stays generated.
+**Imagery.** Posters are `aspect-ratio.poster` (2:3), stills and the player `aspect-ratio.still` (16:9). A short's still comes only from the `stills` collection: the provider's thumbnail, cached on Fenaki's server and refreshed nightly, or one supplied by the author. Without a still it shows a typographic `Poster`: title in poster capitals, director and year, with a film-perforation strip on the left edge. Never use a frame grabbed from a video, and the OG image stays generated.
 
-**Elevation and motion.** Posters rest on `shadow-card` and lift 4px onto `shadow-hover` on hover or focus, in 150 ms. Nothing else moves. With `prefers-reduced-motion`, nothing moves at all.
+**Elevation and motion.** Cards and posters have no shadow at rest; a poster lifts 4px (`poster.lift`) onto `shadow.lg` on hover or focus, in 150 ms; floating panels use `shadow.lg`, small floating controls `shadow.sm`, the home hero `shadow.md`. Nothing else moves. With `prefers-reduced-motion`, nothing moves at all.
 
-**Focus.** Every interactive element shows `focus-ring` (a `sala-0` gap, then a 2px `tungsteno` ring) on keyboard and TV-remote focus. Focus must be visible from the sofa: never remove it.
+**Focus.** Every interactive element shows the focus ring (`shadow.focus-ring`: a dark gap, then a 2px accent ring) on keyboard and TV-remote focus. Focus must be visible from the sofa: never remove it.
 
 ## Legal rules that shape the UI
 
@@ -46,11 +50,11 @@ FENAKI gathers the short films published openly by their makers, festivals and s
 
 ## Logo
 
-The logotype is «FENAKI» in Big Shoulders 800, outlined: it never depends on the font. It lives in the design system as `Wordmark` (`packages/ui`, drawn in `currentColor`, sized by height with a spacing class such as `h-6`) and as the file `packages/ui/src/assets/wordmark.svg` (`@fenaki/ui/wordmark.svg`) for emails, OG images and print. Use it in `ink` on the `sala` surfaces, or in `tungsteno` as an accent; never redraw it as text.
+The logotype is «FENAKI» in Big Shoulders 800, outlined: it never depends on the font. It lives in the design system as `Wordmark` (`packages/ui`, drawn in `currentColor`, sized by height with a spacing class such as `h-6`) and as the file `packages/ui/src/assets/wordmark.svg` (`@fenaki/ui/wordmark.svg`) for emails, OG images and print. Use it in `text.primary` on the surfaces, or in `accent` as an accent; never redraw it as text.
 
 ## Iconography
 
-Inline SVG on a 24px grid, 1.75 stroke, round caps and joins, drawn in `currentColor`. Every icon sits in the 20px live area (2px padding) and is sized by optical weight, not by bounding box: straight open strokes span 16px (plus, arrow), diagonals 13px (close), closed round shapes 15.5px (the magnifier), the thumbs (up, down, and the double pair) 16px wide and about 15px tall, the play triangle 17px with rounded corners and its weight centred (a triangle fills only half its box). The rail chevron is the one tall exception, sized to display capitals; the chevron-down is a plain 13px diagonal pair. The `Foundations/Icon` «Grid» story shows them over the keylines. In buttons the icon is about 56 % of the control's height (18, 22 and 28px for sm, md and lg). The set is small on purpose: play (filled), plus, search, arrow, chevron, chevron-down, check, close, thumbs-up, thumbs-down, thumbs-up-double. No emoji, no icon fonts.
+Inline SVG on a 24px grid, 1.75 stroke, round caps and joins, drawn in `currentColor`. Every icon sits in the 20px live area (2px padding) and is sized by optical weight, not by bounding box: straight open strokes span 16px (plus, arrow), diagonals 13px (close), closed round shapes 15.5px (the magnifier), the thumbs (up, down, and the double pair) 16px wide and about 15px tall, the play triangle 17px with rounded corners and its weight centred (a triangle fills only half its box). The rail chevron is the one tall exception, sized to display capitals; the chevron-down is a plain 13px diagonal pair. The `Foundations/Iconography` «Grid» story shows them over the keylines. In buttons the icon is about 56 % of the control's height (18, 22 and 28px for sm, md and lg). The set is small on purpose: play (filled), plus, search, arrow, chevron, chevron-down, check, close, thumbs-up, thumbs-down, thumbs-up-double. No emoji, no icon fonts.
 
 ## Sample content
 
