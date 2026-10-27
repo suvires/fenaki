@@ -1,6 +1,8 @@
 import type { PayloadRequest } from 'payload'
 import type { ChannelKind } from '../collections/Sources.ts'
 import { slugify } from '../fields/slug.ts'
+import { recordVideo } from './channels/ledger.ts'
+import { captionsValue, shortLanguageFields, withDefaultLanguage } from './languages.ts'
 import type { VideoMetadata } from './metadata.ts'
 
 /** A slug no other short uses: «cuerdas», then «cuerdas-2». */
@@ -79,6 +81,12 @@ export async function createShortWithSource(
   const { channel } = options
   const now = new Date().toISOString()
   const title = metadata.title || video.externalId
+  // What the provider said, else what TMDB knows, else the channel's default language.
+  let languages = metadata.languages
+  if (languages.spoken.length === 0 && metadata.originalLanguage)
+    languages = { ...languages, spoken: [metadata.originalLanguage], source: 'provider' }
+  languages = withDefaultLanguage(languages, options.defaultLanguage)
+  const spoken = shortLanguageFields(languages.spoken)
   const short = await req.payload.create({
     collection: 'shorts',
     locale: 'es',
@@ -88,7 +96,8 @@ export async function createShortWithSource(
       durationSeconds: metadata.durationSeconds,
       year: metadata.tmdb?.year ?? null,
       country: metadata.tmdb?.country ?? null,
-      originalLanguage: metadata.originalLanguage ?? options.defaultLanguage ?? null,
+      ...spoken,
+      languageSource: languages.source,
       tmdbId: metadata.tmdb?.id ?? null,
       status: 'review',
       ...(channel ? { ingestChannel: channel.id } : {}),
@@ -111,6 +120,15 @@ export async function createShortWithSource(
           }
         : metadata.channel,
       ...(channel ? { officialEvidence: channel.officialEvidence, ingestChannel: channel.id } : {}),
+      subtitles: languages.subtitles,
+      autoSubtitles: languages.autoSubtitles,
+      captions: captionsValue(languages.hasCaptions),
+      subtitlesSource:
+        languages.subtitles.length + languages.autoSubtitles.length > 0 ||
+        languages.hasCaptions !== null
+          ? 'provider'
+          : null,
+      providerDescription: metadata.description,
       embeddable: true,
       ageRestricted: false,
       status: 'ok',
@@ -121,6 +139,19 @@ export async function createShortWithSource(
       license: await embedLicense(req, video.provider),
     },
     req,
+  })
+  await recordVideo(req, {
+    channelId: channel?.id,
+    provider: video.provider,
+    externalId: video.externalId,
+    url: video.url,
+    title,
+    durationSeconds: metadata.durationSeconds,
+    publishedAt: metadata.uploadedAt,
+    outcome: 'added',
+    shortId: short.id,
+    note: options.origin,
+    languages,
   })
   return { shortId: short.id, title }
 }

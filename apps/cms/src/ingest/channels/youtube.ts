@@ -46,50 +46,36 @@ export interface Upload {
   publishedAt: string | null
 }
 
-/** The first scan takes the latest videos only; later ones read back as far as the last scan. */
-export const FIRST_SCAN_LIMIT = 50
-const MAX_PAGES = 4
+/** `playlistItems.list` allows 50 per page, at one quota unit a page. */
+export const PLAYLIST_PAGE_SIZE = 50
 
 /**
- * Videos of an uploads playlist published after `since`, newest first. Without `since` (the first
- * scan) it returns the latest 50. One quota unit per 50 videos.
+ * One page of an uploads playlist, newest first, from `pageToken` (the start when null).
+ * `next` is null on the last page. One quota unit.
  */
-export async function listYouTubeUploads(
+export async function listYouTubeUploadsPage(
   playlistId: string,
-  since: Date | null,
+  pageToken: string | null,
   apiKey: string,
   fetchFn: Fetch = fetch,
-): Promise<Upload[]> {
-  const uploads: Upload[] = []
-  let pageToken: string | undefined
-  for (let page = 0; page < MAX_PAGES; page++) {
-    const body = await api<{
-      nextPageToken?: string
-      items?: { contentDetails?: { videoId?: string; videoPublishedAt?: string } }[]
-    }>(
-      'playlistItems',
-      {
-        part: 'contentDetails',
-        playlistId,
-        maxResults: String(FIRST_SCAN_LIMIT),
-        key: apiKey,
-        ...(pageToken ? { pageToken } : {}),
-      },
-      fetchFn,
-    )
-    let reachedOld = false
-    for (const item of body.items ?? []) {
-      const videoId = item.contentDetails?.videoId
-      if (!videoId) continue
-      const publishedAt = item.contentDetails?.videoPublishedAt ?? null
-      if (since && publishedAt && new Date(publishedAt) <= since) {
-        reachedOld = true
-        break
-      }
-      uploads.push({ videoId, publishedAt })
-    }
-    pageToken = body.nextPageToken
-    if (reachedOld || !since || !pageToken) break
-  }
-  return since ? uploads : uploads.slice(0, FIRST_SCAN_LIMIT)
+): Promise<{ uploads: Upload[]; next: string | null }> {
+  const body = await api<{
+    nextPageToken?: string
+    items?: { contentDetails?: { videoId?: string; videoPublishedAt?: string } }[]
+  }>(
+    'playlistItems',
+    {
+      part: 'contentDetails',
+      playlistId,
+      maxResults: String(PLAYLIST_PAGE_SIZE),
+      key: apiKey,
+      ...(pageToken ? { pageToken } : {}),
+    },
+    fetchFn,
+  )
+  const uploads = (body.items ?? []).flatMap((item) => {
+    const videoId = item.contentDetails?.videoId
+    return videoId ? [{ videoId, publishedAt: item.contentDetails?.videoPublishedAt ?? null }] : []
+  })
+  return { uploads, next: body.nextPageToken ?? null }
 }

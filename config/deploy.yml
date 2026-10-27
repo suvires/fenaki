@@ -51,6 +51,10 @@ x-cms-env: &cms-env
     # Optional metadata APIs for «Add from URL» and the nightly embed checker (03:00 UTC).
     - YOUTUBE_API_KEY
     - TMDB_API_KEY
+    # Optional: lists a Vimeo user's or channel's whole catalogue, with language and subtitles.
+    - VIMEO_ACCESS_TOKEN
+    # Optional: Claude reviews every short in the review queue (nightly batch at 04:00 UTC).
+    - ANTHROPIC_API_KEY
 
 servers:
   cms:

@@ -2,16 +2,29 @@ import { assess, type Assessment } from './check.ts'
 import { fetchOEmbed, type Fetch, type OEmbedResult } from './oembed.ts'
 import { lookupTmdb, type TmdbFilm } from './tmdb.ts'
 import type { VideoRef } from './url.ts'
+import { noLanguages, primaryLanguage, youtubeLanguages, type LanguageInfo } from './languages.ts'
 import { fetchYouTubeVideos, type YouTubeVideo } from './youtube.ts'
+
+/** What a provider listing already knows and oEmbed does not: the description and languages. */
+export interface ProviderExtras {
+  description?: string | null
+  languages?: LanguageInfo
+}
 
 /** Optional API keys. Without them, ingestion uses the public oEmbed endpoints only. */
 export interface IngestKeys {
   youtube?: string
   tmdb?: string
+  /** A Vimeo app access token: lists a whole catalogue and reads language and subtitle tracks. */
+  vimeo?: string
 }
 
 export function ingestKeys(env: Record<string, string | undefined> = process.env): IngestKeys {
-  return { youtube: env.YOUTUBE_API_KEY || undefined, tmdb: env.TMDB_API_KEY || undefined }
+  return {
+    youtube: env.YOUTUBE_API_KEY || undefined,
+    tmdb: env.TMDB_API_KEY || undefined,
+    vimeo: env.VIMEO_ACCESS_TOKEN || undefined,
+  }
 }
 
 export interface VideoMetadata {
@@ -25,6 +38,10 @@ export interface VideoMetadata {
   thumbnailUrl: string | null
   uploadedAt: string | null
   originalLanguage: string | null
+  /** Spoken language and subtitles as the providers said, before the channel's default applies. */
+  languages: LanguageInfo
+  /** The provider's description, kept for the editor and the AI review. */
+  description: string | null
   assessment: Assessment
   tmdb: TmdbFilm | undefined
 }
@@ -51,10 +68,6 @@ export function cleanTitle(raw: string): string {
   return title || raw.trim()
 }
 
-/** BCP 47 primary language («es-419» → «es»), as the short's original language. */
-const primaryLanguage = (code: string | null | undefined) =>
-  code ? (code.split('-')[0]?.toLowerCase() ?? null) : null
-
 /** Stands in for the oEmbed answer when the YouTube Data API already described the video. */
 const ASSUMED_OK: OEmbedResult = {
   kind: 'ok',
@@ -77,6 +90,7 @@ export async function buildMetadata(
   api: YouTubeVideo | null | undefined,
   keys: IngestKeys,
   fetchFn: Fetch = fetch,
+  extras: ProviderExtras = {},
 ): Promise<VideoMetadata> {
   const ok = oembed?.kind === 'ok' ? oembed : undefined
   const providerTitle = api?.title || ok?.title || ''
@@ -97,6 +111,8 @@ export async function buildMetadata(
     thumbnailUrl: api?.thumbnailUrl ?? ok?.thumbnailUrl ?? null,
     uploadedAt: api?.publishedAt ?? ok?.uploadedAt ?? null,
     originalLanguage: primaryLanguage(api?.audioLanguage) ?? tmdb?.originalLanguage ?? null,
+    languages: extras.languages ?? (api ? youtubeLanguages(api) : noLanguages()),
+    description: extras.description ?? api?.description ?? null,
     assessment: assess(oembed ?? ASSUMED_OK, api),
     tmdb,
   }

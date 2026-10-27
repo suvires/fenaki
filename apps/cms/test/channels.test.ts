@@ -1,4 +1,3 @@
-import type { PayloadRequest } from 'payload'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { createShortWithSource, type ChannelOrigin } from '../src/ingest/createShort.ts'
 import { resolveChannel } from '../src/ingest/channels/resolve.ts'
@@ -6,12 +5,22 @@ import { looksLikeNonShort, skipReason, type Candidate } from '../src/ingest/cha
 import { runChannelScan, scanActiveChannels, scanNote } from '../src/ingest/channels/scan.ts'
 import { parseChannelUrl } from '../src/ingest/channels/url.ts'
 import { parseVimeoFeed } from '../src/ingest/channels/vimeo.ts'
-import { listYouTubeUploads } from '../src/ingest/channels/youtube.ts'
+import { listYouTubeUploadsPage } from '../src/ingest/channels/youtube.ts'
 import { buildMetadata } from '../src/ingest/metadata.ts'
-import type { Fetch } from '../src/ingest/oembed.ts'
-import type { Channel } from '../src/payload-types.ts'
-
-const UC = 'UC1234567890abcdefghijkl'
+import {
+  channel,
+  fakeFetch,
+  fakeRequest,
+  shortsOf,
+  sourcesOf,
+  UC,
+  vimeoFeed,
+  YT,
+  ytPage,
+  ytChannel,
+  ytVideo,
+  type Doc,
+} from './helpers/channels.ts'
 
 describe('parseChannelUrl', () => {
   it.each([
@@ -119,48 +128,6 @@ describe('scanNote', () => {
   })
 })
 
-/** A fetch that answers from a table of URL prefixes, and records what was asked. */
-function fakeFetch(routes: Record<string, { status?: number; body?: unknown }>) {
-  const calls: string[] = []
-  const fn = (async (input: string | URL | Request) => {
-    const url = decodeURIComponent(String(input instanceof Request ? input.url : input))
-    calls.push(url)
-    const match = Object.keys(routes).find((prefix) => url.startsWith(prefix))
-    if (!match) throw new Error(`unexpected request ${url}`)
-    const { status = 200, body = {} } = routes[match] ?? {}
-    return new Response(typeof body === 'string' ? body : JSON.stringify(body), { status })
-  }) as Fetch
-  return { fn, calls }
-}
-
-const YT = 'https://www.googleapis.com/youtube/v3'
-
-const ytChannel = (id = UC) => ({
-  items: [
-    {
-      id,
-      snippet: { title: 'Cuerdas Films' },
-      contentDetails: { relatedPlaylists: { uploads: 'UUuploads' } },
-    },
-  ],
-})
-
-const ytVideo = (id: string, overrides: Record<string, unknown> = {}) => ({
-  id,
-  snippet: { title: `Corto ${id}`, channelId: UC, channelTitle: 'Cuerdas Films' },
-  contentDetails: { duration: 'PT10M' },
-  status: { embeddable: true, privacyStatus: 'public' },
-  ...overrides,
-})
-
-const vimeoFeed = (items: { id: string; title: string; date: string }[]) =>
-  `<?xml version="1.0"?><rss><channel><title>Terje's Videos</title>${items
-    .map(
-      (item) =>
-        `<item><title><![CDATA[${item.title}]]></title><link>https://vimeo.com/${item.id}</link><pubDate>${item.date}</pubDate></item>`,
-    )
-    .join('')}</channel></rss>`
-
 describe('channel lookup', () => {
   it('resolves a YouTube handle to its channel id and name', async () => {
     const { fn, calls } = fakeFetch({ [`${YT}/channels`]: { body: ytChannel() } })
@@ -215,89 +182,33 @@ describe('Vimeo feed', () => {
 })
 
 describe('YouTube uploads', () => {
-  const page = (ids: [string, string][], next?: string) => ({
-    nextPageToken: next,
-    items: ids.map(([videoId, videoPublishedAt]) => ({
-      contentDetails: { videoId, videoPublishedAt },
-    })),
-  })
-
-  it('stops reading at the last scan', async () => {
+  it('reads one page and hands back the token of the next', async () => {
     const { fn, calls } = fakeFetch({
       [`${YT}/playlistItems`]: {
-        body: page(
+        body: ytPage(
           [
             ['new1', '2026-10-26T10:00:00Z'],
             ['old1', '2026-10-01T10:00:00Z'],
           ],
-          'next',
+          'tokenB',
         ),
       },
     })
-    const uploads = await listYouTubeUploads('UU1', new Date('2026-10-10T00:00:00Z'), 'k', fn)
-    expect(uploads.map((upload) => upload.videoId)).toEqual(['new1'])
-    expect(calls).toHaveLength(1)
+    const page = await listYouTubeUploadsPage('UU1', null, 'k', fn)
+    expect(page.uploads.map((upload) => upload.videoId)).toEqual(['new1', 'old1'])
+    expect(page.next).toBe('tokenB')
+    expect(calls[0]).toContain('maxResults=50')
+    expect(calls[0]).not.toContain('pageToken')
   })
 
-  it('takes only the first page on the first scan', async () => {
+  it('continues from a page token and knows the last page', async () => {
     const { fn, calls } = fakeFetch({
-      [`${YT}/playlistItems`]: { body: page([['a', '2026-10-26T10:00:00Z']], 'next') },
+      [`${YT}/playlistItems`]: { body: ytPage([['a', '2026-10-26T10:00:00Z']]) },
     })
-    expect(await listYouTubeUploads('UU1', null, 'k', fn)).toHaveLength(1)
-    expect(calls).toHaveLength(1)
+    const page = await listYouTubeUploadsPage('UU1', 'tokenB', 'k', fn)
+    expect(page.next).toBeNull()
+    expect(calls[0]).toContain('pageToken=tokenB')
   })
-})
-
-type Doc = Record<string, unknown> & { id: number }
-
-/** Just enough of Payload's local API for the scanner: sources already known, creates and updates. */
-function fakeRequest(known: { provider: string; externalId: string }[] = [], channels: Doc[] = []) {
-  const creates: { collection: string; data: Record<string, unknown> }[] = []
-  const updates: { collection: string; id: number; data: Record<string, unknown> }[] = []
-  const warnings: string[] = []
-  let nextId = 100
-  const payload = {
-    logger: { info: () => {}, warn: (message: string) => warnings.push(message) },
-    find: async ({ collection, where }: { collection: string; where: Record<string, unknown> }) => {
-      if (collection === 'sources') {
-        const ids = (where.externalId as { in: string[] }).in
-        const docs = known.filter((source) => ids.includes(source.externalId))
-        return { docs, totalDocs: docs.length }
-      }
-      if (collection === 'licenses') return { docs: [{ id: 7 }], totalDocs: 1 }
-      if (collection === 'channels') return { docs: channels, totalDocs: channels.length }
-      return { docs: [], totalDocs: 0 }
-    },
-    count: async () => ({ totalDocs: 0 }),
-    create: async (args: { collection: string; data: Record<string, unknown> }) => {
-      creates.push(args)
-      return { id: nextId++ }
-    },
-    update: async (args: { collection: string; id: number; data: Record<string, unknown> }) => {
-      updates.push(args)
-      return { id: args.id }
-    },
-  }
-  return { req: { payload } as unknown as PayloadRequest, creates, updates, warnings }
-}
-
-const channel = (overrides: Partial<Channel> = {}): Channel => ({
-  id: 1,
-  url: 'https://www.youtube.com/@Cuerdas',
-  name: 'Cuerdas Films',
-  provider: 'youtube',
-  externalId: UC,
-  kind: 'producer',
-  officialEvidence: 'Linked from cuerdas.example (checked 2026-10-27).',
-  active: true,
-  minDurationSeconds: 120,
-  maxDurationSeconds: 2700,
-  defaultLanguage: 'es',
-  lastScannedAt: null,
-  lastScanNote: null,
-  updatedAt: '',
-  createdAt: '',
-  ...overrides,
 })
 
 const savedEnv = { ...process.env }
@@ -308,11 +219,6 @@ beforeEach(() => {
 afterEach(() => {
   process.env = { ...savedEnv }
 })
-
-const sourceOf = (creates: { collection: string; data: Record<string, unknown> }[]) =>
-  creates.filter((create) => create.collection === 'sources')
-const shortsOf = (creates: { collection: string; data: Record<string, unknown> }[]) =>
-  creates.filter((create) => create.collection === 'shorts')
 
 describe('scanChannel on YouTube', () => {
   const routes = (videos: unknown[]) => ({
@@ -341,7 +247,9 @@ describe('scanChannel on YouTube', () => {
         ytVideo('noemb', { status: { embeddable: false, privacyStatus: 'public' } }),
       ]),
     )
-    const { req, creates, updates } = fakeRequest([{ provider: 'youtube', externalId: 'dupli' }])
+    const { req, creates, updates } = fakeRequest({
+      sources: [{ provider: 'youtube', externalId: 'dupli' }],
+    })
 
     const { scanChannel } = await import('../src/ingest/channels/scan.ts')
     const summary = await scanChannel(req, channel(), fn, 0)
@@ -359,7 +267,7 @@ describe('scanChannel on YouTube', () => {
       originalLanguage: 'es',
       ingestChannel: 1,
     })
-    const [source] = sourceOf(creates)
+    const [source] = sourcesOf(creates)
     expect(source?.data).toMatchObject({
       provider: 'youtube',
       externalId: 'newone',
@@ -371,35 +279,9 @@ describe('scanChannel on YouTube', () => {
     expect(updates[0]?.data.lastScanNote).toContain('Found 6 new videos: 1 added')
   })
 
-  it('reads only what is newer than the last scan', async () => {
-    const { fn, calls } = fakeFetch({
-      [`${YT}/channels`]: { body: ytChannel() },
-      [`${YT}/playlistItems`]: {
-        body: {
-          items: [
-            { contentDetails: { videoId: 'newone', videoPublishedAt: '2026-10-26T10:00:00Z' } },
-            { contentDetails: { videoId: 'older', videoPublishedAt: '2026-10-01T10:00:00Z' } },
-          ],
-        },
-      },
-      [`${YT}/videos`]: { body: { items: [ytVideo('newone')] } },
-    })
-    const { req, creates } = fakeRequest()
-    const { scanChannel } = await import('../src/ingest/channels/scan.ts')
-    const summary = await scanChannel(
-      req,
-      channel({ lastScannedAt: '2026-10-10T00:00:00Z' }),
-      fn,
-      0,
-    )
-    expect(summary).toMatchObject({ found: 1, added: 1 })
-    expect(calls.find((call) => call.startsWith(`${YT}/videos`))).toContain('id=newone')
-    expect(shortsOf(creates)).toHaveLength(1)
-  })
-
-  it('keeps lastScannedAt when a short could not be saved, so the next scan retries it', async () => {
+  it('records a short that could not be saved as failed, for the next scan to retry', async () => {
     const { fn } = fakeFetch(routes([ytVideo('newone')]))
-    const { req, updates } = fakeRequest()
+    const { req, ledger } = fakeRequest()
     const create = req.payload.create
     req.payload.create = (async (args: { collection: string }) => {
       if (args.collection === 'shorts') throw new Error('database is down')
@@ -408,7 +290,11 @@ describe('scanChannel on YouTube', () => {
     const { scanChannel } = await import('../src/ingest/channels/scan.ts')
     const summary = await scanChannel(req, channel(), fn, 0)
     expect(summary.skipped.failed).toBe(1)
-    expect(updates[0]?.data).not.toHaveProperty('lastScannedAt')
+    expect(ledger.find((row) => row.externalId === 'newone')).toMatchObject({
+      outcome: 'skipped',
+      skipReason: 'failed',
+      note: 'database is down',
+    })
   })
 })
 
@@ -426,6 +312,7 @@ describe('scanChannel on Vimeo', () => {
 
   it('adds new videos from the feed, using oEmbed for the running time', async () => {
     const { fn } = fakeFetch({
+      'https://vimeo.com/terjes/videos/page:1': { body: '<html></html>' },
       'https://vimeo.com/terjes/videos/rss': {
         body: vimeoFeed([
           { id: '1001', title: 'El mar', date: 'Mon, 26 Oct 2026 10:00:00 GMT' },
@@ -433,7 +320,6 @@ describe('scanChannel on Vimeo', () => {
           { id: '1003', title: 'Clip del rodaje', date: 'Sat, 24 Oct 2026 10:00:00 GMT' },
           { id: '1004', title: 'Muy largo', date: 'Fri, 23 Oct 2026 10:00:00 GMT' },
           { id: '1005', title: 'Sin incrustar', date: 'Thu, 22 Oct 2026 10:00:00 GMT' },
-          { id: '1006', title: 'Viejo', date: 'Mon, 01 Jun 2026 10:00:00 GMT' },
         ]),
       },
       ...Object.fromEntries([
@@ -443,7 +329,9 @@ describe('scanChannel on Vimeo', () => {
         oembed('1005', {}, 403),
       ]),
     })
-    const { req, creates, updates } = fakeRequest([{ provider: 'vimeo', externalId: '1002' }])
+    const { req, creates, updates } = fakeRequest({
+      sources: [{ provider: 'vimeo', externalId: '1002' }],
+    })
     const { scanChannel } = await import('../src/ingest/channels/scan.ts')
     const summary = await scanChannel(
       req,
@@ -462,7 +350,7 @@ describe('scanChannel on Vimeo', () => {
       status: 'review',
       durationSeconds: 480,
     })
-    expect(sourceOf(creates)[0]?.data).toMatchObject({
+    expect(sourcesOf(creates)[0]?.data).toMatchObject({
       provider: 'vimeo',
       externalId: '1001',
       ingestChannel: 1,
@@ -470,19 +358,20 @@ describe('scanChannel on Vimeo', () => {
     expect(updates[0]?.data.lastScannedAt).toBeTypeOf('string')
   })
 
-  it('does not advance the scan when oEmbed is down', async () => {
+  it('records the videos it could not check as failed when oEmbed is down', async () => {
     const { fn } = fakeFetch({
+      'https://vimeo.com/terjes/videos/page:1': { body: '<html></html>' },
       'https://vimeo.com/terjes/videos/rss': {
         body: vimeoFeed([{ id: '1001', title: 'El mar', date: 'Mon, 26 Oct 2026 10:00:00 GMT' }]),
       },
       'https://vimeo.com/api/oembed.json': { status: 503, body: 'down' },
     })
-    const { req, creates, updates } = fakeRequest()
+    const { req, creates, ledger } = fakeRequest()
     const { scanChannel } = await import('../src/ingest/channels/scan.ts')
     const summary = await scanChannel(req, vimeo, fn, 0)
     expect(summary).toMatchObject({ added: 0, skipped: { failed: 1 } })
-    expect(creates).toHaveLength(0)
-    expect(updates[0]?.data).not.toHaveProperty('lastScannedAt')
+    expect(shortsOf(creates)).toHaveLength(0)
+    expect(ledger).toMatchObject([{ externalId: '1001', outcome: 'skipped', skipReason: 'failed' }])
   })
 })
 
@@ -500,12 +389,15 @@ describe('failing channels', () => {
     const broken = channel({ id: 1, name: 'Broken', externalId: null })
     const working = channel({ id: 2, name: 'Working', provider: 'vimeo', externalId: 'terjes' })
     const { fn } = fakeFetch({
+      'https://vimeo.com/terjes/videos/page:1': { body: '<html></html>' },
       'https://vimeo.com/terjes/videos/rss': {
         body: vimeoFeed([{ id: '2001', title: 'El mar', date: 'Mon, 26 Oct 2026 10:00:00 GMT' }]),
       },
       'https://vimeo.com/api/oembed.json': { body: { title: 'El mar', duration: 480 } },
     })
-    const { req, creates } = fakeRequest([], [broken as unknown as Doc, working as unknown as Doc])
+    const { req, creates } = fakeRequest({
+      channels: [broken as unknown as Doc, working as unknown as Doc],
+    })
     const summary = await scanActiveChannels(req, fn, 0)
     expect(summary).toEqual({ channels: 2, failed: 1, added: 1 })
     expect(shortsOf(creates)).toHaveLength(1)
@@ -543,7 +435,7 @@ describe('createShortWithSource', () => {
       status: 'review',
     })
     expect(shortsOf(creates)[0]?.data).not.toHaveProperty('ingestChannel')
-    const source = sourceOf(creates)[0]?.data
+    const source = sourcesOf(creates)[0]?.data
     expect(source).toMatchObject({
       short: 100,
       provider: 'youtube',
@@ -571,6 +463,9 @@ describe('createShortWithSource', () => {
         ageRestricted: false,
         publishedAt: null,
         audioLanguage: 'es-419',
+        defaultLanguage: null,
+        hasCaptions: false,
+        description: null,
         thumbnailUrl: null,
       },
       {},
@@ -590,7 +485,7 @@ describe('createShortWithSource', () => {
       defaultLanguage: 'ca',
     })
     expect(shortsOf(creates)[0]?.data).toMatchObject({ ingestChannel: 5, originalLanguage: 'es' })
-    expect(sourceOf(creates)[0]?.data).toMatchObject({
+    expect(sourcesOf(creates)[0]?.data).toMatchObject({
       ingestChannel: 5,
       officialEvidence: 'Evidence',
       channel: {

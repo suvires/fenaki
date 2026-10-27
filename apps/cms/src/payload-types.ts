@@ -71,6 +71,7 @@ export interface Config {
     shorts: Short;
     sources: Source;
     channels: Channel;
+    'scanned-videos': ScannedVideo;
     people: Person;
     collections: Collection;
     showcases: Showcase;
@@ -97,11 +98,15 @@ export interface Config {
     shorts: {
       sources: 'sources';
     };
+    channels: {
+      scannedVideos: 'scanned-videos';
+    };
   };
   collectionsSelect: {
     shorts: ShortsSelect<false> | ShortsSelect<true>;
     sources: SourcesSelect<false> | SourcesSelect<true>;
     channels: ChannelsSelect<false> | ChannelsSelect<true>;
+    'scanned-videos': ScannedVideosSelect<false> | ScannedVideosSelect<true>;
     people: PeopleSelect<false> | PeopleSelect<true>;
     collections: CollectionsSelect<false> | CollectionsSelect<true>;
     showcases: ShowcasesSelect<false> | ShowcasesSelect<true>;
@@ -132,12 +137,14 @@ export interface Config {
     'crm-inbox': CrmInbox;
     home: Home;
     ranking: Ranking;
+    'catalog-settings': CatalogSetting;
     'payload-jobs-stats': PayloadJobsStat;
   };
   globalsSelect: {
     'crm-inbox': CrmInboxSelect<false> | CrmInboxSelect<true>;
     home: HomeSelect<false> | HomeSelect<true>;
     ranking: RankingSelect<false> | RankingSelect<true>;
+    'catalog-settings': CatalogSettingsSelect<false> | CatalogSettingsSelect<true>;
     'payload-jobs-stats': PayloadJobsStatsSelect<false> | PayloadJobsStatsSelect<true>;
   };
   locale: 'es';
@@ -153,6 +160,8 @@ export interface Config {
       computeRanking: TaskComputeRanking;
       syncInbox: TaskSyncInbox;
       scanChannels: TaskScanChannels;
+      reviewShort: TaskReviewShort;
+      reviewBacklog: TaskReviewBacklog;
       inline: {
         input: unknown;
         output: unknown;
@@ -222,6 +231,14 @@ export interface Short {
    * BCP 47 code, e.g. es. Use zxx for no dialogue.
    */
   originalLanguage?: string | null;
+  /**
+   * BCP 47 codes, when more than one language is spoken. The first one goes in the original language.
+   */
+  otherLanguages?: string[] | null;
+  /**
+   * An editor’s value is never replaced by the scan or the AI.
+   */
+  languageSource?: ('provider' | 'channel' | 'ai' | 'editor') | null;
   type?: ('fiction' | 'documentary' | 'animation' | 'experimental') | null;
   noDialogue?: boolean | null;
   /**
@@ -299,6 +316,42 @@ export interface Short {
    */
   ingestChannel?: (number | null) | Channel;
   /**
+   * Claude’s suggestions for the editor. Nothing here is published, and applying it never replaces what an editor wrote.
+   */
+  aiReview?: {
+    status?: ('analyzed' | 'batched' | 'refused' | 'failed') | null;
+    recommendation?: ('publish' | 'discard' | 'needs-human') | null;
+    analyzedAt?: string | null;
+    reason?: string | null;
+    isCompleteShort?: boolean | null;
+    notCompleteReason?:
+      ('trailer' | 'making-of' | 'episode' | 'ad' | 'gala' | 'clip' | 'interview' | 'compilation' | 'other') | null;
+    spokenLanguage?: ('es' | 'none' | 'other') | null;
+    spokenLanguageOther?: string | null;
+    spanishSubtitles?: ('yes' | 'no' | 'unknown') | null;
+    title?: string | null;
+    year?: number | null;
+    country?: string | null;
+    credits?:
+      | {
+          name: string;
+          role?: ('director' | 'writer' | 'producer' | 'cinematographer' | 'editor' | 'composer' | 'cast') | null;
+          id?: string | null;
+        }[]
+      | null;
+    genre?: ('fiction' | 'documentary' | 'animation' | 'experimental') | null;
+    technique?: ('animation' | 'live-action' | 'mixed' | 'unknown') | null;
+    brandedContent?: boolean | null;
+    brand?: string | null;
+    restrictions?: string | null;
+    reuploadSigns?: string | null;
+    synopsis?: string | null;
+    model?: string | null;
+    appliedAt?: string | null;
+    batchId?: string | null;
+    error?: string | null;
+  };
+  /**
    * Set by the catalog import. Re-running the import updates this document.
    */
   importKey?: string | null;
@@ -354,9 +407,18 @@ export interface Source {
    */
   officialEvidence?: string | null;
   /**
-   * BCP 47 codes of the available subtitles, e.g. es, en.
+   * BCP 47 codes of the available human-made subtitles, e.g. es, en.
    */
   subtitles?: string[] | null;
+  /**
+   * BCP 47 codes of subtitles the provider generates.
+   */
+  autoSubtitles?: string[] | null;
+  /**
+   * YouTube only says whether a track exists, not its language. Empty: unknown.
+   */
+  captions?: ('yes' | 'no') | null;
+  subtitlesSource?: ('provider' | 'ai' | 'editor') | null;
   embeddable?: boolean | null;
   /**
    * Set by the nightly embed checker.
@@ -380,6 +442,10 @@ export interface Source {
    */
   thumbnailUrl?: string | null;
   uploadedAt?: string | null;
+  /**
+   * What the channel wrote about the video. Never shown to visitors: it is raw material for the editor and the AI review.
+   */
+  providerDescription?: string | null;
   /**
    * Set when the channel scan added it, so the review queue can be filtered by channel.
    */
@@ -424,11 +490,31 @@ export interface Channel {
    * BCP 47 code, e.g. es. Used when the provider does not say.
    */
   defaultLanguage?: string | null;
+  /**
+   * Until the scan has read the channel back to its first video, each night continues the backlog where it stopped.
+   */
+  backlogComplete?: boolean | null;
+  /**
+   * The next scan reads the channel from its newest video to its first, skipping what the scanned videos already settled. Cleared when it gets to the end.
+   */
+  rescanAll?: boolean | null;
+  /**
+   * Where the next scan resumes (set when a run stops at its per-run limit).
+   */
+  backlogCursor?: string | null;
   lastScannedAt?: string | null;
   /**
    * How many videos the last scan found, added and skipped, and why.
    */
   lastScanNote?: string | null;
+  /**
+   * Every video the scans looked at, and why the skipped ones were left out. Open one to bring it in by hand or to look at it again.
+   */
+  scannedVideos?: {
+    docs?: (number | ScannedVideo)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -491,6 +577,66 @@ export interface Sponsor {
    * Internal. Never shown publicly.
    */
   notes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "scanned-videos".
+ */
+export interface ScannedVideo {
+  id: number;
+  channel?: (number | null) | Channel;
+  provider: 'youtube' | 'vimeo';
+  externalId: string;
+  url?: string | null;
+  title?: string | null;
+  durationSeconds?: number | null;
+  publishedAt?: string | null;
+  outcome: 'added' | 'skipped';
+  /**
+   * Failed videos are retried by the next scan; the rest are not looked at again unless re-evaluated.
+   */
+  skipReason?:
+    | (
+        | 'duplicate'
+        | 'private'
+        | 'not-embeddable'
+        | 'age-restricted'
+        | 'unavailable'
+        | 'unknown-duration'
+        | 'too-short'
+        | 'too-long'
+        | 'not-a-short'
+        | 'not-in-catalog-language'
+        | 'failed'
+      )
+    | null;
+  short?: (number | null) | Short;
+  note?: string | null;
+  /**
+   * ISO 639-1 codes, or zxx for no dialogue. Empty when nobody said.
+   */
+  spokenLanguages?: string[] | null;
+  /**
+   * Languages of human-made subtitles.
+   */
+  subtitles?: string[] | null;
+  /**
+   * Languages of automatic subtitles.
+   */
+  autoSubtitles?: string[] | null;
+  /**
+   * YouTube only says whether a track exists, not its language.
+   */
+  captions?: ('yes' | 'no') | null;
+  languageSource?: ('provider' | 'channel' | 'ai' | 'editor') | null;
+  firstSeenAt?: string | null;
+  lastSeenAt?: string | null;
+  /**
+   * The next scan of the channel judges it again with the current rules, then clears this.
+   */
+  reevaluate?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -984,7 +1130,15 @@ export interface PayloadJob {
         executedAt: string;
         completedAt: string;
         taskSlug:
-          'inline' | 'indexShort' | 'purgeWaitlist' | 'checkEmbeds' | 'computeRanking' | 'syncInbox' | 'scanChannels';
+          | 'inline'
+          | 'indexShort'
+          | 'purgeWaitlist'
+          | 'checkEmbeds'
+          | 'computeRanking'
+          | 'syncInbox'
+          | 'scanChannels'
+          | 'reviewShort'
+          | 'reviewBacklog';
         taskID: string;
         input?:
           | {
@@ -1018,7 +1172,17 @@ export interface PayloadJob {
       }[]
     | null;
   taskSlug?:
-    | ('inline' | 'indexShort' | 'purgeWaitlist' | 'checkEmbeds' | 'computeRanking' | 'syncInbox' | 'scanChannels')
+    | (
+        | 'inline'
+        | 'indexShort'
+        | 'purgeWaitlist'
+        | 'checkEmbeds'
+        | 'computeRanking'
+        | 'syncInbox'
+        | 'scanChannels'
+        | 'reviewShort'
+        | 'reviewBacklog'
+      )
     | null;
   queue?: string | null;
   waitUntil?: string | null;
@@ -1053,6 +1217,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'channels';
         value: number | Channel;
+      } | null)
+    | ({
+        relationTo: 'scanned-videos';
+        value: number | ScannedVideo;
       } | null)
     | ({
         relationTo: 'people';
@@ -1182,6 +1350,8 @@ export interface ShortsSelect<T extends boolean = true> {
   year?: T;
   country?: T;
   originalLanguage?: T;
+  otherLanguages?: T;
+  languageSource?: T;
   type?: T;
   noDialogue?: T;
   posterTone?: T;
@@ -1212,6 +1382,40 @@ export interface ShortsSelect<T extends boolean = true> {
   tmdbId?: T;
   sample?: T;
   ingestChannel?: T;
+  aiReview?:
+    | T
+    | {
+        status?: T;
+        recommendation?: T;
+        analyzedAt?: T;
+        reason?: T;
+        isCompleteShort?: T;
+        notCompleteReason?: T;
+        spokenLanguage?: T;
+        spokenLanguageOther?: T;
+        spanishSubtitles?: T;
+        title?: T;
+        year?: T;
+        country?: T;
+        credits?:
+          | T
+          | {
+              name?: T;
+              role?: T;
+              id?: T;
+            };
+        genre?: T;
+        technique?: T;
+        brandedContent?: T;
+        brand?: T;
+        restrictions?: T;
+        reuploadSigns?: T;
+        synopsis?: T;
+        model?: T;
+        appliedAt?: T;
+        batchId?: T;
+        error?: T;
+      };
   importKey?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1235,6 +1439,9 @@ export interface SourcesSelect<T extends boolean = true> {
       };
   officialEvidence?: T;
   subtitles?: T;
+  autoSubtitles?: T;
+  captions?: T;
+  subtitlesSource?: T;
   embeddable?: T;
   status?: T;
   lastCheckedAt?: T;
@@ -1243,6 +1450,7 @@ export interface SourcesSelect<T extends boolean = true> {
   checkNote?: T;
   thumbnailUrl?: T;
   uploadedAt?: T;
+  providerDescription?: T;
   ingestChannel?: T;
   license?: T;
   importKey?: T;
@@ -1265,8 +1473,39 @@ export interface ChannelsSelect<T extends boolean = true> {
   minDurationSeconds?: T;
   maxDurationSeconds?: T;
   defaultLanguage?: T;
+  backlogComplete?: T;
+  rescanAll?: T;
+  backlogCursor?: T;
   lastScannedAt?: T;
   lastScanNote?: T;
+  scannedVideos?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "scanned-videos_select".
+ */
+export interface ScannedVideosSelect<T extends boolean = true> {
+  channel?: T;
+  provider?: T;
+  externalId?: T;
+  url?: T;
+  title?: T;
+  durationSeconds?: T;
+  publishedAt?: T;
+  outcome?: T;
+  skipReason?: T;
+  short?: T;
+  note?: T;
+  spokenLanguages?: T;
+  subtitles?: T;
+  autoSubtitles?: T;
+  captions?: T;
+  languageSource?: T;
+  firstSeenAt?: T;
+  lastSeenAt?: T;
+  reevaluate?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1735,6 +1974,19 @@ export interface Ranking {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "catalog-settings".
+ */
+export interface CatalogSetting {
+  id: number;
+  /**
+   * BCP 47 codes. A scanned short enters when it is spoken in one of them, has no dialogue, or has subtitles in one. The others stay in the scanned videos, with their language.
+   */
+  catalogLanguages?: string[] | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-jobs-stats".
  */
 export interface PayloadJobsStat {
@@ -1783,6 +2035,16 @@ export interface RankingSelect<T extends boolean = true> {
   computedAt?: T;
   windowStart?: T;
   windowEnd?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "catalog-settings_select".
+ */
+export interface CatalogSettingsSelect<T extends boolean = true> {
+  catalogLanguages?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -1872,11 +2134,37 @@ export interface TaskSyncInbox {
  * via the `definition` "TaskScanChannels".
  */
 export interface TaskScanChannels {
-  input?: unknown;
+  input: {
+    channelId?: number | null;
+  };
   output: {
     channels: number;
     failed: number;
     added: number;
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskReviewShort".
+ */
+export interface TaskReviewShort {
+  input: {
+    shortId: number;
+  };
+  output: {
+    analyzed: boolean;
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskReviewBacklog".
+ */
+export interface TaskReviewBacklog {
+  input?: unknown;
+  output: {
+    submitted: number;
+    collected: number;
+    pending: number;
   };
 }
 /**

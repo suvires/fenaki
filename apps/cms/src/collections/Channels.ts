@@ -1,7 +1,12 @@
 import { ValidationError, type CollectionConfig, type PayloadRequest } from 'payload'
 import { isAdmin, isAuthenticatedField, isStaffAccount } from '../access.ts'
 import { ingestKeys } from '../ingest/metadata.ts'
-import { scanChannelEndpoint } from '../ingest/channels/endpoint.ts'
+import {
+  reevaluateChannelEndpoint,
+  rescanChannelEndpoint,
+  scanChannelEndpoint,
+} from '../ingest/channels/endpoint.ts'
+import { channelLedgerEndpoint } from '../ingest/channels/ledgerEndpoints.ts'
 import { resolveChannel, type ResolveFailure } from '../ingest/channels/resolve.ts'
 import { groups, inLanguage, label, options, type AdminLabel } from '../labels.ts'
 import type { CHANNEL_KINDS } from './Sources.ts'
@@ -41,7 +46,12 @@ export const Channels: CollectionConfig = {
     group: groups.catalog,
     listSearchableFields: ['name', 'url'],
   },
-  endpoints: [scanChannelEndpoint],
+  endpoints: [
+    scanChannelEndpoint,
+    rescanChannelEndpoint,
+    reevaluateChannelEndpoint,
+    channelLedgerEndpoint,
+  ],
   access: {
     read: ({ req }) => isStaffAccount(req.user),
     create: isAdmin,
@@ -197,6 +207,49 @@ export const Channels: CollectionConfig = {
       type: 'row',
       fields: [
         {
+          name: 'backlogComplete',
+          label: label('Whole history scanned', 'Historial completo revisado'),
+          type: 'checkbox',
+          defaultValue: false,
+          index: true,
+          admin: {
+            readOnly: true,
+            description: label(
+              'Until the scan has read the channel back to its first video, each night continues the backlog where it stopped.',
+              'Hasta que la búsqueda haya leído el canal hasta su primer vídeo, cada noche continúa el historial por donde se quedó.',
+            ),
+          },
+        },
+        {
+          name: 'rescanAll',
+          label: label('Review the whole channel', 'Revisar todo el canal'),
+          type: 'checkbox',
+          defaultValue: false,
+          admin: {
+            description: label(
+              'The next scan reads the channel from its newest video to its first, skipping what the scanned videos already settled. Cleared when it gets to the end.',
+              'La próxima búsqueda lee el canal del vídeo más reciente al primero, saltándose lo que los vídeos escaneados ya resolvieron. Se quita al llegar al final.',
+            ),
+          },
+        },
+        {
+          name: 'backlogCursor',
+          label: label('Backlog position', 'Posición en el historial'),
+          type: 'text',
+          admin: {
+            readOnly: true,
+            description: label(
+              'Where the next scan resumes (set when a run stops at its per-run limit).',
+              'Por dónde sigue la próxima búsqueda (se fija cuando una ejecución se detiene en su límite).',
+            ),
+          },
+        },
+      ],
+    },
+    {
+      type: 'row',
+      fields: [
+        {
           name: 'lastScannedAt',
           label: label('Last scanned', 'Última búsqueda'),
           type: 'date',
@@ -215,6 +268,30 @@ export const Channels: CollectionConfig = {
           },
         },
       ],
+    },
+    {
+      name: 'ledgerSummary',
+      type: 'ui',
+      admin: {
+        condition: (data) => Boolean(data?.id),
+        components: { Field: '/admin/ChannelLedger.tsx#ChannelLedger' },
+      },
+    },
+    {
+      name: 'scannedVideos',
+      label: label('Scanned videos', 'Vídeos escaneados'),
+      type: 'join',
+      collection: 'scanned-videos',
+      on: 'channel',
+      defaultSort: '-lastSeenAt',
+      defaultLimit: 25,
+      admin: {
+        defaultColumns: ['title', 'outcome', 'skipReason', 'durationSeconds', 'lastSeenAt'],
+        description: label(
+          'Every video the scans looked at, and why the skipped ones were left out. Open one to bring it in by hand or to look at it again.',
+          'Todos los vídeos que miraron las búsquedas, y por qué se descartaron los que no entraron. Abre uno para añadirlo a mano o volver a evaluarlo.',
+        ),
+      },
     },
   ],
   hooks: {

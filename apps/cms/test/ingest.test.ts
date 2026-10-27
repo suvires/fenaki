@@ -155,6 +155,9 @@ const apiVideo = (overrides: Partial<YouTubeVideo> = {}): YouTubeVideo => ({
   ageRestricted: false,
   publishedAt: null,
   audioLanguage: null,
+  defaultLanguage: null,
+  hasCaptions: false,
+  description: null,
   thumbnailUrl: null,
   ...overrides,
 })
