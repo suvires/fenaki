@@ -15,10 +15,10 @@ export function Checkbox({ id, children, className, ...inputProps }: CheckboxPro
       <input
         id={id}
         type="checkbox"
-        className="size-(--size-icon-md) m-0 mt-hair accent-tungsteno cursor-pointer rounded-xs focus-visible:focus-ring"
+        className="size-(--size-icon-md) m-0 mt-hair accent-accent cursor-pointer rounded-xs focus-visible:focus-ring"
         {...inputProps}
       />
-      <label htmlFor={id} className="text-small text-ink cursor-pointer">
+      <label htmlFor={id} className="text-small text-primary cursor-pointer">
         {children}
       </label>
     </div>

@@ -15,14 +15,12 @@ export interface PageHeaderProps {
 export function PageHeader({ eyebrow, title, description, children, className }: PageHeaderProps) {
   return (
     <header className={cx('grid gap-4', className)}>
-      {eyebrow ? (
-        <p className="m-0 font-mono text-label uppercase text-tungsteno-text">{eyebrow}</p>
-      ) : null}
+      {eyebrow ? <p className="m-0 font-mono text-label uppercase text-accent">{eyebrow}</p> : null}
       <h1 className="m-0 font-display text-display-l md:text-display-xl uppercase text-balance">
         {title}
       </h1>
       {description ? (
-        <p className="m-0 max-w-hero-text text-body-l text-ink-muted">{description}</p>
+        <p className="m-0 max-w-hero-text text-body-l text-secondary">{description}</p>
       ) : null}
       {children}
     </header>

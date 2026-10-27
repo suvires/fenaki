@@ -19,7 +19,7 @@ const notice = notices.find((value) => value === asked)
 ---
 
 <Base locale={locale} title={t('account.signIn.title')} noindex>
-  <section class="grid gap-6 max-w-(--container-note) py-8">
+  <section class="grid gap-6 max-w-(--container-narrow) py-8">
     <PageHeader title={t('account.signIn.title')} description={t('account.signIn.lead')} />
     <SignInForm
       client:load

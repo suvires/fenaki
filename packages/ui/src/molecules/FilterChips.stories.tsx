@@ -26,7 +26,7 @@ export const Controlled: Story = {
     return (
       <div className="grid gap-3">
         <FilterChips {...args} value={value} onChange={setValue} />
-        <output className="font-mono text-timecode text-ink-muted">{value ?? '—'}</output>
+        <output className="font-mono text-timecode text-secondary">{value ?? '—'}</output>
       </div>
     )
   },

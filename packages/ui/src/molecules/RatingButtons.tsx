@@ -108,7 +108,7 @@ export function RatingButtons({
       onFocus={onFocus}
       onBlur={onBlur}
       onKeyDown={onKeyDown}
-      className={cx('relative inline-flex flex-none size-(--size-control-md)', className)}
+      className={cx('relative inline-flex flex-none size-(--control-height-md)', className)}
     >
       <IconButton
         ref={rest}
@@ -124,10 +124,10 @@ export function RatingButtons({
         className={cx(
           // The pill's buttons are as big as the one it opens from, centred on it, with a little padding.
           'absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 flex items-center gap-1 p-1',
-          'rounded-control bg-sala-2/(--opacity-pill) backdrop-blur-veil shadow-card',
+          'rounded-control bg-muted/(--rating-pill-opacity) backdrop-blur-translucent shadow-sm',
           // Unfolds from the rate button and folds back into it: width and opacity, both ways.
-          'transition-[opacity,scale,visibility] duration-(--duration-pill) ease-standard motion-reduce:transition-none',
-          'invisible opacity-0 scale-x-(--scale-pill-folded) data-open:visible data-open:opacity-100 data-open:scale-x-100',
+          'transition-[opacity,scale,visibility] duration-(--rating-pill-duration) ease-standard motion-reduce:transition-none',
+          'invisible opacity-0 scale-x-(--rating-pill-scale-folded) data-open:visible data-open:opacity-100 data-open:scale-x-100',
         )}
       >
         {CHOICES.map((choice) => (

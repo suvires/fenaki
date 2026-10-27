@@ -8,18 +8,18 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   icon?: IconName
   /** Renders a link that looks like a button. */
   href?: string
-  /** The ground the button sits on. `telon` turns a secondary button into an on-telon outline. */
-  surface?: 'sala' | 'telon'
+  /** The ground the button sits on. `sponsored` turns a secondary button into an on-sponsored outline. */
+  surface?: 'default' | 'sponsored'
   children: ReactNode
 }
 
 const VARIANTS = {
-  primary: 'bg-tungsteno text-on-tungsteno border-transparent hover:bg-tungsteno-hover',
+  primary: 'bg-accent text-on-accent border-transparent hover:bg-accent-hover',
   // Translucent and borderless: the ground, or a hero image, shows through, blurred.
   secondary:
-    'bg-veil/(--opacity-veil) backdrop-blur-veil text-ink border-transparent hover:bg-veil/(--opacity-veil-hover)',
+    'bg-translucent/(--opacity-translucent) backdrop-blur-translucent text-primary border-transparent hover:bg-translucent/(--opacity-translucent-hover)',
   ghost:
-    'bg-transparent text-ink border-transparent underline underline-offset-4 hover:no-underline',
+    'bg-transparent text-primary border-transparent underline underline-offset-4 hover:no-underline',
 } as const
 
 /** About 56 % of the control's height, so the icon holds its own next to the label at every size. */
@@ -31,7 +31,7 @@ export function Button({
   size = 'md',
   icon,
   href,
-  surface = 'sala',
+  surface = 'default',
   className,
   children,
   type,
@@ -39,16 +39,16 @@ export function Button({
 }: ButtonProps) {
   const classes = cx(
     'inline-flex items-center justify-center gap-2 rounded-control border cursor-pointer no-underline',
-    'transition-[background-color,transform] duration-(--duration-press) ease-standard',
-    'active:translate-y-(--size-press) focus-visible:focus-ring motion-reduce:transition-none',
+    'transition-[background-color,transform] duration-(--duration-fast) ease-standard',
+    'active:translate-y-(--control-press-offset) focus-visible:focus-ring motion-reduce:transition-none',
     size === 'lg'
-      ? 'h-(--size-control-lg) text-button-lg'
+      ? 'h-(--control-height-lg) text-button-lg'
       : size === 'sm'
-        ? 'h-(--size-control-sm) text-button-sm'
-        : 'h-(--size-control-md) text-button',
+        ? 'h-(--control-height-sm) text-button-sm'
+        : 'h-(--control-height-md) text-button-md',
     variant === 'ghost' ? 'px-2' : size === 'lg' ? 'px-6' : size === 'sm' ? 'px-3' : 'px-4',
-    variant === 'secondary' && surface === 'telon'
-      ? 'bg-transparent text-on-telon border-on-telon'
+    variant === 'secondary' && surface === 'sponsored'
+      ? 'bg-transparent text-on-sponsored border-on-sponsored'
       : VARIANTS[variant],
     className,
   )

@@ -11,7 +11,7 @@ import {
   type Locale,
   type MessageKey,
 } from '@fenaki/i18n'
-import { palettes, tokens, type TypeStyle } from '@fenaki/tokens'
+import { palettes, typography, variables } from '@fenaki/tokens'
 
 export type AccountEmailKind = 'verify' | 'reset'
 
@@ -30,15 +30,15 @@ const FONT_STACK = '"Archivo Variable", Archivo, Arial, Helvetica, sans-serif'
 const fontFace = (url: string) =>
   `@font-face{font-family:"Archivo Variable";src:url("${url}") format("woff2");font-weight:100 900;font-stretch:62% 125%;font-display:swap}`
 
-function token(group: { tokens: { name: string; value: string }[] }, name: string): string {
-  const found = group.tokens.find((t) => t.name === name)
-  if (!found) throw new Error(`Unknown token ${name}`)
-  return found.value
+/** A token's resolved value, by CSS variable. */
+function token(name: string): string {
+  const value = variables.dark[name]
+  if (value === undefined) throw new Error(`Unknown token ${name}`)
+  return value
 }
 
 function typeStyle(name: string): string {
-  const style = tokens.type.groups.flatMap((g) => g.styles).find((s) => s.name === name) as
-    TypeStyle | undefined
+  const style = typography[name]
   if (!style) throw new Error(`Unknown type style ${name}`)
   return `font-size:${style.fontSize};line-height:${style.lineHeight};font-weight:${style.fontWeight}`
 }
@@ -79,23 +79,30 @@ export function accountEmailHtml(
   const t = createTranslator(locale)
   const rich = createRichTranslator(locale)
   const color = palettes.light
-  const space = (name: string) => token(tokens.spacing, `space-${name}`)
-  const radius = token(tokens.radius, 'radius-hero')
-  const pill = token(tokens.radius, 'radius-full')
+  const space = (name: string) => token(`--spacing-${name}`)
+  const radius = token('--radius-lg')
+  const pill = token('--radius-full')
   // A white page with the card in the web's own dark colours, and the web's button: neon pink with
   // dark text (5.2:1 on the pink; white on it would be 3.6:1, too low).
   const card = palettes.dark
-  const width = token(tokens.container, 'email')
+  const width = token('--email-max-width')
   const key = (name: string) => `accountEmail.${kind}.${name}` as MessageKey
 
-  const link = (href: string, text: string, ink = color.ink, long = false): Html => ({
+  const link = (
+    href: string,
+    text: string,
+    textColor = color['text-primary'],
+    long = false,
+  ): Html => ({
     // A long URL starts on its own line and breaks only if it still does not fit.
-    html: `<a href="${escapeHtml(href)}" style="color:${ink};text-decoration:underline${long ? ';overflow-wrap:break-word;word-wrap:break-word' : ''}">${escapeHtml(text)}</a>`,
+    html: `<a href="${escapeHtml(href)}" style="color:${textColor};text-decoration:underline${long ? ';overflow-wrap:break-word;word-wrap:break-word' : ''}">${escapeHtml(text)}</a>`,
   })
   const paragraph = (html: string, style = typeStyle('body')) =>
-    `<p style="margin:0 0 ${space('4')};color:${card.ink};${style}">${html}</p>`
+    `<p style="margin:0 0 ${space('4')};color:${card['text-primary']};${style}">${html}</p>`
 
-  const fallback = render(rich(key('fallback'), { url: link(url, url, card.ink, true) }))
+  const fallback = render(
+    rich(key('fallback'), { url: link(url, url, card['text-primary'], true) }),
+  )
   const footer = render(
     rich(key('footer'), {
       site: link(`${origin}/${locale}/`, 'fenaki.tv'),
@@ -112,23 +119,23 @@ export function accountEmailHtml(
 <style>${fontFace(`${origin}/email/archivo-latin.woff2`)}</style>
 <title>${escapeHtml(t(key('subject')))}</title>
 </head>
-<body style="margin:0;padding:0;background:${color['sala-1']};font-family:${escapeHtml(FONT_STACK)}">
+<body style="margin:0;padding:0;background:${color['background-raised']};font-family:${escapeHtml(FONT_STACK)}">
 <span style="display:none;max-height:0;overflow:hidden">${escapeHtml(t(key('preview')))}</span>
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${color['sala-1']}">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${color['background-raised']}">
 <tr><td align="center" style="padding:${space('8')} ${space('4')}">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:${width}">
 <tr><td style="padding:0 0 ${space('6')}"><a href="${escapeHtml(`${origin}/${locale}/`)}"><img src="${escapeHtml(`${origin}/email/logo.png`)}" alt="FENAKI" width="85" height="28" style="display:block;border:0"></a></td></tr>
 </table>
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:${width};background:${card['sala-0']};border-radius:${radius}">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:${width};background:${card['background-canvas']};border-radius:${radius}">
 <tr><td style="padding:${space('8')}">
 ${paragraph(escapeHtml(t(key('title'))), `${typeStyle('title')};margin-bottom:${space('2')}`)}
 ${paragraph(escapeHtml(t(key('intro'))), typeStyle('body-l'))}
-<p style="margin:${space('2')} 0 ${space('6')}"><a href="${escapeHtml(url)}" style="display:block;text-align:center;padding:${space('3')} ${space('6')};background:${card.tungsteno};color:${card['on-tungsteno']};${typeStyle('button-lg')};text-decoration:none;border-radius:${pill}">${escapeHtml(t(key('button')))}</a></p>
-${paragraph(fallback, `${typeStyle('small')};color:${card['ink-muted']}`)}
-${paragraph(escapeHtml(t(key('ignore'))), `${typeStyle('small')};color:${card['ink-muted']};margin-bottom:0`)}
+<p style="margin:${space('2')} 0 ${space('6')}"><a href="${escapeHtml(url)}" style="display:block;text-align:center;padding:${space('3')} ${space('6')};background:${card.accent};color:${card['text-on-accent']};${typeStyle('button-lg')};text-decoration:none;border-radius:${pill}">${escapeHtml(t(key('button')))}</a></p>
+${paragraph(fallback, `${typeStyle('small')};color:${card['text-secondary']}`)}
+${paragraph(escapeHtml(t(key('ignore'))), `${typeStyle('small')};color:${card['text-secondary']};margin-bottom:0`)}
 </td></tr>
 </table>
-<p style="max-width:${width};margin:${space('4')} auto 0;${typeStyle('meta')};color:${color['ink-muted']}">${footer}</p>
+<p style="max-width:${width};margin:${space('4')} auto 0;${typeStyle('meta')};color:${color['text-secondary']}">${footer}</p>
 </td></tr>
 </table>
 </body>

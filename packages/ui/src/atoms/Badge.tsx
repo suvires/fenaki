@@ -9,11 +9,11 @@ export interface BadgeProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'child
 }
 
 const TONES = {
-  neutral: 'bg-sala-2 text-ink',
-  accent: 'bg-tungsteno-soft text-tungsteno-text',
-  info: 'bg-plata-soft text-plata',
-  /** «Contenido de marca»: telon, because someone paid for it. Always shown, always first. */
-  branded: 'bg-telon text-on-telon',
+  neutral: 'bg-muted text-primary',
+  accent: 'bg-accent-subtle text-accent',
+  info: 'bg-info-subtle text-info',
+  /** «Contenido de marca»: the sponsored colour, because someone paid for it. Always shown, always first. */
+  branded: 'bg-sponsored text-on-sponsored',
 } as const
 
 /** A one- or two-word fact about a short, in the uppercase timecode voice. */
@@ -22,7 +22,7 @@ export function Badge({ tone = 'neutral', className, children, ...rest }: BadgeP
     <span
       {...rest}
       className={cx(
-        'inline-flex items-center min-h-(--size-badge) px-2 py-hair rounded-xs font-mono text-label uppercase',
+        'inline-flex items-center min-h-(--badge-height) px-2 py-hair rounded-xs font-mono text-label uppercase',
         TONES[tone],
         className,
       )}

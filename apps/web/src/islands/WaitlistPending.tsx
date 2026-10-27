@@ -59,7 +59,7 @@ export function WaitlistPending({ locale, backHref }: WaitlistPendingProps) {
     return (
       <>
         <p className="m-0 text-body-l">{t('waitlist.pending.textNoEmail')}</p>
-        <p className="m-0 text-body-l text-ink-muted">{t('waitlist.pending.help')}</p>
+        <p className="m-0 text-body-l text-secondary">{t('waitlist.pending.help')}</p>
         <div>
           <Button size="lg" variant="secondary" href={backHref}>
             {t('waitlist.expired.back')}
@@ -72,12 +72,12 @@ export function WaitlistPending({ locale, backHref }: WaitlistPendingProps) {
     <>
       <p className="m-0 text-body-l">
         {rich('waitlist.pending.text', {
-          email: <strong className="text-ink">{email}</strong>,
+          email: <strong className="text-primary">{email}</strong>,
         }).map((part, index) => (
           <Fragment key={index}>{part}</Fragment>
         ))}
       </p>
-      <p className="m-0 text-body-l text-ink-muted">{t('waitlist.pending.help')}</p>
+      <p className="m-0 text-body-l text-secondary">{t('waitlist.pending.help')}</p>
       <div>
         <Button
           size="lg"

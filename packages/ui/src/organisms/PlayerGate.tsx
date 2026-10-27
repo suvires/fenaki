@@ -60,7 +60,7 @@ export function PlayerGate({
   return (
     <div
       className={cx(
-        'relative aspect-still max-w-full box-border overflow-hidden rounded-hero bg-sala-2',
+        'relative aspect-still max-w-full box-border overflow-hidden rounded-lg bg-muted',
         className,
       )}
     >
@@ -83,13 +83,13 @@ export function PlayerGate({
         ) : (
           <div
             role="status"
-            className="absolute inset-0 grid place-content-center p-6 text-center font-mono text-ink-muted"
+            className="absolute inset-0 grid place-content-center p-6 text-center font-mono text-secondary"
           >
             {loadedLabel}
           </div>
         )
       ) : (
-        <div className="absolute inset-0 grid content-end gap-3 p-6 bg-linear-to-t from-sala-0 from-0% to-transparent to-85%">
+        <div className="absolute inset-0 grid content-end gap-3 p-6 bg-linear-to-t from-canvas from-0% to-transparent to-85%">
           <p className="m-0 font-display text-display-l uppercase">{title}</p>
           <div className="flex flex-wrap items-center gap-3">
             <Button

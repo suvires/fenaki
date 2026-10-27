@@ -23,10 +23,10 @@ const privacyPolicy = {
   <h1 class="m-0 font-display text-display-l md:text-display-xl uppercase text-balance">
     {t('landing.hero.title')}
   </h1>
-  <p class="m-0 text-body-l text-ink">{t('landing.hero.lead')}</p>
+  <p class="m-0 text-body-l text-primary">{t('landing.hero.lead')}</p>
   <div id="waitlist" class="grid gap-3 scroll-mt-8">
     <WaitlistForm client:load locale={locale} />
-    <p class="m-0 text-small text-ink-muted">
+    <p class="m-0 text-small text-secondary">
       <RichText locale={locale} messageKey="waitlist.privacy" parts={{ privacyPolicy }} />
     </p>
   </div>

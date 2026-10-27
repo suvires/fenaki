@@ -57,7 +57,7 @@ export interface SiteHeaderProps {
 }
 
 const linkClass =
-  'rounded-xs text-nav text-ink no-underline hover:text-tungsteno-text focus-visible:focus-ring'
+  'rounded-xs text-nav text-primary no-underline hover:text-accent focus-visible:focus-ring'
 
 /**
  * The site's top bar: logo, main navigation (genres, links), a search that slides open to the left
@@ -162,7 +162,7 @@ export function SiteHeader({
           <ul
             id={`${genresId}-${where}`}
             hidden={!genresOpen}
-            className="m-0 mt-2 p-2 list-none grid gap-1 md:absolute md:left-0 md:top-full md:z-10 md:min-w-(--size-column) rounded-sm bg-sala-1 border border-line shadow-hover"
+            className="m-0 mt-2 p-2 list-none grid gap-1 md:absolute md:left-0 md:top-full md:z-10 md:min-w-(--size-column) rounded-sm bg-raised border border-subtle shadow-lg"
           >
             {genres.items.map((item) => (
               <li key={item.href}>
@@ -179,7 +179,7 @@ export function SiteHeader({
           <a
             href={link.href}
             aria-current={link.current ? 'page' : undefined}
-            className={cx(linkClass, 'aria-[current=page]:text-tungsteno-text')}
+            className={cx(linkClass, 'aria-[current=page]:text-accent')}
           >
             {link.label}
           </a>
@@ -220,7 +220,7 @@ export function SiteHeader({
               <a
                 href={link.href}
                 aria-current={link.current ? 'page' : undefined}
-                className={cx(linkClass, 'aria-[current=page]:text-tungsteno-text')}
+                className={cx(linkClass, 'aria-[current=page]:text-accent')}
               >
                 {link.label}
               </a>
@@ -237,21 +237,21 @@ export function SiteHeader({
           aria-expanded={accountOpen}
           aria-controls={accountId}
           onClick={() => setAccountOpen((open) => !open)}
-          className="inline-flex items-center justify-center size-(--size-control-md) rounded-full border-0 bg-tungsteno text-on-tungsteno text-button uppercase cursor-pointer hover:bg-tungsteno-hover focus-visible:focus-ring"
+          className="inline-flex items-center justify-center size-(--control-height-md) rounded-full border-0 bg-accent text-on-accent text-button-md uppercase cursor-pointer hover:bg-accent-hover focus-visible:focus-ring"
         >
           {member.initial}
         </button>
         <ul
           id={accountId}
           hidden={!accountOpen}
-          className="m-0 mt-2 p-2 list-none grid gap-1 absolute right-0 top-full z-10 min-w-(--size-column) rounded-sm bg-sala-1 border border-line shadow-hover"
+          className="m-0 mt-2 p-2 list-none grid gap-1 absolute right-0 top-full z-10 min-w-(--size-column) rounded-sm bg-raised border border-subtle shadow-lg"
         >
           {member.links.map((link) => (
             <li key={link.href}>
               <a
                 href={link.href}
                 aria-current={link.current ? 'page' : undefined}
-                className={cx(linkClass, 'block px-2 py-1 aria-[current=page]:text-tungsteno-text')}
+                className={cx(linkClass, 'block px-2 py-1 aria-[current=page]:text-accent')}
               >
                 {link.label}
               </a>
@@ -266,7 +266,10 @@ export function SiteHeader({
   return (
     <header ref={root} onKeyDown={onKeyDown} className={cx('grid gap-4', className)}>
       <div className="flex items-center gap-6">
-        <a href={home.href} className="inline-flex text-ink rounded-xs focus-visible:focus-ring">
+        <a
+          href={home.href}
+          className="inline-flex text-primary rounded-xs focus-visible:focus-ring"
+        >
           <Wordmark label={home.label} className="h-6 w-auto" />
         </a>
         <nav aria-label={navLabel} className="hidden md:block md:ml-6 flex-none">
@@ -283,13 +286,13 @@ export function SiteHeader({
             className={cx(
               // Always full width, capped by max-width: animating the cap folds it smoothly from
               // its visible size (animating a 100% width first shrinks unseen, then jumps).
-              'flex items-center w-full h-(--size-control-md) rounded-control border overflow-hidden',
+              'flex items-center w-full h-(--control-height-md) rounded-control border overflow-hidden',
               searchUsed &&
                 'transition-[max-width,background-color,border-color] motion-reduce:transition-none',
               'has-[input:focus-visible]:focus-ring',
               searchOpen
-                ? 'max-w-search bg-sala-1 border-line-strong'
-                : 'max-w-(--size-control-md) bg-transparent border-transparent',
+                ? 'max-w-search bg-raised border-strong'
+                : 'max-w-(--control-height-md) bg-transparent border-transparent',
             )}
           >
             <button
@@ -305,8 +308,8 @@ export function SiteHeader({
                 setSearchOpen((open) => !open)
               }}
               className={cx(
-                'flex-none inline-flex items-center justify-center size-(--size-control-md) rounded-control bg-transparent border-0 text-ink cursor-pointer focus-visible:focus-ring',
-                searchOpen ? 'pointer-events-none' : 'hover:text-tungsteno-text',
+                'flex-none inline-flex items-center justify-center size-(--control-height-md) rounded-control bg-transparent border-0 text-primary cursor-pointer focus-visible:focus-ring',
+                searchOpen ? 'pointer-events-none' : 'hover:text-accent',
               )}
             >
               <Icon name="search" size="lg" />
@@ -325,7 +328,7 @@ export function SiteHeader({
               inert={!searchOpen}
               aria-hidden={!searchOpen}
               className={cx(
-                'flex-1 min-w-0 h-full bg-transparent border-0 text-ink placeholder:text-ink-muted outline-none',
+                'flex-1 min-w-0 h-full bg-transparent border-0 text-primary placeholder:text-secondary outline-none',
                 // The browser's own clear button: ours replaces it.
                 '[&::-webkit-search-cancel-button]:appearance-none',
                 query ? 'pr-1' : 'pr-4',
@@ -340,7 +343,7 @@ export function SiteHeader({
                   setQuery('')
                   searchInput.current?.focus()
                 }}
-                className="flex-none inline-flex items-center justify-center size-(--size-control-md) rounded-control bg-transparent border-0 text-ink-muted hover:text-ink cursor-pointer focus-visible:focus-ring"
+                className="flex-none inline-flex items-center justify-center size-(--control-height-md) rounded-control bg-transparent border-0 text-secondary hover:text-primary cursor-pointer focus-visible:focus-ring"
               >
                 <Icon name="close" size="sm" />
               </button>

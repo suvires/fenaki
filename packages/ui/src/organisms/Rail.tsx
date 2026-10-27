@@ -24,7 +24,7 @@ export interface RailProps {
 // translate) never fights the centring.
 const ARROW_SLOT = 'absolute top-1/2 z-10 -translate-y-1/2'
 const ARROW = cx(
-  'transition-opacity duration-(--duration-press) ease-standard motion-reduce:transition-none',
+  'transition-opacity duration-(--duration-fast) ease-standard motion-reduce:transition-none',
   // Shown on the row's hover and on focus, and only where the row can move.
   'opacity-0 group-hover/rail:opacity-100 focus-visible:opacity-100',
 )
@@ -46,14 +46,14 @@ export function Rail({ title, actionLabel, actionHref, arrows, className, childr
           {actionHref ? (
             <a
               href={actionHref}
-              className="group inline-flex items-center gap-2 rounded-xs text-ink no-underline focus-visible:focus-ring"
+              className="group inline-flex items-center gap-2 rounded-xs text-primary no-underline focus-visible:focus-ring"
             >
               {title}
               {actionLabel ? <span className="sr-only">, {actionLabel}</span> : null}
               <Icon
                 name="chevron"
                 weight="heavy"
-                className="size-6 text-tungsteno transition-transform group-hover:translate-x-1 group-focus-visible:translate-x-1 motion-reduce:transition-none"
+                className="size-6 text-accent transition-transform group-hover:translate-x-1 group-focus-visible:translate-x-1 motion-reduce:transition-none"
               />
             </a>
           ) : (
@@ -79,7 +79,7 @@ export function Rail({ title, actionLabel, actionHref, arrows, className, childr
               <IconButton
                 icon="chevron"
                 label={arrows.previous}
-                variant="veil"
+                variant="translucent"
                 size="lg"
                 data-rail-previous=""
                 className={cx(ARROW, 'rotate-180 invisible group-data-can-previous/rail:visible')}
@@ -89,7 +89,7 @@ export function Rail({ title, actionLabel, actionHref, arrows, className, childr
               <IconButton
                 icon="chevron"
                 label={arrows.next}
-                variant="veil"
+                variant="translucent"
                 size="lg"
                 data-rail-next=""
                 className={cx(ARROW, 'invisible group-data-can-next/rail:visible')}

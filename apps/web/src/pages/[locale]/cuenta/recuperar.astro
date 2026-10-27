@@ -11,7 +11,7 @@ const t = translator(locale)
 ---
 
 <Base locale={locale} title={t('account.forgot.title')} noindex>
-  <section class="grid gap-6 max-w-(--container-note) py-8">
+  <section class="grid gap-6 max-w-(--container-narrow) py-8">
     <PageHeader title={t('account.forgot.title')} description={t('account.forgot.lead')} />
     <ForgotForm client:load locale={locale} signInHref={paths.signIn(locale)} />
   </section>

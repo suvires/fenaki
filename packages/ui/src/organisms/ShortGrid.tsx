@@ -18,7 +18,7 @@ export function ShortGrid({ label, items, footer, className }: ShortGridProps) {
     <ul
       aria-label={label}
       className={cx(
-        'm-0 p-0 list-none grid grid-cols-[repeat(auto-fill,minmax(var(--size-card),1fr))] gap-4',
+        'm-0 p-0 list-none grid grid-cols-[repeat(auto-fill,minmax(var(--short-card-width),1fr))] gap-4',
         className,
       )}
     >

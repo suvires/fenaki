@@ -48,9 +48,9 @@ export function FilterChips({
           key={option.value}
           value={option.value}
           className={cx(
-            'h-(--size-chip) px-4 rounded-full border border-line-strong bg-transparent text-ink',
-            'text-small-strong cursor-pointer hover:bg-sala-2 focus-visible:focus-ring',
-            'data-[state=on]:bg-ink data-[state=on]:border-ink data-[state=on]:text-sala-0',
+            'h-(--chip-height) px-4 rounded-full border border-strong bg-transparent text-primary',
+            'text-small-strong cursor-pointer hover:bg-muted focus-visible:focus-ring',
+            'data-[state=on]:bg-inverse data-[state=on]:border-inverse data-[state=on]:text-on-inverse',
           )}
         >
           {option.label}

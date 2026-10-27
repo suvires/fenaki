@@ -17,7 +17,7 @@ export const Filled: Story = { args: { icon: 'thumbs-up', label: 'Me gusta', fil
 export const AsLink: Story = { args: { icon: 'chevron-down', label: 'Más información', href: '#' } }
 export const Sizes: Story = {
   render: (args) => (
-    <div className="flex items-center gap-4 text-ink">
+    <div className="flex items-center gap-4 text-primary">
       {(['sm', 'md', 'lg'] as const).map((size) => (
         <IconButton key={size} {...args} size={size} />
       ))}

@@ -30,7 +30,7 @@ export function FacetGroup({ label, options, countLabel, className }: FacetGroup
   if (visible.length === 0) return null
   return (
     <section aria-labelledby={id} className={cx('grid gap-2', className)}>
-      <h2 id={id} className="m-0 font-mono text-label uppercase text-ink-muted">
+      <h2 id={id} className="m-0 font-mono text-label uppercase text-secondary">
         {label}
       </h2>
       <ul className="m-0 p-0 list-none flex flex-wrap gap-2">
@@ -41,11 +41,11 @@ export function FacetGroup({ label, options, countLabel, className }: FacetGroup
               aria-current={option.selected ? 'true' : undefined}
               rel="nofollow"
               className={cx(
-                'inline-flex items-center gap-2 h-(--size-chip) px-4 rounded-full border no-underline',
+                'inline-flex items-center gap-2 h-(--chip-height) px-4 rounded-full border no-underline',
                 'text-small-strong focus-visible:focus-ring',
                 option.selected
-                  ? 'bg-ink border-ink text-sala-0'
-                  : 'bg-transparent border-line-strong text-ink hover:bg-sala-2',
+                  ? 'bg-inverse border-inverse text-on-inverse'
+                  : 'bg-transparent border-strong text-primary hover:bg-muted',
               )}
             >
               <span>{option.label}</span>
@@ -53,7 +53,7 @@ export function FacetGroup({ label, options, countLabel, className }: FacetGroup
                 <span
                   className={cx(
                     'font-mono text-label-s',
-                    option.selected ? 'text-sala-0' : 'text-ink-muted',
+                    option.selected ? 'text-on-inverse' : 'text-secondary',
                   )}
                   aria-label={countLabel?.(option.count)}
                 >

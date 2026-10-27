@@ -18,7 +18,7 @@ export function SiteFooter({ label, links, brand, className }: SiteFooterProps) 
         <div className="grid content-start gap-4">
           <Monogram
             label={brand}
-            className="h-12 w-auto self-start justify-self-start text-tungsteno"
+            className="h-12 w-auto self-start justify-self-start text-accent"
           />
         </div>
         <nav aria-label={label} className="content-start md:justify-self-end">
@@ -27,7 +27,7 @@ export function SiteFooter({ label, links, brand, className }: SiteFooterProps) 
               <li key={link.href}>
                 <a
                   href={link.href}
-                  className="text-small text-ink no-underline hover:text-tungsteno-text rounded-xs focus-visible:focus-ring"
+                  className="text-small text-primary no-underline hover:text-accent rounded-xs focus-visible:focus-ring"
                 >
                   {link.label}
                 </a>

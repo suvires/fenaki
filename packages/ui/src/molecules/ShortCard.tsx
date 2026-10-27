@@ -83,12 +83,12 @@ export function ShortCard({
       data-type={previewable ? typeLabel : undefined}
       className={cx(
         'group relative block rounded-sm text-inherit no-underline outline-hidden',
-        stretch ? 'w-full' : 'w-(--size-card)',
+        stretch ? 'w-full' : 'w-(--short-card-width)',
         className,
       )}
     >
       <div className="relative rounded-sm">
-        <div className="relative overflow-hidden rounded-sm aspect-still bg-sala-2">
+        <div className="relative overflow-hidden rounded-sm aspect-still bg-muted">
           {image ? (
             <img
               src={image}
@@ -121,10 +121,10 @@ export function ShortCard({
             <svg
               aria-hidden="true"
               preserveAspectRatio="none"
-              className="absolute inset-x-0 bottom-0 w-full h-(--size-progress)"
+              className="absolute inset-x-0 bottom-0 w-full h-(--short-card-progress-height)"
             >
-              <rect width="100%" height="100%" className="fill-sala-0/70" />
-              <rect width={`${seen * 100}%`} height="100%" className="fill-tungsteno" />
+              <rect width="100%" height="100%" className="fill-(--background-color-canvas)/70" />
+              <rect width={`${seen * 100}%`} height="100%" className="fill-accent" />
             </svg>
           ) : null}
           {branded.length > 0 ? (

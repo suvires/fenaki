@@ -11,7 +11,7 @@ export interface SponsorCreditProps {
   className?: string
 }
 
-/** The sponsor's credit. Only on telon grounds, never on a short's page or near the player. */
+/** The sponsor's credit. Only on the sponsored colour, never on a short's page or near the player. */
 export function SponsorCredit({
   label,
   name,

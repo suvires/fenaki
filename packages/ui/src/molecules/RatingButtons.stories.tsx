@@ -14,7 +14,7 @@ const meta = {
     },
   },
   // Room above for the tooltip and on both sides for the pill, which opens over its neighbours.
-  decorators: [(Story) => <div className="inline-block bg-sala-1 px-12 pb-8 pt-12">{Story()}</div>],
+  decorators: [(Story) => <div className="inline-block bg-raised px-12 pb-8 pt-12">{Story()}</div>],
 } satisfies Meta<typeof RatingButtons>
 
 export default meta

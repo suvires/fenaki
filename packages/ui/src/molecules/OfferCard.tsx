@@ -41,17 +41,17 @@ export function OfferCard({
       id={id}
       aria-labelledby={headingId}
       className={cx(
-        'grid content-start gap-4 p-6 rounded-sm border border-line bg-sala-1',
+        'grid content-start gap-4 p-6 rounded-sm border border-subtle bg-raised',
         className,
       )}
     >
-      <p className="m-0 font-mono text-label uppercase text-tungsteno-text">{audience}</p>
+      <p className="m-0 font-mono text-label uppercase text-accent">{audience}</p>
       <h2 id={headingId} className="m-0 font-display text-title uppercase">
         {title}
       </h2>
-      <p className="m-0 text-body text-ink-muted">{description}</p>
+      <p className="m-0 text-body text-secondary">{description}</p>
       <div className="grid gap-2">
-        <h3 className="m-0 font-mono text-label-s uppercase text-ink-muted">{includesLabel}</h3>
+        <h3 className="m-0 font-mono text-label-s uppercase text-secondary">{includesLabel}</h3>
         <ul className="m-0 pl-4 grid gap-1 text-body">
           {includes.map((item) => (
             <li key={item}>{item}</li>
@@ -59,10 +59,10 @@ export function OfferCard({
         </ul>
       </div>
       <p className="m-0 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <span className="font-display text-display-l text-ink">{price}</span>
-        {listPrice ? <s className="text-body text-ink-muted">{listPrice}</s> : null}
+        <span className="font-display text-display-l text-primary">{price}</span>
+        {listPrice ? <s className="text-body text-secondary">{listPrice}</s> : null}
         {priceNote ? (
-          <span className="basis-full font-mono text-label uppercase text-ink-muted">
+          <span className="basis-full font-mono text-label uppercase text-secondary">
             {priceNote}
           </span>
         ) : null}

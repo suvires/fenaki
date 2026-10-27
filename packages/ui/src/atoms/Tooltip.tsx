@@ -20,13 +20,13 @@ export function Tooltip({ children, open, className }: TooltipProps) {
       data-open={open ? '' : undefined}
       className={cx(
         'absolute bottom-full left-1/2 -translate-x-1/2 mb-2 pointer-events-none whitespace-nowrap',
-        'rounded-xs bg-ink text-sala-0 px-2 py-1 text-label',
+        'rounded-xs bg-inverse text-on-inverse px-2 py-1 text-label',
         'invisible opacity-0 data-open:visible data-open:opacity-100',
         className,
       )}
     >
       {children}
-      <span className="absolute top-full left-1/2 -translate-x-1/2 -translate-y-1/2 rotate-45 size-(--size-tooltip-arrow) bg-ink" />
+      <span className="absolute top-full left-1/2 -translate-x-1/2 -translate-y-1/2 rotate-45 size-(--tooltip-arrow-size) bg-inverse" />
     </span>
   )
 }

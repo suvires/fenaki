@@ -42,14 +42,14 @@ const jsonLd = collection
     <>
       <header
         class:list={[
-          'grid gap-4 p-6 md:p-8 rounded-hero',
-          sponsor ? 'bg-telon text-on-telon' : 'bg-sala-1',
+          'grid gap-4 p-6 md:p-8 rounded-lg',
+          sponsor ? 'bg-sponsored text-on-sponsored' : 'bg-raised',
         ]}
       >
         <p
           class:list={[
             'm-0 font-mono text-label uppercase',
-            sponsor ? 'text-on-telon' : 'text-tungsteno-text',
+            sponsor ? 'text-on-sponsored' : 'text-accent',
           ]}
         >
           {t('collection.eyebrow', { count: shorts.length })}
@@ -61,7 +61,7 @@ const jsonLd = collection
           <p
             class:list={[
               'm-0 max-w-hero-text text-body-l',
-              sponsor ? 'text-on-telon' : 'text-ink-muted',
+              sponsor ? 'text-on-sponsored' : 'text-secondary',
             ]}
           >
             {collection.description}
@@ -73,7 +73,7 @@ const jsonLd = collection
           />
         )}
       </header>
-      <ul class="m-0 p-0 list-none grid grid-cols-[repeat(auto-fill,minmax(var(--size-card),1fr))] gap-4">
+      <ul class="m-0 p-0 list-none grid grid-cols-[repeat(auto-fill,minmax(var(--short-card-width),1fr))] gap-4">
         {shorts.map((short) => (
           <li>
             <ShortCard

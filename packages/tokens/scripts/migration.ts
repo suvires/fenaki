@@ -419,7 +419,25 @@ export const PALETTE_KEYS: Record<string, string> = {
   'focus-ring': 'shadow-focus-ring',
 }
 
+const RADIUS_SIDES = ['t', 'b', 'l', 'r', 's', 'e', 'tl', 'tr', 'bl', 'br', 'ss', 'se', 'es', 'ee']
+const BORDER_SIDES = ['t', 'b', 'l', 'r', 'x', 'y', 's', 'e']
+
+/** The same rename for one side or corner: `rounded-t-panel`, `border-b-line`. */
+function sides(from: string, to: string): [string, string][] {
+  const [utility, sideList] = from.startsWith('rounded-')
+    ? ['rounded', RADIUS_SIDES]
+    : from.startsWith('border-')
+      ? ['border', BORDER_SIDES]
+      : ['', []]
+  if (!utility || to.includes('(')) return []
+  const strip = (name: string) => name.slice(utility.length + 1)
+  return sideList.map((side): [string, string] => [
+    `${utility}-${side}-${strip(from)}`,
+    `${utility}-${side}-${strip(to)}`,
+  ])
+}
+
 /** Old class → new class, longest first so `border-line-strong` is replaced before `border-line`. */
-export const CLASSES: [string, string][] = RENAMES.flatMap((r) =>
-  Object.entries(r.classes ?? {}),
-).sort((a, b) => b[0].length - a[0].length)
+export const CLASSES: [string, string][] = RENAMES.flatMap((r) => Object.entries(r.classes ?? {}))
+  .flatMap(([from, to]): [string, string][] => [[from, to], ...sides(from, to)])
+  .sort((a, b) => b[0].length - a[0].length)

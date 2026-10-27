@@ -9,7 +9,7 @@ const meta = {
     children:
       'Este texto está pendiente de revisión legal. Los datos entre corchetes se completarán antes de publicarlo.',
   },
-  decorators: [(Story) => <div className="max-w-note">{Story()}</div>],
+  decorators: [(Story) => <div className="max-w-narrow">{Story()}</div>],
 } satisfies Meta<typeof Notice>
 
 export default meta
@@ -23,8 +23,8 @@ export const WithTitle: Story = {
     role: 'status',
     children: (
       <p className="m-0">
-        Te hemos enviado un mensaje a <strong className="text-ink">ana@ejemplo.com</strong>. Abre el
-        enlace que contiene para confirmar que quieres apuntarte.
+        Te hemos enviado un mensaje a <strong className="text-primary">ana@ejemplo.com</strong>.
+        Abre el enlace que contiene para confirmar que quieres apuntarte.
       </p>
     ),
   },

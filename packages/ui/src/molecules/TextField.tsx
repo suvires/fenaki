@@ -31,17 +31,17 @@ export function TextField({
       aria-invalid={error ? true : undefined}
       aria-describedby={describedBy}
       className={cx(
-        'w-full h-(--size-control-lg) box-border px-4 min-w-0',
-        'text-ink bg-sala-1 border rounded-control placeholder:text-ink-muted',
+        'w-full h-(--control-height-lg) box-border px-4 min-w-0',
+        'text-primary bg-raised border rounded-control placeholder:text-secondary',
         'focus-visible:focus-ring',
-        error ? 'border-danger' : 'border-line-strong',
+        error ? 'border-danger' : 'border-strong',
       )}
       {...inputProps}
     />
   )
   return (
     <div className={cx('grid gap-2 min-w-0', className)}>
-      <label htmlFor={id} className="text-small-strong text-ink">
+      <label htmlFor={id} className="text-small-strong text-primary">
         {label}
       </label>
       {action ? (
@@ -56,7 +56,7 @@ export function TextField({
       {describedBy ? (
         <p
           id={describedBy}
-          className={cx('m-0 text-small', error ? 'text-danger' : 'text-ink-muted')}
+          className={cx('m-0 text-small', error ? 'text-danger' : 'text-secondary')}
         >
           {error ?? hint}
         </p>

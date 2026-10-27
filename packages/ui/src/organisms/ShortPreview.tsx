@@ -105,11 +105,11 @@ export function ShortPreview({
       onPointerEnter={onPointerEnter}
       onPointerLeave={onPointerLeave}
       className={cx(
-        'rounded-panel bg-sala-1 shadow-hover',
-        floating ? 'fixed z-(--layer-preview)' : 'relative',
+        'rounded-md bg-raised shadow-lg',
+        floating ? 'fixed z-(--short-preview-layer)' : 'relative',
         // It grows out of the card: no fade, so the growth itself is what you see. While entering it
         // jumps, untransitioned, onto the card's box; the transition only runs on the way out of it.
-        'transition-transform duration-(--duration-preview) ease-standard motion-reduce:transition-none',
+        'transition-transform duration-(--short-preview-duration) ease-standard motion-reduce:transition-none',
         'data-entering:[transform:var(--preview-from)] data-entering:transition-none',
         className,
       )}
@@ -118,7 +118,7 @@ export function ShortPreview({
         {image ? (
           <>
             {/* The image is rounded itself instead of clipped by its container (steadier in the visual baselines). */}
-            <img src={image} alt="" className="size-full object-cover rounded-t-panel" />
+            <img src={image} alt="" className="size-full object-cover rounded-t-md" />
             {imageHasTitle ? null : (
               <span
                 className={cx(
@@ -137,7 +137,7 @@ export function ShortPreview({
             director={director}
             year={year}
             tone={tone}
-            className="size-full rounded-t-panel rounded-b-none"
+            className="size-full rounded-t-md rounded-b-none"
           />
         )}
       </div>
@@ -159,7 +159,7 @@ export function ShortPreview({
             tooltip={ratingTooltip}
           />
         </div>
-        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-meta text-ink">
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-meta text-primary">
           {seconds ? <Duration seconds={seconds} locale={locale} muted={false} /> : null}
           {year ? <span className="before:content-['·'] before:mr-2">{year}</span> : null}
           {typeLabel ? <span className="before:content-['·'] before:mr-2">{typeLabel}</span> : null}
@@ -169,13 +169,13 @@ export function ShortPreview({
             </Badge>
           ))}
         </div>
-        {directedBy ? <p className="m-0 text-meta text-ink-muted">{directedBy}</p> : null}
-        {synopsis ? <p className="m-0 text-meta text-ink-muted line-clamp-3">{synopsis}</p> : null}
+        {directedBy ? <p className="m-0 text-meta text-secondary">{directedBy}</p> : null}
+        {synopsis ? <p className="m-0 text-meta text-secondary line-clamp-3">{synopsis}</p> : null}
       </div>
       <a
         href={href}
         aria-label={labels.more}
-        className="absolute inset-0 rounded-panel focus-visible:focus-ring"
+        className="absolute inset-0 rounded-md focus-visible:focus-ring"
       />
     </div>
   )

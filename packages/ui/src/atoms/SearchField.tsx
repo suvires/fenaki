@@ -21,7 +21,7 @@ export function SearchField({
   ...inputProps
 }: SearchFieldProps) {
   return (
-    <div className={cx('relative flex items-center w-full max-w-search text-ink-muted', className)}>
+    <div className={cx('relative flex items-center w-full max-w-search text-secondary', className)}>
       <label className="sr-only" htmlFor={id}>
         {label}
       </label>
@@ -31,8 +31,8 @@ export function SearchField({
         id={id}
         type="search"
         className={cx(
-          'w-full h-(--size-control-search) box-border pr-4 pl-(--size-control-search)',
-          'text-ink bg-sala-1 border border-line-strong rounded-control placeholder:text-ink-muted',
+          'w-full h-(--search-field-height) box-border pr-4 pl-(--search-field-height)',
+          'text-primary bg-raised border border-strong rounded-control placeholder:text-secondary',
           'focus-visible:focus-ring',
         )}
         {...inputProps}

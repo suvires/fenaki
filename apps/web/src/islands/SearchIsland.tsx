@@ -90,11 +90,11 @@ export function SearchIsland({ locale, initial, initialError, clock }: SearchIsl
           autoComplete="off"
         />
       </form>
-      <p role="status" className="m-0 text-body text-ink-muted">
+      <p role="status" className="m-0 text-body text-secondary">
         {status}
       </p>
       {state.kind === 'results' && state.result.hits.length > 0 ? (
-        <ul className="m-0 p-0 list-none grid grid-cols-[repeat(auto-fill,minmax(var(--size-card),1fr))] gap-4">
+        <ul className="m-0 p-0 list-none grid grid-cols-[repeat(auto-fill,minmax(var(--short-card-width),1fr))] gap-4">
           {state.result.hits.map((hit) => (
             <li key={hit.slug}>
               <ShortCard

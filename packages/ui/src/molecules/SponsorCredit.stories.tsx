@@ -5,7 +5,7 @@ const meta = {
   title: 'Molecules/SponsorCredit',
   component: SponsorCredit,
   args: { label: 'Presentada por', name: 'Festival de Cine Breve' },
-  decorators: [(Story) => <div className="bg-telon text-on-telon p-6">{Story()}</div>],
+  decorators: [(Story) => <div className="bg-sponsored text-on-sponsored p-6">{Story()}</div>],
 } satisfies Meta<typeof SponsorCredit>
 
 export default meta

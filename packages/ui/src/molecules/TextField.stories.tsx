@@ -39,5 +39,5 @@ export const WithAction: Story = {
       </Button>
     ),
   },
-  decorators: [(Story) => <div className="max-w-note">{Story()}</div>],
+  decorators: [(Story) => <div className="max-w-narrow">{Story()}</div>],
 }

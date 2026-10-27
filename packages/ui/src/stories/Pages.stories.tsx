@@ -79,13 +79,13 @@ export const Short: Story = {
         <Duration seconds={900} />
         <Badge>Ficción</Badge>
         <Badge tone="info">Sub ES</Badge>
-        <span className="text-meta text-ink-muted">España · 2016</span>
+        <span className="text-meta text-secondary">España · 2016</span>
       </div>
       <p className="m-0 max-w-synopsis text-body-l">
         Luna y Diego son los vigilantes de un aparcamiento. Ella trabaja de día y él de noche, y
         solo se cruzan en el cambio de turno.
       </p>
-      <p className="m-0 text-ink-muted">Dirigido por Juanjo Giménez</p>
+      <p className="m-0 text-secondary">Dirigido por Juanjo Giménez</p>
       <div className="flex flex-wrap items-center gap-3">
         <Button variant="secondary" icon="plus">
           Añadir a mi lista

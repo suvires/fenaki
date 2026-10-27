@@ -11,7 +11,7 @@ export interface CollectionHeroProps {
   ctaLabel: string
   ctaHref?: string
   secondaryLabel?: string
-  /** With a sponsor, the hero turns telon and shows the sponsor credit. */
+  /** With a sponsor, the hero turns to the sponsored colour and shows the sponsor credit. */
   sponsor?: Omit<SponsorCreditProps, 'className'>
   /** Up to three. */
   posters?: Omit<PosterProps, 'className'>[]
@@ -42,8 +42,8 @@ export function CollectionHero({
     <section
       className={cx(
         'grid grid-cols-1 md:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] items-center gap-8',
-        'p-6 md:p-8 rounded-hero',
-        sponsored ? 'bg-telon text-on-telon' : 'bg-sala-1',
+        'p-6 md:p-8 rounded-lg',
+        sponsored ? 'bg-sponsored text-on-sponsored' : 'bg-raised',
         className,
       )}
     >
@@ -52,7 +52,7 @@ export function CollectionHero({
           <p
             className={cx(
               'm-0 font-mono text-label uppercase',
-              sponsored ? 'text-on-telon' : 'text-tungsteno-text',
+              sponsored ? 'text-on-sponsored' : 'text-accent',
             )}
           >
             {eyebrow}
@@ -64,7 +64,7 @@ export function CollectionHero({
         <p
           className={cx(
             'm-0 max-w-hero-text text-body-l',
-            sponsored ? 'text-on-telon' : 'text-ink-muted',
+            sponsored ? 'text-on-sponsored' : 'text-secondary',
           )}
         >
           {description}
@@ -78,7 +78,7 @@ export function CollectionHero({
               variant="secondary"
               size="lg"
               icon="plus"
-              surface={sponsored ? 'telon' : 'sala'}
+              surface={sponsored ? 'sponsored' : 'default'}
             >
               {secondaryLabel}
             </Button>

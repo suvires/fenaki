@@ -55,16 +55,16 @@ export function ShortHero({
   className,
 }: ShortHeroProps) {
   const Heading = headingLevel === 1 ? 'h1' : 'h2'
-  const text = backdrop ? stillTextClass(backdropTextColor) : 'text-ink'
+  const text = backdrop ? stillTextClass(backdropTextColor) : 'text-primary'
   return (
     <section
       className={cx(
         'relative isolate overflow-hidden grid grid-cols-1 items-end gap-8',
-        'p-6 md:p-10 rounded-hero bg-sala-1 shadow-hero',
+        'p-6 md:p-10 rounded-lg bg-raised shadow-md',
         // With a still, the hero takes the still's own 16:9 shape from md up, so the image is shown
         // whole; on small screens it keeps a minimum height for the text instead.
         backdrop
-          ? 'min-h-(--size-hero) md:min-h-0 md:aspect-still'
+          ? 'min-h-(--short-hero-min-height) md:min-h-0 md:aspect-still'
           : 'md:grid-cols-[minmax(0,1fr)_auto]',
         className,
       )}
@@ -80,7 +80,7 @@ export function ShortHero({
       ) : null}
       <div className={cx('grid gap-4 min-w-0', text)}>
         {eyebrow ? (
-          <p className="m-0 font-mono text-label uppercase text-tungsteno-text">{eyebrow}</p>
+          <p className="m-0 font-mono text-label uppercase text-accent">{eyebrow}</p>
         ) : null}
         <Heading
           className={cx(

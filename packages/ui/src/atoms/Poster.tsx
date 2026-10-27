@@ -6,7 +6,10 @@ export interface PosterProps {
   title: string
   director?: string
   year?: number
-  /** `telon` only inside a sponsored collection. Vary tones along a rail. */
+  /**
+   * `telon` (the sponsored colour) only inside a sponsored collection. Vary tones along a rail.
+   * The tone names are stored with each short (`posterTone`), so they keep their first names.
+   */
   tone?: PosterTone
   /** `landscape` (16:9) is the thumbnail of a short card; portrait (2:3) is the poster of the heroes. */
   shape?: 'portrait' | 'landscape'
@@ -14,10 +17,10 @@ export interface PosterProps {
 }
 
 const TONES = {
-  sala: 'bg-sala-2 text-ink [--perf:var(--color-ink-muted)]',
-  telon: 'bg-telon text-on-telon [--perf:var(--color-on-telon)]',
-  tungsteno: 'bg-tungsteno text-on-tungsteno [--perf:var(--color-on-tungsteno)]',
-  plata: 'bg-plata-soft text-ink [--perf:var(--color-plata)]',
+  sala: 'bg-muted text-primary [--perf:var(--text-color-secondary)]',
+  telon: 'bg-sponsored text-on-sponsored [--perf:var(--text-color-on-sponsored)]',
+  tungsteno: 'bg-accent text-on-accent [--perf:var(--text-color-on-accent)]',
+  plata: 'bg-info-subtle text-primary [--perf:var(--color-info)]',
 } as const
 
 /** The typographic poster: the cover a short shows until it has art cleared for use. */
@@ -44,10 +47,10 @@ export function Poster({
     >
       <span
         aria-hidden="true"
-        className="absolute left-2 top-2 bottom-2 w-(--size-perforation) rounded-xs opacity-perforation perforation"
+        className="absolute left-2 top-2 bottom-2 w-(--poster-perforation-width) rounded-xs opacity-perforation perforation"
       />
-      <span className="font-display text-poster uppercase wrap-anywhere">{title}</span>
-      {director ? <span className="text-credit">{director}</span> : null}
+      <span className="font-display text-poster-title uppercase wrap-anywhere">{title}</span>
+      {director ? <span className="text-poster-credit">{director}</span> : null}
       {year ? <span className="font-mono text-label-s opacity-secondary">{year}</span> : null}
     </div>
   )

@@ -4,7 +4,7 @@ import { Monogram } from './Monogram.tsx'
 const meta = {
   title: 'Foundations/Monogram',
   component: Monogram,
-  args: { label: 'FENAKI', className: 'h-12 w-auto text-tungsteno' },
+  args: { label: 'FENAKI', className: 'h-12 w-auto text-accent' },
 } satisfies Meta<typeof Monogram>
 
 export default meta
@@ -14,7 +14,7 @@ type Story = StoryObj<typeof meta>
 export const Footer: Story = {}
 
 /** Small, as a bullet beside a line of text. */
-export const Small: Story = { args: { className: 'h-4 w-auto text-tungsteno' } }
+export const Small: Story = { args: { className: 'h-4 w-auto text-accent' } }
 
-/** In ink. */
-export const Primary: Story = { args: { className: 'h-12 w-auto text-ink' } }
+/** In the primary text colour. */
+export const Primary: Story = { args: { className: 'h-12 w-auto text-primary' } }

@@ -22,7 +22,7 @@ export interface RankedItemProps {
 export function RankedItem({ rank, rankLabel, className, children }: RankedItemProps) {
   return (
     <div className={cx('flex items-end', className)}>
-      <RankNumber rank={rank} className="-mr-(--size-rank-overlap)" />
+      <RankNumber rank={rank} className="-mr-(--ranked-rail-overlap)" />
       <div className="relative">
         <span className="sr-only">{rankLabel}. </span>
         {children}

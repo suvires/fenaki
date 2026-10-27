@@ -49,7 +49,7 @@ export const Branded: Story = {
 export const NotALink: Story = { args: { href: undefined } }
 export const Stretched: Story = {
   args: { stretch: true },
-  decorators: [(Story) => <div className="w-(--container-note)">{Story()}</div>],
+  decorators: [(Story) => <div className="w-(--container-narrow)">{Story()}</div>],
 }
 
 /** A viewing in progress («Seguir viendo», the history): a thin bar at the foot of the image. */

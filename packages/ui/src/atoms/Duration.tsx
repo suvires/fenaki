@@ -24,7 +24,7 @@ export function Duration({
     <span
       className={cx(
         'font-mono text-timecode tabular-nums whitespace-nowrap',
-        !inherit && (muted ? 'text-ink-muted' : 'text-ink'),
+        !inherit && (muted ? 'text-secondary' : 'text-primary'),
         className,
       )}
     >

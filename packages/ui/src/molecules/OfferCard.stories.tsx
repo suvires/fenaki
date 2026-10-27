@@ -19,7 +19,7 @@ const meta = {
     price: '350 € + IVA',
     priceNote: 'Precio de fundador · tres primeras organizaciones',
   },
-  decorators: [(Story) => <div className="max-w-(--container-note)">{Story()}</div>],
+  decorators: [(Story) => <div className="max-w-(--container-narrow)">{Story()}</div>],
 } satisfies Meta<typeof OfferCard>
 
 export default meta

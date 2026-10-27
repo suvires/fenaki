@@ -25,12 +25,12 @@ export const AsLink: Story = {
 export const OnSponsored: Story = {
   args: {
     variant: 'secondary',
-    surface: 'telon',
+    surface: 'sponsored',
     icon: 'plus',
     size: 'lg',
     children: 'Añadir a mi lista',
   },
-  decorators: [(Story) => <div className="bg-telon p-6">{Story()}</div>],
+  decorators: [(Story) => <div className="bg-sponsored p-6">{Story()}</div>],
 }
 export const AllVariants: Story = {
   render: () => (

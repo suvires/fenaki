@@ -113,11 +113,11 @@ export function SignUpForm({ locale, signInHref, privacyHref, termsHref }: SignU
           {t(errorKey(state.code))}
         </Notice>
       ) : null}
-      <p className="m-0 text-small text-ink-muted">
+      <p className="m-0 text-small text-secondary">
         {rich('account.signUp.privacy', {
           terms: (
             <a
-              className="text-ink underline underline-offset-4 hover:no-underline"
+              className="text-primary underline underline-offset-4 hover:no-underline"
               href={termsHref}
             >
               {t('legal.links.terms')}
@@ -125,7 +125,7 @@ export function SignUpForm({ locale, signInHref, privacyHref, termsHref }: SignU
           ),
           privacyPolicy: (
             <a
-              className="text-ink underline underline-offset-4 hover:no-underline"
+              className="text-primary underline underline-offset-4 hover:no-underline"
               href={privacyHref}
             >
               {t('legal.links.privacyPolicy')}
@@ -135,9 +135,9 @@ export function SignUpForm({ locale, signInHref, privacyHref, termsHref }: SignU
           <Fragment key={index}>{part}</Fragment>
         ))}
       </p>
-      <p className="m-0 text-small text-ink-muted">
+      <p className="m-0 text-small text-secondary">
         {t('account.signUp.hasAccount')}{' '}
-        <a className="text-ink" href={signInHref}>
+        <a className="text-primary" href={signInHref}>
           {t('account.signUp.signInLink')}
         </a>
       </p>

@@ -8,7 +8,7 @@ export interface IconButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonEle
   label: string
   /** The icon's filled variant, for a chosen state (the thumbs). */
   filled?: boolean
-  variant?: 'primary' | 'secondary' | 'ghost' | 'veil'
+  variant?: 'primary' | 'secondary' | 'ghost' | 'translucent'
   size?: 'sm' | 'md' | 'lg'
   /** Renders a link that looks like a button. */
   href?: string
@@ -16,19 +16,21 @@ export interface IconButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonEle
 }
 
 const VARIANTS = {
-  primary: 'bg-tungsteno text-on-tungsteno border-transparent hover:bg-tungsteno-hover',
-  // Outlined: it sits on a solid surface, so no veil is needed.
-  secondary: 'bg-transparent text-ink border-line-strong hover:border-ink',
+  primary: 'bg-accent text-on-accent border-transparent hover:bg-accent-hover',
+  // Outlined: it sits on a solid surface, so it needs no translucent fill.
+  secondary: 'bg-transparent text-primary border-strong hover:border-inverse',
   // No outline: for buttons grouped inside a surface of their own (the rating pill).
-  ghost: 'bg-transparent text-ink border-transparent hover:bg-veil/(--opacity-veil-hover)',
+  ghost:
+    'bg-transparent text-primary border-transparent hover:bg-translucent/(--opacity-translucent-hover)',
   // Translucent and blurred, like the secondary Button: over images (a rail's arrows).
-  veil: 'bg-veil/(--opacity-veil) backdrop-blur-veil text-ink border-transparent hover:bg-veil/(--opacity-veil-hover)',
+  translucent:
+    'bg-translucent/(--opacity-translucent) backdrop-blur-translucent text-primary border-transparent hover:bg-translucent/(--opacity-translucent-hover)',
 } as const
 
 const SIZES = {
-  sm: 'size-(--size-control-sm)',
-  md: 'size-(--size-control-md)',
-  lg: 'size-(--size-control-lg)',
+  sm: 'size-(--control-height-sm)',
+  md: 'size-(--control-height-md)',
+  lg: 'size-(--control-height-lg)',
 } as const
 
 /** About 56 % of the control's height, as in Button. */
@@ -48,8 +50,8 @@ export function IconButton({
 }: IconButtonProps) {
   const classes = cx(
     'inline-flex flex-none items-center justify-center rounded-full border cursor-pointer no-underline',
-    'transition-[background-color,border-color,transform] duration-(--duration-press) ease-standard',
-    'active:translate-y-(--size-press) focus-visible:focus-ring motion-reduce:transition-none',
+    'transition-[background-color,border-color,transform] duration-(--duration-fast) ease-standard',
+    'active:translate-y-(--control-press-offset) focus-visible:focus-ring motion-reduce:transition-none',
     SIZES[size],
     VARIANTS[variant],
     className,

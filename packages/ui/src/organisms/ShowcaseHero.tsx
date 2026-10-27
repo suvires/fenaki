@@ -12,7 +12,7 @@ export interface ShowcaseHeroProps {
   logo?: { src: string; alt: string; width?: number; height?: number }
   /** The organization's website. */
   website?: { href: string; label: string }
-  /** «Presentado por»: with it, the header turns telon, as a sponsored collection does. */
+  /** «Presentado por»: with it, the header turns to the sponsored colour, as a sponsored collection does. */
   sponsor?: Omit<SponsorCreditProps, 'className'>
   className?: string
 }
@@ -34,8 +34,8 @@ export function ShowcaseHero({
   return (
     <header
       className={cx(
-        'grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_auto] items-center gap-6 p-6 md:p-8 rounded-hero',
-        sponsored ? 'bg-telon text-on-telon' : 'bg-sala-1',
+        'grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_auto] items-center gap-6 p-6 md:p-8 rounded-lg',
+        sponsored ? 'bg-sponsored text-on-sponsored' : 'bg-raised',
         className,
       )}
     >
@@ -43,7 +43,7 @@ export function ShowcaseHero({
         <p
           className={cx(
             'm-0 font-mono text-label uppercase',
-            sponsored ? 'text-on-telon' : 'text-tungsteno-text',
+            sponsored ? 'text-on-sponsored' : 'text-accent',
           )}
         >
           {eyebrow}
@@ -55,7 +55,7 @@ export function ShowcaseHero({
           <p
             className={cx(
               'm-0 max-w-hero-text text-body-l',
-              sponsored ? 'text-on-telon' : 'text-ink-muted',
+              sponsored ? 'text-on-sponsored' : 'text-secondary',
             )}
           >
             {description}
@@ -76,7 +76,7 @@ export function ShowcaseHero({
         {sponsor ? <SponsorCredit {...sponsor} /> : null}
       </div>
       {logo ? (
-        <div className="justify-self-start md:justify-self-end p-4 rounded-sm bg-ink">
+        <div className="justify-self-start md:justify-self-end p-4 rounded-sm bg-inverse">
           <img
             src={logo.src}
             alt={logo.alt}

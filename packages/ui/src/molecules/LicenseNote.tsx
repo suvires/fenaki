@@ -17,12 +17,12 @@ export function LicenseNote({ route, routeLabel, children, className }: LicenseN
     <aside
       data-route={route}
       className={cx(
-        'grid gap-1 px-4 py-3 max-w-note rounded-sm border border-line-strong bg-sala-1',
+        'grid gap-1 px-4 py-3 max-w-narrow rounded-sm border border-strong bg-raised',
         className,
       )}
     >
-      <span className="font-mono text-label uppercase text-plata">{routeLabel}</span>
-      <p className="m-0 text-small text-ink-muted">{children}</p>
+      <span className="font-mono text-label uppercase text-info">{routeLabel}</span>
+      <p className="m-0 text-small text-secondary">{children}</p>
     </aside>
   )
 }

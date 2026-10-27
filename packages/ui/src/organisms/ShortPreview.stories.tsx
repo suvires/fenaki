@@ -14,7 +14,7 @@ const meta = {
     directedBy: 'Dirigido por Juanjo Giménez',
     floating: false,
     // 1.5 × a card, as the island sizes it.
-    className: 'w-[calc(var(--size-card)*1.5)]',
+    className: 'w-[calc(var(--short-card-width)*1.5)]',
     labels: {
       play: 'Ver ahora',
       addToList: 'Añadir a mi lista',

@@ -40,31 +40,31 @@ export interface OgCard {
 
 const color = palettes.dark
 
-/** Ground and ink per tone, as the typographic posters use them. */
-const TONES: Record<OgTone, { ground: string; ink: string; muted: string; accent: string }> = {
+/** Ground and text colours per tone, as the typographic posters use them. */
+const TONES: Record<OgTone, { ground: string; text: string; muted: string; accent: string }> = {
   sala: {
-    ground: color['sala-0'] ?? '',
-    ink: color.ink ?? '',
-    muted: color['ink-muted'] ?? '',
-    accent: color.tungsteno ?? '',
+    ground: color['background-canvas'] ?? '',
+    text: color['text-primary'] ?? '',
+    muted: color['text-secondary'] ?? '',
+    accent: color.accent ?? '',
   },
   tungsteno: {
-    ground: color.tungsteno ?? '',
-    ink: color['on-tungsteno'] ?? '',
-    muted: color['on-tungsteno'] ?? '',
-    accent: color['on-tungsteno'] ?? '',
+    ground: color.accent ?? '',
+    text: color['text-on-accent'] ?? '',
+    muted: color['text-on-accent'] ?? '',
+    accent: color['text-on-accent'] ?? '',
   },
   plata: {
-    ground: color['plata-soft'] ?? '',
-    ink: color.ink ?? '',
-    muted: color.plata ?? '',
-    accent: color.plata ?? '',
+    ground: color['info-subtle'] ?? '',
+    text: color['text-primary'] ?? '',
+    muted: color.info ?? '',
+    accent: color.info ?? '',
   },
   telon: {
-    ground: color.telon ?? '',
-    ink: color['on-telon'] ?? '',
-    muted: color['on-telon'] ?? '',
-    accent: color['on-telon'] ?? '',
+    ground: color.sponsored ?? '',
+    text: color['text-on-sponsored'] ?? '',
+    muted: color['text-on-sponsored'] ?? '',
+    accent: color['text-on-sponsored'] ?? '',
   },
 }
 
@@ -103,15 +103,15 @@ const el = (type: string, style: Record<string, unknown>, children?: unknown): N
   props: { style, children },
 })
 
-/** The logo from the design system, as the site draws it, in the card's ink. */
+/** The logo from the design system, as the site draws it, in the card's text colour. */
 const WORDMARK_HEIGHT = 44
 const WORDMARK_RATIO = (() => {
   const box = /viewBox="0 0 ([\d.]+) ([\d.]+)"/.exec(wordmark)
   return box ? Number(box[1]) / Number(box[2]) : 3
 })()
 
-function wordmarkDataUri(ink: string): string {
-  const svg = wordmark.replace(/currentColor/g, ink)
+function wordmarkDataUri(fill: string): string {
+  const svg = wordmark.replace(/currentColor/g, fill)
   return `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`
 }
 
@@ -130,7 +130,7 @@ function homeTree(card: OgCard): Node {
       display: 'flex',
       position: 'relative',
       background: tone.ground,
-      color: tone.ink,
+      color: tone.text,
     },
     [
       {
@@ -167,7 +167,7 @@ function homeTree(card: OgCard): Node {
           {
             type: 'img',
             props: {
-              src: wordmarkDataUri(tone.ink),
+              src: wordmarkDataUri(tone.text),
               alt: card.siteName,
               height: WORDMARK_HEIGHT,
               width: Math.round(WORDMARK_HEIGHT * WORDMARK_RATIO),
@@ -188,7 +188,7 @@ function homeTree(card: OgCard): Node {
               lines.map((line) => el('div', {}, line)),
             ),
             ...(card.subtitle
-              ? [el('div', { fontFamily: 'text', fontSize: 34, color: tone.ink }, card.subtitle)]
+              ? [el('div', { fontFamily: 'text', fontSize: 34, color: tone.text }, card.subtitle)]
               : []),
           ]),
           el(
@@ -228,7 +228,7 @@ export function ogTree(card: OgCard): Node {
       height: OG_HEIGHT,
       display: 'flex',
       background: tone.ground,
-      color: tone.ink,
+      color: tone.text,
       alignItems: 'center',
     },
     [
@@ -286,7 +286,7 @@ export function ogTree(card: OgCard): Node {
             {
               type: 'img',
               props: {
-                src: wordmarkDataUri(tone.ink),
+                src: wordmarkDataUri(tone.text),
                 alt: card.siteName,
                 height: WORDMARK_HEIGHT,
                 width: Math.round(WORDMARK_HEIGHT * WORDMARK_RATIO),
