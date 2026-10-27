@@ -57,6 +57,8 @@ function disc(size) {
   return `<svg width="${size}" height="${size}" viewBox="-580 -580 1160 1160">${p.join('')}</svg>`
 }
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
+/** No widows: the last two words of a paragraph stay together. */
+const keepLast = (html) => html.replace(/ (\S+)$/, '&nbsp;$1')
 const css = (w, h, catalog, scale) => `@font-face{font-family:A;src:url(data:font/woff2;base64,${font}) format('woff2');font-weight:100 900;font-stretch:62% 125%}
 *{box-sizing:border-box;margin:0}body{width:${w}px;height:${h}px;overflow:hidden;background:${c['background-canvas']};color:${c['text-primary']};font-family:A,sans-serif;position:relative}
 .bg{position:absolute;inset:0;overflow:hidden;perspective:1600px;${catalog ? '' : 'display:none'}}
@@ -77,14 +79,14 @@ function body(s, i, total, card) {
   const text = [
     s.kicker ? `<div class="kicker" style="font-size:${Math.round(SIZE.kicker * (card ? 0.8 : 1))}px">${esc(s.kicker)}</div>` : '',
     hl,
-    s.lead ? `<p class="lead" style="font-size:${Math.round((s.leadSize ?? SIZE.lead) * k)}px">${esc(s.lead)}</p>` : '',
+    s.lead ? `<p class="lead" style="font-size:${Math.round((s.leadSize ?? SIZE.lead) * k)}px">${keepLast(esc(s.lead))}</p>` : '',
     s.domain ? `<div class="domain" style="font-size:${Math.round(SIZE.domain * (card ? 0.42 : 1))}px">fenaki.tv</div>` : '',
   ].join('')
   const middle = s.disc
     ? `<div style="display:flex;flex-direction:column;align-items:center;gap:24px">${disc(s.discSize ?? 640)}<div class="stack" style="gap:18px;align-self:stretch">${text}</div></div>`
     : `<div class="stack">${text}</div>`
   const foot = s.secondary
-    ? `<p class="secondary" style="font-size:${SIZE.secondary}px">${esc(s.secondary)}</p>`
+    ? `<p class="secondary" style="font-size:${SIZE.secondary}px">${keepLast(esc(s.secondary))}</p>`
     : card ? '<div></div>' : `<div class="secondary" style="font-size:${SIZE.secondary}px">${i} / ${total}${i < total ? ' →' : ''}</div>`
   return `<img class="wm" src="${wm}">${middle}${foot}`
 }
