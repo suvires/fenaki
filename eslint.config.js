@@ -11,6 +11,8 @@ export default tseslint.config(
   {
     ignores: [
       '**/node_modules/',
+      // Claude Code's local skills (third-party code, not part of the project).
+      '.claude/',
       '**/dist/',
       '**/.next/',
       '**/.next-e2e/',

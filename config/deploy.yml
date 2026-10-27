@@ -37,6 +37,9 @@ x-cms-env: &cms-env
     MAILBOX_SMTP_HOST: smtp.mail.ovh.net
     MAILBOX_SMTP_PORT: 465
     CRM_DAILY_SEND_LIMIT: 20
+    # «on»: shorts the scan adds go to the AI review by themselves, and a batch is submitted every
+    # night. «off»: batches are submitted by hand, to watch the spend; finished ones are still collected.
+    AI_REVIEW_AUTO: "off"
     # The nightly «Lo más visto» job reads the play events from Umami (same website as the site).
     UMAMI_URL: http://fenaki-umami:3000
     UMAMI_WEBSITE_ID: 0b6c4f8e-2d7a-4e15-9a3c-7f2e1d5b8c64

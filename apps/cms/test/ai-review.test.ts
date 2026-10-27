@@ -307,7 +307,12 @@ describe('without a key', () => {
     expect(queued).toEqual([])
     process.env.ANTHROPIC_API_KEY = 'sk-test'
     await queueShortReview(req, 1)
+    // With a key, still nothing until automatic review is switched on.
+    expect(queued).toEqual([])
+    process.env.AI_REVIEW_AUTO = 'on'
+    await queueShortReview(req, 1)
     expect(queued).toEqual([{ task: 'reviewShort', input: { shortId: 1 } }])
+    delete process.env.AI_REVIEW_AUTO
   })
 })
 

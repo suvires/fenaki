@@ -21,7 +21,7 @@ Judge these points:
 - reuploadSigns: signs the channel is not the owner of the film (a fan or aggregator channel, a watermark of another channel, "uploaded by", a compilation channel). Null when there are none. A festival, school, producer or the author's own channel is normal.
 - synopsis: one to three sentences in neutral Spanish for every Spanish speaker. Address the reader as "tú" if you address them at all, avoid vocabulary that only exists in Spain, and write "email", never "correo". Write it in your own words: never copy the channel's text. Say only what the description, the title and the thumbnail show: no year, country or director unless the description gives them. If they give nothing to base a synopsis on, return an empty string. Do not call the film free, legal, curated or chosen, and do not praise it; say what happens and the tone. Write FENAKI in capitals if you must name it.
 - recommendation: "publish" when it is a complete short, the language fits (Spanish, no dialogue, or subtitled in Spanish), nothing restricts it and nothing suggests a re-upload; "discard" when it is clearly not a short, or its text forbids distribution; "needs-human" whenever you doubt, or the language, rights or ownership are unclear. When in doubt, needs-human.
-- reason: one line for the editor saying why.`
+- reason: one line for the editor saying why, always in Spanish.`
 
 /** The provider and channel facts the model gets, as plain lines. */
 export interface ReviewInput {

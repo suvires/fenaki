@@ -15,3 +15,4 @@ apps/cms/src/migrations/
 config/deploy*.yml
 # OpenTofu provider downloads and local state
 .terraform/
+.claude/

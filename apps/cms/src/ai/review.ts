@@ -25,6 +25,14 @@ export const reviewModel = (env: Record<string, string | undefined> = process.en
   env.AI_REVIEW_MODEL || DEFAULT_MODEL
 
 /** The SDK client, or null without a key. It retries 429 and 5xx twice by itself. */
+/**
+ * Whether new shorts go to the AI on their own: one request when the scan adds a short, and a new
+ * batch every night. Off unless AI_REVIEW_AUTO=on, so an editor decides how much is spent and
+ * submits the queue in batches by hand meanwhile; collecting batches already sent always runs.
+ */
+export const autoReview = (env: Record<string, string | undefined> = process.env) =>
+  env.AI_REVIEW_AUTO === 'on'
+
 export function reviewClient(env: Record<string, string | undefined> = process.env) {
   return env.ANTHROPIC_API_KEY ? new Anthropic({ apiKey: env.ANTHROPIC_API_KEY }) : null
 }

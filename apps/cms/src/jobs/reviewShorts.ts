@@ -1,6 +1,6 @@
 import type { TaskConfig } from 'payload'
 import { runBatchReview, type BatchSummary } from '../ai/batch.ts'
-import { aiConfigured, analyzeShort, reviewClient } from '../ai/review.ts'
+import { aiConfigured, analyzeShort, autoReview, reviewClient } from '../ai/review.ts'
 
 /**
  * Right after a short enters the review queue: one normal request, so the editor finds the
@@ -44,7 +44,7 @@ export const reviewBacklogTask: TaskConfig<{
   handler: async ({ req }) => {
     const client = reviewClient()
     if (!client) return { output: { submitted: 0, collected: 0, pending: 0 } }
-    const { submitted, collected, pending } = await runBatchReview(req, client)
+    const { submitted, collected, pending } = await runBatchReview(req, client, autoReview())
     return { output: { submitted, collected, pending } }
   },
 }

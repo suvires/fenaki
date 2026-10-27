@@ -269,12 +269,22 @@ describe('AI review of new shorts', () => {
     })
   }
 
-  it('queues one review per short added, when there is a key and only a few', async () => {
+  it('queues one review per short added, when there is a key, automatic review is on and only a few', async () => {
     process.env.ANTHROPIC_API_KEY = 'sk-test'
+    process.env.AI_REVIEW_AUTO = 'on'
     const { fn } = channelRoutes(3)
     const { req, queued } = fakeRequest()
     await scanChannel(req, channel(), fn, 0)
     expect(queued.map((job) => job.task)).toEqual(['reviewShort', 'reviewShort', 'reviewShort'])
+    delete process.env.AI_REVIEW_AUTO
+  })
+
+  it('queues nothing while automatic review is off', async () => {
+    process.env.ANTHROPIC_API_KEY = 'sk-test'
+    const { fn } = channelRoutes(3)
+    const { req, queued } = fakeRequest()
+    await scanChannel(req, channel(), fn, 0)
+    expect(queued).toEqual([])
   })
 
   it('leaves a big haul to the nightly batch', async () => {

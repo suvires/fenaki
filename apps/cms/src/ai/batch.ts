@@ -129,13 +129,15 @@ export async function submitBatch(
 }
 
 /** The nightly pass: collect what ended, then submit what is new. */
+/** `submit` false only collects: what an editor uses to check the spend before the next batch. */
 export async function runBatchReview(
   req: PayloadRequest,
   client: ReviewClient,
+  submit = true,
 ): Promise<BatchSummary> {
   const summary: BatchSummary = { submitted: 0, collected: 0, pending: 0, usage: noUsage() }
   await collectBatches(req, client, summary)
-  await submitBatch(req, client, summary)
+  if (submit) await submitBatch(req, client, summary)
   req.payload.logger.info(
     `aiReview: batch pass — ${summary.collected} collected, ${summary.pending} still waiting, ${summary.submitted} submitted (${summary.usage.input} in, ${summary.usage.output} out tokens)`,
   )
