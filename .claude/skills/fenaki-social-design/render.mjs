@@ -22,18 +22,32 @@ const wm = `data:image/svg+xml;base64,${Buffer.from((await readFile(`${root}pack
 const SIZE = { headline: 146, kicker: 40, lead: 48, secondary: 32, domain: 88 }
 
 function figure(t) {
-  const h = Math.sin(t * Math.PI), crouch = 1 - h, lift = -h * 50, knee = 14 + crouch * 20, d = crouch * 14, armY = -96 + d - h * 40
-  return `<g transform="translate(0 ${lift}) scale(1.2)" stroke="${c['text-primary']}" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none"><circle cx="0" cy="${-122 + d}" r="15" fill="${c.accent}" stroke="none"/><line x1="0" y1="${-104 + d}" x2="0" y2="${-56 + d}"/><polyline points="-30,${armY} 0,${-92 + d} 30,${armY}"/><polyline points="-10,0 ${-knee},${-28 + d / 2} 0,${-56 + d}"/><polyline points="10,0 ${knee},${-28 + d / 2} 0,${-56 + d}"/></g>`
+  // One phase of a jump: crouch → take-off → top → landing. Drawn upright, feet at y=0.
+  const h = Math.sin(t * Math.PI), crouch = 1 - h
+  const lift = -h * 56, d = crouch * 16, knee = 12 + crouch * 22, armUp = h * 46
+  const ink = c['text-primary'], limb = `stroke="${ink}" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"`
+  const shadow = `<ellipse cx="0" cy="6" rx="${30 - h * 12}" ry="7" fill="${c['background-canvas']}" opacity="${0.9 - h * 0.5}"/>`
+  return `${shadow}<g transform="translate(0 ${lift})">
+    <polyline ${limb} points="-11,0 ${-knee},${-30 + d / 2} -3,${-60 + d}"/><polyline ${limb} points="11,0 ${knee},${-30 + d / 2} 3,${-60 + d}"/>
+    <line ${limb} stroke-width="14" x1="0" y1="${-60 + d}" x2="0" y2="${-108 + d}"/>
+    <polyline ${limb} points="${-30},${-82 + d - armUp} -8,${-100 + d} 8,${-100 + d} 30,${-82 + d - armUp}"/>
+    <circle cx="-30" cy="${-82 + d - armUp}" r="6" fill="${ink}"/><circle cx="30" cy="${-82 + d - armUp}" r="6" fill="${ink}"/>
+    <circle cx="0" cy="${-130 + d}" r="18" fill="${ink}"/>
+  </g>`
 }
 /** The phenakistiscope disc: 8 phases of a jumping figure, slits and a spin arrow. */
 function disc(size) {
-  const r = 500, n = 8, p = [`<circle r="${r}" fill="${c['background-muted']}" stroke="${c['border-strong']}" stroke-width="5"/>`]
+  const r = 500, n = 8, p = []
+  p.push(`<circle r="${r}" fill="${c['background-muted']}" stroke="${c['border-strong']}" stroke-width="5"/>`)
+  // The slit band, as on Plateau's discs, and a dotted decorative ring inside it.
+  p.push(`<circle r="${r - 52}" fill="none" stroke="${c['background-raised']}" stroke-width="104"/>`)
+  for (let i = 0; i < 48; i++) p.push(`<circle r="5" cx="0" cy="${-(r - 120)}" fill="${c['border-strong']}" transform="rotate(${i * 7.5})"/>`)
   for (let i = 0; i < n; i++) {
     const a = (i / n) * 360
-    p.push(`<rect x="-11" y="${-r + 16}" width="22" height="88" rx="11" fill="${c['background-canvas']}" transform="rotate(${a})"/>`)
-    p.push(`<g transform="rotate(${a + 22.5}) translate(0 -170)">${figure(i / n)}</g>`)
+    p.push(`<rect x="-12" y="${-r + 12}" width="24" height="80" rx="12" fill="${c['background-canvas']}" transform="rotate(${a})"/>`)
+    p.push(`<g transform="rotate(${a + 22.5}) translate(0 -150) scale(1.15)">${figure(i / n)}</g>`)
   }
-  p.push(`<circle r="62" fill="${c['background-canvas']}" stroke="${c['border-strong']}" stroke-width="5"/><circle r="16" fill="${c['text-primary']}"/>`)
+  p.push(`<circle r="70" fill="${c['background-canvas']}" stroke="${c['border-strong']}" stroke-width="5"/><circle r="40" fill="none" stroke="${c.accent}" stroke-width="6"/><circle r="12" fill="${c['text-primary']}"/>`)
   const R = r + 46, rad = (x) => (x * Math.PI) / 180, a0 = -60, a1 = 40
   const x0 = R * Math.sin(rad(a0)), y0 = -R * Math.cos(rad(a0)), x1 = R * Math.sin(rad(a1)), y1 = -R * Math.cos(rad(a1))
   p.push(`<path d="M ${x0} ${y0} A ${R} ${R} 0 0 1 ${x1} ${y1}" fill="none" stroke="${c.accent}" stroke-width="12" stroke-linecap="round"/><g transform="translate(${x1} ${y1}) rotate(${a1 + 90})"><polygon points="0,-34 40,0 0,34" fill="${c.accent}"/></g>`)
@@ -55,8 +69,8 @@ const css = (w, h, catalog, scale) => `@font-face{font-family:A;src:url(data:fon
 .stack{display:flex;flex-direction:column;gap:${Math.round(32 * scale)}px}`
 function body(s, i, total, card) {
   const k = card ? 0.62 : 1
-  const words = Array.isArray(s.headline) ? s.headline.join(' ') : s.headline
-  const hl = `<h1 class="headline" style="font-size:${Math.round((s.headlineSize ?? SIZE.headline) * k)}px">${esc(words)}</h1>`
+  const words = Array.isArray(s.headline) ? s.headline.join(' ') : (s.headline ?? '')
+  const hl = !words ? '' : `<h1 class="headline" style="font-size:${Math.round((s.headlineSize ?? SIZE.headline) * k)}px">${esc(words)}</h1>`
   const text = [
     s.kicker ? `<div class="kicker" style="font-size:${Math.round(SIZE.kicker * (card ? 0.8 : 1))}px">${esc(s.kicker)}</div>` : '',
     hl,
@@ -64,7 +78,7 @@ function body(s, i, total, card) {
     s.domain ? `<div class="domain" style="font-size:${Math.round(SIZE.domain * (card ? 0.42 : 1))}px">fenaki.tv</div>` : '',
   ].join('')
   const middle = s.disc
-    ? `<div style="display:flex;flex-direction:column;align-items:center;gap:24px">${disc(640)}<div class="stack" style="gap:18px;align-self:stretch">${text}</div></div>`
+    ? `<div style="display:flex;flex-direction:column;align-items:center;gap:24px">${disc(s.discSize ?? 640)}<div class="stack" style="gap:18px;align-self:stretch">${text}</div></div>`
     : `<div class="stack">${text}</div>`
   const foot = s.secondary
     ? `<p class="secondary" style="font-size:${SIZE.secondary}px">${esc(s.secondary)}</p>`
@@ -81,9 +95,13 @@ for (const [index, s] of (spec.slides ?? []).entries()) {
   // Nothing may overflow the slide: the content column must fit, with the counter or footer inside.
   const overflow = await page.evaluate(() => {
     const box = document.querySelector('.in')
-    return box.scrollHeight > box.clientHeight + 1 ? box.scrollHeight - box.clientHeight : 0
+    const pad = parseFloat(getComputedStyle(box).paddingRight)
+    const right = box.getBoundingClientRect().right - pad
+    const wide = [...box.querySelectorAll('h1,p,div')].some((el) => el.scrollWidth > el.clientWidth + 1 || el.getBoundingClientRect().right > right + 1)
+    const tall = box.scrollHeight > box.clientHeight + 1 ? box.scrollHeight - box.clientHeight : 0
+    return tall || (wide ? 'horizontal' : 0)
   })
-  if (overflow) console.warn(`slide ${index + 1}: content overflows by ${overflow}px — shorten the text or lower headlineSize`)
+  if (overflow) console.warn(`slide ${index + 1}: content overflows (${overflow}${typeof overflow === 'number' ? 'px' : ''}) — shorten the text or lower headlineSize`)
   await page.screenshot({ path: `${spec.out}/carrusel-${index + 1}.png` }); await page.close()
 }
 if (spec.pdf && total) {
