@@ -79,18 +79,25 @@ const legalLinks = [
   { label: t('footer.links.cookies'), href: paths.legal(locale, 'cookies') },
 ]
 // Before launch the landing page only links the legal pages: there is no catalog to talk about.
-const footerLinks = landing
-  ? legalLinks
+// Columns: the catalog, then taking part (takedown, sponsors, showcases), then legal and credits.
+const footerGroups = landing
+  ? [legalLinks]
   : [
-      { label: t('footer.links.browse'), href: paths.browse(locale) },
-      ...(contact ? [contact.propose] : []),
-      { label: t('footer.links.takedown'), href: paths.legal(locale, 'retirada-de-contenidos') },
-      { label: t('footer.links.sponsor'), href: paths.sponsor(locale, 'collection') },
-      { label: t('footer.links.showcase'), href: paths.sponsor(locale, 'showcase') },
-      ...legalLinks,
-      { label: t('footer.links.terms'), href: paths.legal(locale, 'terminos-de-uso') },
-      { label: t('footer.links.playerSettings'), href: paths.playerSettings(locale) },
-      { label: t('footer.links.credits'), href: paths.credits(locale) },
+      [
+        { label: t('footer.links.browse'), href: paths.browse(locale) },
+        ...(contact ? [contact.propose] : []),
+      ],
+      [
+        { label: t('footer.links.takedown'), href: paths.legal(locale, 'retirada-de-contenidos') },
+        { label: t('footer.links.sponsor'), href: paths.sponsor(locale, 'collection') },
+        { label: t('footer.links.showcase'), href: paths.sponsor(locale, 'showcase') },
+      ],
+      [
+        ...legalLinks,
+        { label: t('footer.links.terms'), href: paths.legal(locale, 'terminos-de-uso') },
+        { label: t('footer.links.playerSettings'), href: paths.playerSettings(locale) },
+        { label: t('footer.links.credits'), href: paths.credits(locale) },
+      ],
     ]
 ---
 
@@ -392,7 +399,7 @@ const footerLinks = landing
     <SiteFooter
       className="w-full mx-auto max-w-page px-4 md:px-8 pb-8"
       label={t('footer.label')}
-      links={footerLinks}
+      groups={footerGroups}
       brand={t('site.name')}
     />
   </body>

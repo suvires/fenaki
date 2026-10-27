@@ -31,6 +31,8 @@ Al usar FENAKI te comprometes a hacerlo de forma lícita y, en particular, a no:
 - Introducir virus o código malicioso, o intentar acceder a zonas no públicas de FENAKI.
 - Usar FENAKI para fines contrarios a la ley, la moral o el orden público.
 
+Los cortos de YouTube se ven en el reproductor de YouTube: al ver uno aceptas las [Condiciones del servicio de YouTube](https://www.youtube.com/t/terms), y Google trata los datos que recibe según su [Política de privacidad](https://policies.google.com/privacy).
+
 ## 4. Propiedad intelectual e industrial
 
 ### 4.1 Contenido propio de FENAKI

@@ -418,14 +418,11 @@
     "tmdb": {
       "title": "The Movie Database (TMDB)",
       "logo": "The Movie Database (TMDB)",
-      "notice": "This product uses the TMDB API but is not endorsed or certified by TMDB.",
-      "translation": "(Este producto usa la API de TMDB, pero TMDB no lo respalda ni lo certifica.) Algunos datos de las fichas, como el año, el país o el reparto, proceden de TMDB."
+      "notice": "Este producto usa la API de TMDB, pero TMDB no lo respalda ni lo certifica. Algunos datos de las fichas, como el año, el país o el reparto, proceden de TMDB."
     },
     "youtube": {
       "title": "YouTube",
-      "text": "FENAKI usa los servicios de API de YouTube para obtener los datos de los cortos publicados en YouTube, como la duración o los subtítulos. Al ver un corto de YouTube aceptas sus condiciones.",
-      "terms": "Condiciones del servicio de YouTube",
-      "privacy": "Política de privacidad de Google"
+      "text": "FENAKI usa los servicios de API de YouTube para obtener los datos de los cortos publicados en YouTube, como la duración o los subtítulos."
     },
     "fonts": {
       "title": "Tipografías",
