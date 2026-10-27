@@ -1,5 +1,5 @@
 import { assess, type Assessment } from './check.ts'
-import { fetchOEmbed, type Fetch } from './oembed.ts'
+import { fetchOEmbed, type Fetch, type OEmbedResult } from './oembed.ts'
 import { lookupTmdb, type TmdbFilm } from './tmdb.ts'
 import type { VideoRef } from './url.ts'
 import { fetchYouTubeVideos, type YouTubeVideo } from './youtube.ts'
@@ -55,24 +55,30 @@ export function cleanTitle(raw: string): string {
 const primaryLanguage = (code: string | null | undefined) =>
   code ? (code.split('-')[0]?.toLowerCase() ?? null) : null
 
-export async function fetchVideoMetadata(
+/** Stands in for the oEmbed answer when the YouTube Data API already described the video. */
+const ASSUMED_OK: OEmbedResult = {
+  kind: 'ok',
+  title: '',
+  authorName: null,
+  authorUrl: null,
+  thumbnailUrl: null,
+  durationSeconds: null,
+  uploadedAt: null,
+}
+
+/**
+ * Turns what the providers said into the metadata a short is created from. `oembed` is left out
+ * when the YouTube Data API already described the video (the channel scanner), so no request is
+ * repeated.
+ */
+export async function buildMetadata(
   video: VideoRef,
+  oembed: OEmbedResult | undefined,
+  api: YouTubeVideo | null | undefined,
   keys: IngestKeys,
   fetchFn: Fetch = fetch,
 ): Promise<VideoMetadata> {
-  const oembed = await fetchOEmbed(video, fetchFn)
-  let api: YouTubeVideo | null | undefined
-  if (video.provider === 'youtube' && keys.youtube) {
-    try {
-      api =
-        (await fetchYouTubeVideos([video.externalId], keys.youtube, fetchFn)).get(
-          video.externalId,
-        ) ?? null
-    } catch {
-      api = undefined
-    }
-  }
-  const ok = oembed.kind === 'ok' ? oembed : undefined
+  const ok = oembed?.kind === 'ok' ? oembed : undefined
   const providerTitle = api?.title || ok?.title || ''
   const title = cleanTitle(providerTitle)
   const tmdb = keys.tmdb && title ? await lookupTmdb(title, null, keys.tmdb, fetchFn) : undefined
@@ -91,7 +97,27 @@ export async function fetchVideoMetadata(
     thumbnailUrl: api?.thumbnailUrl ?? ok?.thumbnailUrl ?? null,
     uploadedAt: api?.publishedAt ?? ok?.uploadedAt ?? null,
     originalLanguage: primaryLanguage(api?.audioLanguage) ?? tmdb?.originalLanguage ?? null,
-    assessment: assess(oembed, api),
+    assessment: assess(oembed ?? ASSUMED_OK, api),
     tmdb,
   }
+}
+
+export async function fetchVideoMetadata(
+  video: VideoRef,
+  keys: IngestKeys,
+  fetchFn: Fetch = fetch,
+): Promise<VideoMetadata> {
+  const oembed = await fetchOEmbed(video, fetchFn)
+  let api: YouTubeVideo | null | undefined
+  if (video.provider === 'youtube' && keys.youtube) {
+    try {
+      api =
+        (await fetchYouTubeVideos([video.externalId], keys.youtube, fetchFn)).get(
+          video.externalId,
+        ) ?? null
+    } catch {
+      api = undefined
+    }
+  }
+  return buildMetadata(video, oembed, api, keys, fetchFn)
 }

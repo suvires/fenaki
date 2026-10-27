@@ -1,9 +1,9 @@
 import type { Endpoint, PayloadRequest } from 'payload'
 import { isAdminUser } from '../access.ts'
-import { slugify } from '../fields/slug.ts'
 import { inLanguage, label, type AdminLabel } from '../labels.ts'
 import { unplayableReason } from './check.ts'
-import { fetchVideoMetadata, ingestKeys, type VideoMetadata } from './metadata.ts'
+import { createShortWithSource } from './createShort.ts'
+import { fetchVideoMetadata, ingestKeys } from './metadata.ts'
 import type { Fetch } from './oembed.ts'
 import { parseVideoUrl } from './url.ts'
 
@@ -33,49 +33,6 @@ const errors = {
 export type AddResult =
   | { ok: true; shortId: number; title: string }
   | { ok: false; status: number; error: keyof typeof errors; shortId?: number }
-
-/** A slug no other short uses: «cuerdas», then «cuerdas-2». */
-async function freeSlug(req: PayloadRequest, title: string): Promise<string> {
-  const base = slugify(title) || 'corto'
-  for (let n = 1; ; n++) {
-    const slug = n === 1 ? base : `${base}-${n}`
-    const taken = await req.payload.count({
-      collection: 'shorts',
-      where: { slug: { equals: slug } },
-      locale: 'es',
-      req,
-    })
-    if (taken.totalDocs === 0) return slug
-  }
-}
-
-/** The shared embed license of a provider («YouTube: …»), created the first time. */
-async function embedLicense(req: PayloadRequest, provider: VideoMetadata['video']['provider']) {
-  const name = provider === 'youtube' ? 'YouTube' : 'Vimeo'
-  const found = await req.payload.find({
-    collection: 'licenses',
-    where: {
-      route: { equals: 'embed' },
-      type: { equals: 'platform-terms' },
-      name: { like: name },
-      and: [{ name: { not_like: '[sample]' } }],
-    },
-    limit: 1,
-    depth: 0,
-    req,
-  })
-  if (found.docs[0]) return found.docs[0].id
-  const created = await req.payload.create({
-    collection: 'licenses',
-    data: {
-      name: `${name}: embed desde el canal oficial del titular`,
-      route: 'embed',
-      type: 'platform-terms',
-    },
-    req,
-  })
-  return created.id
-}
 
 /**
  * Creates a short and its source from a video URL, filled with what the providers say, waiting
@@ -111,43 +68,8 @@ export async function addShortFromUrl(
   const reason = unplayableReason(metadata.assessment)
   if (reason) return { ok: false, status: 422, error: reason }
 
-  const now = new Date().toISOString()
-  const title = metadata.title || video.externalId
-  const short = await req.payload.create({
-    collection: 'shorts',
-    locale: 'es',
-    data: {
-      title,
-      slug: await freeSlug(req, title),
-      durationSeconds: metadata.durationSeconds,
-      year: metadata.tmdb?.year ?? null,
-      country: metadata.tmdb?.country ?? null,
-      originalLanguage: metadata.originalLanguage,
-      tmdbId: metadata.tmdb?.id ?? null,
-      status: 'review',
-    },
-    req,
-  })
-  await req.payload.create({
-    collection: 'sources',
-    data: {
-      short: short.id,
-      provider: video.provider,
-      externalId: video.externalId,
-      url: video.url,
-      channel: metadata.channel,
-      embeddable: true,
-      ageRestricted: false,
-      status: 'ok',
-      lastCheckedAt: now,
-      checkNote: `Added from a URL. Provider title: «${metadata.providerTitle}». ${metadata.assessment.note}`,
-      thumbnailUrl: metadata.thumbnailUrl,
-      uploadedAt: metadata.uploadedAt,
-      license: await embedLicense(req, video.provider),
-    },
-    req,
-  })
-  return { ok: true, shortId: short.id, title }
+  const created = await createShortWithSource(req, metadata, { origin: 'Added from a URL' })
+  return { ok: true, ...created }
 }
 
 /** POST /api/shorts/from-url with `{ "url": "…" }`, for the «Add from a URL» box in the admin panel. */

@@ -70,6 +70,7 @@ export interface Config {
   collections: {
     shorts: Short;
     sources: Source;
+    channels: Channel;
     people: Person;
     collections: Collection;
     showcases: Showcase;
@@ -100,6 +101,7 @@ export interface Config {
   collectionsSelect: {
     shorts: ShortsSelect<false> | ShortsSelect<true>;
     sources: SourcesSelect<false> | SourcesSelect<true>;
+    channels: ChannelsSelect<false> | ChannelsSelect<true>;
     people: PeopleSelect<false> | PeopleSelect<true>;
     collections: CollectionsSelect<false> | CollectionsSelect<true>;
     showcases: ShowcasesSelect<false> | ShowcasesSelect<true>;
@@ -150,6 +152,7 @@ export interface Config {
       checkEmbeds: TaskCheckEmbeds;
       computeRanking: TaskComputeRanking;
       syncInbox: TaskSyncInbox;
+      scanChannels: TaskScanChannels;
       inline: {
         input: unknown;
         output: unknown;
@@ -292,6 +295,10 @@ export interface Short {
    */
   sample?: boolean | null;
   /**
+   * Set when the channel scan added it, so the review queue can be filtered by channel.
+   */
+  ingestChannel?: (number | null) | Channel;
+  /**
    * Set by the catalog import. Re-running the import updates this document.
    */
   importKey?: string | null;
@@ -373,11 +380,104 @@ export interface Source {
    */
   thumbnailUrl?: string | null;
   uploadedAt?: string | null;
+  /**
+   * Set when the channel scan added it, so the review queue can be filtered by channel.
+   */
+  ingestChannel?: (number | null) | Channel;
   license: number | License;
   /**
    * Set by the catalog import. Re-running the import updates this document.
    */
   importKey?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "channels".
+ */
+export interface Channel {
+  id: number;
+  /**
+   * YouTube (@name, /channel/UC…) or Vimeo (user or channel). The provider and the channel ID are filled in when you save.
+   */
+  url: string;
+  /**
+   * Filled in from the provider when left empty.
+   */
+  name?: string | null;
+  provider: 'youtube' | 'vimeo';
+  externalId?: string | null;
+  kind: 'author' | 'producer' | 'distributor' | 'festival' | 'school' | 'institution';
+  organization?: (number | null) | Organization;
+  /**
+   * What shows the channel belongs to the rights holder (links from the official website, the festival or the credits), and when it was checked. Copied to every short the scan adds.
+   */
+  officialEvidence?: string | null;
+  /**
+   * The nightly scan only looks at active channels.
+   */
+  active?: boolean | null;
+  minDurationSeconds: number;
+  maxDurationSeconds: number;
+  /**
+   * BCP 47 code, e.g. es. Used when the provider does not say.
+   */
+  defaultLanguage?: string | null;
+  lastScannedAt?: string | null;
+  /**
+   * How many videos the last scan found, added and skipped, and why.
+   */
+  lastScanNote?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "organizations".
+ */
+export interface Organization {
+  id: number;
+  name: string;
+  type: 'festival' | 'school' | 'brand' | 'distributor' | 'institution' | 'other';
+  priority?: ('A' | 'B' | 'C') | null;
+  status: 'to_contact' | 'contacted' | 'replied' | 'proposal' | 'negotiation' | 'won' | 'lost' | 'not_interested';
+  country?: string | null;
+  city?: string | null;
+  website?: string | null;
+  /**
+   * URL or address where they publish that they accept proposals.
+   */
+  proposalsChannel?: string | null;
+  nextEdition?: string | null;
+  whyFits?: string | null;
+  recommendedProduct?: ('showcase' | 'collection' | 'sponsorship' | 'other') | null;
+  source?: string | null;
+  notes?: string | null;
+  lastContactDate?: string | null;
+  nextFollowUpDate?: string | null;
+  /**
+   * Link the sponsor when this organization buys.
+   */
+  sponsor?: (number | null) | Sponsor;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sponsors".
+ */
+export interface Sponsor {
+  id: number;
+  /**
+   * As credited publicly.
+   */
+  name: string;
+  website?: string | null;
+  /**
+   * Internal. Never shown publicly.
+   */
+  notes?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -546,24 +646,6 @@ export interface Collection {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "sponsors".
- */
-export interface Sponsor {
-  id: number;
-  /**
-   * As credited publicly.
-   */
-  name: string;
-  website?: string | null;
-  /**
-   * Internal. Never shown publicly.
-   */
-  notes?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "showcases".
  */
 export interface Showcase {
@@ -634,37 +716,6 @@ export interface Media {
       filename?: string | null;
     };
   };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "organizations".
- */
-export interface Organization {
-  id: number;
-  name: string;
-  type: 'festival' | 'school' | 'brand' | 'distributor' | 'institution' | 'other';
-  priority?: ('A' | 'B' | 'C') | null;
-  status: 'to_contact' | 'contacted' | 'replied' | 'proposal' | 'negotiation' | 'won' | 'lost' | 'not_interested';
-  country?: string | null;
-  city?: string | null;
-  website?: string | null;
-  /**
-   * URL or address where they publish that they accept proposals.
-   */
-  proposalsChannel?: string | null;
-  nextEdition?: string | null;
-  whyFits?: string | null;
-  recommendedProduct?: ('showcase' | 'collection' | 'sponsorship' | 'other') | null;
-  source?: string | null;
-  notes?: string | null;
-  lastContactDate?: string | null;
-  nextFollowUpDate?: string | null;
-  /**
-   * Link the sponsor when this organization buys.
-   */
-  sponsor?: (number | null) | Sponsor;
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -919,7 +970,8 @@ export interface PayloadJob {
     | {
         executedAt: string;
         completedAt: string;
-        taskSlug: 'inline' | 'indexShort' | 'purgeWaitlist' | 'checkEmbeds' | 'computeRanking' | 'syncInbox';
+        taskSlug:
+          'inline' | 'indexShort' | 'purgeWaitlist' | 'checkEmbeds' | 'computeRanking' | 'syncInbox' | 'scanChannels';
         taskID: string;
         input?:
           | {
@@ -952,7 +1004,9 @@ export interface PayloadJob {
         id?: string | null;
       }[]
     | null;
-  taskSlug?: ('inline' | 'indexShort' | 'purgeWaitlist' | 'checkEmbeds' | 'computeRanking' | 'syncInbox') | null;
+  taskSlug?:
+    | ('inline' | 'indexShort' | 'purgeWaitlist' | 'checkEmbeds' | 'computeRanking' | 'syncInbox' | 'scanChannels')
+    | null;
   queue?: string | null;
   waitUntil?: string | null;
   processing?: boolean | null;
@@ -982,6 +1036,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'sources';
         value: number | Source;
+      } | null)
+    | ({
+        relationTo: 'channels';
+        value: number | Channel;
       } | null)
     | ({
         relationTo: 'people';
@@ -1140,6 +1198,7 @@ export interface ShortsSelect<T extends boolean = true> {
   still?: T;
   tmdbId?: T;
   sample?: T;
+  ingestChannel?: T;
   importKey?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1171,8 +1230,30 @@ export interface SourcesSelect<T extends boolean = true> {
   checkNote?: T;
   thumbnailUrl?: T;
   uploadedAt?: T;
+  ingestChannel?: T;
   license?: T;
   importKey?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "channels_select".
+ */
+export interface ChannelsSelect<T extends boolean = true> {
+  url?: T;
+  name?: T;
+  provider?: T;
+  externalId?: T;
+  kind?: T;
+  organization?: T;
+  officialEvidence?: T;
+  active?: T;
+  minDurationSeconds?: T;
+  maxDurationSeconds?: T;
+  defaultLanguage?: T;
+  lastScannedAt?: T;
+  lastScanNote?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1761,6 +1842,18 @@ export interface TaskSyncInbox {
     stored: number;
     seen: number;
     skipped: boolean;
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskScanChannels".
+ */
+export interface TaskScanChannels {
+  input?: unknown;
+  output: {
+    channels: number;
+    failed: number;
+    added: number;
   };
 }
 /**
