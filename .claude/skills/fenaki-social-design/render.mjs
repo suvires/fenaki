@@ -48,9 +48,12 @@ function disc(size) {
     p.push(`<g transform="rotate(${a + 22.5}) translate(0 -150) scale(1.15)">${figure(i / n)}</g>`)
   }
   p.push(`<circle r="70" fill="${c['background-canvas']}" stroke="${c['border-strong']}" stroke-width="5"/><circle r="40" fill="none" stroke="${c.accent}" stroke-width="6"/><circle r="12" fill="${c['text-primary']}"/>`)
-  const R = r + 46, rad = (x) => (x * Math.PI) / 180, a0 = -60, a1 = 40
-  const x0 = R * Math.sin(rad(a0)), y0 = -R * Math.cos(rad(a0)), x1 = R * Math.sin(rad(a1)), y1 = -R * Math.cos(rad(a1))
-  p.push(`<path d="M ${x0} ${y0} A ${R} ${R} 0 0 1 ${x1} ${y1}" fill="none" stroke="${c.accent}" stroke-width="12" stroke-linecap="round"/><g transform="translate(${x1} ${y1}) rotate(${a1 + 90})"><polygon points="0,-34 40,0 0,34" fill="${c.accent}"/></g>`)
+  // Spin arrow: a clockwise arc over the top of the disc, its head tangent to the arc at the end.
+  const R = r + 40, rad = (x) => (x * Math.PI) / 180, a0 = -48, a1 = 44
+  const pt = (a) => [R * Math.sin(rad(a)), -R * Math.cos(rad(a))]
+  const [x0, y0] = pt(a0), [x1, y1] = pt(a1)
+  p.push(`<path d="M ${x0} ${y0} A ${R} ${R} 0 0 1 ${x1} ${y1}" fill="none" stroke="${c.accent}" stroke-width="12" stroke-linecap="round"/>`)
+  p.push(`<g transform="translate(${x1} ${y1}) rotate(${a1})"><polygon points="-6,-26 34,0 -6,26" fill="${c.accent}"/></g>`)
   return `<svg width="${size}" height="${size}" viewBox="-580 -580 1160 1160">${p.join('')}</svg>`
 }
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
