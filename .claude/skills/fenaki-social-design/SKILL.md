@@ -45,7 +45,7 @@ Rules:
 
 ## Carousel structure
 
-1. **What FENAKI is**, before anything else: «El mejor cine, en cortos».
+1. **What FENAKI is**, before anything else: «El mejor cine, en cortos». Only on day 1's carousel: from day 2 on the carousel opens with the day's hook, because followers have already seen it (the post text still says what FENAKI is). Vertical videos keep it as their first scene, since each one is seen on its own.
 2. The day's **hook** («Día N de 7» as kicker).
 3–4. The **story or the data** of the day, one idea per slide.
 Optional: a **flip-book**, frame slides after the image they come from (see below).
