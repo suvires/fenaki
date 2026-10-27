@@ -1,7 +1,7 @@
 // Renders FENAKI social pieces from a JSON spec, with the design system's tokens and fonts.
 //   node .claude/skills/fenaki-social-design/render.mjs <spec.json>
 // Spec: { "out": "<dir>", "pdf": "<name>.pdf"?, "slides": [Slide], "card": Slide? }
-// Slide: { "bg": "catalog" | "glow", "kicker"?, "headline": ["white part", "accent part"],
+// Slide: { "bg": "catalog" | "glow", "kicker"?, "headline": "…",
 //          "headlineSize"?, "lead"?, "leadSize"?, "domain"?: true, "secondary"?, "disc"?: true }
 // Carousel slides are 1080×1350 (carrusel-N.png, numbered «N / total»); the card is 1200×675 (horizontal.png).
 import { readFile } from 'node:fs/promises'
@@ -48,7 +48,6 @@ const css = (w, h, catalog, scale) => `@font-face{font-family:A;src:url(data:fon
 .in{position:absolute;inset:0;padding:${Math.round(86 * scale)}px;display:flex;flex-direction:column;justify-content:space-between}
 .wm{height:${Math.round(45 * scale)}px;width:auto;align-self:flex-start}
 .headline{font-weight:800;font-variation-settings:"wdth" 75;text-transform:uppercase;line-height:.92}
-.headline em{font-style:normal;color:${c['text-accent']}}
 .kicker{font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:${c['text-accent']}}
 .lead{font-weight:400;line-height:1.35;color:${c['text-primary']}}
 .secondary{font-weight:400;line-height:1.4;color:${c['text-secondary']}}
@@ -56,7 +55,8 @@ const css = (w, h, catalog, scale) => `@font-face{font-family:A;src:url(data:fon
 .stack{display:flex;flex-direction:column;gap:${Math.round(32 * scale)}px}`
 function body(s, i, total, card) {
   const k = card ? 0.62 : 1
-  const hl = `<h1 class="headline" style="font-size:${Math.round((s.headlineSize ?? SIZE.headline) * k)}px">${esc(s.headline[0])}${s.headline[1] ? ` <em>${esc(s.headline[1])}</em>` : ''}</h1>`
+  const words = Array.isArray(s.headline) ? s.headline.join(' ') : s.headline
+  const hl = `<h1 class="headline" style="font-size:${Math.round((s.headlineSize ?? SIZE.headline) * k)}px">${esc(words)}</h1>`
   const text = [
     s.kicker ? `<div class="kicker" style="font-size:${Math.round(SIZE.kicker * (card ? 0.8 : 1))}px">${esc(s.kicker)}</div>` : '',
     hl,
