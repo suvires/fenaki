@@ -2,7 +2,7 @@ import type { PayloadRequest, TaskConfig } from 'payload'
 import type { Short, Source, Still } from '../payload-types.ts'
 import { assess, hideReason, unplayableReason, type Assessment } from '../ingest/check.ts'
 import { ingestKeys } from '../ingest/metadata.ts'
-import { fetchOEmbed, type Fetch } from '../ingest/oembed.ts'
+import { fetchOEmbed, type Fetch, type OEmbedResult } from '../ingest/oembed.ts'
 import { downloadThumbnail, thumbnailCandidates } from '../ingest/stills.ts'
 import { videoPageUrl } from '../ingest/url.ts'
 import { fetchYouTubeVideos, type YouTubeVideo } from '../ingest/youtube.ts'
@@ -110,16 +110,19 @@ export async function checkEmbeds(
     await payload.update({
       collection: 'sources',
       id: source.id,
-      data: assessment.conclusive
-        ? {
-            status: assessment.status,
-            embeddable: assessment.embeddable,
-            ageRestricted: assessment.ageRestricted,
-            lastCheckedAt: now,
-            problemSince: reason ? (source.problemSince ?? now) : null,
-            checkNote: assessment.note,
-          }
-        : { checkNote: assessment.note },
+      data: {
+        ...(assessment.conclusive
+          ? {
+              status: assessment.status,
+              embeddable: assessment.embeddable,
+              ageRestricted: assessment.ageRestricted,
+              lastCheckedAt: now,
+              problemSince: reason ? (source.problemSince ?? now) : null,
+              checkNote: assessment.note,
+            }
+          : { checkNote: assessment.note }),
+        ...channelGaps(source, oembed, apiVideo),
+      },
       req,
     })
     if (pauseMs > 0) await new Promise((resolve) => setTimeout(resolve, pauseMs))
@@ -150,6 +153,32 @@ export async function checkEmbeds(
     summary,
   })
   return summary
+}
+
+/**
+ * Fills in the channel's address, ID and name when the source lacks them (the catalog import only
+ * recorded the name), from the provider's answers: the address is what lets an editor register the
+ * channel for the nightly scan. Never overwrites what an editor wrote.
+ */
+export function channelGaps(
+  source: Pick<Source, 'channel'>,
+  oembed: OEmbedResult,
+  api: YouTubeVideo | null | undefined,
+): { channel?: Source['channel'] } {
+  const current = source.channel ?? {}
+  const ok = oembed.kind === 'ok' ? oembed : undefined
+  const found = {
+    url: ok?.authorUrl ?? null,
+    externalId: api?.channelId ?? null,
+    name: ok?.authorName ?? api?.channelTitle ?? null,
+  }
+  const missing = (['url', 'externalId', 'name'] as const).filter(
+    (field) => !current[field] && found[field],
+  )
+  if (missing.length === 0) return {}
+  return {
+    channel: { ...current, ...Object.fromEntries(missing.map((field) => [field, found[field]])) },
+  }
 }
 
 interface StillsContext {

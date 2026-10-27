@@ -3,7 +3,7 @@ import sharp from 'sharp'
 import { describe, expect, it } from 'vitest'
 import { hideReason } from '../src/ingest/check.ts'
 import type { Fetch } from '../src/ingest/oembed.ts'
-import { checkEmbeds } from '../src/jobs/checkEmbeds.ts'
+import { channelGaps, checkEmbeds } from '../src/jobs/checkEmbeds.ts'
 
 type Doc = Record<string, unknown> & { id: number }
 
@@ -62,6 +62,32 @@ describe('hideReason', () => {
     expect(hideReason([{ reason: 'private' }, { reason: 'broken' }])).toBe('private')
     expect(hideReason([{ reason: 'broken' }, ok])).toBeUndefined()
     expect(hideReason([])).toBeUndefined()
+  })
+})
+
+describe('channelGaps', () => {
+  const ok = {
+    kind: 'ok',
+    title: 'Cuerdas',
+    authorName: 'Cuerdas Cortometraje Oficial',
+    authorUrl: 'https://www.youtube.com/@cuerdas',
+    thumbnailUrl: null,
+    durationSeconds: null,
+    uploadedAt: null,
+  } as const
+
+  it('fills the channel address and name the import left empty', () => {
+    expect(channelGaps({ channel: { name: 'Cuerdas', kind: 'producer' } }, ok, undefined)).toEqual({
+      channel: { name: 'Cuerdas', kind: 'producer', url: 'https://www.youtube.com/@cuerdas' },
+    })
+  })
+
+  it('never overwrites what is there, and changes nothing without an answer', () => {
+    const full = { channel: { name: 'A', url: 'https://www.youtube.com/@a', externalId: 'UC1' } }
+    expect(channelGaps(full, ok, undefined)).toEqual({})
+    expect(channelGaps({ channel: {} }, { kind: 'missing', httpStatus: 404 }, undefined)).toEqual(
+      {},
+    )
   })
 })
 
