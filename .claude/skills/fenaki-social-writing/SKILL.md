@@ -56,6 +56,12 @@ description: Write and schedule FENAKI's social media posts (the «FENAKI en 7 d
    Every network says the same facts with the same words as the slides; when a slide changes, update the texts in the same pass. Count the characters of every thread post with a script, not by eye.
 2. Make the images with `fenaki-social-design`.
 3. **Send texts and images to the user and wait for explicit approval.** Publishing is public and in the brand's name: never post or schedule without it, and ask again for each post.
-4. Schedule with Postiz (MCP tools `mcp__postiz__*` or the `postiz` CLI; see the `postiz` skill). Every image must be uploaded through Postiz first (`postiz upload` / `uploadFromUrlTool`); raw paths are rejected. The connected channels are Instagram (standalone), Facebook page, Threads, X, LinkedIn page, YouTube, TikTok (business) and Bluesky; list them with `integrationList`.
-5. Timing: day N's post goes out the next morning, or scheduled the same night, never in real time. Catch-up posts may go out the same day at different times when the user asks.
+4. Publish or schedule with Postiz. What worked on day 1:
+   - Upload local images with `postiz upload <file>` (the MCP upload only takes public URLs). Postiz rejects PDFs: for LinkedIn, send the carousel PNGs with the setting `post_as_images_carousel: true` and a `carousel_name`, and LinkedIn shows them as a document.
+   - Content is HTML: one `<p>` per paragraph and an empty `<p></p>` for each blank line.
+   - Give every image an `alt` with the slide's text (frames: «Fotograma N de 8 del disco…»).
+   - Limits Postiz enforces: LinkedIn 3,000 characters, X 280, Bluesky 300, Threads 500, Instagram caption 2,200. Count the LinkedIn post before sending it. Instagram took a 13-image carousel.
+   - A thread is one post with its replies as `postsAndComments` items; X, Bluesky and Threads go in one call.
+   Tools: MCP `mcp__postiz__*` or the `postiz` CLI (see the `postiz` skill). Every image must be uploaded through Postiz first; raw paths are rejected. The connected channels are Instagram (standalone), Facebook page, Threads, X, LinkedIn page, YouTube, TikTok (business) and Bluesky; list them with `integrationList`.
+5. Timing: by default day N's post goes out the next morning, or scheduled the same night. The user may ask to publish right away (day 1 went out at once on 27 oct 2026, from 14:50 UTC).
 6. Confirm to the user what was scheduled, where and when; note it in the day's log.
