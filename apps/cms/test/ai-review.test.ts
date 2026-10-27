@@ -215,6 +215,7 @@ describe('request', () => {
 
   it('tells the model the rules the brief sets', () => {
     expect(SYSTEM_PROMPT).toMatch(/All rights reserved.*not a restriction/)
+    expect(SYSTEM_PROMPT).toContain('Do not use what you may remember')
     expect(SYSTEM_PROMPT).toContain('"tú"')
     expect(SYSTEM_PROMPT).toContain('never copy')
     expect(SYSTEM_PROMPT).toMatch(/free, legal, curated or chosen/)
