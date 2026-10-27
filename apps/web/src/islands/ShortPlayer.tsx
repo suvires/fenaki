@@ -1,6 +1,6 @@
 import { createTranslator, type Locale } from '@fenaki/i18n'
 import { Button, Checkbox, Dialog, PlayerGate, type PlayerGateProps } from '@fenaki/ui'
-import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useId, useMemo, useRef, useState, type ReactNode } from 'react'
 import { embedUrl } from '../lib/embed.ts'
 import {
   isPlayerProvider,
@@ -30,6 +30,8 @@ interface ShortPlayerProps extends Omit<
   tracking: boolean
   /** An unfinished viewing: where it stopped, and the texts of the two buttons. */
   resume?: { seconds: number; label: string; startOverLabel: string }
+  /** The «Añadir a mi lista» button, from the page's `secondaryAction` slot: it joins the hero. */
+  secondaryAction?: ReactNode
 }
 
 /**
@@ -44,6 +46,8 @@ export function ShortPlayer({
   source,
   tracking,
   resume,
+  secondaryAction,
+  hero,
   ...gate
 }: ShortPlayerProps) {
   // YouTube sends its events to the origin it is told; the page's own, known once in the browser.
@@ -85,6 +89,7 @@ export function ShortPlayer({
     <>
       <PlayerGate
         {...gate}
+        hero={hero ? { ...hero, secondaryAction } : undefined}
         confirmPlay={confirmPlay}
         embedSrc={embed()}
         resume={resume ? { label: resume.label, embedSrc: embed(resume.seconds) } : undefined}

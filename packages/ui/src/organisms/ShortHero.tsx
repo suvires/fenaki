@@ -13,12 +13,17 @@ export interface ShortHeroProps {
   /** Running time, shown first in the details line. */
   seconds: number
   locale?: Locale
-  /** The rest of the details line, already formatted: director, year, type. */
-  details?: string[]
-  /** Clamped to three lines. */
+  /** The rest of the details line, already formatted: director, year, type. A link when it has `href`. */
+  details?: (string | { label: string; href: string })[]
+  /** Clamped to three lines, unless `clampSynopsis` is false (the short's own page shows it whole). */
   synopsis?: string
+  clampSynopsis?: boolean
   ctaLabel: string
   ctaHref?: string
+  /** The main action as a button instead of a link, such as playing the short on its own page. */
+  onCta?: () => void
+  /** Extra attributes for the main action, such as the analytics event (`data-umami-event`). */
+  ctaAttributes?: Record<`data-${string}`, string>
   /** A second action next to the main one, such as the «Añadir a mi lista» button. */
   secondaryAction?: ReactNode
   poster: Omit<PosterProps, 'className'>
@@ -34,7 +39,8 @@ export interface ShortHeroProps {
 }
 
 /**
- * The featured short at the top of the home page, under the header. One per page.
+ * The featured short at the top of the home page, under the header, and the top of a short's own
+ * page before it plays (see PlayerGate). One per page.
  * The poster is decorative (the title is already the heading) and only shows from `md` up.
  */
 export function ShortHero({
@@ -44,8 +50,11 @@ export function ShortHero({
   locale,
   details = [],
   synopsis,
+  clampSynopsis = true,
   ctaLabel,
   ctaHref,
+  onCta,
+  ctaAttributes,
   secondaryAction,
   poster,
   backdrop,
@@ -92,17 +101,37 @@ export function ShortHero({
         </Heading>
         <p className="m-0 flex flex-wrap items-center gap-x-3 gap-y-1 text-meta">
           <Duration seconds={seconds} locale={locale} inherit />
-          {details.map((detail) => (
-            <span key={detail} className="before:content-['·'] before:mr-3">
-              {detail}
-            </span>
-          ))}
+          {details.map((detail) =>
+            typeof detail === 'string' ? (
+              <span key={detail} className="before:content-['·'] before:mr-3">
+                {detail}
+              </span>
+            ) : (
+              <span key={detail.href} className="before:content-['·'] before:mr-3">
+                <a
+                  href={detail.href}
+                  className="text-inherit underline underline-offset-2 hover:text-accent rounded-xs focus-visible:focus-ring"
+                >
+                  {detail.label}
+                </a>
+              </span>
+            ),
+          )}
         </p>
         {synopsis ? (
-          <p className="m-0 max-w-hero-text text-body-l line-clamp-3">{synopsis}</p>
+          <p className={cx('m-0 max-w-hero-text text-body-l', clampSynopsis && 'line-clamp-3')}>
+            {synopsis}
+          </p>
         ) : null}
         <div className="flex flex-wrap gap-3">
-          <Button variant="primary" size="lg" icon="play" href={ctaHref}>
+          <Button
+            variant="primary"
+            size="lg"
+            icon="play"
+            href={onCta ? undefined : ctaHref}
+            onClick={onCta}
+            {...ctaAttributes}
+          >
             {ctaLabel}
           </Button>
           {secondaryAction}

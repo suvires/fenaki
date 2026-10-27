@@ -1,10 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Badge } from '../atoms/Badge.tsx'
 import { Button } from '../atoms/Button.tsx'
 import { CollectionHero } from '../organisms/CollectionHero.tsx'
-import { Duration } from '../atoms/Duration.tsx'
 import { FilterChips } from '../molecules/FilterChips.tsx'
-import { LicenseNote } from '../molecules/LicenseNote.tsx'
 import { PlayerGate } from '../organisms/PlayerGate.tsx'
 import { Rail } from '../organisms/Rail.tsx'
 import { SearchField } from '../atoms/SearchField.tsx'
@@ -67,34 +64,25 @@ export const Home: Story = {
 
 export const Short: Story = {
   render: () => (
-    <main className="grid gap-6 p-6 max-w-article">
+    <main className="grid gap-8 p-6 max-w-page">
       <PlayerGate
         title="Timecode"
         playLabel="Ver ahora"
-        moreLabel="Más sobre las cookies"
-        moreHref="#"
         loadedLabel="Aquí se carga el reproductor de YouTube"
+        hero={{
+          seconds: 900,
+          details: [{ label: 'Juanjo Giménez', href: '#' }, '2016', 'España', 'Ficción', 'Sub ES'],
+          synopsis:
+            'Luna y Diego son los vigilantes de un aparcamiento. Ella trabaja de día y él de noche, y solo se cruzan en el cambio de turno.',
+          clampSynopsis: false,
+          poster: { title: 'Timecode', director: 'Juanjo Giménez', year: 2016, tone: 'tungsteno' },
+          secondaryAction: (
+            <Button variant="secondary" size="lg" icon="plus">
+              Añadir a mi lista
+            </Button>
+          ),
+        }}
       />
-      <div className="flex flex-wrap items-center gap-3">
-        <Duration seconds={900} />
-        <Badge>Ficción</Badge>
-        <Badge tone="info">Sub ES</Badge>
-        <span className="text-meta text-secondary">España · 2016</span>
-      </div>
-      <p className="m-0 max-w-synopsis text-body-l">
-        Luna y Diego son los vigilantes de un aparcamiento. Ella trabaja de día y él de noche, y
-        solo se cruzan en el cambio de turno.
-      </p>
-      <p className="m-0 text-secondary">Dirigido por Juanjo Giménez</p>
-      <div className="flex flex-wrap items-center gap-3">
-        <Button variant="secondary" icon="plus">
-          Añadir a mi lista
-        </Button>
-      </div>
-      <LicenseNote route="embed" routeLabel="Embed oficial">
-        Se reproduce desde el canal de YouTube de su productora. FENAKI no aloja ni modifica el
-        corto.
-      </LicenseNote>
       <Rail title="Si te ha gustado" actionLabel="Ver todo" actionHref="#">
         {SHORTS.slice(1).map((s) => (
           <ShortCard key={s.title} {...s} href="#" />

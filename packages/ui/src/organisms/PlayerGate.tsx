@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { cx } from '../foundations/cx.ts'
 import { Button } from '../atoms/Button.tsx'
+import { ShortHero, type ShortHeroProps } from './ShortHero.tsx'
 
 export interface PlayerGateProps {
   title: string
@@ -29,6 +30,14 @@ export interface PlayerGateProps {
   confirmPlay?: (play: () => void) => void
   /** Extra attributes for the play button, such as the analytics event (`data-umami-event`). */
   playAttributes?: Record<`data-${string}`, string>
+  /**
+   * Before play, the short's page shows the same hero as the home page (still, details, synopsis,
+   * «Añadir a mi lista»); its main button plays, and the player takes its place.
+   */
+  hero?: Omit<
+    ShortHeroProps,
+    'title' | 'ctaLabel' | 'ctaHref' | 'onCta' | 'ctaAttributes' | 'className'
+  >
   className?: string
 }
 
@@ -46,6 +55,7 @@ export function PlayerGate({
   onFrame,
   confirmPlay,
   playAttributes,
+  hero,
   className,
 }: PlayerGateProps) {
   // Nothing loads until the viewer chooses; then it is the player URL they chose to start from.
@@ -57,11 +67,37 @@ export function PlayerGate({
     if (confirmPlay) confirmPlay(play)
     else play()
   }
-  return (
+  if (hero && !loaded)
+    return (
+      <ShortHero
+        {...hero}
+        title={title}
+        ctaLabel={resume ? resume.label : playLabel}
+        onCta={() => start(resume ? resume.embedSrc : embedSrc)}
+        ctaAttributes={playAttributes}
+        secondaryAction={
+          <>
+            {resume && startOverLabel ? (
+              <Button
+                variant="secondary"
+                size="lg"
+                onClick={() => start(embedSrc)}
+                {...playAttributes}
+              >
+                {startOverLabel}
+              </Button>
+            ) : null}
+            {hero.secondaryAction}
+          </>
+        }
+        className={className}
+      />
+    )
+  const box = (
     <div
       className={cx(
         'relative aspect-still max-w-full box-border overflow-hidden rounded-lg bg-muted',
-        className,
+        !hero && className,
       )}
     >
       {loaded ? (
@@ -119,6 +155,18 @@ export function PlayerGate({
           </div>
         </div>
       )}
+    </div>
+  )
+  if (!hero) return box
+  // Playing: the title and the hero's other action stay under the player.
+  const Heading = hero.headingLevel === 2 ? 'h2' : 'h1'
+  return (
+    <div className={cx('grid gap-4', className)}>
+      {box}
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <Heading className="m-0 font-display text-title uppercase">{title}</Heading>
+        {hero.secondaryAction}
+      </div>
     </div>
   )
 }

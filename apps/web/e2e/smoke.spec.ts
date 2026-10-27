@@ -53,8 +53,7 @@ test('a short page loads no third-party player before the click', async ({ page 
 
   await page.goto('/es/cortos/timecode')
   await expect(page.getByRole('heading', { level: 1, name: 'Timecode' })).toBeAttached()
-  await expect(page.getByText('Embed oficial')).toBeVisible()
-  await expect(page.getByText('Dirigido por Juanjo Giménez')).toBeVisible()
+  await expect(page.getByRole('link', { name: 'Juanjo Giménez' }).first()).toBeVisible()
   await expect(page.getByRole('region', { name: 'Si te ha gustado' })).toBeVisible()
   await expect(page.locator('iframe')).toHaveCount(0)
 

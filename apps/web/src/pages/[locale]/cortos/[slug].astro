@@ -1,21 +1,22 @@
 ---
 import { badgeClock } from '../../../lib/services.ts'
-import { createRichTranslator, formatCountry, formatYear } from '@fenaki/i18n'
-import { Badge, Duration, LicenseNote, Rail, ShortCard } from '@fenaki/ui'
+import { formatCountry, formatYear } from '@fenaki/i18n'
+import { Rail, ShortCard } from '@fenaki/ui'
 import NotFound from '../../../components/NotFound.astro'
 import PeopleLinks from '../../../components/PeopleLinks.astro'
 import { MyListButton } from '../../../islands/MyListButton.tsx'
 import { ShortPlayer } from '../../../islands/ShortPlayer.tsx'
 import { loadAccountState, loadViewing } from '../../../lib/account/data.ts'
 import Base from '../../../layouts/Base.astro'
-import { toCard, toSavedShort } from '../../../lib/catalog.ts'
+import { posterTone, toCard, toSavedShort } from '../../../lib/catalog.ts'
 import {
   creditsOf,
   getShort,
-  licenseOf,
   listShorts,
   listSources,
   playableSource,
+  stillPresentationOf,
+  stillUrlOf,
   toCardSource,
 } from '../../../lib/cms.ts'
 import { EVENTS, eventAttributes } from '../../../lib/analytics.ts'
@@ -47,11 +48,10 @@ const resumeAt =
     ? viewing.position
     : undefined
 const source = short ? playableSource(await listSources(short.id)) : undefined
-const license = source ? licenseOf(source) : undefined
 const provider = source ? t(`providers.${source.provider}`) : ''
 const card = short ? toCardSource(short) : undefined
 const directors = short ? creditsOf(short, 'director') : []
-const directedBy = createRichTranslator(locale)('short.directedBy', { names: true as const })
+const still = short ? stillPresentationOf(short) : undefined
 
 const ROLES = ['writer', 'producer', 'cinematographer', 'editor', 'composer', 'cast'] as const
 // Newest ceremony first.
@@ -87,12 +87,20 @@ const jsonLd = short
     })
   : undefined
 
-const origin = [
-  short?.country ? formatCountry(short.country, locale) : undefined,
-  short?.year ? formatYear(short.year, locale) : undefined,
-]
-  .filter(Boolean)
-  .join(' · ')
+// The hero's details line, as on the home page: directors (linked), year, country, type, and
+// what the viewer needs to know about the language.
+const details = short
+  ? [
+      ...directors.map((d) => ({ label: d.name, href: paths.person(locale, d.slug) })),
+      ...(short.year ? [formatYear(short.year, locale)] : []),
+      ...(short.country ? [formatCountry(short.country, locale)] : []),
+      t(`short.types.${short.type}`),
+      ...(card?.subtitles.includes(locale)
+        ? [t('badges.subtitles', { language: locale.toUpperCase() })]
+        : []),
+      ...(short.noDialogue ? [t('badges.noDialogue')] : []),
+    ]
+  : []
 ---
 
 <Base
@@ -106,8 +114,7 @@ const origin = [
   {!short || !card ? (
     <NotFound locale={locale} />
   ) : (
-    <article class="grid gap-6 max-w-article">
-      <h1 class="sr-only">{short.title}</h1>
+    <article class="grid gap-8">
       <ShortPlayer
         client:visible
         locale={locale}
@@ -138,78 +145,75 @@ const origin = [
                 startOverLabel: t('short.player.startOver'),
               }
         }
-      />
-      <div class="flex flex-wrap items-center gap-3">
-        {short.brandedContent && <Badge tone="branded">{t('badges.branded')}</Badge>}
-        <Duration seconds={short.durationSeconds} locale={locale} />
-        <Badge>{t(`short.types.${short.type}`)}</Badge>
-        {card.subtitles.includes(locale) && (
-          <Badge tone="info">{t('badges.subtitles', { language: locale.toUpperCase() })}</Badge>
-        )}
-        {short.noDialogue && <Badge>{t('badges.noDialogue')}</Badge>}
-        {origin && <span class="text-meta text-secondary">{origin}</span>}
-      </div>
-      <div>
+        hero={{
+          eyebrow: short.brandedContent ? t('badges.branded') : undefined,
+          seconds: short.durationSeconds,
+          locale,
+          details,
+          synopsis: short.synopsis ?? undefined,
+          clampSynopsis: false,
+          poster: {
+            title: short.title,
+            director: directors.map((d) => d.name).join(', '),
+            year: short.year ?? undefined,
+            tone: posterTone(short.posterTone),
+          },
+          backdrop: stillUrlOf(short),
+          backdropTextColor: still?.textColor,
+          backdropHasTitle: still?.includesTitle,
+        }}
+      >
         <MyListButton
+          slot="secondaryAction"
           client:load
+          size="lg"
           short={toSavedShort(card, locale)}
           label={t('short.addToList')}
           savedLabel={t('short.inMyList')}
           initialSaved={account?.list.some((entry) => entry.slug === short.slug)}
         />
+      </ShortPlayer>
+      <div class="grid gap-8 max-w-article empty:hidden">
+        {awards.length > 0 && (
+          <section class="grid gap-2" aria-labelledby="awards">
+            <h2 id="awards" class="m-0 font-display text-title uppercase">
+              {t('short.awards')}
+            </h2>
+            <ul class="m-0 p-0 list-none grid gap-2 text-body">
+              {awards.map((award) => (
+                <li class="grid">
+                  <span>{award.name}</span>
+                  <span class="text-meta text-secondary">
+                    {[
+                      t(`short.awardResults.${award.result}`),
+                      award.year && formatYear(award.year, locale),
+                    ]
+                      .filter(Boolean)
+                      .join(' · ')}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+        {credits.length > 0 && (
+          <section class="grid gap-2" aria-labelledby="credits">
+            <h2 id="credits" class="m-0 font-display text-title uppercase">
+              {t('short.credits')}
+            </h2>
+            <dl class="m-0 grid grid-cols-[max-content_1fr] gap-x-4 gap-y-1 text-body">
+              {credits.map((credit) => (
+                <>
+                  <dt class="text-secondary">{t(`short.roles.${credit.role}`)}</dt>
+                  <dd class="m-0">
+                    <PeopleLinks locale={locale} people={credit.people} />
+                  </dd>
+                </>
+              ))}
+            </dl>
+          </section>
+        )}
       </div>
-      {short.synopsis && <p class="m-0 max-w-synopsis text-body-l">{short.synopsis}</p>}
-      {directors.length > 0 && (
-        <p class="m-0 text-secondary">
-          {directedBy.map((piece) =>
-            piece === true ? <PeopleLinks locale={locale} people={directors} /> : piece,
-          )}
-        </p>
-      )}
-      {awards.length > 0 && (
-        <section class="grid gap-2" aria-labelledby="awards">
-          <h2 id="awards" class="m-0 font-display text-title uppercase">
-            {t('short.awards')}
-          </h2>
-          <ul class="m-0 p-0 list-none grid gap-2 text-body">
-            {awards.map((award) => (
-              <li class="grid">
-                <span>{award.name}</span>
-                <span class="text-meta text-secondary">
-                  {[
-                    t(`short.awardResults.${award.result}`),
-                    award.year && formatYear(award.year, locale),
-                  ]
-                    .filter(Boolean)
-                    .join(' · ')}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-      {credits.length > 0 && (
-        <section class="grid gap-2" aria-labelledby="credits">
-          <h2 id="credits" class="m-0 font-display text-title uppercase">
-            {t('short.credits')}
-          </h2>
-          <dl class="m-0 grid grid-cols-[max-content_1fr] gap-x-4 gap-y-1 text-body">
-            {credits.map((credit) => (
-              <>
-                <dt class="text-secondary">{t(`short.roles.${credit.role}`)}</dt>
-                <dd class="m-0">
-                  <PeopleLinks locale={locale} people={credit.people} />
-                </dd>
-              </>
-            ))}
-          </dl>
-        </section>
-      )}
-      {license && (
-        <LicenseNote route={license.route} routeLabel={t(`license.routes.${license.route}`)}>
-          {license.attribution || t(`license.text.${license.route}`, { provider })}
-        </LicenseNote>
-      )}
       {related.length > 0 && (
         <Rail
           arrows={{ previous: t('rail.previous'), next: t('rail.next') }}

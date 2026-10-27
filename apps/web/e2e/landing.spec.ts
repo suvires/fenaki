@@ -157,7 +157,7 @@ test('the credits page carries the TMDB attribution', async ({ page }) => {
   await expect(page).toHaveURL(/\/es\/creditos$/)
   await expect(page.getByRole('img', { name: 'The Movie Database (TMDB)' })).toBeVisible()
   await expect(
-    page.getByText('This product uses the TMDB API but is not endorsed or certified by TMDB.'),
+    page.getByText('Este producto usa la API de TMDB, pero TMDB no lo respalda ni lo certifica.'),
   ).toBeVisible()
 })
 
