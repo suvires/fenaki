@@ -4,6 +4,10 @@
 // Slide: { "bg": "catalog" | "glow", "kicker"?, "headline": "…",
 //          "headlineSize"?, "lead"?, "leadSize"?, "domain"?: true, "secondary"?, "disc"?: true }
 // Carousel slides are 1080×1350 (carrusel-N.png, numbered «N / total»); the card is 1200×675 (horizontal.png).
+// "video": { "file": "<name>.mp4", "scenes": [Slide & { "seconds"?, "frames"?: [png], "fps"?, "loops"? }] } renders
+// 1080×1920 scenes (a scene with frames plays them in a loop under its text) and joins them with ffmpeg.
+import { execFileSync } from 'node:child_process'
+import { mkdir, writeFile } from 'node:fs/promises'
 import { readFile } from 'node:fs/promises'
 import { createRequire } from 'node:module'
 import { fileURLToPath, pathToFileURL } from 'node:url'
@@ -63,9 +67,9 @@ const keepLast = (html) => html.replace(/ (\S+)$/, '&nbsp;$1')
 const css = (w, h, catalog, scale) => `@font-face{font-family:A;src:url(data:font/woff2;base64,${font}) format('woff2');font-weight:100 900;font-stretch:62% 125%}
 *{box-sizing:border-box;margin:0}body{width:${w}px;height:${h}px;overflow:hidden;background:${c['background-canvas']};color:${c['text-primary']};font-family:A,sans-serif;position:relative}
 .bg{position:absolute;inset:0;overflow:hidden;perspective:1600px;${catalog ? '' : 'display:none'}}
-.bg img{position:absolute;left:50%;top:50%;width:${Math.round(w * 1.5)}px;transform:translate(-45%,-46%) rotateX(32deg) rotateZ(-8deg);filter:blur(14px) saturate(.8);opacity:.42}
+.bg img{position:absolute;left:50%;top:50%;width:${Math.round(Math.max(w * 1.5, h * 1.3))}px;transform:translate(-45%,-46%) rotateX(32deg) rotateZ(-8deg);filter:blur(14px) saturate(.8);opacity:.42}
 .fade{position:absolute;inset:0;background:${catalog ? `linear-gradient(to bottom,${c['background-canvas']} 0%,transparent 30%,transparent 62%,${c['background-canvas']} 100%)` : `radial-gradient(120% 70% at 50% -10%, color-mix(in oklab, ${c.glow} 22%, transparent) 0%, transparent 60%)`}}
-.in{position:absolute;inset:0;padding:${Math.round(86 * scale)}px;display:flex;flex-direction:column;justify-content:space-between}
+.in{position:absolute;inset:0;padding:${h === 1920 ? '200px 120px 420px 86px' : `${Math.round(86 * scale)}px`};display:flex;flex-direction:column;justify-content:space-between}
 .wm{height:${Math.round(45 * scale)}px;width:auto;align-self:flex-start}
 .headline{font-weight:800;font-variation-settings:"wdth" 75;text-transform:uppercase;line-height:.92}
 .kicker{font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:${c['text-accent']}}
@@ -86,7 +90,7 @@ function body(s, i, total, card) {
   const art = s.image ? `<img src="${s.imageData}" style="width:${s.imageSize ?? 640}px;height:auto">` : s.disc ? disc(s.discSize ?? 640) : ''
   if (s.frame)
     // A frame of an animation, full-bleed and alone, so that swiping fast plays it.
-    return `<img class="wm" src="${wm}"><img src="${s.imageData}" style="position:absolute;left:0;top:${(1350 - 1080) / 2}px;width:1080px;height:1080px;-webkit-mask-image:radial-gradient(circle at 50% 50%, #000 52%, transparent 71%);mask-image:radial-gradient(circle at 50% 50%, #000 52%, transparent 71%)"><div></div>${s.caption ? `<p class="secondary" style="font-size:${SIZE.secondary}px;position:relative">${esc(s.caption)}</p>` : '<div></div>'}`
+    return `<div style="display:flex;flex-direction:column;gap:56px;position:relative;z-index:1"><img class="wm" src="${wm}"><div class="stack">${text}</div></div><img src="${s.imageData}" style="position:absolute;left:${(1080 - (s.frameSize ?? 1080)) / 2}px;top:${s.top ?? (1350 - 1080) / 2}px;width:${s.frameSize ?? 1080}px;height:${s.frameSize ?? 1080}px;-webkit-mask-image:radial-gradient(circle at 50% 50%, #000 52%, transparent 71%);mask-image:radial-gradient(circle at 50% 50%, #000 52%, transparent 71%)">${s.caption ? `<p class="secondary" style="font-size:${SIZE.secondary}px;position:relative">${esc(s.caption)}</p>` : '<div></div>'}`
   const middle = art
     ? `<div style="display:flex;flex-direction:column;align-items:center;gap:24px">${art}<div class="stack" style="gap:18px;align-self:stretch">${text}</div></div>`
     : `<div class="stack">${text}</div>`
@@ -99,10 +103,9 @@ const html = (w, h, s, i, total, card) => `<!doctype html><html><head><style>${c
 
 const browser = await chromium.launch()
 const total = spec.slides?.length ?? 0
-for (const [index, s] of (spec.slides ?? []).entries()) {
-  if (s.image) s.imageData = await dataUri(s.image)
-  const page = await browser.newPage({ viewport: { width: 1080, height: 1350 } })
-  await page.setContent(html(1080, 1350, s, index + 1, total, false)); await page.waitForTimeout(300)
+async function shoot(w, h, s, i, total, path) {
+  const page = await browser.newPage({ viewport: { width: w, height: h } })
+  await page.setContent(html(w, h, s, i, total, false)); await page.waitForTimeout(300)
   // Nothing may overflow the slide: the content column must fit, with the counter or footer inside.
   const overflow = await page.evaluate(() => {
     const box = document.querySelector('.in')
@@ -117,8 +120,12 @@ for (const [index, s] of (spec.slides ?? []).entries()) {
     const wraps = breaks > 1 && lines > breaks ? 'headline wraps' : 0
     return tall || (wide ? 'horizontal' : 0) || wraps
   })
-  if (overflow) console.warn(`slide ${index + 1}: content overflows (${overflow}${typeof overflow === 'number' ? 'px' : ''}) — shorten the text or lower headlineSize`)
-  await page.screenshot({ path: `${spec.out}/carrusel-${index + 1}.png` }); await page.close()
+  if (overflow) console.warn(`${path}: content overflows (${overflow}${typeof overflow === 'number' ? 'px' : ''}) — shorten the text`)
+  await page.screenshot({ path }); await page.close()
+}
+for (const [index, s] of (spec.slides ?? []).entries()) {
+  if (s.image) s.imageData = await dataUri(s.image)
+  await shoot(1080, 1350, s, index + 1, total, `${spec.out}/carrusel-${index + 1}.png`)
 }
 if (spec.pdf && total) {
   const imgs = await Promise.all(spec.slides.map((_, i) => readFile(`${spec.out}/carrusel-${i + 1}.png`)))
@@ -130,6 +137,38 @@ if (spec.card) {
   const page = await browser.newPage({ viewport: { width: 1200, height: 675 } })
   await page.setContent(html(1200, 675, { ...spec.card, domain: spec.card.domain ?? true }, 0, 0, true)); await page.waitForTimeout(300)
   await page.screenshot({ path: `${spec.out}/horizontal.png` })
+}
+if (spec.video) {
+  // Vertical video for TikTok and YouTube Shorts: text inside the safe area (clear of the app's buttons and caption).
+  const dir = `${spec.out}/video`
+  await mkdir(dir, { recursive: true })
+  const clips = []
+  for (const [n, scene] of spec.video.scenes.entries()) {
+    const s = { secondary: ' ', ...scene }
+    if (scene.frames) {
+      for (const [f, frame] of scene.frames.entries())
+        await shoot(1080, 1920, { ...s, frame: true, top: 470, frameSize: 940, caption: scene.secondary, imageData: await dataUri(frame) }, 0, 0, `${dir}/scene-${n + 1}-${String(f + 1).padStart(2, '0')}.png`)
+      const fps = scene.fps ?? 12, loops = scene.loops ?? 5
+      const list = Array.from({ length: loops }, () => scene.frames.map((_, f) => `file 'scene-${n + 1}-${String(f + 1).padStart(2, '0')}.png'\nduration ${1 / fps}`).join('\n')).join('\n')
+      await writeFile(`${dir}/scene-${n + 1}.txt`, list)
+      execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'concat', '-safe', '0', '-i', `${dir}/scene-${n + 1}.txt`, '-vf', 'fps=30,format=yuv420p', '-c:v', 'libx264', `${dir}/clip-${n + 1}.mp4`])
+    } else {
+      if (s.image) s.imageData = await dataUri(s.image)
+      await shoot(1080, 1920, s, 0, 0, `${dir}/scene-${n + 1}.png`)
+      execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-loop', '1', '-i', `${dir}/scene-${n + 1}.png`, '-t', String(scene.seconds ?? 5), '-vf', 'fps=30,format=yuv420p', '-c:v', 'libx264', `${dir}/clip-${n + 1}.mp4`])
+    }
+    clips.push(`${dir}/clip-${n + 1}.mp4`)
+  }
+  // Crossfades of 0.4 s between scenes.
+  const dur = clips.map((c) => Number(execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', c]).toString()))
+  let graph = '', last = '[0:v]', t = 0
+  for (let i = 1; i < clips.length; i++) {
+    t += dur[i - 1] - 0.4
+    graph += `${last}[${i}:v]xfade=transition=fade:duration=0.4:offset=${t.toFixed(2)}[v${i}];`
+    last = `[v${i}]`
+  }
+  execFileSync('ffmpeg', ['-y', '-loglevel', 'error', ...clips.flatMap((c) => ['-i', c]), '-filter_complex', graph.slice(0, -1), '-map', last, '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', `${spec.out}/${spec.video.file}`])
+  console.log(`video: ${spec.out}/${spec.video.file} (${(t + dur.at(-1)).toFixed(1)} s)`)
 }
 await browser.close()
 console.log(`rendered ${total} slides${spec.card ? ' and the card' : ''} into ${spec.out}`)

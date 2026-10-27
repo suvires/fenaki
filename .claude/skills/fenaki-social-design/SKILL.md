@@ -13,6 +13,7 @@ Social pieces use the same design system as the web: same tokens, same font (Arc
 | --- | --- | --- | --- |
 | Carousel slide | 1080 × 1350 | `carrusel-N.png` | Instagram, Facebook |
 | LinkedIn document | the same slides as one PDF | `FENAKI-dia-N.pdf` | LinkedIn («documento»: it pages like a carousel) |
+| Vertical video | 1080 × 1920, about 30 s, silent | `FENAKI-dia-N-vertical.mp4` (from the `video` block of a spec) | TikTok, YouTube Shorts |
 | Card | 1200 × 675 | `horizontal.png` | Only the first post of the X, Bluesky and Threads thread (not Instagram, not LinkedIn) |
 
 Keep each day's pieces in `private/diario/anexos/redes/dia-NN/`, next to its `spec.json`.
@@ -83,6 +84,12 @@ node .claude/skills/fenaki-social-design/render.mjs private/diario/anexos/redes/
 Slide fields: `bg` (`catalog` | `glow`), `kicker`, `headline`, `headlineSize`, `lead`, `domain`, `secondary`, `disc` + `discSize`, `image` + `imageSize` (shown above the text), `frame: true` with an `image` (full-bleed animation frame, edges faded into the page colour, wordmark only).
 
 It reads the tokens from `@fenaki/tokens` and the fonts from `apps/web`'s dependencies, numbers the slides «N / total →» unless a slide has `secondary`, and writes the PDF from the same PNGs plus the card. Day 1's spec is a working example: `private/diario/anexos/redes/dia-01/spec.json`.
+
+## Vertical video
+
+Add a `"video": { "file": "FENAKI-dia-N-vertical.mp4", "scenes": [...] }` block (day 1: `dia-01/video.json`). A scene is a slide plus `seconds`; a scene with `"frames": [png…]` plays them in a loop (`fps` 12, `loops` 5) under its kicker and lead, with the credit as `secondary`. Scenes are joined with 0.4 s crossfades. Text stays inside TikTok's safe area: 200 px clear at the top, 420 px at the bottom (caption and buttons), 120 px on the right. Open the scene PNGs in `video/` before sending.
+
+Day 1's story: the dancing couple with «1893» and Muybridge → «Fenaquistiscopio» → the dance again with «los primeros cortos de la historia» → «El mejor cine, en cortos» → «Construir FENAKI en una semana» → «Apúntate al lanzamiento». The video goes out silent: add music in the app only from its licensed library, never a track of ours.
 
 ## Before showing it
 
