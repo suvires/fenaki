@@ -105,7 +105,10 @@ describe('shortStatus', () => {
   it('publishes launch shorts and keeps the rest as drafts', () => {
     expect(shortStatus(launch)).toBe('published')
     expect(shortStatus(later)).toBe('draft')
-    expect(shortStatus(later, 'published')).toBe('draft')
+  })
+
+  it('keeps a short published in the panel published', () => {
+    expect(shortStatus(later, 'published')).toBe('published')
   })
 
   it('never brings back a withdrawn short', () => {

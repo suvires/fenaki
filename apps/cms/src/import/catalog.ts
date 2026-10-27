@@ -145,10 +145,11 @@ export type ShortStatus = 'draft' | 'published' | 'withdrawn'
 
 /**
  * Only shorts marked for launch are published; the rest stay drafts. A short withdrawn in the
- * admin panel (or hidden by the embed checker) stays withdrawn.
+ * admin panel (or hidden by the embed checker) stays withdrawn, and one published later in the
+ * panel stays published.
  */
 export function shortStatus(short: ImportShort, current?: ShortStatus | null): ShortStatus {
-  if (current === 'withdrawn') return 'withdrawn'
+  if (current === 'withdrawn' || current === 'published') return current
   return short._import?.launch === true ? 'published' : 'draft'
 }
 
