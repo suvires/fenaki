@@ -6,6 +6,7 @@
 // Carousel slides are 1080×1350 (carrusel-N.png, numbered «N / total»); the card is 1200×675 (horizontal.png).
 // "video": { "file": "<name>.mp4", "scenes": [Slide & { "seconds"?, "frames"?: [png], "fps"?, "loops"? }] } renders
 // 1080×1920 scenes (a scene with frames plays them in a loop under its text) and joins them with ffmpeg.
+// "thumbnail": Slide renders the YouTube Shorts thumbnail, miniatura-vertical.png (2160×3840).
 import { execFileSync } from 'node:child_process'
 import { mkdir, writeFile } from 'node:fs/promises'
 import { readFile } from 'node:fs/promises'
@@ -103,8 +104,8 @@ const html = (w, h, s, i, total, card) => `<!doctype html><html><head><style>${c
 
 const browser = await chromium.launch()
 const total = spec.slides?.length ?? 0
-async function shoot(w, h, s, i, total, path) {
-  const page = await browser.newPage({ viewport: { width: w, height: h } })
+async function shoot(w, h, s, i, total, path, scale = 1) {
+  const page = await browser.newPage({ viewport: { width: w, height: h }, deviceScaleFactor: scale })
   await page.setContent(html(w, h, s, i, total, false)); await page.waitForTimeout(300)
   // Nothing may overflow the slide: the content column must fit, with the counter or footer inside.
   const overflow = await page.evaluate(() => {
@@ -137,6 +138,11 @@ if (spec.card) {
   const page = await browser.newPage({ viewport: { width: 1200, height: 675 } })
   await page.setContent(html(1200, 675, { ...spec.card, domain: spec.card.domain ?? true }, 0, 0, true)); await page.waitForTimeout(300)
   await page.screenshot({ path: `${spec.out}/horizontal.png` })
+}
+if (spec.thumbnail) {
+  // YouTube Shorts thumbnail: 9:16 at the largest size YouTube takes (2160 × 3840).
+  const s = { secondary: ' ', domain: true, ...spec.thumbnail }
+  await shoot(1080, 1920, s, 0, 0, `${spec.out}/miniatura-vertical.png`, 2)
 }
 if (spec.video) {
   // Vertical video for TikTok and YouTube Shorts: text inside the safe area (clear of the app's buttons and caption).

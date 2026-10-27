@@ -1,6 +1,6 @@
 ---
 name: fenaki-social-design
-description: Design FENAKI's social media images (Instagram/Facebook carousels, LinkedIn PDF documents, X/Bluesky/Threads cards) with the brand's typographic roles and the reusable renderer. Use whenever making or changing an image, slide or carousel for a FENAKI social post.
+description: Design FENAKI's social media images and videos (Instagram/Facebook carousels, LinkedIn documents, X/Bluesky/Threads cards, vertical videos and YouTube Shorts thumbnails) with the brand's typographic roles and the reusable renderer. Use whenever making or changing an image, slide or carousel for a FENAKI social post.
 ---
 
 # FENAKI social images
@@ -13,7 +13,8 @@ Social pieces use the same design system as the web: same tokens, same font (Arc
 | --- | --- | --- | --- |
 | Carousel slide | 1080 × 1350 | `carrusel-N.png` | Instagram, Facebook |
 | LinkedIn document | the same slides as one PDF | `FENAKI-dia-N.pdf` | LinkedIn («documento»: it pages like a carousel) |
-| Vertical video | 1080 × 1920, about 30 s, silent | `FENAKI-dia-N-vertical.mp4` (from the `video` block of a spec) | TikTok, YouTube Shorts |
+| Vertical video | 1080 × 1920, 25–30 s, silent | `FENAKI-dia-N-vertical.mp4` (from the `video` block of a spec) | TikTok, YouTube Shorts, Instagram and Facebook Reels, Instagram story |
+| Shorts thumbnail | 2160 × 3840 (9:16, the largest YouTube takes): kicker «Día N de 7», the day's headline and the domain on `catalog` | `miniatura-vertical.png` (from the `thumbnail` block) | YouTube Shorts only; a 16:9 card is the wrong shape for a Short |
 | Card | 1200 × 675 | `horizontal.png` | Only the first post of the X, Bluesky and Threads thread (not Instagram, not LinkedIn) |
 
 Keep each day's pieces in `private/diario/anexos/redes/dia-NN/`, next to its `spec.json`.
@@ -35,12 +36,19 @@ Rules:
 - The brand is always **FENAKI** in capitals; the domain always lowercase (`fenaki.tv`, `hola@fenaki.tv`).
 - The wordmark (`packages/ui/src/assets/wordmark.svg`) goes top-left on every piece. When the brand name is the subject of a slide, show the wordmark, never the word typed in the text font.
 - Slides never tell the reader how to use them («pasa rápido», «desliza»): the image has to work on its own.
+- Keep names in quotes on one line with no-break spaces in the spec (`«Lo\u00a0más\u00a0visto»`): the widow rule alone can leave «Lo at the end of a line.
+- A slide with an image has a **kicker as its title** («El catálogo», «Tu cuenta», «Privado y seguro») and a lead that says what the image shows, in the same words as the post text.
 
 ## Backgrounds and images
 
 - **`catalog`**: the catalog screenshot in perspective, **blurred until no short or still can be recognised** (third-party thumbnails are not ours to use as promotion), dimmed and faded to the page colour at top and bottom. For opening, challenge and call-to-action slides.
 - **`glow`**: the page colour with the light from above, as on the web's home. For story and illustration slides.
 - **`disc: true`**: a phenakistiscope drawn with the brand colours (outline only, no grey fill, no dotted rings; the arrow follows the spin). A fallback when no real image fits.
+- **Screenshots of the product** (catalog, account, a component) show what was built and work better than another text slide. How to make them:
+  - **Pages** from the local web in catalog mode on a spare port (`cd apps/web && SITE_MODE=catalog npx astro dev --port 4399`, with the local CMS running), at 2× (`deviceScaleFactor: 2`), with every still blurred by injected CSS: `img:not([src*=".svg"]),[style*="background-image"],video{filter:blur(9px)}`. 9 px leaves shapes and colours but no readable still; 22 px looked empty (27 oct 2026). The interface, titles and synopses stay sharp.
+  - **Signed-in pages** («Seguir viendo», «Mi lista»): a sample viewer in the **local** database only (`sample: true`, a `.test` email, random password never shown), logged in by setting the `fenaki-session` cookie to a `payload.login` token. Never in production.
+  - **A single component** (the consent dialog, a card): build Storybook (`pnpm --filter @fenaki/ui build-storybook`), serve `storybook-static` on a spare port and capture the element at 2× from `iframe.html?id=<story-id>`.
+  - Crop to what the slide talks about (day 2's account slide: the «Seguir viendo» and «Mi lista» rows with a preview open) and show it with `image` + `imageSize` 908 in the carousel, ≤ 870 in the video.
 - **Historical images**: public domain only, approved by the user, background removed so they sit on the page colour, and **credited on the slide** as secondary text: author, year, source («Disco de Eadweard Muybridge, 1893. Library of Congress.»). Say exactly what the image is: Muybridge's 1893 disc is not Plateau's 1832 phenakistiscope, so the text must not imply it. No stock photos, no thumbnails of third-party shorts.
 
 ## Carousel structure
@@ -50,6 +58,8 @@ Rules:
 3–4. The **story or the data** of the day, one idea per slide.
 Optional: a **flip-book**, frame slides after the image they come from (see below).
 Last. **Call to action**: «Apúntate al lanzamiento», the domain, and as secondary text the line for organisations and filmmakers.
+
+Day 2 (5 slides): «Día 2 de 7 · Catálogo, cuentas y privacidad» → catalog screenshot → account screenshot → consent dialog → «Apúntate al lanzamiento». Give each thing built that day its own slide with an image; one text slide that lists several features has no pull.
 
 At most 5 slides of text. Anything technical or explanatory that does not work as an image (stack, palette, how the AI works) goes in the post text, not on a slide. Day 1 (13 slides): «El mejor cine, en cortos» → «Día 1 de 7 · Construir FENAKI en una semana» → «El nombre · Fenaquistiscopio» → Muybridge's disc with its credit → 8 frames → «Apúntate al lanzamiento».
 
@@ -88,6 +98,10 @@ It reads the tokens from `@fenaki/tokens` and the fonts from `apps/web`'s depend
 ## Vertical video
 
 Add a `"video": { "file": "FENAKI-dia-N-vertical.mp4", "scenes": [...] }` block (day 1: `dia-01/video.json`). A scene is a slide plus `seconds`; a scene with `"frames": [png…]` plays them in a loop (`fps` 12, `loops` 5) under its kicker and lead, with the credit as `secondary`. Scenes are joined with 0.4 s crossfades. Text stays inside TikTok's safe area: 200 px clear at the top, 420 px at the bottom (caption and buttons), 120 px on the right. Open the scene PNGs in `video/` before sending.
+
+The first scene is always «El mejor cine, en cortos» (each video is seen on its own), except on day 1, which opened with the dance. Day 2: tagline → the carousel's five slides, 30 s.
+
+Add `"thumbnail": { "bg": "catalog", "kicker": "Día N de 7", "headline": "…" }` to the same spec for the Shorts thumbnail.
 
 Day 1's story: the dancing couple with «1893» and Muybridge → «Fenaquistiscopio» → the dance again with «los primeros cortos de la historia» → «El mejor cine, en cortos» → «Construir FENAKI en una semana» → «Apúntate al lanzamiento». The video goes out silent: add music in the app only from its licensed library, never a track of ours.
 
