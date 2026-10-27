@@ -45,7 +45,7 @@ Rules:
 3–4. The **story or the data** of the day, one idea per slide.
 Last. **Call to action**: «Apúntate al lanzamiento», the domain, and as secondary text the line for organisations and filmmakers.
 
-At most 5 slides. Anything technical or explanatory that does not work as an image (stack, palette, how the AI works) goes in the post text, not on a slide.
+At most 5 slides of text (a flip-book run of frames can follow the story, up to Instagram's 20 in total). Anything technical or explanatory that does not work as an image (stack, palette, how the AI works) goes in the post text, not on a slide.
 
 ## Rendering
 
@@ -68,6 +68,8 @@ node .claude/skills/fenaki-social-design/render.mjs private/diario/anexos/redes/
   "card": { "bg": "catalog", "kicker": "Día N de 7", "headline": "…" }
 }
 ```
+
+Other slide fields: `"image": "<abs path to a PNG>"` (shown where the disc would go, `imageSize` in px) and `"frame": true` with an `image`: a full-bleed animation frame, alone (wordmark only, no text, no counter), its edges faded into the page colour. A run of frame slides plays like a flip-book when swiped fast (day 1: the 13 frames of Muybridge's «A Couple Waltzing», 1893, public domain, Library of Congress). Instagram allows up to 20 slides. Always credit historical images on the slide (secondary text).
 
 It reads the tokens from `@fenaki/tokens` and the fonts from `apps/web`'s dependencies, numbers the slides «N / total →» unless a slide has `secondary`, and writes the PDF from the same PNGs. Day 1's spec is a working example: `private/diario/anexos/redes/dia-01/spec.json`.
 

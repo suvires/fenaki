@@ -57,6 +57,7 @@ function disc(size) {
   return `<svg width="${size}" height="${size}" viewBox="-580 -580 1160 1160">${p.join('')}</svg>`
 }
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
+const dataUri = async (path) => `data:image/png;base64,${(await readFile(path)).toString('base64')}`
 /** No widows: the last two words of a paragraph stay together. */
 const keepLast = (html) => html.replace(/ (\S+)$/, '&nbsp;$1')
 const css = (w, h, catalog, scale) => `@font-face{font-family:A;src:url(data:font/woff2;base64,${font}) format('woff2');font-weight:100 900;font-stretch:62% 125%}
@@ -82,8 +83,12 @@ function body(s, i, total, card) {
     s.lead ? `<p class="lead" style="font-size:${Math.round((s.leadSize ?? SIZE.lead) * k)}px">${keepLast(esc(s.lead))}</p>` : '',
     s.domain ? `<div class="domain" style="font-size:${Math.round(SIZE.domain * (card ? 0.42 : 1))}px">fenaki.tv</div>` : '',
   ].join('')
-  const middle = s.disc
-    ? `<div style="display:flex;flex-direction:column;align-items:center;gap:24px">${disc(s.discSize ?? 640)}<div class="stack" style="gap:18px;align-self:stretch">${text}</div></div>`
+  const art = s.image ? `<img src="${s.imageData}" style="width:${s.imageSize ?? 640}px;height:auto">` : s.disc ? disc(s.discSize ?? 640) : ''
+  if (s.frame)
+    // A frame of an animation, full-bleed and alone, so that swiping fast plays it.
+    return `<img class="wm" src="${wm}"><img src="${s.imageData}" style="position:absolute;left:0;top:${(1350 - 1080) / 2}px;width:1080px;height:1080px;-webkit-mask-image:radial-gradient(circle at 50% 50%, #000 52%, transparent 71%);mask-image:radial-gradient(circle at 50% 50%, #000 52%, transparent 71%)"><div></div>${s.caption ? `<p class="secondary" style="font-size:${SIZE.secondary}px;position:relative">${esc(s.caption)}</p>` : '<div></div>'}`
+  const middle = art
+    ? `<div style="display:flex;flex-direction:column;align-items:center;gap:24px">${art}<div class="stack" style="gap:18px;align-self:stretch">${text}</div></div>`
     : `<div class="stack">${text}</div>`
   const foot = s.secondary
     ? `<p class="secondary" style="font-size:${SIZE.secondary}px">${keepLast(esc(s.secondary))}</p>`
@@ -95,6 +100,7 @@ const html = (w, h, s, i, total, card) => `<!doctype html><html><head><style>${c
 const browser = await chromium.launch()
 const total = spec.slides?.length ?? 0
 for (const [index, s] of (spec.slides ?? []).entries()) {
+  if (s.image) s.imageData = await dataUri(s.image)
   const page = await browser.newPage({ viewport: { width: 1080, height: 1350 } })
   await page.setContent(html(1080, 1350, s, index + 1, total, false)); await page.waitForTimeout(300)
   // Nothing may overflow the slide: the content column must fit, with the counter or footer inside.
