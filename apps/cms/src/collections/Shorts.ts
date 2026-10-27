@@ -4,6 +4,7 @@ import { aiReviewField } from '../fields/aiReview.ts'
 import { importKeyField } from '../fields/importKey.ts'
 import { requiredToPublish } from '../fields/requiredToPublish.ts'
 import { analyzeShortEndpoint, applyReviewEndpoint } from '../ai/endpoints.ts'
+import { relatedShortsEndpoint } from '../related/related.ts'
 import { addFromUrlEndpoint } from '../ingest/addFromUrl.ts'
 import { slugField } from '../fields/slug.ts'
 import { statusField } from '../fields/status.ts'
@@ -60,7 +61,7 @@ export const Shorts: CollectionConfig = {
     group: groups.catalog,
     components: { beforeListTable: ['/admin/AddFromUrl.tsx#AddFromUrl'] },
   },
-  endpoints: [addFromUrlEndpoint, analyzeShortEndpoint, applyReviewEndpoint],
+  endpoints: [addFromUrlEndpoint, analyzeShortEndpoint, applyReviewEndpoint, relatedShortsEndpoint],
   access: {
     read: publishedOrAuthenticated,
     create: isAdmin,

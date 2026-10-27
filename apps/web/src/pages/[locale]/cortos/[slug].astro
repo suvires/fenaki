@@ -11,6 +11,7 @@ import Base from '../../../layouts/Base.astro'
 import { posterTone, toCard, toSavedShort } from '../../../lib/catalog.ts'
 import {
   creditsOf,
+  getRelatedShorts,
   getShort,
   listShorts,
   listSources,
@@ -63,10 +64,13 @@ const credits = short
   : []
 
 const related = short
-  ? (await listShorts(locale, 24))
-      .filter((s) => s.id !== short.id)
-      .sort((a, b) => Number(b.type === short.type) - Number(a.type === short.type))
-      .slice(0, 6)
+  ? await getRelatedShorts(locale, short.id).catch(async () =>
+      // Without the CMS's scoring, the latest shorts of the same type.
+      (await listShorts(locale, 24))
+        .filter((s) => s.id !== short.id)
+        .sort((a, b) => Number(b.type === short.type) - Number(a.type === short.type))
+        .slice(0, 12),
+    )
   : []
 
 const jsonLd = short

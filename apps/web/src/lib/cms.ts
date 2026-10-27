@@ -45,6 +45,28 @@ export async function listShorts(locale: Locale, limit = 100): Promise<Published
   return list.docs
 }
 
+/**
+ * «Si te ha gustado»: the published shorts most like this one, best first, as the CMS scores them
+ * (same director, then channel, type and length, country, decade).
+ */
+export async function getRelatedShorts(
+  locale: Locale,
+  shortId: number,
+  limit = 12,
+): Promise<PublishedShort[]> {
+  const { ids } = await get<{ ids: number[] }>(`shorts/${shortId}/related`, { limit })
+  if (ids.length === 0) return []
+  const list = await get<List<PublishedShort>>('shorts', {
+    locale,
+    depth: SHORT_DEPTH,
+    limit: ids.length,
+    'where[status][equals]': 'published',
+    'where[id][in]': ids.join(','),
+  })
+  const byId = new Map(list.docs.map((short) => [short.id, short]))
+  return ids.map((id) => byId.get(id)).filter((short) => short !== undefined)
+}
+
 /** The nightly «Lo más visto» ranking: published shorts, most played of the last 7 days first. */
 export async function getRanking(locale: Locale): Promise<PublishedShort[]> {
   try {
