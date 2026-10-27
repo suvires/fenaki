@@ -28,6 +28,8 @@ export interface ReviewInput {
   short: Pick<Short, 'id' | 'title' | 'durationSeconds' | 'year' | 'country'> & {
     originalLanguage?: string | null
     noDialogue?: boolean | null
+    languageSource?: string | null
+    otherLanguages?: (string | null | undefined)[] | null
   }
   source: Pick<
     Source,
@@ -44,14 +46,30 @@ export interface ReviewInput {
   > & { channel?: Source['channel'] }
   channel?: Pick<Channel, 'name' | 'kind' | 'defaultLanguage'> | null
   licenseNote?: string | null
-  /** YouTube's own language fields, when the metadata kept them. */
-  languageHints?: { audio?: string | null; metadata?: string | null }
 }
 
 const MAX_DESCRIPTION = 4000
 
 const duration = (seconds: number | null | undefined) =>
   seconds ? `${Math.floor(seconds / 60)} min ${seconds % 60} s` : 'unknown'
+
+const LANGUAGE_SOURCES: Record<string, string> = {
+  provider:
+    'the provider’s metadata: the audio language the uploader set, else the language of the title and description',
+  channel: 'only the default language of the channel, a guess',
+  ai: 'an earlier AI analysis',
+  editor: 'an editor',
+}
+
+function spokenOnRecord(short: ReviewInput['short']) {
+  if (short.noDialogue) return 'no dialogue'
+  if (!short.originalLanguage) return 'unknown'
+  const languages = [short.originalLanguage, ...(short.otherLanguages ?? [])].filter(Boolean)
+  const from = short.languageSource
+    ? ` (from ${LANGUAGE_SOURCES[short.languageSource] ?? short.languageSource})`
+    : ''
+  return `${languages.join(', ')}${from}`
+}
 
 /** The text of the user message for one short. */
 export function reviewText(input: ReviewInput): string {
@@ -66,13 +84,7 @@ export function reviewText(input: ReviewInput): string {
     `Published on the provider: ${source.uploadedAt ?? 'unknown'}`,
     `Channel: ${channelName} (${kind})`,
     `Year and country already on record: ${short.year ?? 'none'} / ${short.country ?? 'none'}`,
-    `Spoken language on record: ${short.noDialogue ? 'no dialogue' : (short.originalLanguage ?? 'unknown')}`,
-    input.languageHints?.audio
-      ? `Audio language set by the uploader: ${input.languageHints.audio}`
-      : null,
-    input.languageHints?.metadata
-      ? `Language of the title and description set by the uploader: ${input.languageHints.metadata}`
-      : null,
+    `Spoken language on record: ${spokenOnRecord(short)}`,
     `Human subtitles on record: ${(source.subtitles ?? []).join(', ') || 'none known'}`,
     `Automatic subtitles on record: ${(source.autoSubtitles ?? []).join(', ') || 'none known'}`,
     `Caption track: ${source.captions === 'yes' ? 'the provider says one exists (language unknown)' : source.captions === 'no' ? 'none' : 'unknown'}`,

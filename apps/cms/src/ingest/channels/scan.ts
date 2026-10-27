@@ -421,17 +421,9 @@ export async function scanChannel(
   const judgeAndRecord = async (items: Listed[], rows: Map<string, ScannedVideo>) => {
     if (items.length === 0) return
     found += items.length
-    let judged: Judged[]
-    try {
-      judged = await adapter.judge(items, context)
-    } catch (error) {
-      // The provider failed for the whole batch: keep each video retryable.
-      for (const item of items) {
-        tally('failed')
-        await record(item, 'failed', (error as Error).message, rows)
-      }
-      return
-    }
+    // A provider that cannot be asked at all fails the scan (written on the channel); what the
+    // ledger already holds keeps the next run cheap.
+    const judged = await adapter.judge(items, context)
     for (const entry of judged) {
       if (entry.kind === 'skip') {
         tally(entry.reason)

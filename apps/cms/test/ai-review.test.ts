@@ -115,6 +115,8 @@ const input = {
     durationSeconds: 620,
     year: null,
     country: null,
+    originalLanguage: 'es',
+    languageSource: 'channel',
   },
   source: {
     provider: 'youtube' as const,
@@ -130,7 +132,6 @@ const input = {
   },
   channel: { name: 'Cuerdas Films', kind: 'producer' as const, defaultLanguage: 'es' },
   licenseNote: 'YouTube: embed (route: embed, type: platform-terms)',
-  languageHints: { audio: 'es-419' },
 }
 
 describe('review answer', () => {
@@ -203,7 +204,9 @@ describe('request', () => {
     ])
     const text = reviewText(input)
     expect(text).toContain('Channel: Cuerdas Films (producer)')
-    expect(text).toContain('Audio language set by the uploader: es-419')
+    expect(text).toContain(
+      'Spoken language on record: es (from only the default language of the channel, a guess)',
+    )
     expect(text).toContain('Prohibida su difusión comercial')
     expect(
       reviewText({ ...input, source: { ...input.source, providerDescription: null } }),
