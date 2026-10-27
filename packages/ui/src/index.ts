@@ -11,6 +11,11 @@ export { Wordmark, type WordmarkProps } from './foundations/Wordmark.tsx'
 export { stillTextClass, type StillTextColor } from './foundations/stillText.ts'
 
 // Atoms: the smallest working parts.
+export {
+  AccentHeadline,
+  type AccentHeadlineProps,
+  type HeadlineAccent,
+} from './atoms/AccentHeadline.tsx'
 export { Badge, type BadgeProps, type BadgeTone } from './atoms/Badge.tsx'
 export { Button, type ButtonProps } from './atoms/Button.tsx'
 export { Duration, type DurationProps } from './atoms/Duration.tsx'

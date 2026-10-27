@@ -1,5 +1,6 @@
 ---
-import type { Locale } from '@fenaki/i18n'
+import { createRichTranslator, type Locale } from '@fenaki/i18n'
+import { AccentHeadline } from '@fenaki/ui'
 import { WaitlistForm } from '../islands/WaitlistForm.tsx'
 import { paths, translator } from '../lib/i18n.ts'
 import RichText from './RichText.astro'
@@ -10,6 +11,10 @@ interface Props {
 
 const { locale } = Astro.props
 const t = translator(locale)
+const rich = createRichTranslator(locale)
+
+// Two-tone headline: the closing phrase, wherever each language puts it, in the accent colour.
+const title = rich('landing.hero.title', { accent: { accent: t('landing.hero.titleAccent') } })
 
 const privacyPolicy = {
   href: paths.legal(locale, 'privacidad'),
@@ -20,9 +25,7 @@ const privacyPolicy = {
 {/* Centred in the space main leaves between the header and the footer (Base.astro), in a narrow
     column; the lead and the form take its whole width. */}
 <section class="w-full max-w-landing mx-auto grid gap-6 py-8">
-  <h1 class="m-0 font-display text-display-l md:text-display-xl uppercase text-balance">
-    {t('landing.hero.title')}
-  </h1>
+  <AccentHeadline parts={title} as="h1" size="responsive" />
   <p class="m-0 text-body-l text-primary">{t('landing.hero.lead')}</p>
   <div id="waitlist" class="grid gap-3 scroll-mt-8">
     <WaitlistForm client:load locale={locale} />
