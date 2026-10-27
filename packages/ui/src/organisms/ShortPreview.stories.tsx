@@ -5,7 +5,7 @@ import { ShortPreview } from './ShortPreview.tsx'
 import { SHORTS } from '../stories/fixtures.ts'
 
 const meta = {
-  title: 'Media/ShortPreview',
+  title: 'Organisms/ShortPreview',
   component: ShortPreview,
   args: {
     ...SHORTS[0],

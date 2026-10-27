@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { PageHeader } from './PageHeader.tsx'
 
 const meta = {
-  title: 'Layout/PageHeader',
+  title: 'Molecules/PageHeader',
   component: PageHeader,
   args: {
     eyebrow: 'Catálogo · 73 cortos',

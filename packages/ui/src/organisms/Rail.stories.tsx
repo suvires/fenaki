@@ -5,7 +5,7 @@ import { ShortCard } from '../molecules/ShortCard.tsx'
 import { SHORTS } from '../stories/fixtures.ts'
 
 const meta = {
-  title: 'Layout/Rail',
+  title: 'Organisms/Rail',
   component: Rail,
   args: {
     title: 'Novedades',

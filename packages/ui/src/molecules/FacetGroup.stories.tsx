@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { FacetGroup } from './FacetGroup.tsx'
 
 const meta = {
-  title: 'Controls/FacetGroup',
+  title: 'Molecules/FacetGroup',
   component: FacetGroup,
   args: {
     label: 'Duración',

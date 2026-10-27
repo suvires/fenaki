@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Wordmark } from './Wordmark.tsx'
 
 const meta = {
-  title: 'Brand/Wordmark',
+  title: 'Foundations/Wordmark',
   component: Wordmark,
   args: { label: 'FENAKI', className: 'h-6 w-auto text-ink' },
 } satisfies Meta<typeof Wordmark>

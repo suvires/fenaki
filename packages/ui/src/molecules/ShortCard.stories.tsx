@@ -5,7 +5,7 @@ import { ShortCard } from './ShortCard.tsx'
 import { SHORTS } from '../stories/fixtures.ts'
 
 const meta = {
-  title: 'Media/ShortCard',
+  title: 'Molecules/ShortCard',
   component: ShortCard,
   args: { ...SHORTS[0], title: 'Timecode', href: '#' },
 } satisfies Meta<typeof ShortCard>

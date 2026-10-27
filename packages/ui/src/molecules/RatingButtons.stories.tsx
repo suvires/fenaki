@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { RatingButtons, type Rating } from './RatingButtons.tsx'
 
 const meta = {
-  title: 'Actions/RatingButtons',
+  title: 'Molecules/RatingButtons',
   component: RatingButtons,
   args: {
     labels: {

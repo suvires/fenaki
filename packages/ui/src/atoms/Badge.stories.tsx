@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Badge } from './Badge.tsx'
 
 const meta = {
-  title: 'Metadata/Badge',
+  title: 'Atoms/Badge',
   component: Badge,
   args: { children: 'Animación', tone: 'neutral' },
 } satisfies Meta<typeof Badge>

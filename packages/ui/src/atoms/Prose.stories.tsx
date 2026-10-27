@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Prose } from './Prose.tsx'
 
 const meta = {
-  title: 'Content/Prose',
+  title: 'Atoms/Prose',
   component: Prose,
   args: {
     children: (

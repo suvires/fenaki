@@ -10,7 +10,7 @@ const OPTIONS = [
 ]
 
 const meta = {
-  title: 'Navigation/FilterChips',
+  title: 'Molecules/FilterChips',
   component: FilterChips,
   args: { label: 'Duración', options: OPTIONS },
 } satisfies Meta<typeof FilterChips>

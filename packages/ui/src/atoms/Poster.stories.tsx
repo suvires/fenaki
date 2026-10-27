@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Poster } from './Poster.tsx'
 
 const meta = {
-  title: 'Media/Poster',
+  title: 'Atoms/Poster',
   component: Poster,
   args: { title: 'Cuerdas', director: 'Pedro Solís García', year: 2013, tone: 'sala' },
   decorators: [(Story) => <div className="w-(--size-column)">{Story()}</div>],

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Duration } from './Duration.tsx'
 
 const meta = {
-  title: 'Metadata/Duration',
+  title: 'Atoms/Duration',
   component: Duration,
   args: { seconds: 900, locale: 'es' },
 } satisfies Meta<typeof Duration>

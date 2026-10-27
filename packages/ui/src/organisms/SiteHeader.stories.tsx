@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { SiteHeader } from './SiteHeader.tsx'
 
 const meta = {
-  title: 'Layout/SiteHeader',
+  title: 'Organisms/SiteHeader',
   component: SiteHeader,
   parameters: { layout: 'fullscreen' },
   args: {

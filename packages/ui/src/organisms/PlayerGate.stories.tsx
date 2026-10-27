@@ -3,7 +3,7 @@ import { expect, userEvent, within } from 'storybook/test'
 import { PlayerGate } from './PlayerGate.tsx'
 
 const meta = {
-  title: 'Legal/PlayerGate',
+  title: 'Organisms/PlayerGate',
   component: PlayerGate,
   args: {
     title: 'Timecode',

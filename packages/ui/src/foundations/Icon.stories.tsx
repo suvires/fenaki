@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Icon, ICON_NAMES } from './Icon.tsx'
 
 const meta = {
-  title: 'Foundations/Icon',
+  title: 'Foundations/Iconography',
   component: Icon,
   args: { name: 'play' },
 } satisfies Meta<typeof Icon>

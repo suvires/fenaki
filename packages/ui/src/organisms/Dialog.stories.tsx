@@ -4,7 +4,7 @@ import { Checkbox } from '../molecules/Checkbox.tsx'
 import { Dialog } from './Dialog.tsx'
 
 const meta = {
-  title: 'Overlays/Dialog',
+  title: 'Organisms/Dialog',
   component: Dialog,
   args: {
     open: true,

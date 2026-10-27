@@ -7,7 +7,7 @@ const LOGO = `data:image/svg+xml,${encodeURIComponent(
 )}`
 
 const meta = {
-  title: 'Media/ShowcaseHero',
+  title: 'Organisms/ShowcaseHero',
   component: ShowcaseHero,
   args: {
     eyebrow: 'Escaparate · Escuela de cine',

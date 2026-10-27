@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Notice } from './Notice.tsx'
 
 const meta = {
-  title: 'Feedback/Notice',
+  title: 'Molecules/Notice',
   component: Notice,
   args: {
     label: 'Borrador',

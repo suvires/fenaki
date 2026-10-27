@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { LicenseNote } from './LicenseNote.tsx'
 
 const meta = {
-  title: 'Legal/LicenseNote',
+  title: 'Molecules/LicenseNote',
   component: LicenseNote,
   args: {
     route: 'embed',

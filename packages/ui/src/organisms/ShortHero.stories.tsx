@@ -5,7 +5,7 @@ import backdropLight from '../stories/assets/backdrop-light.jpg'
 import { ShortHero } from './ShortHero.tsx'
 
 const meta = {
-  title: 'Media/ShortHero',
+  title: 'Organisms/ShortHero',
   component: ShortHero,
   args: {
     title: 'Timecode',

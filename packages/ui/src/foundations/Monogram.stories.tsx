@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Monogram } from './Monogram.tsx'
 
 const meta = {
-  title: 'Brand/Monogram',
+  title: 'Foundations/Monogram',
   component: Monogram,
   args: { label: 'FENAKI', className: 'h-12 w-auto text-tungsteno' },
 } satisfies Meta<typeof Monogram>
@@ -17,4 +17,4 @@ export const Footer: Story = {}
 export const Small: Story = { args: { className: 'h-4 w-auto text-tungsteno' } }
 
 /** In ink. */
-export const Ink: Story = { args: { className: 'h-12 w-auto text-ink' } }
+export const Primary: Story = { args: { className: 'h-12 w-auto text-ink' } }

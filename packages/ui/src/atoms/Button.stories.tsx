@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Button } from './Button.tsx'
 
 const meta = {
-  title: 'Actions/Button',
+  title: 'Atoms/Button',
   component: Button,
   args: { children: 'Ver ahora', variant: 'primary', size: 'md' },
 } satisfies Meta<typeof Button>
@@ -22,7 +22,7 @@ export const Large: Story = { args: { size: 'lg', icon: 'play', children: 'Ver l
 export const AsLink: Story = {
   args: { href: '#', icon: 'arrow', variant: 'secondary', children: 'Ver todo' },
 }
-export const OnTelon: Story = {
+export const OnSponsored: Story = {
   args: {
     variant: 'secondary',
     surface: 'telon',

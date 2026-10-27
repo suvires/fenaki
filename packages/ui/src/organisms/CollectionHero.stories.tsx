@@ -10,7 +10,7 @@ const posters = SHORTS.slice(0, 3).map(({ title, director, year, tone }) => ({
 }))
 
 const meta = {
-  title: 'Sponsorship/CollectionHero',
+  title: 'Organisms/CollectionHero',
   component: CollectionHero,
   args: {
     eyebrow: 'Colección · 6 cortos',

@@ -4,7 +4,7 @@ import { ShortGrid } from './ShortGrid.tsx'
 import { SHORTS } from '../stories/fixtures.ts'
 
 const meta = {
-  title: 'Media/ShortGrid',
+  title: 'Organisms/ShortGrid',
   component: ShortGrid,
   args: {
     label: 'Cortos',

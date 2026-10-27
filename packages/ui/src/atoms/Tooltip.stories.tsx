@@ -3,7 +3,7 @@ import { IconButton } from './IconButton.tsx'
 import { Tooltip } from './Tooltip.tsx'
 
 const meta = {
-  title: 'Overlays/Tooltip',
+  title: 'Atoms/Tooltip',
   component: Tooltip,
   args: { children: 'Me gusta', open: true },
 } satisfies Meta<typeof Tooltip>

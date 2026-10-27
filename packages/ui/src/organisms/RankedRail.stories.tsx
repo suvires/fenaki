@@ -18,7 +18,7 @@ const items = (withImages: boolean) =>
   ))
 
 const meta = {
-  title: 'Layout/RankedRail',
+  title: 'Organisms/RankedRail',
   component: RankedRail,
   args: { title: 'Lo más visto', children: items(true) },
 } satisfies Meta<typeof RankedRail>

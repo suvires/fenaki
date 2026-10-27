@@ -3,7 +3,7 @@ import { Button } from '../atoms/Button.tsx'
 import { TextField } from './TextField.tsx'
 
 const meta = {
-  title: 'Forms/TextField',
+  title: 'Molecules/TextField',
   component: TextField,
   args: {
     id: 'email',

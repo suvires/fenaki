@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Pagination } from './Pagination.tsx'
 
 const meta = {
-  title: 'Controls/Pagination',
+  title: 'Molecules/Pagination',
   component: Pagination,
   args: {
     label: 'Páginas',

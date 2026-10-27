@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { OfferCard } from './OfferCard.tsx'
 
 const meta = {
-  title: 'Content/OfferCard',
+  title: 'Molecules/OfferCard',
   component: OfferCard,
   args: {
     id: 'escaparate',

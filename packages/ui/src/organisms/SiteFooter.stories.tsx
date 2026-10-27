@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { SiteFooter } from './SiteFooter.tsx'
 
 const meta = {
-  title: 'Layout/SiteFooter',
+  title: 'Organisms/SiteFooter',
   component: SiteFooter,
   args: {
     label: 'Pie de página',
