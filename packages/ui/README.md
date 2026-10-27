@@ -138,14 +138,14 @@ Never build a one-off button or card inside a page: add or change the component 
 
 Every piece that announces something (a page head, the landing page, an email, a social post) stacks the same four roles. Web, emails and social pieces share them; the brand book (`design/system/README.md`) has the same rules for people who design outside the code.
 
-| Role                 | Type                                                                                                        | In the system                                                               |
-| -------------------- | ----------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| **Kicker** (eyebrow) | Text family, weight 500, uppercase, letter-spacing 0.06em, accent text colour.                              | `font-text text-label uppercase text-accent`                                |
-| **Headline**         | Display family (Archivo condensed, `wdth` 75), weight 800, uppercase, line height 0.92. No final full stop. | `AccentHeadline` (`size="xl"`, or `responsive`: display-l on small screens) |
-| **Lead**             | `body-l`, weight 400, in the primary text colour (white): never muted under a headline.                     | `text-body-l text-primary`                                                  |
-| **Secondary**        | Contact lines, counters, footnotes: `small`, in the muted text colour.                                      | `text-small text-secondary`                                                 |
+| Role                 | Type                                                                                                        | In the system                                                                |
+| -------------------- | ----------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| **Kicker** (eyebrow) | Text family, weight 500, uppercase, letter-spacing 0.06em, accent text colour.                              | `font-text text-label uppercase text-accent`                                 |
+| **Headline**         | Display family (Archivo condensed, `wdth` 75), weight 800, uppercase, line height 0.92. No final full stop. | `font-display text-display-xl uppercase` (`text-display-l` on small screens) |
+| **Lead**             | `body-l`, weight 400, in the primary text colour (white): never muted under a headline.                     | `text-body-l text-primary`                                                   |
+| **Secondary**        | Contact lines, counters, footnotes: `small`, in the muted text colour.                                      | `text-small text-secondary`                                                  |
 
-**Two-tone headlines.** A display headline is the text colour; exactly one span, the closing phrase that carries the payoff, takes the accent text colour: «El mejor cine, **en cortos**». Never the whole headline, never the brand name, at most one span per headline. `AccentHeadline` enforces the three rules. In code, the headline is one translatable string with an `{accent}` placeholder and a second string for the accent (`landing.hero.title` and `landing.hero.titleAccent`), so each language puts the accent where its closing phrase falls. Titles that are content (a short's or a collection's name) are not headlines in this sense and stay one colour.
+**One colour.** Headlines are all in the primary text colour (white). The accent colour is for the kicker, links and actions, never for part of a headline: a two-tone headline breaks the line and the rhythm (tried and dropped on 27 Oct 2026).
 
 Today the site's eyebrows use `font-mono` (the same Archivo with tabular figures, so only digits differ); new pieces follow the table.
 

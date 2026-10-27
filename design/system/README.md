@@ -35,7 +35,7 @@ Token names below are the semantic tokens of `packages/tokens` (`packages/ui/REA
 **Editorial roles.** Every piece that announces something (the web, emails, social posts) stacks four roles:
 
 - **Kicker** (eyebrow): Archivo in its text voice, weight 500, uppercase, tracked 0.06em, in the accent colour.
-- **Headline**: display capitals (Archivo condensed, 800), line height 0.92, no final full stop. Two-tone: the headline is white and exactly one span, the closing phrase that carries the payoff, is in the accent colour: «El mejor cine, **en cortos**». Never the whole headline, never the brand name, never two spans.
+- **Headline**: display capitals (Archivo condensed, 800), line height 0.92, no final full stop. All white: the accent colour goes to the kicker, links and actions, never to part of a headline.
 - **Lead** under a headline: `body-l`, regular, white, as on the landing page.
 - **Secondary** (contact lines, counters, footnotes): `small`, in `text.secondary`.
 

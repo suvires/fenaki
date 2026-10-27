@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { AccentHeadline } from '../atoms/AccentHeadline.tsx'
 import { Page, Section, TokenRow, tokensUnder, typeStyle, valueOf } from './TokenDocs.tsx'
 import { tokenList } from './tokens.ts'
 
@@ -85,14 +84,16 @@ export const ComponentStyles: Story = {
 }
 
 /**
- * The editorial roles every piece shares (web, emails, social): kicker, two-tone headline, lead and
+ * The editorial roles every piece shares (web, emails, social): kicker, headline, lead and
  * secondary text. packages/ui/README.md, «Editorial typography».
  */
 export const Editorial: Story = {
   render: () => (
     <div className="grid gap-6 max-w-landing">
       <p className="m-0 font-text text-label uppercase text-accent">Lista de espera</p>
-      <AccentHeadline parts={['El mejor cine, ', { accent: 'en cortos' }]} as="h2" size="xl" />
+      <h2 className="m-0 font-display text-display-xl uppercase text-balance">
+        El mejor cine, en cortos
+      </h2>
       <p className="m-0 text-body-l text-primary">
         Los cortometrajes publicados en abierto están repartidos entre diferentes canales,
         festivales y escuelas; FENAKI los reúne en un solo sitio.
