@@ -26,7 +26,7 @@ async function waitForEmail(to: string, subject: string): Promise<Mail> {
 }
 
 /** The site path (and query) of the link in an account email. */
-function linkIn(mail: Mail, page: 'verificar' | 'restablecer'): string {
+function linkIn(mail: Mail, page: 'verificar' | 'restablecer' | 'confirmar-email'): string {
   const match = new RegExp(`href="([^"]*/es/cuenta/${page}\\?token=[^"]+)"`).exec(mail.HTML)
   if (!match?.[1]) throw new Error(`No ${page} link in the email`)
   const url = new URL(match[1].replaceAll('&amp;', '&'))
