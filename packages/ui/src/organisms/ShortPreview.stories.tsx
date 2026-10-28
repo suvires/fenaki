@@ -18,7 +18,7 @@ const meta = {
     labels: {
       play: 'Ver ahora',
       addToList: 'Añadir a mi lista',
-      inMyList: 'En mi lista',
+      removeFromList: 'Quitar de mi lista',
       removeFromHistory: 'Quitar del historial',
       more: 'Más información',
       rating: {

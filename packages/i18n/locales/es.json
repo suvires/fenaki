@@ -101,6 +101,7 @@
     "synopsis": "Sinopsis",
     "addToList": "Añadir a mi lista",
     "inMyList": "En mi lista",
+    "removeFromList": "Quitar de mi lista",
     "related": "Si te ha gustado «{title}»",
     "origin": "{country} · {year}",
     "player": {
@@ -597,6 +598,7 @@
       "title": "Historial",
       "empty": "Todavía no has visto ningún corto con la sesión iniciada.",
       "remove": "Quitar del historial",
+      "removeFromContinueWatching": "Quitar de Seguir viendo",
       "removeNamed": "Quitar {title} del historial",
       "clear": "Borrar historial",
       "clearConfirm": "¿Borrar todo el historial?",

@@ -152,7 +152,7 @@ const otherRails = rails.filter((rail) => rail.key !== 'latest')
             {...toCard(toCardSource(short), locale, t, paths.short(locale, short.slug), clock)}
             progress={progress}
             progressLabel={t('short.progress', { percent: Math.round(progress * 100) })}
-            inHistory
+            removableFrom="continueWatching"
           />
         ))}
       </Rail>

@@ -1,11 +1,12 @@
 import { defaultLocale, type Locale } from '@fenaki/i18n'
-import type { CSSProperties, PointerEventHandler, Ref } from 'react'
+import { useState, type CSSProperties, type PointerEventHandler, type Ref } from 'react'
 import { cx } from '../foundations/cx.ts'
 import { stillTextClass, type StillTextColor } from '../foundations/stillText.ts'
 import { Badge, type BadgeTone } from '../atoms/Badge.tsx'
 import { Duration } from '../atoms/Duration.tsx'
-import { IconButton } from '../atoms/IconButton.tsx'
+import { IconButton, type IconButtonProps } from '../atoms/IconButton.tsx'
 import { Poster, type PosterTone } from '../atoms/Poster.tsx'
+import { Tooltip } from '../atoms/Tooltip.tsx'
 import { RatingButtons, type Rating, type RatingButtonsProps } from '../molecules/RatingButtons.tsx'
 
 export interface ShortPreviewProps {
@@ -41,9 +42,9 @@ export interface ShortPreviewProps {
     play: string
     /** «Añadir a mi lista» */
     addToList: string
-    /** «En mi lista» */
-    inMyList: string
-    /** «Quitar del historial», when the panel offers it. */
+    /** «Quitar de mi lista» */
+    removeFromList: string
+    /** «Quitar del historial» or «Quitar de Seguir viendo», when the panel offers it. */
     removeFromHistory?: string
     /** «Más información»: the name of the link that covers the panel. */
     more: string
@@ -150,14 +151,14 @@ export function ShortPreview({
         {/* Above the panel-wide link, so the buttons keep their own actions. */}
         <div className="relative z-10 flex items-center gap-2">
           <IconButton icon="play" label={labels.play} variant="primary" href={href} />
-          <IconButton
+          <LabelledIconButton
             icon={saved ? 'check' : 'plus'}
-            label={saved ? labels.inMyList : labels.addToList}
+            label={saved ? labels.removeFromList : labels.addToList}
             aria-pressed={saved}
             onClick={onToggleSaved}
           />
           {onRemoveFromHistory && labels.removeFromHistory ? (
-            <IconButton
+            <LabelledIconButton
               icon="close"
               label={labels.removeFromHistory}
               onClick={onRemoveFromHistory}
@@ -190,5 +191,22 @@ export function ShortPreview({
         className="absolute inset-0 rounded-md focus-visible:focus-ring"
       />
     </div>
+  )
+}
+
+/** An icon button that shows what it does in a tooltip above it, on hover and on focus. */
+function LabelledIconButton(props: IconButtonProps) {
+  const [open, setOpen] = useState(false)
+  return (
+    <span
+      className="relative inline-flex"
+      onPointerEnter={() => setOpen(true)}
+      onPointerLeave={() => setOpen(false)}
+      onFocus={() => setOpen(true)}
+      onBlur={() => setOpen(false)}
+    >
+      <IconButton {...props} />
+      <Tooltip open={open}>{props.label}</Tooltip>
+    </span>
   )
 }

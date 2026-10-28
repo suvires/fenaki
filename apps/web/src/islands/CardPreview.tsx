@@ -21,6 +21,8 @@ interface CardPreviewProps {
   labels: ShortPreviewProps['labels'] & {
     /** «Dirigido por {names}» */
     directedBy: string
+    /** The aspa's name on the cards of «Seguir viendo» (`removeFromHistory` on the history's). */
+    removeFromContinueWatching: string
   }
 }
 
@@ -31,8 +33,8 @@ interface PreviewData {
   synopsis?: string
   badges: { label: string; tone?: BadgeTone }[]
   href: string
-  /** The card is in the viewer's history: the panel offers to remove it. */
-  inHistory: boolean
+  /** The card is in the viewer's history: the panel offers to remove it from there. */
+  removableFrom?: 'history' | 'continueWatching'
 }
 
 const HOVER = '(hover: hover) and (pointer: fine)'
@@ -72,7 +74,10 @@ function readCard(card: HTMLElement): PreviewData | undefined {
     synopsis: card.querySelector('[data-card-synopsis]')?.textContent ?? undefined,
     badges,
     href,
-    inHistory: card.dataset.inHistory !== undefined,
+    removableFrom:
+      card.dataset.removableFrom === 'history' || card.dataset.removableFrom === 'continueWatching'
+        ? card.dataset.removableFrom
+        : undefined,
   }
 }
 
@@ -168,14 +173,20 @@ function Floating({ data, cardBox, locale, labels, onClose }: FloatingProps) {
       rating={rating}
       onRate={(value) => setRating(short.slug, value)}
       onRemoveFromHistory={
-        data.inHistory
+        data.removableFrom
           ? () => {
               onClose()
               void removeFromHistory(short.slug, locale)
             }
           : undefined
       }
-      labels={labels}
+      labels={{
+        ...labels,
+        removeFromHistory:
+          data.removableFrom === 'continueWatching'
+            ? labels.removeFromContinueWatching
+            : labels.removeFromHistory,
+      }}
     />,
     document.body,
   )

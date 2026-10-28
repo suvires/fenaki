@@ -64,7 +64,7 @@ export function HistoryGrid({ locale, items: initial }: HistoryGridProps) {
         <p className="m-0">{t('account.history.clearText')}</p>
       </Dialog>
       <ShortGrid
-        items={items.map((item) => ({ ...item, inHistory: true }))}
+        items={items.map((item) => ({ ...item, removableFrom: 'history' as const }))}
         // Where there is no floating preview (touch screens), the card has the button under it.
         footer={(item) => (
           <div className="[@media(hover:hover)_and_(pointer:fine)]:hidden">
