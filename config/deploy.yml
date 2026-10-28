@@ -196,8 +196,11 @@ logging:
 # Accessories are not redeployed by `kamal deploy`. After changing one, run
 # `kamal accessory reboot <name>` (see docs/deploy.md). Data lives in named Docker volumes.
 accessories:
+  # PostgreSQL with pgvector (infra/postgres/Dockerfile). The tag is git's hash of infra/postgres
+  # as committed, like the backup image's: CI builds it, then `reboot-postgres` (Deploy workflow).
+  <% postgres_tag = `git rev-parse --short=12 HEAD:infra/postgres 2>/dev/null`.strip %>
   postgres:
-    image: postgres:18.6-alpine3.24
+    image: ghcr.io/suvires/fenaki-postgres:<%= postgres_tag.empty? ? "uncommitted" : postgres_tag %>
     host: <%= ENV.fetch("FENAKI_HOST", "set-FENAKI_HOST") %>
     # Sized for a 4 GB server (VPS-1) shared with every other service; on an 8 GB VPS-2, double the memory settings.
     cmd: >-

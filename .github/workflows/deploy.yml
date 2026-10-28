@@ -7,7 +7,9 @@
 #
 # Manual runs (Actions → Deploy → Run workflow) choose the Kamal command: `deploy`, `setup` for the
 # first deploy, `setup-services` to push listmonk's lists, SMTP and email templates and Umami's
-# website after they change, or `rollback` to an earlier version (the git commit of a previous deploy).
+# website after they change, `rollback` to an earlier version (the git commit of a previous deploy),
+# `backup-now` for a backup at once, or `reboot-postgres` to restart PostgreSQL on its current
+# image (a few seconds of downtime; take a backup first).
 name: Deploy
 
 on:
@@ -18,7 +20,7 @@ on:
       command:
         description: Kamal command
         type: choice
-        options: [deploy, setup, setup-services, rollback]
+        options: [deploy, setup, setup-services, rollback, backup-now, reboot-postgres]
         default: deploy
       version:
         description: 'rollback only: the version to return to (a git commit from `bin/kamal app containers`)'
@@ -34,30 +36,33 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # The backup accessory's image, tagged with git's hash of infra/backup: built only when that
-  # directory changes. A new tag still needs `bin/kamal accessory reboot backup` (docs/deploy.md).
-  backup-image:
+  # The images of the backup and postgres accessories, each tagged with git's hash of its directory
+  # (infra/backup, infra/postgres): built only when it changes. A new tag still needs
+  # `bin/kamal accessory reboot <name>` (docs/deploy.md; `reboot-postgres` above for PostgreSQL).
+  accessory-images:
     if: vars.DEPLOY_ENABLED == 'true' && inputs.command != 'rollback'
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - name: Build and push the backup image if it is new
+      - name: Build and push the accessory images that are new
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          image="ghcr.io/suvires/fenaki-backup:$(git rev-parse --short=12 HEAD:infra/backup)"
           echo "$GITHUB_TOKEN" | docker login ghcr.io --username "$GITHUB_ACTOR" --password-stdin
-          if docker manifest inspect "$image" >/dev/null 2>&1; then
-            echo "$image exists"
-          else
-            docker buildx build --platform linux/amd64 --push --tag "$image" infra/backup
-          fi
+          for name in backup postgres; do
+            image="ghcr.io/suvires/fenaki-$name:$(git rev-parse --short=12 HEAD:infra/$name)"
+            if docker manifest inspect "$image" >/dev/null 2>&1; then
+              echo "$image exists"
+            else
+              docker buildx build --platform linux/amd64 --push --tag "$image" "infra/$name"
+            fi
+          done
 
   deploy:
-    needs: backup-image
-    if: always() && vars.DEPLOY_ENABLED == 'true' && needs.backup-image.result != 'failure'
+    needs: accessory-images
+    if: always() && vars.DEPLOY_ENABLED == 'true' && needs.accessory-images.result != 'failure'
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     environment: production
@@ -112,6 +117,8 @@ jobs:
               [ -n "$VERSION" ] || { echo "::error::rollback needs a version"; exit 1; }
               bin/kamal rollback "$VERSION"
               ;;
+            backup-now) bin/kamal backup-now ;;
+            reboot-postgres) bin/kamal accessory reboot postgres ;;
             *) bin/kamal "$COMMAND" ;;
           esac
 
