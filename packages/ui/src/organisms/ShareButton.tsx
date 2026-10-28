@@ -1,5 +1,6 @@
 import { useState, useSyncExternalStore } from 'react'
 import { Button } from '../atoms/Button.tsx'
+import { cx } from '../foundations/cx.ts'
 import { LabelledIconButton } from '../molecules/LabelledIconButton.tsx'
 import { Dialog } from './Dialog.tsx'
 
@@ -29,8 +30,12 @@ export interface ShareButtonProps {
   moreLabel: string
   closeLabel: string
   size?: 'md' | 'lg'
-  /** Only the icon, with the label in a tooltip and as its accessible name (a short's hero). */
-  iconOnly?: boolean
+  /**
+   * `text` (the default), `icon` (the label in a tooltip and as its accessible name), or `auto`:
+   * the icon on a still (inside `data-on-still`, a short's hero before it plays), the text
+   * elsewhere.
+   */
+  display?: 'text' | 'icon' | 'auto'
   className?: string
 }
 
@@ -60,7 +65,7 @@ export function ShareButton({
   moreLabel,
   closeLabel,
   size = 'lg',
-  iconOnly = false,
+  display = 'text',
   className,
 }: ShareButtonProps) {
   const [open, setOpen] = useState(false)
@@ -92,21 +97,24 @@ export function ShareButton({
 
   return (
     <>
-      {iconOnly ? (
-        <LabelledIconButton
-          icon="share"
-          label={label}
-          variant="translucent"
-          size={size}
-          className={className}
-          onClick={onClick}
-        />
-      ) : (
+      {display === 'text' ? null : (
+        <span className={cx('inline-flex', display === 'auto' && 'not-in-data-on-still:hidden')}>
+          <LabelledIconButton
+            icon="share"
+            label={label}
+            variant="translucent"
+            size={size}
+            className={className}
+            onClick={onClick}
+          />
+        </span>
+      )}
+      {display === 'icon' ? null : (
         <Button
           variant="secondary"
           size={size}
           icon="share"
-          className={className}
+          className={cx(className, display === 'auto' && 'in-data-on-still:hidden')}
           onClick={onClick}
         >
           {label}

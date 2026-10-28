@@ -212,14 +212,17 @@ const subtitles = [...(card?.subtitles ?? [])]
           slot="secondaryAction"
           client:load
           size="lg"
+          display="auto"
           short={toSavedShort(card, locale)}
           label={t('short.addToList')}
           savedLabel={t('short.inMyList')}
+          removeLabel={t('short.removeFromList')}
           initialSaved={account?.list.some((entry) => entry.slug === short.slug)}
         />
         <ShareButton
           slot="secondaryAction"
           client:idle
+          display="auto"
           label={t('short.share.label')}
           url={shareUrl}
           title={short.title}

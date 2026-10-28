@@ -9,8 +9,14 @@ interface MyListButtonProps {
   /** «En mi lista», or «Quitar de mi lista» on an icon-only button. */
   savedLabel: string
   size?: ButtonProps['size']
-  /** Only the icon, with the label in a tooltip and as its accessible name (a short's hero). */
-  iconOnly?: boolean
+  /**
+   * `text` (the default), `icon` (the label in a tooltip and as its accessible name), or `auto`:
+   * the icon on a still (inside `data-on-still`, a short's hero before it plays), the text
+   * elsewhere. The icon's name says what pressing does: «Quitar de mi lista» when saved.
+   */
+  display?: 'text' | 'icon' | 'auto'
+  /** «Quitar de mi lista»: the icon's name once saved. */
+  removeLabel?: string
   /** Signed in: whether the account has it, as the server rendered it, so nothing flickers. */
   initialSaved?: boolean
 }
@@ -25,7 +31,8 @@ export function MyListButton({
   label,
   savedLabel,
   size = 'md',
-  iconOnly = false,
+  display = 'text',
+  removeLabel,
   initialSaved = false,
 }: MyListButtonProps) {
   const [saved, setSaved] = useState(initialSaved)
@@ -36,26 +43,34 @@ export function MyListButton({
     return subscribe(sync)
   }, [short.slug])
 
-  if (iconOnly)
-    return (
-      <LabelledIconButton
-        icon={saved ? 'check' : 'plus'}
-        label={saved ? savedLabel : label}
-        variant="translucent"
-        size={size}
-        aria-pressed={saved}
-        onClick={() => toggle(short)}
-      />
-    )
-  return (
+  const icon = (
+    <LabelledIconButton
+      icon={saved ? 'check' : 'plus'}
+      label={saved ? (removeLabel ?? savedLabel) : label}
+      variant="translucent"
+      size={size}
+      aria-pressed={saved}
+      onClick={() => toggle(short)}
+    />
+  )
+  const text = (
     <Button
       variant="secondary"
       size={size}
       icon={saved ? 'check' : 'plus'}
       aria-pressed={saved}
       onClick={() => toggle(short)}
+      className={display === 'auto' ? 'in-data-on-still:hidden' : undefined}
     >
       {saved ? savedLabel : label}
     </Button>
+  )
+  if (display === 'icon') return icon
+  if (display === 'text') return text
+  return (
+    <>
+      <span className="inline-flex not-in-data-on-still:hidden">{icon}</span>
+      {text}
+    </>
   )
 }

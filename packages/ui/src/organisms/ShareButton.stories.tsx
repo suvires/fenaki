@@ -47,4 +47,4 @@ export const Open: Story = {
 }
 
 /** On a short's hero: only the paper plane, «Compartir» in its tooltip. */
-export const IconOnly: Story = { args: { iconOnly: true } }
+export const IconOnly: Story = { args: { display: 'icon' } }

@@ -41,7 +41,10 @@ export interface ShortHeroProps {
    * its own, whole, and every detail under it, the title too.
    */
   layout?: 'overlay' | 'stacked'
-  /** In a stacked hero, what takes the still's place: the player, once it plays. */
+  /**
+   * In a stacked hero, what takes the still's place: the player, once it plays. Until then the
+   * actions sit on the still; then they move under it, with the details.
+   */
   media?: ReactNode
   className?: string
 }
@@ -75,7 +78,27 @@ export function ShortHero({
 }: ShortHeroProps) {
   const Heading = headingLevel === 1 ? 'h1' : 'h2'
   const stacked = layout === 'stacked'
+  // A short's page with a still, before it plays: the actions sit on the still. With the
+  // typographic poster, which carries the title at its foot, they stay under it.
+  const onStill = stacked && !media && Boolean(backdrop)
   const text = backdrop && !stacked ? stillTextClass(backdropTextColor) : 'text-primary'
+  const actions = (
+    <div className="flex flex-wrap gap-3">
+      {ctaLabel ? (
+        <Button
+          variant="primary"
+          size="lg"
+          icon="play"
+          href={onCta ? undefined : ctaHref}
+          onClick={onCta}
+          {...ctaAttributes}
+        >
+          {ctaLabel}
+        </Button>
+      ) : null}
+      {secondaryAction}
+    </div>
+  )
   const info = (
     <div className={cx('grid gap-4 min-w-0', text)}>
       {eyebrow ? <p className="m-0 font-mono text-label uppercase text-accent">{eyebrow}</p> : null}
@@ -111,21 +134,7 @@ export function ShortHero({
           {synopsis}
         </p>
       ) : null}
-      <div className="flex flex-wrap gap-3">
-        {ctaLabel ? (
-          <Button
-            variant="primary"
-            size="lg"
-            icon="play"
-            href={onCta ? undefined : ctaHref}
-            onClick={onCta}
-            {...ctaAttributes}
-          >
-            {ctaLabel}
-          </Button>
-        ) : null}
-        {secondaryAction}
-      </div>
+      {onStill ? null : actions}
     </div>
   )
 
@@ -147,6 +156,17 @@ export function ShortHero({
                 <Poster {...poster} shape="landscape" className="size-full rounded-none" />
               </div>
             ))}
+          {/* Before it plays, the actions sit on the still, over a shade that keeps them legible;
+              `data-on-still` lets buttons that have a compact form use it (MyListButton,
+              ShareButton). */}
+          {onStill ? (
+            <div
+              data-on-still=""
+              className="absolute inset-x-0 bottom-0 p-4 md:p-6 bg-linear-to-t from-canvas from-0% to-transparent"
+            >
+              {actions}
+            </div>
+          ) : null}
         </div>
         {info}
       </section>
