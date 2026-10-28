@@ -1,7 +1,7 @@
 ---
 import { Notice, Prose } from '@fenaki/ui'
 import { getEntry, render } from 'astro:content'
-import Base from '../../layouts/Base.astro'
+import TextPage from '../../layouts/TextPage.astro'
 import { isLegalPage, localeFrom, translator } from '../../lib/i18n.ts'
 import { legalDraft } from '../../lib/services.ts'
 
@@ -17,15 +17,9 @@ const { Content, headings } = await render(entry)
 const title = headings.find((heading) => heading.depth === 1)?.text ?? page
 ---
 
-<Base locale={locale} title={title}>
-  <article class="grid gap-8">
-    {legalDraft && (
-      <Notice className="max-w-prose" label={t('legal.draft.label')}>
-        {t('legal.draft.text')}
-      </Notice>
-    )}
-    <Prose>
-      <Content />
-    </Prose>
-  </article>
-</Base>
+<TextPage locale={locale} title={title}>
+  {legalDraft && <Notice label={t('legal.draft.label')}>{t('legal.draft.text')}</Notice>}
+  <Prose>
+    <Content />
+  </Prose>
+</TextPage>

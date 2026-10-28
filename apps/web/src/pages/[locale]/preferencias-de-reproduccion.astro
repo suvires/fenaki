@@ -1,6 +1,7 @@
 ---
+import { Prose } from '@fenaki/ui'
 import { PlayerSettings } from '../../islands/PlayerSettings.tsx'
-import Base from '../../layouts/Base.astro'
+import TextPage from '../../layouts/TextPage.astro'
 import { createRichTranslator } from '@fenaki/i18n'
 import { localeFrom, paths, translator } from '../../lib/i18n.ts'
 
@@ -13,27 +14,20 @@ const signedIn = Boolean(Astro.locals.member)
 const more = createRichTranslator(locale)('playerSettings.more', { cookies: 'link' as const })
 ---
 
-<Base locale={locale} title={t('playerSettings.title')} noindex>
-  <section class="grid gap-6 max-w-article">
-    <h1 class="m-0 font-display text-display-l uppercase">{t('playerSettings.title')}</h1>
-    <div class="grid gap-3 max-w-player-text text-body text-secondary">
-      <p class="m-0">{t('playerSettings.intro')}</p>
-      {signedIn && <p class="m-0">{t('playerSettings.savedInAccount')}</p>}
-    </div>
-    <PlayerSettings client:load locale={locale} />
-    <p class="m-0 text-small text-secondary">
+<TextPage locale={locale} title={t('playerSettings.title')} noindex>
+  <Prose>
+    <h1>{t('playerSettings.title')}</h1>
+    <p>{t('playerSettings.intro')}</p>
+    {signedIn && <p>{t('playerSettings.savedInAccount')}</p>}
+    <p>
       {more.map((piece) =>
         piece === 'link' ? (
-          <a
-            class="text-primary underline underline-offset-4 hover:no-underline"
-            href={paths.legal(locale, 'cookies')}
-          >
-            {t('playerSettings.cookiesLink')}
-          </a>
+          <a href={paths.legal(locale, 'cookies')}>{t('playerSettings.cookiesLink')}</a>
         ) : (
           piece
         ),
       )}
     </p>
-  </section>
-</Base>
+  </Prose>
+  <PlayerSettings client:load locale={locale} />
+</TextPage>

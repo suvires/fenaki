@@ -1,6 +1,6 @@
 ---
 import { Prose, TmdbLogo } from '@fenaki/ui'
-import Base from '../../layouts/Base.astro'
+import TextPage from '../../layouts/TextPage.astro'
 import { localeFrom, translator } from '../../lib/i18n.ts'
 
 const locale = localeFrom(Astro.params.locale)
@@ -8,7 +8,7 @@ if (!locale) return Astro.rewrite('/404')
 const t = translator(locale)
 ---
 
-<Base locale={locale} title={t('credits.title')}>
+<TextPage locale={locale} title={t('credits.title')}>
   <Prose>
     <h1>{t('credits.title')}</h1>
     <p>{t('credits.intro')}</p>
@@ -30,4 +30,4 @@ const t = translator(locale)
     <h2>{t('credits.fonts.title')}</h2>
     <p>{t('credits.fonts.text')}</p>
   </Prose>
-</Base>
+</TextPage>

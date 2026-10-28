@@ -1,0 +1,16 @@
+---
+import type { ComponentProps } from 'astro/types'
+import Base from './Base.astro'
+
+type Props = ComponentProps<typeof Base>
+---
+
+{/*
+  A page to read: legal texts, credits, preferences. One column at the reading width of Prose,
+  so every text page lines up whether it is Markdown or a page with controls between paragraphs.
+*/}
+<Base {...Astro.props}>
+  <article class="grid gap-6 max-w-prose min-w-0">
+    <slot />
+  </article>
+</Base>
