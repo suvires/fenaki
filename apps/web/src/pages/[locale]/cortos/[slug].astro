@@ -19,6 +19,7 @@ import {
   creditsOf,
   getRelatedShorts,
   getShort,
+  slugMovedTo,
   listShorts,
   listSources,
   playableSource,
@@ -40,6 +41,11 @@ if (!locale) return Astro.rewrite('/404')
 
 const t = translator(locale)
 const short = Astro.params.slug ? await getShort(locale, Astro.params.slug) : undefined
+// An old address of a short (its title was cleaned and its slug with it) leads to the current one.
+if (!short && Astro.params.slug) {
+  const moved = await slugMovedTo(locale, Astro.params.slug)
+  if (moved) return Astro.redirect(`${paths.short(locale, moved)}${Astro.url.search}`, 301)
+}
 if (!short) Astro.response.status = 404
 
 // A signed-in viewer: what the account has of this short (saved, and where they stopped).

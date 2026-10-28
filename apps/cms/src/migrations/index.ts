@@ -23,6 +23,8 @@ import * as migration_20261028_093617_short_genres_themes_audience from './20261
 import * as migration_20261028_100208_short_production_original_title_awards_review from './20261028_100208_short_production_original_title_awards_review';
 import * as migration_20261028_103200_collections_by_filters_and_sponsored from './20261028_103200_collections_by_filters_and_sponsored';
 import * as migration_20261028_114500_remove_animacion_de_autor from './20261028_114500_remove_animacion_de_autor';
+import * as migration_20261028_132226_previous_slugs from './20261028_132226_previous_slugs';
+import * as migration_20261028_132300_queue_slug_regeneration_memorias_theme from './20261028_132300_queue_slug_regeneration_memorias_theme';
 
 export const migrations = [
   {
@@ -143,11 +145,21 @@ export const migrations = [
   {
     up: migration_20261028_103200_collections_by_filters_and_sponsored.up,
     down: migration_20261028_103200_collections_by_filters_and_sponsored.down,
-    name: '20261028_103200_collections_by_filters_and_sponsored'
+    name: '20261028_103200_collections_by_filters_and_sponsored',
   },
   {
     up: migration_20261028_114500_remove_animacion_de_autor.up,
     down: migration_20261028_114500_remove_animacion_de_autor.down,
-    name: '20261028_114500_remove_animacion_de_autor'
+    name: '20261028_114500_remove_animacion_de_autor',
+  },
+  {
+    up: migration_20261028_132226_previous_slugs.up,
+    down: migration_20261028_132226_previous_slugs.down,
+    name: '20261028_132226_previous_slugs'
+  },
+  {
+    up: migration_20261028_132300_queue_slug_regeneration_memorias_theme.up,
+    down: migration_20261028_132300_queue_slug_regeneration_memorias_theme.down,
+    name: '20261028_132300_queue_slug_regeneration_memorias_theme',
   },
 ];

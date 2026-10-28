@@ -81,6 +81,21 @@ export const Shorts: CollectionConfig = {
     { name: 'title', label: common.title, type: 'text', required: true, localized: true },
     slugField('title', { localized: true }),
     {
+      name: 'previousSlugs',
+      label: label('Previous addresses', 'Direcciones anteriores'),
+      type: 'text',
+      hasMany: true,
+      index: true,
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+        description: label(
+          'Slugs the short had before, in any language: they redirect to the current one.',
+          'Slugs que tuvo antes, en cualquier idioma: redirigen al actual.',
+        ),
+      },
+    },
+    {
       type: 'row',
       fields: [
         {
@@ -522,6 +537,15 @@ export const Shorts: CollectionConfig = {
   ],
   hooks: {
     beforeChange: [
+      // A changed slug keeps the old one, so links to it redirect instead of breaking.
+      ({ data, originalDoc }) => {
+        const before = originalDoc?.slug
+        if (typeof before === 'string' && typeof data.slug === 'string' && data.slug !== before) {
+          const kept = (originalDoc?.previousSlugs ?? []) as string[]
+          data.previousSlugs = [...new Set([...kept, before])].filter((slug) => slug !== data.slug)
+        }
+        return data
+      },
       ({ data, originalDoc }) => {
         const publishing = data.status === 'published' && originalDoc?.status !== 'published'
         if (publishing) {

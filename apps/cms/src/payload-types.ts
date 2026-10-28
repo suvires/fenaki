@@ -164,6 +164,7 @@ export interface Config {
       scanChannels: TaskScanChannels;
       reviewShort: TaskReviewShort;
       reviewBacklog: TaskReviewBacklog;
+      regenerateSlugs: TaskRegenerateSlugs;
       inline: {
         input: unknown;
         output: unknown;
@@ -219,6 +220,10 @@ export interface Short {
    * Part of the URL. Generated from the title when left empty.
    */
   slug: string;
+  /**
+   * Slugs the short had before, in any language: they redirect to the current one.
+   */
+  previousSlugs?: string[] | null;
   /**
    * Only when it differs from the title: the film was made in another language.
    */
@@ -1285,7 +1290,8 @@ export interface PayloadJob {
           | 'syncInbox'
           | 'scanChannels'
           | 'reviewShort'
-          | 'reviewBacklog';
+          | 'reviewBacklog'
+          | 'regenerateSlugs';
         taskID: string;
         input?:
           | {
@@ -1329,6 +1335,7 @@ export interface PayloadJob {
         | 'scanChannels'
         | 'reviewShort'
         | 'reviewBacklog'
+        | 'regenerateSlugs'
       )
     | null;
   queue?: string | null;
@@ -1496,6 +1503,7 @@ export interface PayloadMigration {
 export interface ShortsSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
+  previousSlugs?: T;
   originalTitle?: T;
   production?: T;
   synopsis?: T;
@@ -2312,6 +2320,7 @@ export interface TaskCheckEmbeds {
   input?: unknown;
   output: {
     checked: number;
+    skipped: number;
     problems: number;
     inconclusive: number;
     hidden: number;
@@ -2377,6 +2386,16 @@ export interface TaskReviewBacklog {
     submitted: number;
     collected: number;
     pending: number;
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskRegenerateSlugs".
+ */
+export interface TaskRegenerateSlugs {
+  input?: unknown;
+  output: {
+    changed: number;
   };
 }
 /**

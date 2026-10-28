@@ -133,6 +133,19 @@ export async function getShort(locale: Locale, slug: string): Promise<PublishedS
   return list.docs[0]
 }
 
+/** The current slug of the published short that had this one before (its old address), if any. */
+export async function slugMovedTo(locale: Locale, slug: string): Promise<string | undefined> {
+  const list = await get<List<Pick<Short, 'slug'>>>('shorts', {
+    locale,
+    depth: 0,
+    limit: 1,
+    'where[previousSlugs][in]': slug,
+    'where[status][equals]': 'published',
+    'select[slug]': 'true',
+  })
+  return list.docs[0]?.slug
+}
+
 /**
  * A short's sources with their licenses. Relationships inside a join field are not populated,
  * so the short page asks for its sources directly.
