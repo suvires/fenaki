@@ -101,7 +101,7 @@
     "synopsis": "Sinopsis",
     "addToList": "Añadir a mi lista",
     "inMyList": "En mi lista",
-    "related": "Si te ha gustado",
+    "related": "Si te ha gustado «{title}»",
     "origin": "{country} · {year}",
     "player": {
       "play": "Ver ahora",

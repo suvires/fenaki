@@ -249,7 +249,7 @@ const details = short
       {related.length > 0 && (
         <Rail
           arrows={{ previous: t('rail.previous'), next: t('rail.next') }}
-          title={t('short.related')}
+          title={t('short.related', { title: short.title })}
         >
           {related.map((s) => (
             <ShortCard

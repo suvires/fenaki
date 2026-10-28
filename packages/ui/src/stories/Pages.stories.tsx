@@ -83,7 +83,7 @@ export const Short: Story = {
           ),
         }}
       />
-      <Rail title="Si te ha gustado" actionLabel="Ver todo" actionHref="#">
+      <Rail title="Si te ha gustado «Timecode»" actionLabel="Ver todo" actionHref="#">
         {SHORTS.slice(1).map((s) => (
           <ShortCard key={s.title} {...s} href="#" />
         ))}
