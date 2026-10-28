@@ -3,24 +3,30 @@ import { MyListGrid } from '../../islands/MyListGrid.tsx'
 import { loadAccountState } from '../../lib/account/data.ts'
 import Base from '../../layouts/Base.astro'
 import { toCurrentShort } from '../../lib/catalog.ts'
-import { listShorts, toCardSource } from '../../lib/cms.ts'
+import { listShortsBySlugs, toCardSource } from '../../lib/cms.ts'
 import { localeFrom, paths, translator } from '../../lib/i18n.ts'
+import { pageOf, parsePage } from '../../lib/paging.ts'
 import { badgeClock } from '../../lib/services.ts'
 
 const locale = localeFrom(Astro.params.locale)
 if (!locale) return Astro.rewrite('/404')
 
 const t = translator(locale)
-// Signed in, the list is the account's and is rendered here; signed out, the browser's.
+const page = parsePage(Astro.url.searchParams)
+// Signed in, the list is the account's and is rendered here, with the current data of only this
+// page's shorts. Signed out the list is the browser's, and the island asks for its page's shorts.
 const member = Astro.locals.member
 const account = member ? await loadAccountState(member, locale).catch(() => undefined) : undefined
-// The whole published catalog: saved shorts show their current data, unpublished ones drop out.
-const current = Object.fromEntries(
-  (await listShorts(locale, 1000)).map((s) => [
-    s.slug,
-    toCurrentShort(toCardSource(s), locale, t, badgeClock()),
-  ]),
-)
+const current = account
+  ? Object.fromEntries(
+      (
+        await listShortsBySlugs(
+          locale,
+          pageOf(account.list, page).items.map((entry) => entry.slug),
+        )
+      ).map((s) => [s.slug, toCurrentShort(toCardSource(s), locale, t, badgeClock())]),
+    )
+  : undefined
 ---
 
 <Base locale={locale} title={t('home.myList.title')} noindex>
@@ -32,8 +38,10 @@ const current = Object.fromEntries(
       emptyHint={t('home.myList.empty')}
       locale={locale}
       hrefBase={paths.short(locale, '')}
-      current={current}
+      pageBase={paths.myList(locale)}
+      page={page}
       initial={account?.list}
+      current={current}
     />
   </div>
 </Base>

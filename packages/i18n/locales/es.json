@@ -317,7 +317,7 @@
     "unavailable": "Los filtros no están disponibles ahora. Prueba de nuevo en unos minutos.",
     "pagination": {
       "label": "Páginas",
-      "status": "Página {page} de {pages}",
+      "page": "Página {page}",
       "previous": "Anterior",
       "next": "Siguiente"
     },

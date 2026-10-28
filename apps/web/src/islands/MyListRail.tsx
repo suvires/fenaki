@@ -1,14 +1,9 @@
 import type { Locale } from '@fenaki/i18n'
 import { Rail, ShortCard } from '@fenaki/ui'
 import { useEffect, useState } from 'react'
-import {
-  readList,
-  stub,
-  subscribe,
-  withCurrent,
-  type CurrentShorts,
-  type ListedShort,
-} from '../lib/myList.ts'
+import { readList, stub, subscribe, type CurrentShorts, type SavedShort } from '../lib/myList.ts'
+import { PAGE_SIZE } from '../lib/paging.ts'
+import { useListedShorts } from './useListedShorts.ts'
 
 interface MyListRailProps {
   title: string
@@ -21,7 +16,10 @@ interface MyListRailProps {
   locale: Locale
   /** The path of a short's page, already built by the server for this slug pattern. */
   hrefBase: string
-  /** The published shorts' current card data: saved items show it, and unpublished ones drop out. */
+  /**
+   * Signed in: the current card data of the account's first 20 shorts, as the server read them.
+   * Signed out it is empty: the rail asks for its shorts once storage is read.
+   */
   current: CurrentShorts
   /**
    * Signed in: the account's list as the server read it, rendered right away. Signed out it is
@@ -31,7 +29,7 @@ interface MyListRailProps {
 }
 
 /**
- * The viewer's saved shorts. Nothing at all while the list is empty, so the server renders
+ * The viewer's 20 latest saved shorts. Nothing at all while the list is empty, so the server renders
  * nothing and the rail appears once storage is read and has something in it.
  */
 export function MyListRail({
@@ -44,15 +42,18 @@ export function MyListRail({
   current,
   initial,
 }: MyListRailProps) {
-  const [items, setItems] = useState<ListedShort[]>(() =>
-    initial ? withCurrent(initial.map(stub), current) : [],
-  )
-
+  const [saved, setSaved] = useState<SavedShort[]>(() => (initial ? initial.map(stub) : []))
   useEffect(() => {
-    const sync = () => setItems(withCurrent(readList(), current))
+    const sync = () => setSaved(readList())
     sync()
     return subscribe(sync)
-  }, [current])
+  }, [])
+  const items = useListedShorts(
+    locale,
+    saved.slice(0, PAGE_SIZE),
+    current,
+    initial ? initial.slice(0, PAGE_SIZE).map((entry) => entry.slug) : [],
+  )
 
   if (items.length === 0) return null
   return (

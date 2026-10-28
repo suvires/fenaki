@@ -27,6 +27,7 @@ describe('isHiddenInMode', () => {
       '/es/escaparates/x',
       '/es/buscar',
       '/api/search',
+      '/api/shorts',
       '/es/crear-cuenta',
       '/es/iniciar-sesion',
       '/es/cuenta',

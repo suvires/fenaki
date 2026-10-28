@@ -73,13 +73,28 @@ export type ListedShort = SavedShort & Pick<CurrentShort, 'synopsis' | 'typeLabe
 
 /**
  * The saved shorts with the catalog's current data (title, still…) instead of what was stored
- * when they were saved. Shorts no longer published are left out: their pages are gone.
+ * when they were saved. A short looked up (`checked`) and not found is no longer published and is
+ * left out: its page is gone. One not looked up yet shows what was stored, if anything was (the
+ * account keeps only the slug: such a short waits for its data).
  */
-export function withCurrent(items: SavedShort[], current: CurrentShorts): ListedShort[] {
+export function withCurrent(
+  items: SavedShort[],
+  current: CurrentShorts,
+  checked: ReadonlySet<string>,
+): ListedShort[] {
   return items.flatMap((item) => {
     const now = current[item.slug]
-    return now ? [{ ...item, ...now, savedAt: item.savedAt }] : []
+    if (now) return [{ ...item, ...now, savedAt: item.savedAt }]
+    return checked.has(item.slug) || item.title === '' ? [] : [item]
   })
+}
+
+/** The current card data of these shorts, from the site (`/api/shorts`); missing ones are gone. */
+export async function fetchCurrent(locale: string, slugs: string[]): Promise<CurrentShorts> {
+  const query = new URLSearchParams({ locale, slugs: slugs.join(',') })
+  const response = await fetch(`/api/shorts?${query.toString()}`)
+  if (!response.ok) throw new Error(`/api/shorts answered ${response.status}`)
+  return ((await response.json()) as { shorts: CurrentShorts }).shorts
 }
 
 /** The account's list, once the page has said there is an account; undefined when signed out. */

@@ -1,12 +1,13 @@
 ---
-import { PageHeader } from '@fenaki/ui'
+import { PageHeader, Pagination } from '@fenaki/ui'
 import { HistoryGrid } from '../../islands/account/HistoryGrid.tsx'
 import Base from '../../layouts/Base.astro'
 import { loadViewings } from '../../lib/account/data.ts'
 import { signInUrl } from '../../lib/account/rules.ts'
 import { toCard } from '../../lib/catalog.ts'
-import { listShorts, toCardSource } from '../../lib/cms.ts'
+import { listShortsBySlugs, toCardSource } from '../../lib/cms.ts'
 import { localeFrom, paths, translator } from '../../lib/i18n.ts'
+import { pageHref, pageOf, paginationProps, parsePage } from '../../lib/paging.ts'
 import { badgeClock } from '../../lib/services.ts'
 
 const locale = localeFrom(Astro.params.locale)
@@ -17,11 +18,16 @@ if (!member) return Astro.redirect(signInUrl(paths.signIn(locale), Astro.url.pat
 
 const t = translator(locale)
 const clock = badgeClock()
-// Everything watched, newest first. A short no longer published has no page to link to: it drops out.
-const [viewings, shorts] = await Promise.all([
-  loadViewings(member, locale),
-  listShorts(locale, 1000),
-])
+const base = paths.history(locale)
+// Everything watched, newest first, 20 a page; only this page's shorts are read. A short no longer
+// published has no page to link to: loadViewings already leaves it out.
+const requested = parsePage(Astro.url.searchParams)
+const { items: viewings, page, pages } = pageOf(await loadViewings(member, locale), requested)
+if (requested > pages) return Astro.redirect(pageHref(base, pages), 302)
+const shorts = await listShortsBySlugs(
+  locale,
+  viewings.map((viewing) => viewing.slug),
+)
 const bySlug = new Map(shorts.map((short) => [short.slug, short]))
 const items = viewings.flatMap((viewing) => {
   const short = bySlug.get(viewing.slug)
@@ -42,5 +48,6 @@ const items = viewings.flatMap((viewing) => {
   <div class="grid gap-8">
     <PageHeader title={t('account.history.title')} description={t('account.history.lead')} />
     <HistoryGrid client:load locale={locale} items={items} />
+    {pages > 1 && <Pagination {...paginationProps(t, page, pages, (n) => pageHref(base, n))} />}
   </div>
 </Base>

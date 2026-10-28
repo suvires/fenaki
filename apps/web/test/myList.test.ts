@@ -136,7 +136,7 @@ describe('withCurrent', () => {
         synopsis: 'Now.',
       },
     }
-    expect(list.withCurrent(saved, current)).toEqual([
+    expect(list.withCurrent(saved, current, new Set(['a', 'gone']))).toEqual([
       {
         slug: 'a',
         title: 'New',
@@ -147,5 +147,12 @@ describe('withCurrent', () => {
         savedAt: 2,
       },
     ])
+  })
+
+  it('shows what was stored until a short is looked up, and waits for an account stub', () => {
+    const stored = { slug: 'a', title: 'Old', seconds: 60, tone: 'sala' as const, savedAt: 2 }
+    const stubbed = list.stub({ slug: 'b', savedAt: 1 })
+    expect(list.withCurrent([stored, stubbed], {}, new Set())).toEqual([stored])
+    expect(list.withCurrent([stored, stubbed], {}, new Set(['a']))).toEqual([])
   })
 })

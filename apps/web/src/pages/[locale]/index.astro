@@ -13,6 +13,7 @@ import {
   getRanking,
   listCollections,
   listShorts,
+  listShortsBySlugs,
   peopleOf,
   shortsOf,
   sponsorOf,
@@ -22,6 +23,7 @@ import {
 } from '../../lib/cms.ts'
 import { sponsorCredit } from '../../lib/analytics.ts'
 import { localeFrom, paths, translator } from '../../lib/i18n.ts'
+import { PAGE_SIZE } from '../../lib/paging.ts'
 import { previewEnabled, topTen } from '../../lib/ranking.ts'
 import { badgeClock, siteMode } from '../../lib/services.ts'
 import type { PublishedShort } from '../../lib/cms.ts'
@@ -40,9 +42,17 @@ const [account, unfinished] = member
       loadViewings(member, locale, { unfinished: true, limit: 20 }).catch(() => []),
     ])
   : [undefined, []]
-const [shorts, collections] = landing
-  ? [[], []]
-  : await Promise.all([listShorts(locale), listCollections(locale)])
+const [shorts, collections, savedShorts] = landing
+  ? [[], [], []]
+  : await Promise.all([
+      listShorts(locale),
+      listCollections(locale),
+      // «Mi lista»'s rail: the current data of the account's 20 latest saved shorts.
+      listShortsBySlugs(
+        locale,
+        (account?.list ?? []).slice(0, PAGE_SIZE).map((entry) => entry.slug),
+      ),
+    ])
 
 // «Lo más visto»: only a real ranking of ten (or the development preview).
 const top = landing
@@ -157,7 +167,7 @@ const otherRails = rails.filter((rail) => rail.key !== 'latest')
       hrefBase={paths.short(locale, '')}
       initial={account?.list}
       current={Object.fromEntries(
-        shorts.map((s) => [s.slug, toCurrentShort(toCardSource(s), locale, t, clock)]),
+        savedShorts.map((s) => [s.slug, toCurrentShort(toCardSource(s), locale, t, clock)]),
       )}
     />
   )}

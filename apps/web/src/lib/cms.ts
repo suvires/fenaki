@@ -50,6 +50,23 @@ export async function listShorts(
   return list.docs
 }
 
+/** These published shorts, in the order of the slugs given; unpublished ones are left out. */
+export async function listShortsBySlugs(
+  locale: Locale,
+  slugs: string[],
+): Promise<PublishedShort[]> {
+  if (slugs.length === 0) return []
+  const list = await get<List<PublishedShort>>('shorts', {
+    locale,
+    depth: SHORT_DEPTH,
+    limit: slugs.length,
+    'where[status][equals]': 'published',
+    'where[slug][in]': slugs.join(','),
+  })
+  const bySlug = new Map(list.docs.map((short) => [short.slug, short]))
+  return slugs.map((slug) => bySlug.get(slug)).filter((short) => short !== undefined)
+}
+
 /**
  * «Si te ha gustado»: the published shorts most like this one, best first, as the CMS scores them
  * (same director, then channel, type and length, country, decade).

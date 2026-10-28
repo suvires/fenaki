@@ -12,6 +12,7 @@ import {
 } from '../../../lib/browse.ts'
 import { toCard } from '../../../lib/catalog.ts'
 import { localeFrom, paths, translator } from '../../../lib/i18n.ts'
+import { paginationProps } from '../../../lib/paging.ts'
 import { browseShorts, type BrowseResult } from '../../../lib/search.ts'
 import { collectionPage } from '../../../lib/seo.ts'
 import { badgeClock, siteUrl } from '../../../lib/services.ts'
@@ -156,21 +157,7 @@ const jsonLd =
         )}
         {result.pages > 1 && (
           <Pagination
-            label={t('browse.pagination.label')}
-            status={t('browse.pagination.status', { page, pages: result.pages })}
-            previous={
-              page > 1
-                ? {
-                    href: browseHref(base, filters, page - 1),
-                    label: t('browse.pagination.previous'),
-                  }
-                : undefined
-            }
-            next={
-              page < result.pages
-                ? { href: browseHref(base, filters, page + 1), label: t('browse.pagination.next') }
-                : undefined
-            }
+            {...paginationProps(t, page, result.pages, (n) => browseHref(base, filters, n))}
           />
         )}
       </div>
