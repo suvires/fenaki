@@ -12,12 +12,6 @@ const meta = {
         { label: 'Novedades', href: '#latest' },
         { label: 'Mi lista', href: '#my-list' },
       ],
-      [
-        { label: 'Ficción', href: '#fiction' },
-        { label: 'Documental', href: '#documentary' },
-        { label: 'Animación', href: '#animation' },
-        { label: 'Experimental', href: '#experimental' },
-      ],
       [{ label: 'Patrocinar una colección', href: '#sponsor' }],
       [
         { label: 'Pedir la retirada de un corto', href: '#takedown' },

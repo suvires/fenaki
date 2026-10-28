@@ -246,6 +246,30 @@ export interface Short {
    */
   posterTone?: ('sala' | 'tungsteno' | 'plata') | null;
   /**
+   * Up to two, the main one first. A filter of the catalog; counts for «Si te ha gustado».
+   */
+  genres?:
+    | (
+        | 'drama'
+        | 'comedy'
+        | 'horror'
+        | 'thriller'
+        | 'science-fiction'
+        | 'fantasy'
+        | 'romance'
+        | 'action-adventure'
+        | 'musical-dance'
+      )[]
+    | null;
+  /**
+   * Up to two. They cross every type: documentaries above all.
+   */
+  themes?: ('society' | 'lgbtiq' | 'family' | 'memory-history' | 'nature-environment' | 'sport')[] | null;
+  /**
+   * Nothing in it is unsuitable for children.
+   */
+  allAudiences?: boolean | null;
+  /**
    * Made by or for a brand. Shown with a «Contenido de marca» badge, and never in a sponsored collection.
    */
   brandedContent?: boolean | null;
@@ -343,6 +367,22 @@ export interface Short {
     technique?: ('animation' | 'live-action' | 'mixed' | 'unknown') | null;
     brandedContent?: boolean | null;
     brand?: string | null;
+    genres?:
+      | (
+          | 'drama'
+          | 'comedy'
+          | 'horror'
+          | 'thriller'
+          | 'science-fiction'
+          | 'fantasy'
+          | 'romance'
+          | 'action-adventure'
+          | 'musical-dance'
+        )[]
+      | null;
+    themes?: ('society' | 'lgbtiq' | 'family' | 'memory-history' | 'nature-environment' | 'sport')[] | null;
+    allAudiences?: boolean | null;
+    titleInThumbnail?: boolean | null;
     restrictions?: string | null;
     reuploadSigns?: string | null;
     synopsis?: string | null;
@@ -1360,6 +1400,9 @@ export interface ShortsSelect<T extends boolean = true> {
   type?: T;
   noDialogue?: T;
   posterTone?: T;
+  genres?: T;
+  themes?: T;
+  allAudiences?: T;
   brandedContent?: T;
   brand?: T;
   credits?:
@@ -1413,6 +1456,10 @@ export interface ShortsSelect<T extends boolean = true> {
         technique?: T;
         brandedContent?: T;
         brand?: T;
+        genres?: T;
+        themes?: T;
+        allAudiences?: T;
+        titleInThumbnail?: T;
         restrictions?: T;
         reuploadSigns?: T;
         synopsis?: T;

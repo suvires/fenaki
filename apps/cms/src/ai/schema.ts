@@ -1,4 +1,5 @@
 /** The AI review of a short: what the model is asked for, and how its answer is read back. */
+import { cleanClasses, SHORT_GENRES, SHORT_THEMES } from '../catalog/taxonomy.ts'
 
 export const RECOMMENDATIONS = ['publish', 'discard', 'needs-human'] as const
 export type Recommendation = (typeof RECOMMENDATIONS)[number]
@@ -41,6 +42,12 @@ export interface ShortReview {
   country: string | null
   credits: { name: string; role: (typeof CREDIT_ROLES)[number] }[]
   genre: (typeof GENRES)[number] | null
+  /** Genres in the catalog's sense (drama, horror…), up to two, the main one first. */
+  genres: (typeof SHORT_GENRES)[number][]
+  themes: (typeof SHORT_THEMES)[number][]
+  allAudiences: boolean
+  /** The thumbnail shows the film's title (a poster): cards then draw no title over it. */
+  titleInThumbnail: boolean
   technique: (typeof TECHNIQUES)[number]
   brandedContent: boolean
   brand: string | null
@@ -69,6 +76,10 @@ export const REVIEW_SCHEMA = {
     'country',
     'credits',
     'genre',
+    'genres',
+    'themes',
+    'allAudiences',
+    'titleInThumbnail',
     'technique',
     'brandedContent',
     'brand',
@@ -97,6 +108,10 @@ export const REVIEW_SCHEMA = {
       },
     },
     genre: nullable({ type: 'string', enum: [...GENRES] }),
+    genres: { type: 'array', items: { type: 'string', enum: [...SHORT_GENRES] } },
+    themes: { type: 'array', items: { type: 'string', enum: [...SHORT_THEMES] } },
+    allAudiences: { type: 'boolean' },
+    titleInThumbnail: { type: 'boolean' },
     technique: { type: 'string', enum: [...TECHNIQUES] },
     brandedContent: { type: 'boolean' },
     brand: nullable(text),
@@ -127,6 +142,8 @@ export function parseReview(raw: string): ShortReview | null {
   if (
     typeof value.isCompleteShort !== 'boolean' ||
     typeof value.brandedContent !== 'boolean' ||
+    typeof value.allAudiences !== 'boolean' ||
+    typeof value.titleInThumbnail !== 'boolean' ||
     typeof value.synopsis !== 'string' ||
     typeof value.reason !== 'string' ||
     !isOneOf(SPOKEN_KINDS, value.spokenLanguage) ||
@@ -156,6 +173,10 @@ export function parseReview(raw: string): ShortReview | null {
     country: /^[A-Z]{2}$/.test(String(value.country ?? '')) ? String(value.country) : null,
     credits,
     genre: isOneOf(GENRES, value.genre) ? value.genre : null,
+    genres: cleanClasses(SHORT_GENRES, value.genres),
+    themes: cleanClasses(SHORT_THEMES, value.themes),
+    allAudiences: value.allAudiences,
+    titleInThumbnail: value.titleInThumbnail,
     technique: value.technique,
     brandedContent: value.brandedContent,
     brand: orNull(value.brand),

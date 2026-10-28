@@ -13,6 +13,9 @@ const facts = (id: number, extra: Partial<RelatedFacts> = {}): RelatedFacts => (
   id,
   directors: [],
   channel: null,
+  genres: [],
+  themes: [],
+  allAudiences: false,
   type: null,
   seconds: null,
   country: null,
@@ -44,6 +47,24 @@ describe('relatedScore', () => {
   it('counts lengths as alike within 30 %', () => {
     expect(relatedScore(base, facts(2, { seconds: 800 }))).toBe(WEIGHTS.length)
     expect(relatedScore(base, facts(2, { seconds: 1200 }))).toBe(0)
+  })
+
+  it('counts each genre and theme in common', () => {
+    const horror = { ...base, genres: ['horror', 'thriller'], themes: ['family'] }
+    expect(relatedScore(horror, facts(2, { genres: ['thriller', 'horror'] }))).toBe(
+      2 * WEIGHTS.genre,
+    )
+    expect(relatedScore(horror, facts(2, { genres: ['comedy'], themes: ['family'] }))).toBe(
+      WEIGHTS.theme,
+    )
+  })
+
+  it('keeps a short for all audiences among others that are too', () => {
+    const forAll = { ...base, allAudiences: true }
+    expect(relatedScore(forAll, facts(2, { allAudiences: true }))).toBe(WEIGHTS.audience)
+    expect(relatedScore(forAll, facts(2))).toBe(-WEIGHTS.audience)
+    // A short for adults does not care.
+    expect(relatedScore(base, facts(2, { allAudiences: true }))).toBe(0)
   })
 
   it('never matches on missing data', () => {

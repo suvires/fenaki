@@ -3,6 +3,7 @@ import { isAdmin, isAuthenticatedField, publishedOrAuthenticated } from '../acce
 import { aiReviewField } from '../fields/aiReview.ts'
 import { importKeyField } from '../fields/importKey.ts'
 import { requiredToPublish } from '../fields/requiredToPublish.ts'
+import { GENRE_LABELS, MAX_CLASSES, THEME_LABELS } from '../catalog/taxonomy.ts'
 import { analyzeShortEndpoint, applyReviewEndpoint } from '../ai/endpoints.ts'
 import { relatedShortsEndpoint } from '../related/related.ts'
 import { addFromUrlEndpoint } from '../ingest/addFromUrl.ts'
@@ -12,6 +13,13 @@ import { queueIndexShort } from '../jobs/queue.ts'
 import { common, groups, inLanguage, label, messages, options } from '../labels.ts'
 
 export const SHORT_TYPES = ['fiction', 'documentary', 'animation', 'experimental'] as const
+
+/** Genres and themes: at most two each. */
+const atMostTwo = (value: unknown, { req }: { req: PayloadRequest }) =>
+  !Array.isArray(value) ||
+  value.length <= MAX_CLASSES ||
+  inLanguage(messages.atMostTwo, req.i18n?.language)
+
 /** Why the embed checker hid a short. */
 export const HIDDEN_REASONS = ['broken', 'private', 'not-embeddable', 'age-restricted'] as const
 export type HiddenReason = (typeof HIDDEN_REASONS)[number]
@@ -191,6 +199,54 @@ export const Shorts: CollectionConfig = {
             description: label(
               'Typographic poster tone until the short has cleared art.',
               'Tono del póster tipográfico hasta que el corto tenga arte con derechos.',
+            ),
+          },
+        },
+      ],
+    },
+    {
+      type: 'row',
+      fields: [
+        {
+          name: 'genres',
+          label: label('Genres', 'Géneros'),
+          type: 'select',
+          hasMany: true,
+          options: options(GENRE_LABELS),
+          validate: atMostTwo,
+          admin: {
+            width: '40%',
+            description: label(
+              'Up to two, the main one first. A filter of the catalog; counts for «Si te ha gustado».',
+              'Hasta dos, el principal primero. Es un filtro del catálogo y cuenta para «Si te ha gustado».',
+            ),
+          },
+        },
+        {
+          name: 'themes',
+          label: label('Themes', 'Temas'),
+          type: 'select',
+          hasMany: true,
+          options: options(THEME_LABELS),
+          validate: atMostTwo,
+          admin: {
+            width: '40%',
+            description: label(
+              'Up to two. They cross every type: documentaries above all.',
+              'Hasta dos. Valen para cualquier tipo, sobre todo para documentales.',
+            ),
+          },
+        },
+        {
+          name: 'allAudiences',
+          label: label('For all audiences', 'Para todos los públicos'),
+          type: 'checkbox',
+          defaultValue: false,
+          admin: {
+            width: '20%',
+            description: label(
+              'Nothing in it is unsuitable for children.',
+              'No tiene nada inadecuado para menores.',
             ),
           },
         },

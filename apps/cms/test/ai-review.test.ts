@@ -32,6 +32,10 @@ const review: ShortReview = {
   country: 'ES',
   credits: [{ name: 'Pedro Solís', role: 'director' }],
   genre: 'animation',
+  genres: ['drama'],
+  themes: ['family'],
+  allAudiences: true,
+  titleInThumbnail: false,
   technique: 'animation',
   brandedContent: false,
   brand: null,
@@ -153,9 +157,13 @@ describe('review answer', () => {
           { name: 'X', role: 'wizard' },
         ],
         restrictions: '   ',
+        genres: ['horror', 'western', 'horror', 'thriller', 'drama'],
+        themes: 'family',
       }),
     )
     expect(parsed).toMatchObject({
+      genres: ['horror', 'thriller'],
+      themes: [],
       country: null,
       year: null,
       spokenLanguageOther: 'en',
@@ -495,6 +503,31 @@ describe('storing and applying', () => {
     expect(world.sources[0]).toMatchObject({ subtitles: ['es'], subtitlesSource: 'ai' })
     expect(world.shorts[0]?.aiReview).toMatchObject({ status: 'analyzed' })
     expect((world.shorts[0]?.aiReview as Record<string, unknown>).appliedAt).toBeTypeOf('string')
+  })
+
+  it('fills empty genres and themes, and only ever ticks «Para todos los públicos»', async () => {
+    const proposal = { status: 'analyzed', genres: ['comedy'], themes: ['sport'] }
+    const world = fakePayload({
+      shorts: [
+        baseShort({
+          genres: [],
+          themes: ['family'],
+          aiReview: { ...proposal, allAudiences: true },
+        }),
+        baseShort({ id: 2, allAudiences: true, aiReview: { ...proposal, allAudiences: false } }),
+      ],
+      sources: [baseSource()],
+    })
+    expect(await applyReview(world.req, 1)).toEqual(
+      expect.arrayContaining(['genres', 'allAudiences']),
+    )
+    expect(world.shorts[0]).toMatchObject({
+      genres: ['comedy'],
+      themes: ['family'],
+      allAudiences: true,
+    })
+    await applyReview(world.req, 2)
+    expect(world.shorts[1]).toMatchObject({ allAudiences: true })
   })
 
   it('replaces a language that was only the channel’s default', async () => {

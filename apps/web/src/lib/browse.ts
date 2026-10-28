@@ -11,6 +11,9 @@ export const FILTERS = {
   subs: 'subtitles',
   form: 'form',
   type: 'type',
+  genre: 'genres',
+  theme: 'themes',
+  audience: 'audience',
   country: 'country',
 } as const
 
@@ -25,6 +28,10 @@ const VALID: Record<FilterKey, RegExp> = {
   subs: /^[a-z]{2,3}$/,
   form: /^(animation|live-action)$/,
   type: /^(fiction|documentary|animation|experimental)$/,
+  genre:
+    /^(drama|comedy|horror|thriller|science-fiction|fantasy|romance|action-adventure|musical-dance)$/,
+  theme: /^(society|lgbtiq|family|memory-history|nature-environment|sport)$/,
+  audience: /^all$/,
   country: /^[A-Z]{2}$/,
 }
 

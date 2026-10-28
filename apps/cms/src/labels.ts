@@ -52,6 +52,7 @@ export function inLanguage(text: AdminLabel, language: string | undefined): stri
 }
 
 export const messages = {
+  atMostTwo: label('Choose two at most.', 'Elige dos como máximo.'),
   countryCode: label(
     'Use a two-letter uppercase country code.',
     'Usa un código de país de dos letras en mayúsculas.',

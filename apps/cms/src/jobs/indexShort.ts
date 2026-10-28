@@ -57,8 +57,18 @@ export const indexShortTask: TaskConfig<{
 
       if (short && short.status === 'published') {
         const type = short.type as (typeof SHORT_TYPES)[number]
-        const typeLabel = isLocale(locale) ? createTranslator(locale)(`short.types.${type}`) : type
-        await index.addDocuments([toSearchDocument(short as IndexableShort, typeLabel)]).waitTask()
+        const t = isLocale(locale) ? createTranslator(locale) : undefined
+        const typeLabel = t ? t(`short.types.${type}`) : type
+        // Genres and themes in this locale, so «terror» finds the horror shorts.
+        const classLabels = t
+          ? [
+              ...(short.genres ?? []).map((genre) => t(`short.genres.${genre}`)),
+              ...(short.themes ?? []).map((theme) => t(`short.themes.${theme}`)),
+            ]
+          : []
+        await index
+          .addDocuments([toSearchDocument(short as IndexableShort, typeLabel, classLabels)])
+          .waitTask()
         actions.push(`${locale}:upsert`)
       } else {
         await index.deleteDocument(input.shortId).waitTask()

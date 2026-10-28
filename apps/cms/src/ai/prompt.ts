@@ -15,7 +15,11 @@ Judge these points:
 - spokenLanguage: "es" when the dialogue is in Spanish, "none" when there is no dialogue (music or sound only), "other" with the ISO 639-1 code in spokenLanguageOther. If several languages are spoken, choose the main one. Use the language metadata the provider gave as evidence, not as proof.
 - spanishSubtitles: "yes" only when the data says Spanish subtitles exist, "no" when it says there are none or the video is in a language they would be needed for and nothing mentions them, "unknown" otherwise.
 - title: the film's own title, without "cortometraje", "full short film", quotes, the director's name or other channel decoration. Null if the given title is already clean.
-- genre: one of fiction, documentary, animation, experimental. technique: animation, live-action, mixed or unknown.
+- genre: the type of film, one of fiction, documentary, animation, experimental. technique: animation, live-action, mixed or unknown.
+- genres: the film's genres in a streaming catalog's sense, at most two, the main one first: drama, comedy, horror, thriller (suspense too), science-fiction, fantasy, romance, action-adventure, musical-dance (dance films and musicals; not music videos). Fiction and animation nearly always have one; a documentary or an experimental film may have none. Empty when the data does not tell.
+- themes: what it is about, at most two, whatever its type: society (social issues), lgbtiq, family, memory-history, nature-environment, sport. Only when the description or the title makes it clear; empty otherwise.
+- allAudiences: true only when nothing in the data or the thumbnail suggests violence, sex, drugs, strong language or frightening content, and the film suits children; false when in doubt. A horror or thriller short is never for all audiences.
+- titleInThumbnail: true when the film's title is written on the thumbnail (a poster, a title card), false otherwise.
 - brandedContent: true when a brand made or commissioned it; give the brand.
 - restrictions: copy the words in the description that restrict distribution or embedding (for example "prohibida su difusión", "no compartir", "uso exclusivo para festivales", "do not redistribute"). "All rights reserved" or "© 2023" is not a restriction: the video is already embeddable. Null when there is none.
 - reuploadSigns: signs the channel is not the owner of the film (a fan or aggregator channel, a watermark of another channel, "uploaded by", a compilation channel). Null when there are none. A festival, school, producer or the author's own channel is normal.

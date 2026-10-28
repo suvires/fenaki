@@ -18,6 +18,13 @@ export interface ShortSearchDocument {
   type: string
   /** The type in the index's locale («Animación»), so viewers can search by it. */
   typeLabel: string
+  /** Genres and themes (catalog/taxonomy.ts): filters of the catalog. */
+  genres: string[]
+  themes: string[]
+  /** `all` when the short suits every audience, a filter of its own; null otherwise. */
+  audience: 'all' | null
+  /** The genres and themes in the index's locale («Terror», «Familia»), to search by them. */
+  classLabels: string[]
   posterTone: string
   /** Path of the card-sized still on the CMS origin, or null when the short has none. */
   still: string | null
@@ -43,9 +50,12 @@ export function durationBand(seconds: number): DurationBand {
 
 /** Every filter of the browse page (/es/cortos) is a facet. */
 export const SHORTS_INDEX_SETTINGS = {
-  searchableAttributes: ['title', 'directors', 'people', 'typeLabel', 'synopsis'],
+  searchableAttributes: ['title', 'directors', 'people', 'typeLabel', 'classLabels', 'synopsis'],
   filterableAttributes: [
     'type',
+    'genres',
+    'themes',
+    'audience',
     'form',
     'durationSeconds',
     'durationBand',
@@ -85,6 +95,9 @@ export interface IndexableShort {
   country?: string | null
   originalLanguage?: string | null
   type: string
+  genres?: string[] | null
+  themes?: string[] | null
+  allAudiences?: boolean | null
   posterTone?: string | null
   still?:
     | number
@@ -104,7 +117,11 @@ export interface IndexableShort {
 
 const nameOf = (person: number | PersonLike) => (typeof person === 'object' ? person.name : null)
 
-export function toSearchDocument(short: IndexableShort, typeLabel: string): ShortSearchDocument {
+export function toSearchDocument(
+  short: IndexableShort,
+  typeLabel: string,
+  classLabels: string[] = [],
+): ShortSearchDocument {
   const credits = short.credits ?? []
   const names = (role?: string) =>
     credits
@@ -132,6 +149,10 @@ export function toSearchDocument(short: IndexableShort, typeLabel: string): Shor
     form: short.type === 'animation' ? 'animation' : 'live-action',
     type: short.type,
     typeLabel,
+    genres: short.genres ?? [],
+    themes: short.themes ?? [],
+    audience: short.allAudiences ? 'all' : null,
+    classLabels,
     posterTone: short.posterTone ?? 'sala',
     still:
       typeof short.still === 'object' && short.still

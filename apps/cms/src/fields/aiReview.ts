@@ -9,6 +9,7 @@ import type {
   SUBTITLE_ANSWERS,
   TECHNIQUES,
 } from '../ai/schema.ts'
+import { GENRE_LABELS, THEME_LABELS } from '../catalog/taxonomy.ts'
 import { label, options, type AdminLabel } from '../labels.ts'
 
 const labels = {
@@ -174,6 +175,35 @@ export const aiReviewField: Field = {
           type: 'checkbox',
         },
         { name: 'brand', label: label('Brand', 'Marca'), type: 'text' },
+      ],
+    },
+    {
+      type: 'row',
+      fields: [
+        {
+          name: 'genres',
+          label: label('Genres', 'Géneros'),
+          type: 'select',
+          hasMany: true,
+          options: options(GENRE_LABELS),
+        },
+        {
+          name: 'themes',
+          label: label('Themes', 'Temas'),
+          type: 'select',
+          hasMany: true,
+          options: options(THEME_LABELS),
+        },
+        {
+          name: 'allAudiences',
+          label: label('For all audiences', 'Para todos los públicos'),
+          type: 'checkbox',
+        },
+        {
+          name: 'titleInThumbnail',
+          label: label('Title on the thumbnail', 'Título en la miniatura'),
+          type: 'checkbox',
+        },
       ],
     },
     {

@@ -77,9 +77,8 @@ const legalLinks = [
   { label: t('footer.links.cookies'), href: paths.legal(locale, 'cookies') },
 ]
 // Before launch the landing page only links the legal pages: there is no catalog to talk about.
-// Columns: the catalog, its genres, sponsors, takedown and credits, the viewer's account and
-// preferences, and the legal pages.
-const GENRES = ['fiction', 'documentary', 'animation', 'experimental'] as const
+// Columns: the catalog, sponsors, takedown and credits, the viewer's account and preferences, and
+// the legal pages.
 const footerGroups = landing
   ? [legalLinks]
   : [
@@ -88,7 +87,6 @@ const footerGroups = landing
         { label: t('footer.links.latest'), href: paths.latest(locale) },
         { label: t('footer.links.myList'), href: paths.myList(locale) },
       ],
-      GENRES.map((type) => ({ label: t(`short.types.${type}`), href: paths.genre(locale, type) })),
       [{ label: t('footer.links.sponsor'), href: paths.sponsor(locale, 'collection') }],
       [
         { label: t('footer.links.takedown'), href: paths.legal(locale, 'retirada-de-contenidos') },

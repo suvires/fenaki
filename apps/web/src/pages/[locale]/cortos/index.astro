@@ -81,6 +81,21 @@ const groups: { key: FilterKey; label: string; options: FacetOption[] }[] = [
     options: byCount('type', (type) => t(`short.types.${type}` as MessageKey)),
   },
   {
+    key: 'genre',
+    label: t('browse.filters.genre'),
+    options: byCount('genre', (genre) => t(`short.genres.${genre}` as MessageKey)),
+  },
+  {
+    key: 'theme',
+    label: t('browse.filters.theme'),
+    options: byCount('theme', (theme) => t(`short.themes.${theme}` as MessageKey)),
+  },
+  {
+    key: 'audience',
+    label: t('browse.filters.audience'),
+    options: [option('audience', 'all', t('browse.values.allAudiences'))],
+  },
+  {
     key: 'country',
     label: t('browse.filters.country'),
     options: byCount('country', (code) => formatCountry(code, locale)),

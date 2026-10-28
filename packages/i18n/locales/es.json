@@ -135,6 +135,25 @@
         "change": "Puedes cambiarlo cuando quieras en «Preferencias de reproducción», al pie de la página."
       }
     },
+    "genres": {
+      "drama": "Drama",
+      "comedy": "Comedia",
+      "horror": "Terror",
+      "thriller": "Thriller",
+      "science-fiction": "Ciencia ficción",
+      "fantasy": "Fantástico",
+      "romance": "Romance",
+      "action-adventure": "Acción y aventura",
+      "musical-dance": "Musical y danza"
+    },
+    "themes": {
+      "society": "Sociedad",
+      "lgbtiq": "LGTBIQ+",
+      "family": "Familia",
+      "memory-history": "Memoria e historia",
+      "nature-environment": "Naturaleza y medio ambiente",
+      "sport": "Deporte"
+    },
     "types": {
       "fiction": "Ficción",
       "documentary": "Documental",
@@ -292,7 +311,7 @@
       "one": "Catálogo · {count} corto",
       "other": "Catálogo · {count} cortos"
     },
-    "description": "Filtra por duración, idioma, subtítulos, forma, tipo o país. Cada combinación tiene su propia dirección para compartirla.",
+    "description": "Filtra por duración, idioma, subtítulos, forma, tipo, género, tema, público o país. Cada combinación tiene su propia dirección para compartirla.",
     "filtersLabel": "Filtros",
     "filters": {
       "duration": "Duración",
@@ -300,13 +319,17 @@
       "subtitles": "Subtítulos",
       "form": "Forma",
       "type": "Tipo",
+      "genre": "Género",
+      "theme": "Tema",
+      "audience": "Público",
       "country": "País"
     },
     "values": {
       "subtitlesEs": "En español",
       "animation": "Animación",
       "liveAction": "Imagen real",
-      "noDialogue": "Sin diálogos"
+      "noDialogue": "Sin diálogos",
+      "allAudiences": "Para todos los públicos"
     },
     "count": {
       "one": "{count} corto",

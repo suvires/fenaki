@@ -1,10 +1,16 @@
 import type { Endpoint, PayloadRequest, Where } from 'payload'
 
-/** What a short is compared on: its directors, the channel it came from, type, length, country, year. */
+/**
+ * What a short is compared on: its directors, the channel it came from, genres, themes, type,
+ * audience, length, country and year.
+ */
 export interface RelatedFacts {
   id: number
   directors: number[]
   channel: number | null
+  genres: string[]
+  themes: string[]
+  allAudiences: boolean
   type: string | null
   seconds: number | null
   country: string | null
@@ -13,12 +19,17 @@ export interface RelatedFacts {
 
 /**
  * How much each shared trait counts. The same director outweighs everything else; then the same
- * channel (a festival, school or maker), then the kind of film and its length.
+ * channel (a festival, school or maker), then each genre and theme in common, the kind of film
+ * and its length. A short for all audiences leans to others that are too, and its neighbours
+ * that are not lose points: whoever watches with children sees more of the same.
  */
 export const WEIGHTS = {
   director: 100,
   channel: 40,
+  genre: 30,
+  theme: 15,
   type: 20,
+  audience: 25,
   length: 10,
   country: 5,
   decade: 5,
@@ -38,6 +49,9 @@ export function relatedScore(base: RelatedFacts, other: RelatedFacts) {
   let score = 0
   if (other.directors.some((person) => base.directors.includes(person))) score += WEIGHTS.director
   if (base.channel !== null && other.channel === base.channel) score += WEIGHTS.channel
+  score += WEIGHTS.genre * other.genres.filter((genre) => base.genres.includes(genre)).length
+  score += WEIGHTS.theme * other.themes.filter((theme) => base.themes.includes(theme)).length
+  if (base.allAudiences) score += other.allAudiences ? WEIGHTS.audience : -WEIGHTS.audience
   if (base.type && other.type === base.type) score += WEIGHTS.type
   if (base.seconds && other.seconds) {
     const longer = Math.max(base.seconds, other.seconds)
@@ -64,6 +78,9 @@ type ShortDoc = {
   id: number
   credits?: { role?: string | null; person?: number | { id: number } | null }[] | null
   ingestChannel?: number | { id: number } | null
+  genres?: string[] | null
+  themes?: string[] | null
+  allAudiences?: boolean | null
   type?: string | null
   durationSeconds?: number | null
   country?: string | null
@@ -81,6 +98,9 @@ export function factsOf(short: ShortDoc): RelatedFacts {
       .map((credit) => idOf(credit.person))
       .filter((id): id is number => id !== null),
     channel: idOf(short.ingestChannel),
+    genres: short.genres ?? [],
+    themes: short.themes ?? [],
+    allAudiences: Boolean(short.allAudiences),
     type: short.type ?? null,
     seconds: short.durationSeconds ?? null,
     country: short.country ?? null,
@@ -91,6 +111,9 @@ export function factsOf(short: ShortDoc): RelatedFacts {
 const SELECT = {
   credits: true,
   ingestChannel: true,
+  genres: true,
+  themes: true,
+  allAudiences: true,
   type: true,
   durationSeconds: true,
   country: true,
@@ -98,8 +121,8 @@ const SELECT = {
 } as const
 
 /**
- * The published shorts most like this one: candidates sharing a director, the channel, or the
- * type and length, scored by what they share.
+ * The published shorts most like this one: candidates sharing a director, the channel, a genre,
+ * a theme, or the type and length, scored by what they share.
  */
 export async function relatedShortIds(req: PayloadRequest, id: number, limit: number) {
   const short = await req.payload
@@ -111,6 +134,8 @@ export async function relatedShortIds(req: PayloadRequest, id: number, limit: nu
   const traits: Where[] = []
   if (base.directors.length > 0) traits.push({ 'credits.person': { in: base.directors } })
   if (base.channel !== null) traits.push({ ingestChannel: { equals: base.channel } })
+  if (base.genres.length > 0) traits.push({ genres: { in: base.genres } })
+  if (base.themes.length > 0) traits.push({ themes: { in: base.themes } })
   if (base.type) {
     const near: Where = { type: { equals: base.type } }
     if (base.seconds)

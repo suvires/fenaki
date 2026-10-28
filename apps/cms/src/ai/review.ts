@@ -217,6 +217,10 @@ export function reviewData(review: ShortReview, model: string) {
     country: review.country,
     credits: review.credits,
     genre: review.genre,
+    genres: review.genres,
+    themes: review.themes,
+    allAudiences: review.allAudiences,
+    titleInThumbnail: review.titleInThumbnail,
     technique: review.technique,
     brandedContent: review.brandedContent,
     brand: review.brand,
@@ -343,6 +347,13 @@ export async function applyReview(req: PayloadRequest, shortId: number): Promise
     applied.push('originalLanguage')
   }
 
+  if ((short.genres ?? []).length === 0 && (proposal.genres ?? []).length > 0)
+    fill('genres', proposal.genres)
+  if ((short.themes ?? []).length === 0 && (proposal.themes ?? []).length > 0)
+    fill('themes', proposal.themes)
+  // A box nobody ticks unless it applies: the proposal only ever ticks it.
+  if (proposal.allAudiences && !short.allAudiences) fill('allAudiences', true)
+
   if (proposal.brandedContent && !short.brandedContent) {
     data.brandedContent = true
     applied.push('brandedContent')
@@ -399,6 +410,24 @@ export async function applyReview(req: PayloadRequest, shortId: number): Promise
         req,
       })
       applied.push('subtitles')
+    }
+  }
+
+  // The provider's thumbnail is the short's still: if it carries the title, cards draw none.
+  // Only an unticked box on a provider still: an author's still is the editor's to describe.
+  const stillId = idOf(short.still as number | { id: number } | null | undefined)
+  if (proposal.titleInThumbnail && stillId !== undefined) {
+    const still = await payload
+      .findByID({ collection: 'stills', id: stillId, depth: 0, req })
+      .catch(() => null)
+    if (still && still.origin === 'provider' && !still.includesTitle) {
+      await payload.update({
+        collection: 'stills',
+        id: still.id,
+        data: { includesTitle: true },
+        req,
+      })
+      applied.push('stillIncludesTitle')
     }
   }
   return applied
