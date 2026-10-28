@@ -234,7 +234,6 @@ The first tokens were named after the brand's metaphors (`sala`, `tungsteno`, `t
 | `perforation-hole` | `component.poster.perforation-hole`    | `--poster-perforation-hole`    | —       |
 | `tooltip-arrow`    | `component.tooltip.arrow-size`         | `--tooltip-arrow-size`         | —       |
 | `lift`             | `component.poster.lift`                | `--poster-lift`                | —       |
-| `press`            | `component.control.press-offset`       | `--control-press-offset`       | —       |
 | `progress`         | `component.short-card.progress-height` | `--short-card-progress-height` | —       |
 | `hero`             | `component.short-hero.min-height`      | `--short-hero-min-height`      | —       |
 | `page-glow`        | `component.page-glow.height`           | `--page-glow-height`           | —       |

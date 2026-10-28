@@ -1,5 +1,5 @@
 import { createTranslator, type Locale } from '@fenaki/i18n'
-import { Pagination, SearchField, ShortCard } from '@fenaki/ui'
+import { Pagination, SearchField, ShortGrid } from '@fenaki/ui'
 import { useEffect, useRef, useState } from 'react'
 import { toCard, type BadgeClock } from '../lib/catalog.ts'
 import { paths } from '../lib/i18n.ts'
@@ -98,16 +98,11 @@ export function SearchIsland({ locale, initial, initialError, clock }: SearchIsl
         {status}
       </p>
       {state.kind === 'results' && state.result.hits.length > 0 ? (
-        <ul className="m-0 p-0 list-none grid grid-cols-[repeat(auto-fill,minmax(var(--short-card-width),1fr))] gap-4">
-          {state.result.hits.map((hit) => (
-            <li key={hit.slug}>
-              <ShortCard
-                {...toCard(hit, locale, t, paths.short(locale, hit.slug), clock)}
-                stretch
-              />
-            </li>
-          ))}
-        </ul>
+        <ShortGrid
+          items={state.result.hits.map((hit) =>
+            toCard(hit, locale, t, paths.short(locale, hit.slug), clock),
+          )}
+        />
       ) : null}
       {state.kind === 'results' && state.result.pages > 1 ? (
         <Pagination

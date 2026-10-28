@@ -12,7 +12,7 @@ type Story = StoryObj<typeof meta>
 
 const MOTION_TYPES = ['duration', 'cubicBezier']
 
-/** Only posters, previews and pressed buttons move. Everything stops with prefers-reduced-motion. */
+/** Only posters and previews move. Everything stops with prefers-reduced-motion. */
 export const Timing: Story = {
   render: () => (
     <Page>

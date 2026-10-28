@@ -1,6 +1,6 @@
 ---
 import { badgeClock } from '../../../lib/services.ts'
-import { ShortCard, SponsorCredit } from '@fenaki/ui'
+import { ShortGrid, SponsorCredit } from '@fenaki/ui'
 import NotFound from '../../../components/NotFound.astro'
 import Base from '../../../layouts/Base.astro'
 import { toCard } from '../../../lib/catalog.ts'
@@ -73,16 +73,11 @@ const jsonLd = collection
           />
         )}
       </header>
-      <ul class="m-0 p-0 list-none grid grid-cols-[repeat(auto-fill,minmax(var(--short-card-width),1fr))] gap-4">
-        {shorts.map((short) => (
-          <li>
-            <ShortCard
-              {...toCard(toCardSource(short), locale, t, paths.short(locale, short.slug), clock)}
-              stretch
-            />
-          </li>
-        ))}
-      </ul>
+      <ShortGrid
+        items={shorts.map((short) =>
+          toCard(toCardSource(short), locale, t, paths.short(locale, short.slug), clock),
+        )}
+      />
     </>
   )}
 </Base>

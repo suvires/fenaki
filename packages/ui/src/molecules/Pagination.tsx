@@ -22,7 +22,7 @@ const AROUND = 2
 
 /**
  * Previous and next arrows under a long list, with the current page and the two before and after
- * it as numbers. Plain links: every page has its own URL.
+ * it as numbers, at the right edge of the list. Plain links: every page has its own URL.
  */
 export function Pagination({
   label,
@@ -40,7 +40,10 @@ export function Pagination({
   const number =
     'inline-flex items-center justify-center min-w-(--control-height-md) h-(--control-height-md) px-2 rounded-full text-button-md no-underline'
   return (
-    <nav aria-label={label} className={cx('flex flex-wrap items-center gap-2', className)}>
+    <nav
+      aria-label={label}
+      className={cx('flex flex-wrap items-center justify-end gap-2', className)}
+    >
       {page > 1 ? (
         <IconButton
           icon="chevron"

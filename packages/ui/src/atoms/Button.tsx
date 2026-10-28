@@ -44,8 +44,8 @@ export function Button({
 }: ButtonProps) {
   const classes = cx(
     'inline-flex items-center justify-center gap-2 rounded-control border cursor-pointer no-underline',
-    'transition-[background-color,transform] duration-(--duration-fast) ease-standard',
-    'active:translate-y-(--control-press-offset) focus-visible:focus-ring motion-reduce:transition-none',
+    'transition-[background-color] duration-(--duration-fast) ease-standard',
+    'focus-visible:focus-ring motion-reduce:transition-none',
     size === 'lg'
       ? 'h-(--control-height-lg) text-button-lg'
       : size === 'sm'

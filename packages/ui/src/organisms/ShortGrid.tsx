@@ -12,13 +12,16 @@ export interface ShortGridProps {
   className?: string
 }
 
-/** Short cards in a responsive grid: a collection, a showcase, a person's shorts, results. */
+/**
+ * Short cards in a responsive grid: a collection, a showcase, a person's shorts, results. One,
+ * two or four a row, so a page of 20 always fills its last row.
+ */
 export function ShortGrid({ label, items, footer, className }: ShortGridProps) {
   return (
     <ul
       aria-label={label}
       className={cx(
-        'm-0 p-0 list-none grid grid-cols-[repeat(auto-fill,minmax(var(--short-card-width),1fr))] gap-4',
+        'm-0 p-0 list-none grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4',
         className,
       )}
     >

@@ -2,8 +2,8 @@ import type { Translate } from '@fenaki/i18n'
 import type { PaginationProps } from '@fenaki/ui'
 
 /**
- * Pages of a list kept by the viewer («Mi lista», the history): 20 shorts a page, the page in the
- * URL (`?page=2`) so every page has its own address.
+ * Paged lists (the catalog, the search, «Mi lista», the history): 20 shorts a page, the page in
+ * the URL (`?page=2`) so every page has its own address.
  */
 
 /** Shorts per page: five rows of four on a wide screen. */

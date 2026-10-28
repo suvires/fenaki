@@ -50,8 +50,8 @@ export function IconButton({
 }: IconButtonProps) {
   const classes = cx(
     'inline-flex flex-none items-center justify-center rounded-full border cursor-pointer no-underline',
-    'transition-[background-color,border-color,transform] duration-(--duration-fast) ease-standard',
-    'active:translate-y-(--control-press-offset) focus-visible:focus-ring motion-reduce:transition-none',
+    'transition-[background-color,border-color] duration-(--duration-fast) ease-standard',
+    'focus-visible:focus-ring motion-reduce:transition-none',
     SIZES[size],
     VARIANTS[variant],
     className,

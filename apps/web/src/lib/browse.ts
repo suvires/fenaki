@@ -2,6 +2,7 @@
  * The browse page's filters: how they read from and write to the URL, and how they become
  * Meilisearch filters. No Astro imports, so tests can use it.
  */
+import { PAGE_SIZE } from './paging.ts'
 
 /** URL parameter → index attribute. The parameter names are the same in every locale. */
 export const FILTERS = {
@@ -27,7 +28,8 @@ const VALID: Record<FilterKey, RegExp> = {
   country: /^[A-Z]{2}$/,
 }
 
-export const PAGE_SIZE = 48
+/** Shorts a page: the same 20 as every paged list (lib/paging.ts). */
+export { PAGE_SIZE }
 
 /** The filters and page in a URL. Unknown or malformed values are ignored, never passed on. */
 export function parseBrowseParams(params: URLSearchParams): { filters: Filters; page: number } {

@@ -30,7 +30,7 @@ export interface SearchResult {
   query: string
   hits: CardSource[]
   total: number
-  /** This page, from 1, and how many there are (48 shorts a page, as in the catalog). */
+  /** This page, from 1, and how many there are (20 shorts a page, as every paged list). */
   page: number
   pages: number
 }
