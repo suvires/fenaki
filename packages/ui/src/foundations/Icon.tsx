@@ -16,7 +16,7 @@ import { cx } from './cx.ts'
  *   (see DOUBLE), so the pair spans the same box as a single one.
  * The chevron is the one exception: tall, to sit at the cap height of a display title (Rail). The
  * chevron-down is a plain diagonal pair, 13px wide like the check and the close.
- * - the share icon, an arrow out of an open tray, spans 16px tall (4–20) and 14px wide (5–19).
+ * - the share icon, a paper plane flying up and right with its fold, spans 16px each way (4–20).
  * The «Grid» story shows them over the keylines.
  */
 const PATHS = {
@@ -42,7 +42,7 @@ const PATHS = {
   close: 'M5.5 5.5l13 13M18.5 5.5l-13 13',
   // An arrow out of an open tray, the arrow's point at the top keyline: 16px tall (4–20) like the
   // plus, the tray 14px wide (5–19).
-  share: 'M12 4v10M8 8l4-4 4 4M5 12v8h14v-8',
+  share: 'M20 4 4 10.5l6.5 3 3 6.5zM20 4l-9.5 9.5',
 } as const
 
 /**

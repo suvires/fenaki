@@ -1,4 +1,4 @@
-import { Button, type ButtonProps } from '@fenaki/ui'
+import { Button, LabelledIconButton, type ButtonProps } from '@fenaki/ui'
 import { useEffect, useState } from 'react'
 import { has, subscribe, toggle, type NewSavedShort } from '../lib/myList.ts'
 
@@ -6,9 +6,11 @@ interface MyListButtonProps {
   short: NewSavedShort
   /** «Añadir a mi lista» */
   label: string
-  /** «En mi lista» */
+  /** «En mi lista», or «Quitar de mi lista» on an icon-only button. */
   savedLabel: string
   size?: ButtonProps['size']
+  /** Only the icon, with the label in a tooltip and as its accessible name (a short's hero). */
+  iconOnly?: boolean
   /** Signed in: whether the account has it, as the server rendered it, so nothing flickers. */
   initialSaved?: boolean
 }
@@ -23,6 +25,7 @@ export function MyListButton({
   label,
   savedLabel,
   size = 'md',
+  iconOnly = false,
   initialSaved = false,
 }: MyListButtonProps) {
   const [saved, setSaved] = useState(initialSaved)
@@ -33,6 +36,17 @@ export function MyListButton({
     return subscribe(sync)
   }, [short.slug])
 
+  if (iconOnly)
+    return (
+      <LabelledIconButton
+        icon={saved ? 'check' : 'plus'}
+        label={saved ? savedLabel : label}
+        variant="translucent"
+        size={size}
+        aria-pressed={saved}
+        onClick={() => toggle(short)}
+      />
+    )
   return (
     <Button
       variant="secondary"

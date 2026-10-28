@@ -1,5 +1,6 @@
 import { useState, useSyncExternalStore } from 'react'
 import { Button } from '../atoms/Button.tsx'
+import { LabelledIconButton } from '../molecules/LabelledIconButton.tsx'
 import { Dialog } from './Dialog.tsx'
 
 export interface ShareTarget {
@@ -28,6 +29,8 @@ export interface ShareButtonProps {
   moreLabel: string
   closeLabel: string
   size?: 'md' | 'lg'
+  /** Only the icon, with the label in a tooltip and as its accessible name (a short's hero). */
+  iconOnly?: boolean
   className?: string
 }
 
@@ -57,6 +60,7 @@ export function ShareButton({
   moreLabel,
   closeLabel,
   size = 'lg',
+  iconOnly = false,
   className,
 }: ShareButtonProps) {
   const [open, setOpen] = useState(false)
@@ -78,23 +82,36 @@ export function ShareButton({
     }
   }
 
+  const onClick = () => {
+    if (share && window.matchMedia?.('(pointer: coarse)').matches) void share()
+    else {
+      setCopied(false)
+      setOpen(true)
+    }
+  }
+
   return (
     <>
-      <Button
-        variant="secondary"
-        size={size}
-        icon="share"
-        className={className}
-        onClick={() => {
-          if (share && window.matchMedia?.('(pointer: coarse)').matches) void share()
-          else {
-            setCopied(false)
-            setOpen(true)
-          }
-        }}
-      >
-        {label}
-      </Button>
+      {iconOnly ? (
+        <LabelledIconButton
+          icon="share"
+          label={label}
+          variant="translucent"
+          size={size}
+          className={className}
+          onClick={onClick}
+        />
+      ) : (
+        <Button
+          variant="secondary"
+          size={size}
+          icon="share"
+          className={className}
+          onClick={onClick}
+        >
+          {label}
+        </Button>
+      )}
       <Dialog
         open={open}
         onClose={() => setOpen(false)}

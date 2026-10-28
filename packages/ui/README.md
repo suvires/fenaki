@@ -84,44 +84,45 @@ Components follow Brad Frost's atomic design. Each file sits in the folder of it
 
 ### Classification
 
-| Component        | Level      | Why                                                                                             |
-| ---------------- | ---------- | ----------------------------------------------------------------------------------------------- |
-| `Icon`           | foundation | The icon set: drawn by every level, never on its own.                                           |
-| `Wordmark`       | foundation | The logotype, a brand asset.                                                                    |
-| `Monogram`       | foundation | The «F» mark, a brand asset.                                                                    |
-| `TmdbLogo`       | foundation | TMDB's attribution mark, an asset used where its data appears.                                  |
-| `Badge`          | atom       | One short label in a tone; nothing smaller would mean anything.                                 |
-| `Button`         | atom       | One control: a label and an optional icon.                                                      |
-| `IconButton`     | atom       | One control with only an icon.                                                                  |
-| `Duration`       | atom       | One formatted value (`Intl`) in the timecode style.                                             |
-| `Poster`         | atom       | The typographic cover: a single image-like block of title, director and year.                   |
-| `RankNumber`     | atom       | One decorative figure.                                                                          |
-| `Prose`          | atom       | A typographic wrapper for rich text; it composes no other component.                            |
-| `Tooltip`        | atom       | One label bubble attached to its trigger.                                                       |
-| `SearchField`    | atom       | One input; its label is for screen readers and its icon is decoration.                          |
-| `Checkbox`       | molecule   | A native checkbox and its visible label, as one control.                                        |
-| `TextField`      | molecule   | Label, input and hint or error working as a unit.                                               |
-| `Notice`         | molecule   | A toned title and its message.                                                                  |
-| `LicenseNote`    | molecule   | The license route, its credit text and link.                                                    |
-| `SponsorCredit`  | molecule   | The «Presentado por» label with the sponsor's name or logo, linked.                             |
-| `PageHeader`     | molecule   | Eyebrow, heading and description: the head of a page.                                           |
-| `Pagination`     | molecule   | Previous and next links with the page status.                                                   |
-| `FilterChips`    | molecule   | A group of toggle chips with one job: filter a list.                                            |
-| `FacetGroup`     | molecule   | A heading and its facet chips with counts.                                                      |
-| `RatingButtons`  | molecule   | Icon buttons and tooltips folded into one rating control.                                       |
-| `OfferCard`      | molecule   | Audience, offer, prices and a `Button`: one card.                                               |
-| `ShortCard`      | molecule   | Still or `Poster`, `Badge`s, `Duration`, title and progress: the catalogue's card, one unit.    |
-| `Dialog`         | organism   | The modal panel: a self-contained section over the page, holding whole forms or messages.       |
-| `PlayerGate`     | organism   | The player area: still, consent message and actions, a distinct section of a short's page.      |
-| `ShortPreview`   | organism   | The floating preview: poster or still, metadata, `RatingButtons` and actions.                   |
-| `Rail`           | organism   | A heading, its action and a scrolling row of cards with arrows.                                 |
-| `RankedRail`     | organism   | The Top 10 rail; its `RankedItem` (a `RankNumber` beside a `ShortCard`) lives in the same file. |
-| `ShortGrid`      | organism   | A responsive grid of `ShortCard`s.                                                              |
-| `ShortHero`      | organism   | The featured short: backdrop or poster, title, metadata and actions.                            |
-| `CollectionHero` | organism   | A collection's head: art, title, description, actions and, when sponsored, the `SponsorCredit`. |
-| `ShowcaseHero`   | organism   | A showcase's head: logo, title, links and the `SponsorCredit`.                                  |
-| `SiteHeader`     | organism   | The site's navigation, search and account menu.                                                 |
-| `SiteFooter`     | organism   | The site's footer: mark and links.                                                              |
+| Component            | Level      | Why                                                                                             |
+| -------------------- | ---------- | ----------------------------------------------------------------------------------------------- |
+| `Icon`               | foundation | The icon set: drawn by every level, never on its own.                                           |
+| `Wordmark`           | foundation | The logotype, a brand asset.                                                                    |
+| `Monogram`           | foundation | The «F» mark, a brand asset.                                                                    |
+| `TmdbLogo`           | foundation | TMDB's attribution mark, an asset used where its data appears.                                  |
+| `Badge`              | atom       | One short label in a tone; nothing smaller would mean anything.                                 |
+| `Button`             | atom       | One control: a label and an optional icon.                                                      |
+| `IconButton`         | atom       | One control with only an icon.                                                                  |
+| `Duration`           | atom       | One formatted value (`Intl`) in the timecode style.                                             |
+| `Poster`             | atom       | The typographic cover: a single image-like block of title, director and year.                   |
+| `RankNumber`         | atom       | One decorative figure.                                                                          |
+| `Prose`              | atom       | A typographic wrapper for rich text; it composes no other component.                            |
+| `Tooltip`            | atom       | One label bubble attached to its trigger.                                                       |
+| `SearchField`        | atom       | One input; its label is for screen readers and its icon is decoration.                          |
+| `Checkbox`           | molecule   | A native checkbox and its visible label, as one control.                                        |
+| `TextField`          | molecule   | Label, input and hint or error working as a unit.                                               |
+| `LabelledIconButton` | molecule   | An `IconButton` and the `Tooltip` that names it, as one control.                                |
+| `Notice`             | molecule   | A toned title and its message.                                                                  |
+| `LicenseNote`        | molecule   | The license route, its credit text and link.                                                    |
+| `SponsorCredit`      | molecule   | The «Presentado por» label with the sponsor's name or logo, linked.                             |
+| `PageHeader`         | molecule   | Eyebrow, heading and description: the head of a page.                                           |
+| `Pagination`         | molecule   | Previous and next links with the page status.                                                   |
+| `FilterChips`        | molecule   | A group of toggle chips with one job: filter a list.                                            |
+| `FacetGroup`         | molecule   | A heading and its facet chips with counts.                                                      |
+| `RatingButtons`      | molecule   | Icon buttons and tooltips folded into one rating control.                                       |
+| `OfferCard`          | molecule   | Audience, offer, prices and a `Button`: one card.                                               |
+| `ShortCard`          | molecule   | Still or `Poster`, `Badge`s, `Duration`, title and progress: the catalogue's card, one unit.    |
+| `Dialog`             | organism   | The modal panel: a self-contained section over the page, holding whole forms or messages.       |
+| `PlayerGate`         | organism   | The player area: still, consent message and actions, a distinct section of a short's page.      |
+| `ShortPreview`       | organism   | The floating preview: poster or still, metadata, `RatingButtons` and actions.                   |
+| `Rail`               | organism   | A heading, its action and a scrolling row of cards with arrows.                                 |
+| `RankedRail`         | organism   | The Top 10 rail; its `RankedItem` (a `RankNumber` beside a `ShortCard`) lives in the same file. |
+| `ShortGrid`          | organism   | A responsive grid of `ShortCard`s.                                                              |
+| `ShortHero`          | organism   | The featured short: backdrop or poster, title, metadata and actions.                            |
+| `CollectionHero`     | organism   | A collection's head: art, title, description, actions and, when sponsored, the `SponsorCredit`. |
+| `ShowcaseHero`       | organism   | A showcase's head: logo, title, links and the `SponsorCredit`.                                  |
+| `SiteHeader`         | organism   | The site's navigation, search and account menu.                                                 |
+| `SiteFooter`         | organism   | The site's footer: mark and links.                                                              |
 
 `RankedItem` is exported from `RankedRail.tsx` and counts as a molecule; it stays with the rail it only appears in.
 

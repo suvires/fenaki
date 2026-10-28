@@ -1,12 +1,12 @@
 import { defaultLocale, type Locale } from '@fenaki/i18n'
-import { useState, type CSSProperties, type PointerEventHandler, type Ref } from 'react'
+import type { CSSProperties, PointerEventHandler, Ref } from 'react'
 import { cx } from '../foundations/cx.ts'
 import { stillTextClass, type StillTextColor } from '../foundations/stillText.ts'
 import { Badge, type BadgeTone } from '../atoms/Badge.tsx'
 import { Duration } from '../atoms/Duration.tsx'
-import { IconButton, type IconButtonProps } from '../atoms/IconButton.tsx'
+import { IconButton } from '../atoms/IconButton.tsx'
 import { Poster, type PosterTone } from '../atoms/Poster.tsx'
-import { Tooltip } from '../atoms/Tooltip.tsx'
+import { LabelledIconButton } from '../molecules/LabelledIconButton.tsx'
 import { RatingButtons, type Rating, type RatingButtonsProps } from '../molecules/RatingButtons.tsx'
 
 export interface ShortPreviewProps {
@@ -191,22 +191,5 @@ export function ShortPreview({
         className="absolute inset-0 rounded-md focus-visible:focus-ring"
       />
     </div>
-  )
-}
-
-/** An icon button that shows what it does in a tooltip above it, on hover and on focus. */
-function LabelledIconButton(props: IconButtonProps) {
-  const [open, setOpen] = useState(false)
-  return (
-    <span
-      className="relative inline-flex"
-      onPointerEnter={() => setOpen(true)}
-      onPointerLeave={() => setOpen(false)}
-      onFocus={() => setOpen(true)}
-      onBlur={() => setOpen(false)}
-    >
-      <IconButton {...props} />
-      <Tooltip open={open}>{props.label}</Tooltip>
-    </span>
   )
 }
