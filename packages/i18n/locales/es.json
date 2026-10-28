@@ -596,7 +596,7 @@
     },
     "history": {
       "title": "Historial",
-      "empty": "Todavía no has visto ningún corto con la sesión iniciada.",
+      "empty": "Todavía no has visto ningún corto. Los que empieces a ver aparecerán aquí, para que puedas seguir donde lo dejaste.",
       "remove": "Quitar del historial",
       "removeFromContinueWatching": "Quitar de Seguir viendo",
       "removeNamed": "Quitar {title} del historial",
