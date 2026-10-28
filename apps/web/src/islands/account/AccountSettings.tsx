@@ -144,10 +144,17 @@ export function AccountSettings({
 
   return (
     <div className="grid gap-12">
-      <PageHeader
-        title={t('account.settings.title')}
-        description={t('account.settings.signedInAs', { email })}
-      />
+      <PageHeader title={t('account.settings.title')}>
+        {/* Signing out next to the account it signs out of (it is also in the header's menu). */}
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-3 text-body-l text-secondary">
+          <p className="m-0">{t('account.settings.signedInAs', { email })}</p>
+          <form method="post" action={signOutAction}>
+            <Button type="submit" variant="secondary">
+              {t('account.settings.signOut')}
+            </Button>
+          </form>
+        </div>
+      </PageHeader>
 
       <section className="grid gap-4 max-w-(--container-narrow)" aria-labelledby="account-profile">
         <h2 id="account-profile" className={heading}>
@@ -227,14 +234,6 @@ export function AccountSettings({
             {t('account.settings.delete.start')}
           </Button>
         </div>
-      </section>
-
-      <section className="grid gap-4 max-w-(--container-narrow)">
-        <form method="post" action={signOutAction}>
-          <Button type="submit" variant="secondary">
-            {t('account.settings.signOut')}
-          </Button>
-        </form>
       </section>
 
       <Dialog
