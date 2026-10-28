@@ -1,4 +1,4 @@
-import { postgresAdapter } from '@payloadcms/db-postgres'
+import { postgresAdapter, type PostgresAdapter } from '@payloadcms/db-postgres'
 import { es } from '@payloadcms/translations/languages/es'
 import { en } from '@payloadcms/translations/languages/en'
 import { defaultLocale, locales } from '@fenaki/i18n'
@@ -133,7 +133,15 @@ export default buildConfig({
   email: emailAdapter(),
   // Sentry when SENTRY_DSN is set, in every process that loads Payload: the admin server, the jobs
   // worker and the CLI.
-  onInit: () => initSentry(),
+  onInit: (payload) => {
+    initSentry()
+    // A PostgreSQL restart ends the pool's idle connections, and pg reports it on the pool: with
+    // no listener Node takes it as an uncaught exception and the process dies. The pool opens new
+    // connections on the next query.
+    ;(payload.db as unknown as PostgresAdapter).pool.on('error', (error) =>
+      payload.logger.warn(`PostgreSQL closed an idle connection: ${error.message}`),
+    )
+  },
   hooks: { afterError: [reportApiError] },
   typescript: { outputFile: path.resolve(dirname, 'payload-types.ts') },
   sharp,
