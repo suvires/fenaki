@@ -459,7 +459,9 @@ test('«Sube tu corto» asks to sign in, then checks the link and the terms', as
   await verify(page, email)
   await signIn(page, email, PASSWORD, '/es/sube-tu-corto')
   await expect(page).toHaveURL(/\/es\/sube-tu-corto$/)
-  await expect(page.getByText('Todavía no has enviado ningún corto.')).toBeVisible()
+  // «Mis envíos» is in the account menu only once they have sent a short.
+  await page.getByRole('button', { name: 'Cuenta' }).click()
+  await expect(page.getByRole('link', { name: 'Mis envíos' })).toHaveCount(0)
 
   // Everything missing is said under its field, before anything is sent.
   await page.getByRole('button', { name: 'Enviar' }).click()

@@ -45,7 +45,7 @@ Desde «Mi cuenta» puedes cambiar tu nombre y tu contraseña, descargar tus dat
 ## 7. Envío de cortos («Sube tu corto»)
 
 - Puedes proponer cortos publicados en YouTube o Vimeo en tu propio canal o en el canal oficial de quien tiene sus derechos: su autor o autora, la productora, la distribuidora, un festival, una escuela de cine o una institución.
-- Al enviarlo declaras que es así. Para comprobarlo te pedimos que pongas un código en la descripción del vídeo; cuando lo publiquemos, puedes quitarlo.
+- Al enviarlo declaras que es así. Antes de publicarlo comprobamos el canal.
 - FENAKI no copia ni aloja el vídeo: lo muestra con el reproductor oficial de YouTube o Vimeo. El corto sigue siendo de sus titulares y solo se puede ver mientras siga publicado allí y permita la inserción en otras webs.
 - Revisamos cada envío y decidimos si lo publicamos. Podemos completar su ficha con la información que publiquen sus titulares o terceros (sinopsis, créditos, premios, géneros y temas) y con la miniatura del vídeo. Si no lo publicamos, te explicamos el motivo por email.
 - Puedes pedir que lo retiremos en cualquier momento escribiendo a hola@fenaki.tv o desde el [procedimiento de retirada](/es/retirada-de-contenidos). También deja de verse en FENAKI si lo borras o lo haces privado.

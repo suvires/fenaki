@@ -1147,6 +1147,7 @@ export interface Member {
   pendingEmail?: string | null;
   pendingEmailToken?: string | null;
   pendingEmailExpiresAt?: string | null;
+  hasSubmissions?: boolean | null;
   /**
    * The member chose to load these players without the consent dialog, on every device. They change it at «Preferencias de reproducción».
    */
@@ -1221,7 +1222,7 @@ export interface Viewing {
   createdAt: string;
 }
 /**
- * Shorts proposed by viewers from «Sube tu corto». Publishing the short approves its submission; rejecting one emails the reason to its sender.
+ * Shorts proposed by viewers from «Sube tu corto». Check the channel is official before publishing the short: publishing approves its submission, rejecting one emails the reason to its sender.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "submissions".
@@ -1234,19 +1235,13 @@ export interface Submission {
   provider: 'youtube' | 'vimeo';
   externalId: string;
   relation: 'author' | 'producer' | 'distributor' | 'festival' | 'school' | 'institution';
-  note?: string | null;
-  /**
-   * The sender puts it in the video description to prove the channel is theirs.
-   */
-  code: string;
-  status: 'awaiting-code' | 'in-review' | 'approved' | 'rejected';
+  status: 'in-review' | 'approved' | 'rejected';
   /**
    * Sent to the sender, in Spanish. Save with the status «Rejected».
    */
   reason?: string | null;
   short?: (number | null) | Short;
   acceptedTermsAt: string;
-  verifiedAt?: string | null;
   notifiedAt?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -2069,6 +2064,7 @@ export interface MembersSelect<T extends boolean = true> {
   pendingEmail?: T;
   pendingEmailToken?: T;
   pendingEmailExpiresAt?: T;
+  hasSubmissions?: T;
   playerConsent?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -2136,13 +2132,10 @@ export interface SubmissionsSelect<T extends boolean = true> {
   provider?: T;
   externalId?: T;
   relation?: T;
-  note?: T;
-  code?: T;
   status?: T;
   reason?: T;
   short?: T;
   acceptedTermsAt?: T;
-  verifiedAt?: T;
   notifiedAt?: T;
   updatedAt?: T;
   createdAt?: T;

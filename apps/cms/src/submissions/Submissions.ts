@@ -6,14 +6,13 @@ import { groups, label, options, type AdminLabel } from '../labels.ts'
 import { notifyRejected } from './notify.ts'
 import { submissionEndpoints } from './submit.ts'
 
-export const SUBMISSION_STATUSES = ['awaiting-code', 'in-review', 'approved', 'rejected'] as const
+export const SUBMISSION_STATUSES = ['in-review', 'approved', 'rejected'] as const
 export type SubmissionStatus = (typeof SUBMISSION_STATUSES)[number]
 
 /**
- * «Sube tu corto»: a member proposes a short on YouTube or Vimeo. They prove the channel is theirs
- * (or official) by putting a code in the video's description; then the short is created waiting
- * for review, and approving it is publishing it. Members only reach their own submissions, and
- * only through the endpoints in submit.ts.
+ * «Sube tu corto»: a member proposes a short on YouTube or Vimeo, declaring the channel is theirs
+ * or the official one. The short is created waiting for review, and approving it is publishing it.
+ * Members only reach their own submissions, and only through the endpoints in submit.ts.
  */
 export const Submissions: CollectionConfig = {
   slug: 'submissions',
@@ -26,8 +25,8 @@ export const Submissions: CollectionConfig = {
     useAsTitle: 'videoTitle',
     defaultColumns: ['videoTitle', 'status', 'relation', 'member', 'createdAt'],
     description: label(
-      'Shorts proposed by viewers from «Sube tu corto». Publishing the short approves its submission; rejecting one emails the reason to its sender.',
-      'Cortos propuestos por espectadores desde «Sube tu corto». Publicar el corto aprueba su envío; al rechazar uno se envía el motivo por email.',
+      'Shorts proposed by viewers from «Sube tu corto». Check the channel is official before publishing the short: publishing approves its submission, rejecting one emails the reason to its sender.',
+      'Cortos propuestos por espectadores desde «Sube tu corto». Comprueba que el canal es el oficial antes de publicar el corto: publicarlo aprueba su envío y al rechazar uno se envía el motivo por email.',
     ),
   },
   access: {
@@ -94,34 +93,13 @@ export const Submissions: CollectionConfig = {
       admin: { readOnly: true },
     },
     {
-      name: 'note',
-      label: label('Note from the sender', 'Nota de quien lo envía'),
-      type: 'textarea',
-      maxLength: 1000,
-      admin: { readOnly: true },
-    },
-    {
-      name: 'code',
-      label: label('Verification code', 'Código de verificación'),
-      type: 'text',
-      required: true,
-      admin: {
-        readOnly: true,
-        description: label(
-          'The sender puts it in the video description to prove the channel is theirs.',
-          'Quien lo envía lo pone en la descripción del vídeo para demostrar que el canal es suyo.',
-        ),
-      },
-    },
-    {
       name: 'status',
       label: label('Status', 'Estado'),
       type: 'select',
       required: true,
-      defaultValue: 'awaiting-code',
+      defaultValue: 'in-review',
       index: true,
       options: options({
-        'awaiting-code': label('Waiting for the code', 'Esperando el código'),
         'in-review': label('In review', 'En revisión'),
         approved: label('Approved', 'Aprobado'),
         rejected: label('Rejected', 'Rechazado'),
@@ -158,12 +136,6 @@ export const Submissions: CollectionConfig = {
       label: label('Accepted the terms on', 'Aceptó las condiciones el'),
       type: 'date',
       required: true,
-      admin: { position: 'sidebar', readOnly: true, date: { pickerAppearance: 'dayAndTime' } },
-    },
-    {
-      name: 'verifiedAt',
-      label: label('Code found on', 'Código encontrado el'),
-      type: 'date',
       admin: { position: 'sidebar', readOnly: true, date: { pickerAppearance: 'dayAndTime' } },
     },
     {

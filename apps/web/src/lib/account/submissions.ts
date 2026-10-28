@@ -1,11 +1,10 @@
 /** «Sube tu corto»: a member's submissions, as the CMS returns them (submissions/submit.ts). */
-export type SubmissionStatus = 'awaiting-code' | 'in-review' | 'approved' | 'rejected'
+export type SubmissionStatus = 'in-review' | 'approved' | 'rejected'
 
 export interface Submission {
   id: number
   videoTitle: string
   url: string
-  code: string
   status: SubmissionStatus
   reason: string | null
   createdAt: string
@@ -24,11 +23,15 @@ export const SUBMIT_ERRORS = [
   'private',
   'not_embeddable',
   'age_restricted',
-  'not_found',
-  'code_not_found',
-  'unverifiable',
 ] as const
 export type SubmitError = (typeof SUBMIT_ERRORS)[number] | 'server' | 'signed_out' | 'rate_limited'
 
 export const submitError = (error: unknown): SubmitError =>
   SUBMIT_ERRORS.find((known) => known === error) ?? 'server'
+
+/** How the list shows each state: its badge tone. */
+export const STATUS_TONES = {
+  'in-review': 'info',
+  approved: 'info',
+  rejected: 'neutral',
+} as const satisfies Record<SubmissionStatus, 'info' | 'neutral'>

@@ -1,0 +1,60 @@
+---
+import { Button, Notice, SubmissionItem } from '@fenaki/ui'
+import TextPage from '../../layouts/TextPage.astro'
+import { cms } from '../../lib/account/payload.ts'
+import { signInUrl } from '../../lib/account/rules.ts'
+import { STATUS_TONES, type Submission } from '../../lib/account/submissions.ts'
+import { localeFrom, paths, translator } from '../../lib/i18n.ts'
+
+const locale = localeFrom(Astro.params.locale)
+if (!locale) return Astro.rewrite('/404')
+
+const member = Astro.locals.member
+if (!member) return Astro.redirect(signInUrl(paths.signIn(locale), Astro.url.pathname))
+
+const t = translator(locale)
+const result = await cms<{ docs: Submission[] }>('submissions/mine', { token: member.token }).catch(
+  () => undefined,
+)
+const submissions = result?.status === 200 ? (result.data?.docs ?? []) : undefined
+const text = (submission: Submission) =>
+  submission.status === 'rejected'
+    ? submission.reason
+      ? t('submit.list.reason', { reason: submission.reason })
+      : undefined
+    : t(`submit.statusText.${submission.status}`)
+---
+
+<TextPage
+  locale={locale}
+  title={t('submit.list.title')}
+  lead={t('submit.list.description')}
+  noindex
+>
+  <div>
+    <Button variant="secondary" href={paths.submit(locale)}>
+      {t('submit.list.submitAnother')}
+    </Button>
+  </div>
+  {!submissions ? (
+    <Notice tone="danger" role="alert">
+      {t('account.common.error.server')}
+    </Notice>
+  ) : submissions.length === 0 ? (
+    <p class="m-0 text-body text-secondary">{t('submit.list.empty')}</p>
+  ) : (
+    <ul class="m-0 p-0 list-none grid gap-3">
+      {submissions.map((submission) => (
+        <li>
+          <SubmissionItem
+            title={submission.videoTitle || submission.url}
+            href={submission.url}
+            status={t(`submit.status.${submission.status}`)}
+            statusTone={STATUS_TONES[submission.status]}
+            text={text(submission)}
+          />
+        </li>
+      ))}
+    </ul>
+  )}
+</TextPage>

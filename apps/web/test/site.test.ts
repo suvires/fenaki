@@ -27,6 +27,8 @@ describe('isHiddenInMode', () => {
       '/es/escaparates/x',
       '/es/temas',
       '/es/temas/familia',
+      '/es/sube-tu-corto',
+      '/es/mis-envios',
       '/es/buscar',
       '/api/search',
       '/api/shorts',

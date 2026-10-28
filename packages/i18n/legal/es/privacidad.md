@@ -94,13 +94,13 @@ Los cortos se ven en el reproductor oficial de YouTube (Google) o de Vimeo. No s
 
 ### 2.9 Envío de cortos («Sube tu corto»)
 
-|               |                                                                                                                                                                                                                                        |
-| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Datos         | Tu cuenta, el enlace del vídeo que envías, en calidad de qué lo envías (autor, productora, festival…), la fecha en que aceptas las condiciones de envío, el código de verificación y el estado y, en su caso, el motivo de la revisión |
-| Finalidad     | Comprobar que el canal es tuyo o el oficial de quien tiene los derechos, revisar el corto y avisarte por email de si lo publicamos                                                                                                     |
-| Base jurídica | Ejecución del contrato (art. 6.1.b RGPD): el envío que nos pides al aceptar las [condiciones de envío](/es/terminos-de-uso)                                                                                                            |
-| Conservación  | Mientras tu cuenta exista. Al borrarla eliminamos tus envíos; los cortos ya publicados siguen en el catálogo, sin vínculo con tu cuenta                                                                                                |
-| Herramientas  | Nuestro propio servidor; la API de YouTube o Vimeo para leer la descripción del vídeo, y Amazon SES para los emails                                                                                                                    |
+|               |                                                                                                                                                                                                              |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Datos         | Tu cuenta, el enlace del vídeo que envías, en calidad de qué lo envías (autor, productora, festival…), la fecha en que aceptas las condiciones de envío, y el estado y, en su caso, el motivo de la revisión |
+| Finalidad     | Revisar el corto, comprobar que el canal es el oficial y avisarte por email de si lo publicamos                                                                                                              |
+| Base jurídica | Ejecución del contrato (art. 6.1.b RGPD): el envío que nos pides al aceptar las [condiciones de envío](/es/terminos-de-uso)                                                                                  |
+| Conservación  | Mientras tu cuenta exista. Al borrarla eliminamos tus envíos; los cortos ya publicados siguen en el catálogo, sin vínculo con tu cuenta                                                                      |
+| Herramientas  | Nuestro propio servidor, la API de YouTube o Vimeo para leer los datos del corto y Amazon SES para los emails                                                                                                |
 
 ## 3. Menores de edad
 

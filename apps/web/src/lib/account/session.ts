@@ -18,6 +18,8 @@ export interface SessionMember {
   pendingEmail?: string
   /** The players the member chose to load without asking, on every device. */
   playerConsent: PlayerProvider[]
+  /** They sent a short from «Sube tu corto»: the account menu shows «Mis envíos». */
+  hasSubmissions: boolean
   token: string
 }
 
@@ -48,6 +50,7 @@ interface MeResponse {
     name?: string | null
     playerConsent?: string[] | null
     pendingEmail?: string | null
+    hasSubmissions?: boolean | null
     collection?: string
   } | null
   exp?: number
@@ -77,6 +80,7 @@ export async function resolveSession(token: string): Promise<Resolved> {
     name: user.name ?? undefined,
     pendingEmail: user.pendingEmail ?? undefined,
     playerConsent: PLAYER_PROVIDERS.filter((p) => user.playerConsent?.includes(p)),
+    hasSubmissions: Boolean(user.hasSubmissions),
     token,
   }
 

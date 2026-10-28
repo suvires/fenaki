@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion -- fixtures are known to exist */
 /**
  * «Sube tu corto» on real services: PostgreSQL (the accounts test database) and Mailpit. YouTube is
- * faked: the test decides what the video's description says. Sending, the code check, the short it
- * creates, approving by publishing, rejecting, and the emails to the sender.
+ * faked. Sending, the short it creates, approving by publishing, rejecting, and the emails.
  */
 import { createLocalReq, getPayload, type Payload, type PayloadRequest } from 'payload'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
@@ -26,7 +25,7 @@ Object.assign(process.env, {
 })
 
 const { default: config } = await import('../../src/payload.config.ts')
-const { createSubmission, verifySubmission } = await import('../../src/submissions/submit.ts')
+const { createSubmission } = await import('../../src/submissions/submit.ts')
 
 const token = Math.random().toString(36).slice(2, 8)
 // Eleven characters, unique per run: YouTube ids.
@@ -36,9 +35,6 @@ let payload: Payload
 let req: PayloadRequest
 const members: number[] = []
 const shorts: number[] = []
-
-/** What the fake YouTube says each video's description is. */
-const descriptions = new Map<string, string>()
 
 const fakeYouTube: typeof fetch = async (input) => {
   const url = new URL(String(input))
@@ -59,7 +55,7 @@ const fakeYouTube: typeof fetch = async (input) => {
             title: 'Corto de prueba',
             channelId: 'UCprueba',
             channelTitle: 'Canal de prueba',
-            description: descriptions.get(id) ?? 'Un corto.',
+            description: 'Un corto.',
           },
           contentDetails: { duration: 'PT8M' },
           status: { embeddable: true, privacyStatus: 'public' },
@@ -136,40 +132,29 @@ describe('sending a short', () => {
       error: 'terms',
     })
     const sent = await send(member.id, { url, relation: 'author', acceptTerms: true })
-    expect(sent).toMatchObject({ ok: true, value: { status: 'awaiting-code' } })
-    expect(sent.ok && sent.value.code).toMatch(/^FENAKI-[A-HJ-NP-Z2-9]{6}$/)
-    // The same video cannot be sent twice while it waits, by anyone.
+    expect(sent).toMatchObject({ ok: true, value: { status: 'in-review' } })
+    // Their account menu shows «Mis envíos» from now on.
+    expect((await payload.findByID({ collection: 'members', id: member.id })).hasSubmissions).toBe(
+      true,
+    )
+    // Sending creates the short at once: the same video cannot be sent again, by anyone.
     const other = await newMember('other')
     expect(await send(other.id, { url, relation: 'producer', acceptTerms: true })).toMatchObject({
       ok: false,
-      error: 'already_submitted',
+      error: 'already_in_catalog',
     })
   })
 })
 
-describe('the code and the review', () => {
-  it('creates the short once the code is in the description, and publishing it approves it', async () => {
+describe('the review', () => {
+  it('creates the short waiting for review, and publishing it approves the submission', async () => {
     const member = await newMember('sender')
-    const id = videoId(2)
     const sent = await send(member.id, {
-      url: `https://www.youtube.com/watch?v=${id}`,
+      url: `https://www.youtube.com/watch?v=${videoId(2)}`,
       relation: 'producer',
       acceptTerms: true,
     })
     if (!sent.ok) throw new Error(sent.error)
-    const stranger = await newMember('stranger')
-    expect(await verifySubmission(req, stranger.id, sent.value.id, fakeYouTube)).toMatchObject({
-      ok: false,
-      error: 'not_found',
-    })
-    expect(await verifySubmission(req, member.id, sent.value.id, fakeYouTube)).toMatchObject({
-      ok: false,
-      error: 'code_not_found',
-    })
-
-    descriptions.set(id, `Un corto de la productora.\n\n${sent.value.code.toLowerCase()}`)
-    const verified = await verifySubmission(req, member.id, sent.value.id, fakeYouTube)
-    expect(verified).toMatchObject({ ok: true, value: { status: 'in-review' } })
 
     const submission = await payload.findByID({ collection: 'submissions', id: sent.value.id })
     const shortId = typeof submission.short === 'object' ? submission.short!.id : submission.short!
@@ -178,7 +163,7 @@ describe('the code and the review', () => {
       await payload.find({ collection: 'sources', where: { short: { equals: shortId } }, depth: 0 })
     ).docs[0]!
     expect(source.channel?.kind).toBe('producer')
-    expect(source.officialEvidence).toContain(sent.value.code)
+    expect(source.officialEvidence).toContain('Declared by the sender')
     expect(source.officialEvidence).toContain('«Sube tu corto»')
     const short = await payload.findByID({ collection: 'shorts', id: shortId, depth: 0 })
     expect(short.status).toBe('review')

@@ -1,4 +1,3 @@
-import type { ReactNode } from 'react'
 import { Badge, type BadgeTone } from '../atoms/Badge.tsx'
 import { cx } from '../foundations/cx.ts'
 
@@ -11,10 +10,6 @@ export interface SubmissionItemProps {
   statusTone?: BadgeTone
   /** A sentence about the state, or the reason it was not published. */
   text?: string
-  /** The verification code, shown large so it can be read and copied. */
-  code?: string
-  /** Buttons under the code: «Copiar código», «Comprobar». */
-  actions?: ReactNode
   className?: string
 }
 
@@ -25,8 +20,6 @@ export function SubmissionItem({
   status,
   statusTone = 'neutral',
   text,
-  code,
-  actions,
   className,
 }: SubmissionItemProps) {
   return (
@@ -45,12 +38,6 @@ export function SubmissionItem({
         <Badge tone={statusTone}>{status}</Badge>
       </div>
       {text ? <p className="m-0 text-small text-secondary">{text}</p> : null}
-      {code ? (
-        <p className="m-0 justify-self-start px-4 py-2 rounded-sm bg-canvas border border-strong font-mono text-title select-all">
-          {code}
-        </p>
-      ) : null}
-      {actions ? <div className="flex flex-wrap gap-3">{actions}</div> : null}
     </article>
   )
 }

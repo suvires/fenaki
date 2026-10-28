@@ -29,6 +29,8 @@ export const paths = {
   topic: (locale: Locale, slug: string) => `/${locale}/temas/${slug}`,
   /** «Sube tu corto»: what it takes, and the form for signed-in members. */
   submit: (locale: Locale) => `/${locale}/sube-tu-corto`,
+  /** The shorts a member sent and their state (never indexed). */
+  mySubmissions: (locale: Locale) => `/${locale}/mis-envios`,
   /** The latest shorts, one rail per genre. */
   latest: (locale: Locale) => `/${locale}/novedades`,
   /** The viewer's saved shorts (kept in their browser, so the page is never indexed). */

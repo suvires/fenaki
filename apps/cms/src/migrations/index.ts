@@ -29,6 +29,8 @@ import * as migration_20261028_134259_member_pending_email from './20261028_1342
 import * as migration_20261028_140000_activate_channels from './20261028_140000_activate_channels';
 import * as migration_20261028_150000_long_jobs_queue from './20261028_150000_long_jobs_queue';
 import * as migration_20261028_151802_submissions from './20261028_151802_submissions';
+import * as migration_20261028_152926_submissions_without_code from './20261028_152926_submissions_without_code';
+import * as migration_20261028_153152_member_has_submissions from './20261028_153152_member_has_submissions';
 
 export const migrations = [
   {
@@ -184,6 +186,16 @@ export const migrations = [
   {
     up: migration_20261028_151802_submissions.up,
     down: migration_20261028_151802_submissions.down,
-    name: '20261028_151802_submissions'
+    name: '20261028_151802_submissions',
+  },
+  {
+    up: migration_20261028_152926_submissions_without_code.up,
+    down: migration_20261028_152926_submissions_without_code.down,
+    name: '20261028_152926_submissions_without_code',
+  },
+  {
+    up: migration_20261028_153152_member_has_submissions.up,
+    down: migration_20261028_153152_member_has_submissions.down,
+    name: '20261028_153152_member_has_submissions'
   },
 ];

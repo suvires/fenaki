@@ -246,6 +246,16 @@ const footerGroups = landing
                         href: paths.history(locale),
                         current: Astro.url.pathname === paths.history(locale),
                       },
+                      // Only for whoever has sent a short from «Sube tu corto».
+                      ...(member.hasSubmissions
+                        ? [
+                            {
+                              label: t('header.accountMenu.submissions'),
+                              href: paths.mySubmissions(locale),
+                              current: Astro.url.pathname === paths.mySubmissions(locale),
+                            },
+                          ]
+                        : []),
                     ],
                     signOut: {
                       label: t('header.accountMenu.signOut'),

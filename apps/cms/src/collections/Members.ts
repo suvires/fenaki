@@ -47,6 +47,7 @@ const onlyWhatTheViewerMaySet: CollectionBeforeValidateHook = ({
   // signed-in member is held to the same, and cannot change their own email or verification.
   if (isMemberUser(req.user)) {
     delete data.sample
+    delete data.hasSubmissions
     if (operation === 'create') delete data._verified
     else {
       // Put back, not removed: the email is required, and changing it would skip the verification.
@@ -163,6 +164,15 @@ export const Members: CollectionConfig = {
       type: 'date',
       access: { create: () => false, update: () => false },
       admin: { hidden: true },
+    },
+    {
+      name: 'hasSubmissions',
+      label: label('Has sent shorts', 'Ha enviado cortos'),
+      type: 'checkbox',
+      defaultValue: false,
+      // Set when they send one from «Sube tu corto»: their account menu shows «Mis envíos».
+      access: { create: isAdminField, update: isAdminField },
+      admin: { position: 'sidebar', readOnly: true },
     },
     {
       name: 'playerConsent',
