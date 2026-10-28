@@ -72,8 +72,8 @@ describe('relatedScore', () => {
   })
 
   it('adds how close the two are in meaning, above what any two shorts share', () => {
-    expect(relatedScore(facts(1), facts(2, { similarity: 0.45 }))).toBe(0)
-    expect(relatedScore(facts(1), facts(2, { similarity: 0.65 }))).toBeCloseTo(WEIGHTS.meaning / 2)
+    expect(relatedScore(facts(1), facts(2, { similarity: 0.7 }))).toBe(0)
+    expect(relatedScore(facts(1), facts(2, { similarity: 0.825 }))).toBeCloseTo(WEIGHTS.meaning / 2)
     expect(relatedScore(facts(1), facts(2, { similarity: 0.95 }))).toBe(WEIGHTS.meaning)
   })
 })

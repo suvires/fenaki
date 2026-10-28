@@ -40,11 +40,12 @@ export const WEIGHTS = {
 } as const
 
 /**
- * Cosine similarities between embeddings (voyage-4) sit around 0.5 for any two shorts: only what
- * is above counts, in full from MEANING_FULL on.
+ * Cosine similarities between embeddings (voyage-4) sit around 0.66 for any two shorts of the
+ * catalog, and 0.83 to 0.89 for a short's twelve nearest (28 oct 2026): only what is above
+ * MEANING_FROM counts, in full from MEANING_FULL on.
  */
-const MEANING_FROM = 0.5
-const MEANING_FULL = 0.8
+const MEANING_FROM = 0.75
+const MEANING_FULL = 0.9
 
 /** Lengths count as alike within this share of the longer one. */
 const LENGTH_TOLERANCE = 0.3
