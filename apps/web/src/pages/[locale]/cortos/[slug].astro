@@ -1,5 +1,4 @@
 ---
-import { badgeClock } from '../../../lib/services.ts'
 import { formatCountry, formatLanguage, formatList, formatYear } from '@fenaki/i18n'
 import { Rail, ShareButton, ShortCard } from '@fenaki/ui'
 import NotFound from '../../../components/NotFound.astro'
@@ -36,7 +35,6 @@ const t = translator(locale)
 const short = Astro.params.slug ? await getShort(locale, Astro.params.slug) : undefined
 if (!short) Astro.response.status = 404
 
-const badges = badgeClock()
 // A signed-in viewer: what the account has of this short (saved, and where they stopped).
 const member = Astro.locals.member
 const [account, viewing] =
@@ -251,12 +249,12 @@ const subtitles = [...(card?.subtitles ?? [])]
                   <dd class="m-0">{spoken}</dd>
                 </>
               )}
-              <dt class="text-secondary">{t('short.language.subtitles')}</dt>
-              <dd class="m-0">
-                {subtitles.length > 0
-                  ? capital(formatList(subtitles, locale))
-                  : t('short.language.none')}
-              </dd>
+              {subtitles.length > 0 && (
+                <>
+                  <dt class="text-secondary">{t('short.language.subtitles')}</dt>
+                  <dd class="m-0">{capital(formatList(subtitles, locale))}</dd>
+                </>
+              )}
             </dl>
           </section>
         )}
@@ -284,9 +282,7 @@ const subtitles = [...(card?.subtitles ?? [])]
           title={t('short.related', { title: short.title })}
         >
           {related.map((s) => (
-            <ShortCard
-              {...toCard(toCardSource(s), locale, t, paths.short(locale, s.slug), badges)}
-            />
+            <ShortCard {...toCard(toCardSource(s), locale, t, paths.short(locale, s.slug))} />
           ))}
         </Rail>
       )}

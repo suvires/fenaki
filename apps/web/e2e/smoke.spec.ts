@@ -40,7 +40,7 @@ test('the home page shows the latest short, the sponsored collection and the rai
   await expect(page.getByText('Presentada por')).toBeVisible()
   await expect(page.getByRole('region', { name: 'Novedades' })).toBeVisible()
   await expect(page.getByRole('link', { name: /Timecode/ }).first()).toBeVisible()
-  // No launch date in the tests: nothing is «Nuevo» before the launch.
+  // What is new shows in «Novedades», never as a badge.
   await expect(page.getByText('Nuevo', { exact: true })).toHaveCount(0)
 })
 

@@ -1,7 +1,7 @@
 import { createTranslator, type Locale } from '@fenaki/i18n'
 import { Pagination, SearchField, ShortGrid } from '@fenaki/ui'
 import { useEffect, useRef, useState } from 'react'
-import { toCard, type BadgeClock } from '../lib/catalog.ts'
+import { toCard } from '../lib/catalog.ts'
 import { paths } from '../lib/i18n.ts'
 import { paginationProps } from '../lib/paging.ts'
 import type { SearchResult } from '../lib/search.ts'
@@ -11,8 +11,6 @@ interface SearchIslandProps {
   initial: SearchResult | null
   /** The server could not reach the search engine. */
   initialError: boolean
-  /** Fixed by the server so the «Nuevo» badge matches between server and client renders. */
-  clock: BadgeClock
 }
 
 type State = { kind: 'idle' } | { kind: 'results'; result: SearchResult } | { kind: 'error' }
@@ -23,7 +21,7 @@ const DEBOUNCE_MS = 150
  * Search as you type: results update without a spinner, and the URL keeps the query. A new query
  * starts on its first page; the pager under the results links to the others (each its own URL).
  */
-export function SearchIsland({ locale, initial, initialError, clock }: SearchIslandProps) {
+export function SearchIsland({ locale, initial, initialError }: SearchIslandProps) {
   const t = createTranslator(locale)
   const [query, setQuery] = useState(initial?.query ?? '')
   const [state, setState] = useState<State>(
@@ -100,7 +98,7 @@ export function SearchIsland({ locale, initial, initialError, clock }: SearchIsl
       {state.kind === 'results' && state.result.hits.length > 0 ? (
         <ShortGrid
           items={state.result.hits.map((hit) =>
-            toCard(hit, locale, t, paths.short(locale, hit.slug), clock),
+            toCard(hit, locale, t, paths.short(locale, hit.slug)),
           )}
         />
       ) : null}

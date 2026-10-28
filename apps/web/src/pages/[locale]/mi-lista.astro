@@ -6,7 +6,6 @@ import { toCurrentShort } from '../../lib/catalog.ts'
 import { listShortsBySlugs, toCardSource } from '../../lib/cms.ts'
 import { localeFrom, paths, translator } from '../../lib/i18n.ts'
 import { pageOf, parsePage } from '../../lib/paging.ts'
-import { badgeClock } from '../../lib/services.ts'
 
 const locale = localeFrom(Astro.params.locale)
 if (!locale) return Astro.rewrite('/404')
@@ -24,7 +23,7 @@ const current = account
           locale,
           pageOf(account.list, page).items.map((entry) => entry.slug),
         )
-      ).map((s) => [s.slug, toCurrentShort(toCardSource(s), locale, t, badgeClock())]),
+      ).map((s) => [s.slug, toCurrentShort(toCardSource(s), locale, t)]),
     )
   : undefined
 ---

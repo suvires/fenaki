@@ -1,5 +1,4 @@
 ---
-import { badgeClock } from '../../../lib/services.ts'
 import { ShortGrid, SponsorCredit } from '@fenaki/ui'
 import NotFound from '../../../components/NotFound.astro'
 import Base from '../../../layouts/Base.astro'
@@ -18,7 +17,6 @@ const collection = Astro.params.slug ? await getCollection(locale, Astro.params.
 if (!collection) Astro.response.status = 404
 const shorts = collection ? shortsOf(collection) : []
 const sponsor = collection ? sponsorOf(collection) : undefined
-const clock = badgeClock()
 const jsonLd = collection
   ? collectionPage(siteUrl, {
       name: collection.title,
@@ -75,7 +73,7 @@ const jsonLd = collection
       </header>
       <ShortGrid
         items={shorts.map((short) =>
-          toCard(toCardSource(short), locale, t, paths.short(locale, short.slug), clock),
+          toCard(toCardSource(short), locale, t, paths.short(locale, short.slug)),
         )}
       />
     </>

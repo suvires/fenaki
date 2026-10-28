@@ -93,8 +93,7 @@
     "language": {
       "title": "Idioma y subtítulos",
       "spoken": "Idioma original",
-      "subtitles": "Subtítulos",
-      "none": "Ninguno conocido"
+      "subtitles": "Subtítulos"
     },
     "credits": "Créditos",
     "awards": "Premios",
@@ -190,7 +189,6 @@
     }
   },
   "badges": {
-    "new": "Nuevo",
     "noDialogue": "Sin diálogos",
     "branded": "Contenido de marca",
     "allAudiences": "Para todos los públicos"

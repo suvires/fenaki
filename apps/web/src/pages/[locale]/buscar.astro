@@ -5,7 +5,6 @@ import Base from '../../layouts/Base.astro'
 import { localeFrom, paths, translator } from '../../lib/i18n.ts'
 import { parsePage } from '../../lib/paging.ts'
 import { searchShorts, type SearchResult } from '../../lib/search.ts'
-import { badgeClock } from '../../lib/services.ts'
 
 const locale = localeFrom(Astro.params.locale)
 if (!locale) return Astro.rewrite('/404')
@@ -31,12 +30,6 @@ if (initial && initial.page > initial.pages)
   {/* The same header as the other pages (account, legal texts). */}
   <section class="grid gap-12 py-8">
     <PageHeader title={t('search.title')} />
-    <SearchIsland
-      client:load
-      locale={locale}
-      initial={initial}
-      initialError={initialError}
-      clock={badgeClock()}
-    />
+    <SearchIsland client:load locale={locale} initial={initial} initialError={initialError} />
   </section>
 </Base>

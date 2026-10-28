@@ -1,19 +1,9 @@
 import { createTranslator } from '@fenaki/i18n'
 import { describe, expect, it } from 'vitest'
-import {
-  badgesFor,
-  durationBand,
-  isNew,
-  posterTone,
-  toCard,
-  type CardSource,
-} from '../src/lib/catalog.ts'
+import { badgesFor, durationBand, posterTone, toCard, type CardSource } from '../src/lib/catalog.ts'
 import { embedUrl } from '../src/lib/embed.ts'
 
 const t = createTranslator('es')
-const NOW = Date.parse('2026-10-25T12:00:00Z')
-const LAUNCH = Date.parse('2026-10-01T00:00:00Z')
-const launched = { now: NOW, launchedAt: LAUNCH }
 
 const short: CardSource = {
   slug: 'alike',
@@ -38,58 +28,24 @@ describe('durationBand', () => {
   })
 })
 
-describe('isNew', () => {
-  it('marks shorts published after the launch, for 30 days', () => {
-    expect(isNew('2026-10-20T10:00:00Z', launched)).toBe(true)
-    expect(isNew('2026-10-20T10:00:00Z', { ...launched, now: NOW + 30 * 86_400_000 })).toBe(false)
-    expect(isNew(null, launched)).toBe(false)
-  })
-
-  it('never marks the catalog published before the launch', () => {
-    expect(isNew('2026-09-30T23:59:59Z', launched)).toBe(false)
-  })
-
-  it('marks nothing before the launch, or without a launch date', () => {
-    expect(isNew('2026-10-20T10:00:00Z', { now: NOW, launchedAt: undefined })).toBe(false)
-    expect(isNew('2026-10-20T10:00:00Z', { now: NOW, launchedAt: NOW + 1 })).toBe(false)
-  })
-})
-
 describe('badgesFor', () => {
-  it('orders new, for all audiences and no dialogue, and keeps three at most', () => {
-    const badges = badgesFor(
-      { ...short, publishedAt: '2026-10-20T10:00:00Z', allAudiences: true, subtitles: ['es'] },
-      t,
-      launched,
-    )
-    expect(badges).toEqual([
-      { label: 'Nuevo', tone: 'accent' },
+  it('orders branded content, for all audiences and no dialogue', () => {
+    expect(badgesFor({ ...short, brandedContent: true, allAudiences: true }, t)).toEqual([
+      { label: 'Contenido de marca', tone: 'branded' },
       { label: 'Para todos los públicos', tone: 'info' },
       { label: 'Sin diálogos' },
     ])
   })
 
-  it('always puts branded content first, even with three other badges', () => {
-    const badges = badgesFor(
-      { ...short, brandedContent: true, publishedAt: '2026-10-20T10:00:00Z', allAudiences: true },
-      t,
-      launched,
-    )
-    expect(badges).toEqual([
-      { label: 'Contenido de marca', tone: 'branded' },
-      { label: 'Nuevo', tone: 'accent' },
-      { label: 'Para todos los públicos', tone: 'info' },
-    ])
-  })
-
-  it('has no badge for the type or the subtitles', () => {
-    expect(badgesFor({ ...short, noDialogue: false, subtitles: ['es'] }, t, launched)).toEqual([])
+  it('has no badge for what is new, the type or the subtitles', () => {
+    const recent = { ...short, publishedAt: new Date().toISOString(), subtitles: ['es'] }
+    expect(badgesFor({ ...recent, noDialogue: false }, t)).toEqual([])
   })
 })
 
 describe('toCard', () => {
   it('joins directors with Intl.ListFormat and links to the short', () => {
-    const card = toCard(short, 'es', t, '/es/cortos/alike', launched)
+    const card = toCard(short, 'es', t, '/es/cortos/alike')
     expect(card.director).toBe('Daniel Martínez Lara y Rafa Cano Méndez')
     expect(card.href).toBe('/es/cortos/alike')
     expect(card.seconds).toBe(480)

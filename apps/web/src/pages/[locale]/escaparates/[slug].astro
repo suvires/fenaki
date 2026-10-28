@@ -7,7 +7,7 @@ import { toCard } from '../../../lib/catalog.ts'
 import { getShowcase, logoOf, presenterOf, shortsOf, toCardSource } from '../../../lib/cms.ts'
 import { localeFrom, paths, translator } from '../../../lib/i18n.ts'
 import { collectionPage } from '../../../lib/seo.ts'
-import { badgeClock, siteUrl } from '../../../lib/services.ts'
+import { siteUrl } from '../../../lib/services.ts'
 
 const locale = localeFrom(Astro.params.locale)
 if (!locale) return Astro.rewrite('/404')
@@ -19,7 +19,6 @@ const shorts = showcase ? shortsOf(showcase) : []
 const logo = showcase ? logoOf(showcase) : undefined
 const presenter = showcase ? presenterOf(showcase) : undefined
 const kind = showcase ? t(`showcase.kinds.${showcase.kind}`) : ''
-const clock = badgeClock()
 const description = showcase
   ? (showcase.intro ?? t(`showcase.description.${showcase.kind}`, { name: showcase.name }))
   : undefined
@@ -79,7 +78,7 @@ const jsonLd = showcase
         </h2>
         <ShortGrid
           items={shorts.map((short) =>
-            toCard(toCardSource(short), locale, t, paths.short(locale, short.slug), clock),
+            toCard(toCardSource(short), locale, t, paths.short(locale, short.slug)),
           )}
         />
       </section>

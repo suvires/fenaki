@@ -15,7 +15,7 @@ import { localeFrom, paths, translator } from '../../../lib/i18n.ts'
 import { paginationProps } from '../../../lib/paging.ts'
 import { browseShorts, type BrowseResult } from '../../../lib/search.ts'
 import { collectionPage } from '../../../lib/seo.ts'
-import { badgeClock, siteUrl } from '../../../lib/services.ts'
+import { siteUrl } from '../../../lib/services.ts'
 
 const locale = localeFrom(Astro.params.locale)
 if (!locale) return Astro.rewrite('/404')
@@ -106,7 +106,6 @@ const filtered = hasFilters(filters)
 const selectedLabels = groups.flatMap((g) =>
   g.options.filter((o) => o.selected).map((o) => o.label),
 )
-const clock = badgeClock()
 const countLabel = (count: number) => t('browse.count', { count })
 const jsonLd =
   result && !filtered && page === 1
@@ -165,9 +164,7 @@ const jsonLd =
         </div>
         {result.hits.length > 0 && (
           <ShortGrid
-            items={result.hits.map((hit) =>
-              toCard(hit, locale, t, paths.short(locale, hit.slug), clock),
-            )}
+            items={result.hits.map((hit) => toCard(hit, locale, t, paths.short(locale, hit.slug)))}
           />
         )}
         {result.pages > 1 && (

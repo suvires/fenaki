@@ -4,13 +4,11 @@ import Base from '../../layouts/Base.astro'
 import { toCard } from '../../lib/catalog.ts'
 import { listShorts, toCardSource } from '../../lib/cms.ts'
 import { localeFrom, paths, translator } from '../../lib/i18n.ts'
-import { badgeClock } from '../../lib/services.ts'
 
 const locale = localeFrom(Astro.params.locale)
 if (!locale) return Astro.rewrite('/404')
 
 const t = translator(locale)
-const clock = badgeClock()
 const GENRES = ['fiction', 'documentary', 'animation', 'experimental'] as const
 /** How many of the latest shorts each genre's rail shows. */
 const PER_GENRE = 20
@@ -40,7 +38,7 @@ const rails = (
         >
           {rail.shorts.map((short) => (
             <ShortCard
-              {...toCard(toCardSource(short), locale, t, paths.short(locale, short.slug), clock)}
+              {...toCard(toCardSource(short), locale, t, paths.short(locale, short.slug))}
             />
           ))}
         </Rail>

@@ -25,7 +25,7 @@ import { sponsorCredit } from '../../lib/analytics.ts'
 import { localeFrom, paths, translator } from '../../lib/i18n.ts'
 import { PAGE_SIZE } from '../../lib/paging.ts'
 import { previewEnabled, topTen } from '../../lib/ranking.ts'
-import { badgeClock, siteMode } from '../../lib/services.ts'
+import { siteMode } from '../../lib/services.ts'
 import type { PublishedShort } from '../../lib/cms.ts'
 
 const locale = localeFrom(Astro.params.locale)
@@ -33,7 +33,6 @@ if (!locale) return Astro.rewrite('/404')
 
 const t = translator(locale)
 const landing = siteMode === 'landing'
-const clock = badgeClock()
 // A signed-in viewer's list, ratings and unfinished viewings come from the account, rendered here.
 const member = landing ? undefined : Astro.locals.member
 const [account, unfinished] = member
@@ -149,7 +148,7 @@ const otherRails = rails.filter((rail) => rail.key !== 'latest')
       >
         {continueWatching.map(({ short, progress }) => (
           <ShortCard
-            {...toCard(toCardSource(short), locale, t, paths.short(locale, short.slug), clock)}
+            {...toCard(toCardSource(short), locale, t, paths.short(locale, short.slug))}
             progress={progress}
             progressLabel={t('short.progress', { percent: Math.round(progress * 100) })}
             removableFrom="continueWatching"
@@ -170,7 +169,7 @@ const otherRails = rails.filter((rail) => rail.key !== 'latest')
       hrefBase={paths.short(locale, '')}
       initial={account?.list}
       current={Object.fromEntries(
-        savedShorts.map((s) => [s.slug, toCurrentShort(toCardSource(s), locale, t, clock)]),
+        savedShorts.map((s) => [s.slug, toCurrentShort(toCardSource(s), locale, t)]),
       )}
     />
   )}
@@ -188,9 +187,7 @@ const otherRails = rails.filter((rail) => rail.key !== 'latest')
         >
           {rail.shorts.map((short) => {
             const card = toCardSource(short)
-            return (
-              <ShortCard {...toCard(card, locale, t, paths.short(locale, short.slug), clock)} />
-            )
+            return <ShortCard {...toCard(card, locale, t, paths.short(locale, short.slug))} />
           })}
         </Rail>
       </div>
@@ -220,9 +217,7 @@ const otherRails = rails.filter((rail) => rail.key !== 'latest')
     >
       {top.map((short, index) => (
         <RankedItem rank={index + 1} rankLabel={t('home.top10.rank', { rank: index + 1 })}>
-          <ShortCard
-            {...toCard(toCardSource(short), locale, t, paths.short(locale, short.slug), clock)}
-          />
+          <ShortCard {...toCard(toCardSource(short), locale, t, paths.short(locale, short.slug))} />
         </RankedItem>
       ))}
     </RankedRail>
@@ -238,9 +233,7 @@ const otherRails = rails.filter((rail) => rail.key !== 'latest')
         >
           {rail.shorts.map((short) => {
             const card = toCardSource(short)
-            return (
-              <ShortCard {...toCard(card, locale, t, paths.short(locale, short.slug), clock)} />
-            )
+            return <ShortCard {...toCard(card, locale, t, paths.short(locale, short.slug))} />
           })}
         </Rail>
       </div>

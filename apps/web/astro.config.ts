@@ -80,7 +80,6 @@ export default defineConfig({
       }),
       LISTMONK_API_TOKEN: envField.string({ context: 'server', access: 'secret', optional: true }),
       LISTMONK_FROM_EMAIL: envField.string({ context: 'server', access: 'secret', optional: true }),
-      LAUNCH_DATE: envField.string({ context: 'server', access: 'secret', optional: true }),
       CONTACT_EMAIL: envField.string({ context: 'server', access: 'secret', optional: true }),
       UMAMI_SCRIPT_URL: envField.string({ context: 'server', access: 'secret', optional: true }),
       UMAMI_WEBSITE_ID: envField.string({ context: 'server', access: 'secret', optional: true }),

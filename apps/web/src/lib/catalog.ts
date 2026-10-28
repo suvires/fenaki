@@ -41,9 +41,6 @@ export const CREDIT_ROLES = [
   'cast',
 ] as const
 
-const NEW_FOR_DAYS = 30
-const DAY = 24 * 60 * 60 * 1000
-
 /** Duration filter bands: under 5 min, 5 to 15 min, over 15 min. */
 export function durationBand(seconds: number): DurationBand {
   if (seconds < 5 * 60) return 'short'
@@ -52,43 +49,16 @@ export function durationBand(seconds: number): DurationBand {
 }
 
 /**
- * What «Nuevo» is measured against: the current time and the public launch (LAUNCH_DATE).
- * Fixed by the server so server and client renders agree.
+ * The badges: branded content first (advertising must be identifiable), then for all audiences
+ * and no dialogue. Subtitles and the type are not badges: the short's page and its preview say
+ * them; what is new shows in «Novedades».
  */
-export interface BadgeClock {
-  now: number
-  /** Undefined until a launch date is set: before launch, nothing is new. */
-  launchedAt: number | undefined
-}
-
-/**
- * «Nuevo» marks what arrived after the launch, for 30 days. The catalog published before the
- * launch is the starting catalog, never new; before the launch no short is.
- */
-export function isNew(publishedAt: CardSource['publishedAt'], clock: BadgeClock): boolean {
-  const { now, launchedAt } = clock
-  if (launchedAt === undefined || now < launchedAt) return false
-  if (publishedAt === null || publishedAt === undefined) return false
-  const time = typeof publishedAt === 'number' ? publishedAt : Date.parse(publishedAt)
-  return time >= launchedAt && now - time < NEW_FOR_DAYS * DAY
-}
-
-/**
- * Up to three badges. Branded content always comes first (advertising must be identifiable), then
- * new (worked out from when the short was published on FENAKI), for all audiences and no
- * dialogue. Subtitles and the type are not badges: the short's page and its preview say them.
- */
-export function badgesFor(
-  short: CardSource,
-  t: Translate,
-  clock: BadgeClock,
-): { label: string; tone?: BadgeTone }[] {
+export function badgesFor(short: CardSource, t: Translate): { label: string; tone?: BadgeTone }[] {
   const badges: { label: string; tone?: BadgeTone }[] = []
   if (short.brandedContent) badges.push({ label: t('badges.branded'), tone: 'branded' })
-  if (isNew(short.publishedAt, clock)) badges.push({ label: t('badges.new'), tone: 'accent' })
   if (short.allAudiences) badges.push({ label: t('badges.allAudiences'), tone: 'info' })
   if (short.noDialogue) badges.push({ label: t('badges.noDialogue') })
-  return badges.slice(0, 3)
+  return badges
 }
 
 /** The short's type as the viewer reads it: «Ficción», «Animación»… */
@@ -110,7 +80,6 @@ export function toCard(
   t: Translate,
   /** The short's page. Without it the card is not a link (the landing page's sample). */
   href: string | undefined,
-  clock: BadgeClock,
 ): ShortCardProps {
   return {
     slug: short.slug,
@@ -125,7 +94,7 @@ export function toCard(
     imageTextColor: short.stillTextColor ?? undefined,
     imageHasTitle: short.stillIncludesTitle ?? undefined,
     href,
-    badges: badgesFor(short, t, clock),
+    badges: badgesFor(short, t),
     typeLabel: typeLabel(short, t),
   }
 }
@@ -146,16 +115,11 @@ export function toSavedShort(short: CardSource, locale: Locale): NewSavedShort {
 }
 
 /** A short's card data as «Mi lista» shows it now: what it saves, plus what it does not (see CurrentShort). */
-export function toCurrentShort(
-  short: CardSource,
-  locale: Locale,
-  t: Translate,
-  clock: BadgeClock,
-): CurrentShort {
+export function toCurrentShort(short: CardSource, locale: Locale, t: Translate): CurrentShort {
   return {
     ...toSavedShort(short, locale),
     synopsis: short.synopsis || undefined,
     typeLabel: typeLabel(short, t),
-    badges: badgesFor(short, t, clock),
+    badges: badgesFor(short, t),
   }
 }

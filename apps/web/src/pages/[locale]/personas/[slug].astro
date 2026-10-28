@@ -7,7 +7,7 @@ import { CREDIT_ROLES, toCard } from '../../../lib/catalog.ts'
 import { getPerson, listShortsByPerson, rolesOf, toCardSource } from '../../../lib/cms.ts'
 import { localeFrom, paths, translator } from '../../../lib/i18n.ts'
 import { profilePage } from '../../../lib/seo.ts'
-import { badgeClock, siteUrl } from '../../../lib/services.ts'
+import { siteUrl } from '../../../lib/services.ts'
 
 const locale = localeFrom(Astro.params.locale)
 if (!locale) return Astro.rewrite('/404')
@@ -22,7 +22,6 @@ const credited = new Set(shorts.flatMap((short) => (person ? rolesOf(short, pers
 const roles = CREDIT_ROLES.filter((role) => credited.has(role)).map((role) =>
   t(`short.roles.${role}`),
 )
-const clock = badgeClock()
 const found = person && shorts.length > 0 ? person : undefined
 const jsonLd = found
   ? profilePage(
@@ -71,7 +70,7 @@ const jsonLd = found
         </h2>
         <ShortGrid
           items={shorts.map((short) =>
-            toCard(toCardSource(short), locale, t, paths.short(locale, short.slug), clock),
+            toCard(toCardSource(short), locale, t, paths.short(locale, short.slug)),
           )}
         />
       </section>

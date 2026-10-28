@@ -8,7 +8,6 @@ import { toCard } from '../../lib/catalog.ts'
 import { listShortsBySlugs, toCardSource } from '../../lib/cms.ts'
 import { localeFrom, paths, translator } from '../../lib/i18n.ts'
 import { pageHref, pageOf, paginationProps, parsePage } from '../../lib/paging.ts'
-import { badgeClock } from '../../lib/services.ts'
 
 const locale = localeFrom(Astro.params.locale)
 if (!locale) return Astro.rewrite('/404')
@@ -17,7 +16,6 @@ const member = Astro.locals.member
 if (!member) return Astro.redirect(signInUrl(paths.signIn(locale), Astro.url.pathname))
 
 const t = translator(locale)
-const clock = badgeClock()
 const base = paths.history(locale)
 // Everything watched, newest first, 20 a page; only this page's shorts are read. A short no longer
 // published has no page to link to: loadViewings already leaves it out.
@@ -35,7 +33,7 @@ const items = viewings.flatMap((viewing) => {
   const progress = viewing.completed ? 1 : Math.min(1, viewing.position / viewing.duration)
   return [
     {
-      ...toCard(toCardSource(short), locale, t, paths.short(locale, short.slug), clock),
+      ...toCard(toCardSource(short), locale, t, paths.short(locale, short.slug)),
       slug: short.slug,
       progress,
       progressLabel: t('short.progress', { percent: Math.round(progress * 100) }),

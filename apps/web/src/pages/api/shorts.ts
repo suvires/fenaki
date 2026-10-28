@@ -5,7 +5,6 @@ import { toCurrentShort } from '../../lib/catalog.ts'
 import { listShortsBySlugs, toCardSource } from '../../lib/cms.ts'
 import { localeFrom, translator } from '../../lib/i18n.ts'
 import { PAGE_SIZE } from '../../lib/paging.ts'
-import { badgeClock } from '../../lib/services.ts'
 
 /**
  * The current card data of some published shorts, by slug: what a page of «Mi lista» kept in the
@@ -20,12 +19,11 @@ export const GET: APIRoute = async ({ url }) => {
     return Response.json({ error: 'invalid' }, { status: 400 })
   try {
     const t = translator(locale)
-    const clock = badgeClock()
     const shorts = await listShortsBySlugs(locale, slugs as string[])
     return Response.json(
       {
         shorts: Object.fromEntries(
-          shorts.map((s) => [s.slug, toCurrentShort(toCardSource(s), locale, t, clock)]),
+          shorts.map((s) => [s.slug, toCurrentShort(toCardSource(s), locale, t)]),
         ),
       },
       { headers: { 'Cache-Control': 'public, max-age=300' } },
