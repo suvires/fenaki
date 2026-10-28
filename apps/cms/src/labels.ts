@@ -81,15 +81,15 @@ export const messages = {
   ),
   unofficialInShowcase: label(
     'A showcase only includes shorts on official channels. These have no source with an official channel and its evidence:',
-    'Un escaparate solo incluye cortos en canales oficiales. Estos no tienen una fuente con canal oficial y su prueba:',
+    'Una sala solo incluye cortos en canales oficiales. Estos no tienen una fuente con canal oficial y su prueba:',
   ),
   nonCommercialInShowcase: label(
     'A showcase cannot include non-commercial (NC) shorts:',
-    'Un escaparate no puede incluir cortos con licencia no comercial (NC):',
+    'Una sala no puede incluir cortos con licencia no comercial (NC):',
   ),
   offCircuitRequired: label(
     'Confirm that no short is still on the festival circuit before publishing a festival showcase.',
-    'Confirma que ningún corto sigue en el circuito de festivales antes de publicar el escaparate de un festival.',
+    'Confirma que ningún corto sigue en el circuito de festivales antes de publicar la sala de un festival.',
   ),
   brandedInSponsored: label(
     'A sponsored collection cannot include branded content:',

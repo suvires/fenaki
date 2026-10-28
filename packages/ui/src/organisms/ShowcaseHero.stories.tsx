@@ -10,10 +10,10 @@ const meta = {
   title: 'Organisms/ShowcaseHero',
   component: ShowcaseHero,
   args: {
-    eyebrow: 'Escaparate · Escuela de cine',
+    eyebrow: 'Sala · Escuela de cine',
     title: 'Escuela de Cine de Ejemplo',
     description:
-      'Una escuela de cine ficticia para probar los escaparates: su selección de cortos de alumnos y antiguos alumnos.',
+      'Una escuela de cine ficticia para probar las salas: su selección de cortos de alumnos y antiguos alumnos.',
     logo: { src: LOGO, alt: 'Escuela de Cine de Ejemplo', width: 480, height: 160 },
     website: { href: '#', label: 'Visitar su web' },
   },

@@ -20,7 +20,7 @@ const offers = [
     link: contact?.sponsor,
   },
   {
-    id: 'escaparate',
+    id: 'sala',
     key: 'showcase',
     includes: ['page', 'launch', 'report'],
     link: contact?.showcase,
@@ -48,20 +48,13 @@ const offers = [
         </li>
       ))}
     </ul>
-    <h2>{t('sponsor.audience.title')}</h2>
-    <ul>
-      {(['viewers', 'teachers', 'filmmakers'] as const).map((key) => (
-        <li>{t(`sponsor.audience.${key}`)}</li>
-      ))}
-    </ul>
-    <h2>{t('sponsor.founders.title')}</h2>
-    <p>{t('sponsor.founders.text')}</p>
   </Prose>
 
+  {/* What there is to buy comes first; who it reaches, the founder price and the rules follow. */}
   <section class="grid gap-6" aria-labelledby="offers">
-    <h2 id="offers" class="m-0 font-display text-title uppercase">
-      {t('sponsor.offersTitle')}
-    </h2>
+    <Prose>
+      <h2 id="offers">{t('sponsor.offersTitle')}</h2>
+    </Prose>
     <div class="grid gap-6 md:grid-cols-2">
       {offers.map((offer) => (
         <OfferCard
@@ -83,6 +76,14 @@ const offers = [
   </section>
 
   <Prose>
+    <h2>{t('sponsor.audience.title')}</h2>
+    <ul>
+      {(['viewers', 'teachers', 'filmmakers'] as const).map((key) => (
+        <li>{t(`sponsor.audience.${key}`)}</li>
+      ))}
+    </ul>
+    <h2>{t('sponsor.founders.title')}</h2>
+    <p>{t('sponsor.founders.text')}</p>
     <h2>{t('sponsor.guarantee.title')}</h2>
     <p>{t('sponsor.guarantee.text')}</p>
     <h2>{t('sponsor.figures.title')}</h2>
@@ -95,11 +96,11 @@ const offers = [
     </ul>
   </Prose>
 
-  <section class="grid gap-4 max-w-synopsis" aria-labelledby="contact">
-    <h2 id="contact" class="m-0 font-display text-title uppercase">
-      {t('sponsor.contact.title')}
-    </h2>
-    <p class="m-0 text-body-l text-secondary">{t('sponsor.contact.text')}</p>
+  <section class="grid gap-4" aria-labelledby="contact">
+    <Prose>
+      <h2 id="contact">{t('sponsor.contact.title')}</h2>
+      <p>{t('sponsor.contact.text')}</p>
+    </Prose>
     {contact ? (
       <div class="flex flex-wrap gap-3">
         <Button href={contact.sponsor.href}>{contact.sponsor.label}</Button>
@@ -108,7 +109,7 @@ const offers = [
         </Button>
       </div>
     ) : (
-      <Notice>{t('sponsor.contact.soon')}</Notice>
+      <Notice className="max-w-prose">{t('sponsor.contact.soon')}</Notice>
     )}
   </section>
 </Base>

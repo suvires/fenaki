@@ -105,7 +105,7 @@ A short added from a URL (or by a scan that adds ten or fewer) is analysed right
 
 ### Showcases
 
-A showcase (`Patrocinio › Escaparates`) is a festival's, film school's or institution's page at `/es/escaparates/<slug>`: logo, name, short text, website, its own ordered selection and an optional «Presentado por» credit. Only shorts with an official channel on record, never NC ones, no branded content when someone presents it, and a festival's showcase is published only after the editor ticks that no short is still on the festival circuit. Logos are uploads in the `Media` collection, stored in `apps/cms/media` (a persistent volume in production).
+A showcase (`Patrocinio › Salas`, «Sala» for viewers) is a festival's, film school's or institution's page at `/es/salas/<slug>`: logo, name, short text, website, its own ordered selection and an optional «Presentado por» credit. Only shorts with an official channel on record, never NC ones, no branded content when someone presents it, and a festival's showcase is published only after the editor ticks that no short is still on the festival circuit. Logos are uploads in the `Media` collection, stored in `apps/cms/media` (a persistent volume in production).
 
 ### Database migrations
 
@@ -258,7 +258,7 @@ The script dumps the old databases to `.migration-dump/` (gitignored), stops the
 
 ## How it fits together
 
-- Public routes: `/es/` (home), `/es/cortos` (browse with filters), `/es/cortos/<slug>`, `/es/colecciones/<slug>`, `/es/personas/<slug>`, `/es/escaparates/<slug>`, `/es/buscar`, `/es/patrocina` and the legal pages.
+- Public routes: `/es/` (home), `/es/cortos` (browse with filters), `/es/cortos/<slug>`, `/es/colecciones/<slug>`, `/es/personas/<slug>`, `/es/salas/<slug>`, `/es/buscar`, `/es/patrocina` and the legal pages.
 - The browse page's filters (duration band, original language, Spanish subtitles, animation or live action, type, country) are Meilisearch facets, read in one multi-search request. They are links, one URL per combination (`/es/cortos?duration=short&form=animation`), so they work without JavaScript and can be shared; filtered pages are `noindex` with the unfiltered page as canonical.
 - SEO: every page has a canonical URL, `hreflang` alternates for each locale (pages with localized slugs pass their own), Open Graph and Twitter cards. Short pages carry `VideoObject` structured data, person pages `ProfilePage`, collections, showcases and the browse page `CollectionPage` with an `ItemList`. `/sitemap.xml` indexes one sitemap per locale (`/sitemap-es.xml`); before launch it lists only the public pages. `/robots.txt` points to it.
 - OG images (`/og/es/cortos/<slug>.png` and the same for people, collections and showcases; `/og/es/site.png`, `browse.png`, `sponsor.png`) are typographic cards drawn from the design tokens and the self-hosted fonts with satori and sharp: never a film still. They are cached for a day.

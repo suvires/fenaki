@@ -14,7 +14,7 @@ import {
 import { translator } from './i18n.ts'
 import type { OgCard } from './og.ts'
 
-export type OgKind = 'cortos' | 'personas' | 'colecciones' | 'escaparates'
+export type OgKind = 'cortos' | 'personas' | 'colecciones' | 'salas'
 export type OgPage = 'site' | 'browse' | 'sponsor'
 
 function base(locale: Locale) {

@@ -5,9 +5,9 @@ const meta = {
   title: 'Molecules/OfferCard',
   component: OfferCard,
   args: {
-    id: 'escaparate',
+    id: 'sala',
     audience: 'Para festivales y escuelas de cine',
-    title: 'Escaparate',
+    title: 'Sala propia',
     description: 'Una página propia y permanente con tu selección de cortos y tu identidad.',
     includesLabel: 'Incluye',
     includes: [
@@ -27,7 +27,7 @@ type Story = StoryObj<typeof meta>
 
 export const Founder: Story = {}
 export const WithAction: Story = {
-  args: { action: { href: '#', label: 'Escaparates para festivales y escuelas' } },
+  args: { action: { href: '#', label: 'Salas para festivales y escuelas' } },
 }
 export const ListPriceOnly: Story = {
   args: { listPrice: undefined, price: '700 € + IVA', priceNote: undefined },

@@ -3,7 +3,7 @@ import { Icon } from '../foundations/Icon.tsx'
 import { SponsorCredit, type SponsorCreditProps } from '../molecules/SponsorCredit.tsx'
 
 export interface ShowcaseHeroProps {
-  /** «Escaparate · Escuela de cine». */
+  /** «Sala · Escuela de cine». */
   eyebrow: string
   /** The organization's name. */
   title: string

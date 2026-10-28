@@ -44,9 +44,9 @@ export const paths = {
   resetPassword: (locale: Locale) => `/${locale}/cuenta/restablecer`,
   account: (locale: Locale) => `/${locale}/cuenta`,
   history: (locale: Locale) => `/${locale}/historial`,
-  showcase: (locale: Locale, slug: string) => `/${locale}/escaparates/${slug}`,
+  showcase: (locale: Locale, slug: string) => `/${locale}/salas/${slug}`,
   sponsor: (locale: Locale, section?: 'collection' | 'showcase') =>
-    `/${locale}/patrocina${section ? `#${section === 'collection' ? 'coleccion' : 'escaparate'}` : ''}`,
+    `/${locale}/patrocina${section ? `#${section === 'collection' ? 'coleccion' : 'sala'}` : ''}`,
   search: (locale: Locale, query?: string) =>
     `/${locale}/buscar${query ? `?q=${encodeURIComponent(query)}` : ''}`,
   /** A section of the landing page: its waitlist form. */
@@ -59,7 +59,7 @@ export const paths = {
   /** Which third-party players load without asking (kept in the browser, never indexed). */
   playerSettings: (locale: Locale) => `/${locale}/preferencias-de-reproduccion`,
   /** The generated Open Graph image of a document or page (see src/pages/og). */
-  og: (locale: Locale, kind: 'cortos' | 'personas' | 'colecciones' | 'escaparates', slug: string) =>
+  og: (locale: Locale, kind: 'cortos' | 'personas' | 'colecciones' | 'salas', slug: string) =>
     `/og/${locale}/${kind}/${slug}.png`,
   /** ?v changes the address when a card's design changes: the CDN and social networks cache by URL. */
   ogPage: (locale: Locale, page: 'site' | 'browse' | 'sponsor') => `/og/${locale}/${page}.png?v=3`,

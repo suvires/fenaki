@@ -80,11 +80,11 @@ test('credits link to person pages with their shorts', async ({ page }) => {
 })
 
 test('a showcase shows the organization, its selection and the presenter', async ({ page }) => {
-  await page.goto('/es/escaparates/escuela-de-cine-de-ejemplo')
+  await page.goto('/es/salas/escuela-de-cine-de-ejemplo')
   await expect(
     page.getByRole('heading', { level: 1, name: 'Escuela de Cine de Ejemplo' }),
   ).toBeVisible()
-  await expect(page.getByText('Escaparate · Escuela de cine')).toBeVisible()
+  await expect(page.getByText('Sala · Escuela de cine')).toBeVisible()
   await expect(page.getByRole('img', { name: 'Escuela de Cine de Ejemplo' })).toBeVisible()
   await expect(page.getByText('Presentado por')).toBeVisible()
   await expect(page.getByRole('heading', { name: 'Su selección · 3 cortos' })).toBeVisible()
@@ -119,7 +119,7 @@ test('short pages carry structured data, canonical URLs and a generated OG image
   const sitemap = await (await request.get('/sitemap-es.xml')).text()
   expect(sitemap).toContain('/es/cortos/timecode</loc>')
   expect(sitemap).toContain('/es/personas/juanjo-gimenez</loc>')
-  expect(sitemap).toContain('/es/escaparates/escuela-de-cine-de-ejemplo</loc>')
+  expect(sitemap).toContain('/es/salas/escuela-de-cine-de-ejemplo</loc>')
   expect(await (await request.get('/robots.txt')).text()).toContain('Sitemap: ')
 })
 
@@ -127,7 +127,7 @@ test('the sponsorship page has no contact links without a mailbox', async ({ pag
   await page.goto('/es/patrocina')
   await expect(page.getByRole('heading', { level: 1, name: 'Patrocina FENAKI' })).toBeVisible()
   await expect(page.getByRole('heading', { name: 'Colección patrocinada' })).toBeVisible()
-  await expect(page.getByRole('heading', { name: 'Escaparate', exact: true })).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Sala propia', exact: true })).toBeVisible()
   await expect(page.getByText('350 € + IVA')).toBeVisible()
   await expect(page.locator('a[href^="mailto:"]')).toHaveCount(0)
   await expect(page.getByText('Muy pronto tendrás aquí una dirección de contacto.')).toBeVisible()

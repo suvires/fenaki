@@ -36,7 +36,7 @@ export const RIGHTS_REQUESTS = {
 } satisfies Record<string, AdminLabel>
 
 export const PRODUCTS = {
-  showcase: label('Showcase', 'Escaparate'),
+  showcase: label('Showcase', 'Sala'),
   collection: label('Sponsored collection', 'Colección patrocinada'),
   sponsorship: label('Other sponsorship', 'Otro patrocinio'),
   other: label('Other', 'Otro'),

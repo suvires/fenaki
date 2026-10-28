@@ -3,7 +3,7 @@ const CATALOG_ROUTES = [
   /^\/[a-z]{2}\/cortos(\/|$)/,
   /^\/[a-z]{2}\/colecciones(\/|$)/,
   /^\/[a-z]{2}\/personas(\/|$)/,
-  /^\/[a-z]{2}\/escaparates(\/|$)/,
+  /^\/[a-z]{2}\/salas(\/|$)/,
   /^\/[a-z]{2}\/temas(\/|$)/,
   /^\/[a-z]{2}\/buscar\/?$/,
   /^\/api\/search\/?$/,
@@ -11,7 +11,7 @@ const CATALOG_ROUTES = [
   // Accounts open with the catalog.
   /^\/[a-z]{2}\/(crear-cuenta|iniciar-sesion|cuenta|historial|sube-tu-corto|mis-envios)(\/|$)/,
   /^\/api\/account(\/|$)/,
-  /^\/og\/[a-z]{2}\/(cortos|colecciones|personas|escaparates)\//,
+  /^\/og\/[a-z]{2}\/(cortos|colecciones|personas|salas)\//,
   /^\/og\/[a-z]{2}\/browse\.png$/,
 ]
 

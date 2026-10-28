@@ -24,7 +24,7 @@ describe('isHiddenInMode', () => {
       '/es/cortos/cuerdas',
       '/es/colecciones/x',
       '/es/personas/nacho-vigalondo',
-      '/es/escaparates/x',
+      '/es/salas/x',
       '/es/temas',
       '/es/temas/familia',
       '/es/sube-tu-corto',

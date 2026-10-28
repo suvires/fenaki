@@ -81,6 +81,8 @@ const TYPES: Record<string, string> = {
   distribuidora: 'distributor',
 }
 const PRODUCTS: Record<string, string> = {
+  sala: 'showcase',
+  // The product's name before «Sala».
   escaparate: 'showcase',
   coleccion: 'collection',
   'coleccion patrocinada': 'collection',

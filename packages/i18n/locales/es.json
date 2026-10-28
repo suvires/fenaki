@@ -286,6 +286,7 @@
       "cookies": "Política de cookies",
       "terms": "Términos de uso",
       "sponsor": "Patrocinar una colección",
+      "showcase": "Salas para festivales y escuelas",
       "browse": "Todos los cortos",
       "latest": "Novedades",
       "myList": "Mi lista",
@@ -304,8 +305,8 @@
       "subject": "Patrocinar una colección"
     },
     "showcase": {
-      "label": "Escaparates para festivales y escuelas",
-      "subject": "Escaparate para festivales y escuelas"
+      "label": "Salas para festivales y escuelas",
+      "subject": "Sala para festivales y escuelas"
     }
   },
   "person": {
@@ -392,7 +393,7 @@
     }
   },
   "showcase": {
-    "eyebrow": "Escaparate · {kind}",
+    "eyebrow": "Sala · {kind}",
     "kinds": {
       "festival": "Festival",
       "school": "Escuela de cine",
@@ -413,26 +414,26 @@
   "sponsor": {
     "title": "Patrocina FENAKI",
     "eyebrow": "Para organizaciones",
-    "lead": "FENAKI reúne en un solo sitio los cortometrajes publicados en abierto que hoy están dispersos entre canales oficiales, webs de festivales y archivos, con la experiencia de una plataforma de streaming.",
+    "lead": "El mejor cine, en cortos. FENAKI reúne en un solo lugar los cortometrajes que festivales, escuelas, productoras y autores publican en abierto, con la experiencia de una plataforma de streaming.",
     "pillars": {
       "broad": {
-        "title": "Amplio.",
-        "text": "Cortos de festivales, escuelas, productoras y autores, en un solo catálogo."
+        "title": "Todo en un solo lugar.",
+        "text": "Más de 9.000 cortos de festivales, escuelas, productoras y autores, en un único catálogo."
       },
       "useful": {
-        "title": "Útil.",
-        "text": "Filtros por duración, idioma y subtítulos. Fichas con dirección, año, premios y licencia."
+        "title": "Fácil de explorar.",
+        "text": "Filtros por género, tema, duración, idioma, país y premios. Cada corto tiene su ficha con dirección, año, premios y el canal que lo publica."
       }
     },
     "audience": {
       "title": "Para quién",
-      "viewers": "Personas que quieren ver cine breve de calidad, sin suscripción, en cualquier país de habla hispana.",
+      "viewers": "Personas que quieren ver buen cine en formato corto, sin suscripción, en cualquier país de habla hispana.",
       "teachers": "Docentes que buscan cortos para usar en clase.",
       "filmmakers": "Cortometrajistas que buscan público después del circuito de festivales."
     },
     "founders": {
       "title": "Por qué ahora",
-      "text": "FENAKI se construye en público: cada día contamos en redes cómo avanza. Hoy partimos de cero en audiencia, y lo decimos así. Lo que ofrecemos a las primeras organizaciones es ser fundadoras del proyecto, aparecer en su lanzamiento, asociar su nombre a una selección editorial cuidada y recibir cifras medidas, no estimadas. Por eso el precio de fundador es la mitad del precio de lista y solo está disponible para las tres primeras organizaciones de cada producto."
+      "text": "FENAKI se construye en público: cada día contamos en redes cómo avanza. Hoy partimos de cero en audiencia, y lo decimos así. A las primeras organizaciones les ofrecemos ser fundadoras del proyecto: aparecer en su lanzamiento, asociar su nombre a una colección o tener su propia sala desde el primer día, y recibir cifras medidas, no estimadas. Por eso el precio de fundador es la mitad del de lista, solo para las tres primeras organizaciones de cada producto."
     },
     "offersTitle": "Dos formas de estar en FENAKI",
     "includes": "Incluye",
@@ -440,7 +441,7 @@
     "collection": {
       "audience": "Para marcas e instituciones culturales",
       "title": "Colección patrocinada",
-      "description": "Una colección editorial de FENAKI con tu nombre durante un mes.",
+      "description": "Una colección de FENAKI con tu nombre durante un mes, sobre el tema que propongas.",
       "includes": {
         "header": "Cabecera en la colección y en la portada",
         "newsletter": "2 menciones en la newsletter",
@@ -451,11 +452,11 @@
       "price": "250 € + IVA"
     },
     "showcase": {
-      "audience": "Para festivales y escuelas de cine",
-      "title": "Escaparate",
-      "description": "Una página propia y permanente con tu selección de cortos y tu identidad.",
+      "audience": "Para festivales, escuelas de cine e instituciones",
+      "title": "Sala propia",
+      "description": "Tu sala permanente en FENAKI: una página con tu nombre, tu identidad y tu selección de cortos.",
       "includes": {
-        "page": "Página permanente",
+        "page": "Página permanente con tu logo, tu texto y tu web",
         "launch": "Difusión en el lanzamiento y en la newsletter",
         "report": "Informe de cifras"
       },
@@ -468,22 +469,22 @@
     },
     "figures": {
       "title": "Cifras que puedes comprobar",
-      "text": "Compartimos contigo un panel de analítica en tiempo real con las visitas de tu colección o tu escaparate, y al final del periodo te enviamos un informe. La analítica no usa cookies ni rastrea a las personas."
+      "text": "Compartimos contigo un panel de analítica en tiempo real con las visitas de tu colección o de tu sala, y al final del periodo te enviamos un informe. La analítica no usa cookies ni rastrea a las personas."
     },
     "rules": {
       "title": "Reglas",
-      "placement": "El patrocinio aparece en la página de la colección, en la cabecera de la portada, en la newsletter y en redes.",
+      "placement": "El patrocinio de una colección aparece en su página, en la cabecera de la portada, en la newsletter y en redes.",
       "player": "Nunca aparece dentro del reproductor ni junto a él, ni se presenta como «este corto lo patrocina…». Así lo exigen las condiciones de YouTube y Vimeo, y así lo preferimos.",
       "nonCommercial": "Las colecciones patrocinadas no incluyen cortos con licencia no comercial (NC).",
-      "selection": "La selección de una colección patrocinada la hace el equipo editorial de FENAKI; puedes proponer el tema. En un escaparate, la selección es tuya, siempre que los cortos estén publicados en canales oficiales.",
+      "selection": "En una colección patrocinada, FENAKI elige los cortos y tú puedes proponer el tema. En una sala, la selección es tuya, siempre que los cortos estén publicados en canales oficiales.",
       "festivals": "Los festivales muestran cortos que ya han terminado su recorrido (ediciones anteriores o palmarés), nunca cortos aún en circuito."
     },
     "contact": {
       "title": "Siguiente paso",
-      "text": "Escríbenos con el producto que te interesa y te proponemos una llamada de 20 minutos. Si te encaja, reservamos tu plaza de fundador con un acuerdo de una página y una factura.",
+      "text": "Escríbenos con lo que te interesa y te proponemos una llamada de 20 minutos. Si te encaja, reservamos tu plaza de fundador con un acuerdo de una página y una factura.",
       "soon": "Muy pronto tendrás aquí una dirección de contacto."
     },
-    "description": "Colecciones patrocinadas y escaparates para festivales, escuelas de cine e instituciones culturales en FENAKI, el catálogo de cortometrajes."
+    "description": "Colecciones patrocinadas y salas propias para festivales, escuelas de cine e instituciones culturales en FENAKI. El mejor cine, en cortos."
   },
   "crm": {
     "footer": {

@@ -137,7 +137,7 @@ export const SAMPLE_SHOWCASE = {
   kind: 'school' as const,
   website: 'https://example.com',
   intro:
-    'Una escuela de cine ficticia para probar los escaparates: su selección de cortos de alumnos y antiguos alumnos.',
+    'Una escuela de cine ficticia para probar las salas: su selección de cortos de alumnos y antiguos alumnos.',
   /** Titles from SAMPLE_SHORTS, in display order. */
   shorts: ['Cuerdas', 'Alike', 'Madre'],
 }

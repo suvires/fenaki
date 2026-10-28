@@ -43,7 +43,7 @@ test('the catalog pages run under the policy', async ({ page }, testInfo) => {
   await page.getByRole('searchbox', { name: 'Buscar cortos' }).fill('vigalondo')
   await expect(page.getByText('1 corto encontrado')).toBeVisible({ timeout: 15_000 })
 
-  await visit(page, '/es/escaparates/escuela-de-cine-de-ejemplo')
+  await visit(page, '/es/salas/escuela-de-cine-de-ejemplo')
 
   expect(violations).toEqual([])
 })

@@ -55,7 +55,7 @@ test('the catalog routes are not public before launch', async ({ request }) => {
     '/es/buscar',
     '/es/colecciones/imprescindibles-del-corto-espanol',
     '/es/personas/juanjo-gimenez',
-    '/es/escaparates/escuela-de-cine-de-ejemplo',
+    '/es/salas/escuela-de-cine-de-ejemplo',
     '/es/temas/familia',
     '/og/es/cortos/timecode.png',
   ])
@@ -70,10 +70,7 @@ test('the sponsorship page is public before launch, with the contact links', asy
   await page.goto('/es/patrocina')
   await expect(page.getByRole('heading', { level: 1, name: 'Patrocina FENAKI' })).toBeVisible()
   await expect(
-    page
-      .getByRole('main')
-      .getByRole('link', { name: 'Escaparates para festivales y escuelas' })
-      .first(),
+    page.getByRole('main').getByRole('link', { name: 'Salas para festivales y escuelas' }).first(),
   ).toHaveAttribute('href', /^mailto:hola@fenaki\.tv\?subject=/)
   // Before launch the sitemap lists only the public pages.
   const sitemap = await (await request.get('/sitemap-es.xml')).text()

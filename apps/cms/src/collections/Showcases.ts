@@ -46,12 +46,12 @@ export async function unofficialShorts(
 
 /**
  * The page an organization (festival, film school, institution) buys: its identity and its own
- * selection of shorts, at /es/escaparates/<slug>. Sponsorship stays on this page, never on a
+ * selection of shorts, at /es/salas/<slug> («Sala» for viewers). Sponsorship stays on this page, never on a
  * short's page or near the player.
  */
 export const Showcases: CollectionConfig = {
   slug: 'showcases',
-  labels: { singular: label('Showcase', 'Escaparate'), plural: label('Showcases', 'Escaparates') },
+  labels: { singular: label('Showcase', 'Sala'), plural: label('Showcases', 'Salas') },
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'kind', 'status'],
@@ -150,7 +150,7 @@ export const Showcases: CollectionConfig = {
       admin: {
         description: label(
           'Optional credit in the page header. Branded shorts cannot be in a presented showcase.',
-          'Crédito opcional en la cabecera de la página. Un escaparate presentado no puede incluir contenido de marca.',
+          'Crédito opcional en la cabecera de la página. Una sala presentada no puede incluir contenido de marca.',
         ),
       },
     },

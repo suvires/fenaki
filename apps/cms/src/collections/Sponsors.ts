@@ -32,7 +32,7 @@ export const Sponsors: CollectionConfig = {
       admin: {
         description: label(
           'Optional. Shown on its sponsored collections and showcases, in place of the name.',
-          'Opcional. Aparece en sus colecciones patrocinadas y escaparates, en lugar del nombre.',
+          'Opcional. Aparece en sus colecciones patrocinadas y salas, en lugar del nombre.',
         ),
       },
     },
