@@ -53,7 +53,8 @@ export const ResumeAfterPlay: Story = {
 
 const hero = {
   seconds: 900,
-  details: [{ label: 'Juanjo Giménez', href: '#' }, '2016', 'España', 'Ficción'],
+  details: ['2016', 'España', 'Ficción'],
+  directedBy: ['Dirigido por ', { label: 'Juanjo Giménez', href: '#' }],
   synopsis:
     'Luna y Diego son los vigilantes de un aparcamiento. Ella trabaja de día; él, de noche. Un rasguño en un coche les lleva a revisar las grabaciones de seguridad, donde descubren otra forma de comunicarse.',
   clampSynopsis: false,

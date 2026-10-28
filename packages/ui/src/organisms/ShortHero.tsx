@@ -16,6 +16,11 @@ export interface ShortHeroProps {
   locale?: Locale
   /** The rest of the details line, already formatted: director, year, type. A link when it has `href`. */
   details?: (string | { label: string; href: string })[]
+  /**
+   * «Dirigido por …» on a line of its own under the details, as in the preview: text, and the
+   * directors as links to their pages.
+   */
+  directedBy?: (string | { label: string; href: string })[]
   /** The short's badges («Contenido de marca», «Sin diálogos»…), after the details, as in the preview. */
   badges?: { label: string; tone?: BadgeTone }[]
   /** Clamped to three lines, unless `clampSynopsis` is false (the short's own page shows it whole). */
@@ -64,6 +69,7 @@ export function ShortHero({
   locale,
   details = [],
   badges = [],
+  directedBy,
   synopsis,
   clampSynopsis = true,
   ctaLabel,
@@ -138,6 +144,23 @@ export function ShortHero({
           </Badge>
         ))}
       </p>
+      {directedBy && directedBy.length > 0 ? (
+        <p className="m-0 text-meta text-secondary">
+          {directedBy.map((piece, index) =>
+            typeof piece === 'string' ? (
+              piece
+            ) : (
+              <a
+                key={index}
+                href={piece.href}
+                className="text-primary underline underline-offset-2 hover:text-accent rounded-xs focus-visible:focus-ring"
+              >
+                {piece.label}
+              </a>
+            ),
+          )}
+        </p>
+      ) : null}
       {synopsis ? (
         <p className={cx('m-0 max-w-hero-text text-body-l', clampSynopsis && 'line-clamp-3')}>
           {synopsis}

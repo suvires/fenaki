@@ -1,5 +1,12 @@
 ---
-import { formatCountry, formatLanguage, formatList, formatYear } from '@fenaki/i18n'
+import {
+  createRichTranslator,
+  formatCountry,
+  formatLanguage,
+  formatList,
+  formatListParts,
+  formatYear,
+} from '@fenaki/i18n'
 import { Rail, ShareButton, ShortCard } from '@fenaki/ui'
 import NotFound from '../../../components/NotFound.astro'
 import PeopleLinks from '../../../components/PeopleLinks.astro'
@@ -103,16 +110,33 @@ const share = short
     )
   : []
 
-// The hero's details line, as on the home page: directors (linked), year, country and type; the
-// badges follow it.
+// The hero's details line: year, country and type; the badges follow it. The directors go on a
+// line of their own, «Dirigido por …», as in the preview, each linked to their page.
 const details = short
   ? [
-      ...directors.map((d) => ({ label: d.name, href: paths.person(locale, d.slug) })),
       ...(short.year ? [formatYear(short.year, locale)] : []),
       ...(short.country ? [formatCountry(short.country, locale)] : []),
       t(`short.types.${short.type}`),
     ]
   : []
+
+const directorLinks = Object.fromEntries(
+  directors.map((d) => [d.name, { label: d.name, href: paths.person(locale, d.slug) }]),
+)
+const directedBy =
+  directors.length > 0
+    ? createRichTranslator(locale)('short.directedBy', { names: 'names' as const }).flatMap(
+        (piece) =>
+          piece === 'names'
+            ? formatListParts(
+                directors.map((d) => d.name),
+                locale,
+              ).map((part) =>
+                part.type === 'element' ? (directorLinks[part.value] ?? part.value) : part.value,
+              )
+            : [piece],
+      )
+    : undefined
 
 // «Idioma y subtítulos»: the spoken language, and the subtitles its official player offers, the
 // viewer's language first. Intl writes language names in lowercase: a value starts with a capital.
@@ -191,6 +215,7 @@ const subtitles = [...(card?.subtitles ?? [])]
         }
         hero={{
           badges: card ? badgesFor(card, t) : [],
+          directedBy,
           seconds: short.durationSeconds,
           locale,
           details,
