@@ -74,7 +74,6 @@ export function SignUpForm({ locale, signInHref, privacyHref, termsHref }: SignU
         autoComplete="given-name"
         maxLength={80}
         label={t('account.common.name.label')}
-        hint={t('account.common.name.hint')}
       />
       <TextField
         id="signup-email"

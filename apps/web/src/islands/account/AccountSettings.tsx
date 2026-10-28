@@ -160,7 +160,6 @@ export function AccountSettings({
           maxLength={80}
           autoComplete="given-name"
           label={t('account.common.name.label')}
-          hint={t('account.common.name.hint')}
           onChange={(event) => typeName(event.currentTarget.value)}
         />
         <p role="status" className="m-0 min-h-(--text-meta--line-height) text-meta text-secondary">

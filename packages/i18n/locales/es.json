@@ -515,8 +515,7 @@
         "hint": "Mínimo 10 caracteres."
       },
       "name": {
-        "label": "Nombre (opcional)",
-        "hint": "Es solo para saludarte. Puedes dejarlo vacío."
+        "label": "Nombre (opcional)"
       },
       "error": {
         "email": "Ese email no parece completo. Revisa que tenga @ y un dominio, por ejemplo nombre@ejemplo.com.",
