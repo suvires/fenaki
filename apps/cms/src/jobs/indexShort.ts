@@ -66,12 +66,14 @@ export const indexShortTask: TaskConfig<{
               ...(short.themes ?? []).map((theme) => t(`short.themes.${theme}`)),
             ]
           : []
-        await index
-          .addDocuments([toSearchDocument(short as IndexableShort, typeLabel, classLabels)])
-          .waitTask()
+        // Enqueued, not awaited: Meilisearch applies its tasks in order on its own, and waiting for
+        // each one made a night's thousands of syncs take hours. A request it refuses still throws.
+        await index.addDocuments([
+          toSearchDocument(short as IndexableShort, typeLabel, classLabels),
+        ])
         actions.push(`${locale}:upsert`)
       } else {
-        await index.deleteDocument(input.shortId).waitTask()
+        await index.deleteDocument(input.shortId)
         actions.push(`${locale}:delete`)
       }
     }
