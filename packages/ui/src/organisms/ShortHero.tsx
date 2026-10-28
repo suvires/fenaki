@@ -120,8 +120,14 @@ export function ShortHero({
       >
         {title}
       </Heading>
-      <p className="m-0 flex flex-wrap items-center gap-x-3 gap-y-1 text-meta">
-        <Duration seconds={seconds} locale={locale} inherit />
+      <p
+        className={cx(
+          'm-0 flex flex-wrap items-center gap-x-3 gap-y-1',
+          // On a short's page, the size of the page's other facts («Idioma», «Ficha técnica»).
+          stacked ? 'text-body' : 'text-meta',
+        )}
+      >
+        <Duration seconds={seconds} locale={locale} inherit inheritSize={stacked} />
         {details.map((detail) =>
           typeof detail === 'string' ? (
             <span key={detail} className="before:content-['·'] before:mr-3">
@@ -145,7 +151,7 @@ export function ShortHero({
         ))}
       </p>
       {directedBy && directedBy.length > 0 ? (
-        <p className="m-0 text-meta text-secondary">
+        <p className={cx('m-0 text-secondary', stacked ? 'text-body' : 'text-meta')}>
           {directedBy.map((piece, index) =>
             typeof piece === 'string' ? (
               piece
