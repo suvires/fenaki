@@ -30,6 +30,9 @@ export interface SearchResult {
   query: string
   hits: CardSource[]
   total: number
+  /** This page, from 1, and how many there are (48 shorts a page, as in the catalog). */
+  page: number
+  pages: number
 }
 
 let client: Meilisearch | undefined
@@ -44,12 +47,18 @@ function meili(): Meilisearch {
 
 const indexName = (locale: Locale) => `${SEARCH_INDEX_PREFIX}shorts_${locale}`
 
-export async function searchShorts(locale: Locale, query: string): Promise<SearchResult> {
-  const response = await meili().index<ShortHit>(indexName(locale)).search(query, { limit: 48 })
+export async function searchShorts(locale: Locale, query: string, page = 1): Promise<SearchResult> {
+  // Asking by page makes Meilisearch count every match exactly, so the pager knows its end.
+  const response = await meili()
+    .index<ShortHit>(indexName(locale))
+    .search(query, { page, hitsPerPage: PAGE_SIZE })
+  const total = response.totalHits ?? response.hits.length
   return {
     query,
-    total: response.estimatedTotalHits ?? response.hits.length,
+    total,
     hits: response.hits.map(toCardSource),
+    page,
+    pages: Math.max(1, Math.ceil(total / PAGE_SIZE)),
   }
 }
 

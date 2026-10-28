@@ -2,7 +2,8 @@
 import { PageHeader } from '@fenaki/ui'
 import { SearchIsland } from '../../islands/SearchIsland.tsx'
 import Base from '../../layouts/Base.astro'
-import { localeFrom, translator } from '../../lib/i18n.ts'
+import { localeFrom, paths, translator } from '../../lib/i18n.ts'
+import { parsePage } from '../../lib/paging.ts'
 import { searchShorts, type SearchResult } from '../../lib/search.ts'
 import { badgeClock } from '../../lib/services.ts'
 
@@ -16,11 +17,14 @@ let initial: SearchResult | null = null
 let initialError = false
 if (query) {
   try {
-    initial = await searchShorts(locale, query)
+    initial = await searchShorts(locale, query, parsePage(Astro.url.searchParams))
   } catch {
     initialError = true
   }
 }
+// Past the last page: the last one.
+if (initial && initial.page > initial.pages)
+  return Astro.redirect(`${paths.search(locale, query)}&page=${initial.pages}`, 302)
 ---
 
 <Base locale={locale} title={t('search.title')}>

@@ -1,8 +1,9 @@
 import { createTranslator, type Locale } from '@fenaki/i18n'
-import { SearchField, ShortCard } from '@fenaki/ui'
+import { Pagination, SearchField, ShortCard } from '@fenaki/ui'
 import { useEffect, useRef, useState } from 'react'
 import { toCard, type BadgeClock } from '../lib/catalog.ts'
 import { paths } from '../lib/i18n.ts'
+import { paginationProps } from '../lib/paging.ts'
 import type { SearchResult } from '../lib/search.ts'
 
 interface SearchIslandProps {
@@ -18,7 +19,10 @@ type State = { kind: 'idle' } | { kind: 'results'; result: SearchResult } | { ki
 
 const DEBOUNCE_MS = 150
 
-/** Search as you type: results update without a spinner, and the URL keeps the query. */
+/**
+ * Search as you type: results update without a spinner, and the URL keeps the query. A new query
+ * starts on its first page; the pager under the results links to the others (each its own URL).
+ */
 export function SearchIsland({ locale, initial, initialError, clock }: SearchIslandProps) {
   const t = createTranslator(locale)
   const [query, setQuery] = useState(initial?.query ?? '')
@@ -104,6 +108,14 @@ export function SearchIsland({ locale, initial, initialError, clock }: SearchIsl
             </li>
           ))}
         </ul>
+      ) : null}
+      {state.kind === 'results' && state.result.pages > 1 ? (
+        <Pagination
+          {...paginationProps(t, state.result.page, state.result.pages, (n) => {
+            const base = paths.search(locale, state.result.query)
+            return n > 1 ? `${base}&page=${n}` : base
+          })}
+        />
       ) : null}
     </div>
   )
