@@ -2,7 +2,7 @@ import { expect, test, type Page } from '@playwright/test'
 
 test('the browse page filters by facets with shareable URLs', async ({ page }) => {
   await page.goto('/es/cortos')
-  await expect(page.getByRole('heading', { level: 1, name: 'Todos los cortos' })).toBeVisible()
+  await expect(page.getByRole('heading', { level: 1, name: 'Todos los cortos' })).toBeAttached()
   await expect(page.getByRole('status')).toHaveText('6 cortos')
 
   const duration = page.getByRole('region', { name: 'Duración' })

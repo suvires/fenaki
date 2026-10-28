@@ -318,10 +318,6 @@
   },
   "browse": {
     "title": "Todos los cortos",
-    "eyebrow": {
-      "one": "Catálogo · {count} corto",
-      "other": "Catálogo · {count} cortos"
-    },
     "description": "Filtra por duración, idioma, subtítulos, forma, tipo, género, tema, público o país. Cada combinación tiene su propia dirección para compartirla.",
     "filtersLabel": "Filtros",
     "filters": {

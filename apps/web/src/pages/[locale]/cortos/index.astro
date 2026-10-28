@@ -1,6 +1,6 @@
 ---
 import { formatCountry, formatLanguage, type MessageKey } from '@fenaki/i18n'
-import { Button, FacetGroup, PageHeader, Pagination, ShortGrid, type FacetOption } from '@fenaki/ui'
+import { Button, FacetGroup, Pagination, ShortGrid, type FacetOption } from '@fenaki/ui'
 import Base from '../../../layouts/Base.astro'
 import {
   browseHref,
@@ -131,11 +131,8 @@ const jsonLd =
   ogImage={paths.ogPage(locale, 'browse')}
   jsonLd={jsonLd}
 >
-  <PageHeader
-    eyebrow={result && !filtered ? t('browse.eyebrow', { count: result.total }) : undefined}
-    title={t('browse.title')}
-    description={t('browse.description')}
-  />
+  {/* No visible header: the filters open the page. The heading stays for screen readers. */}
+  <h1 class="sr-only">{t('browse.title')}</h1>
   {!result ? (
     <p role="status" class="m-0 text-body-l text-secondary">
       {t('browse.unavailable')}
