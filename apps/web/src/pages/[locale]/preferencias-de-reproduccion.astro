@@ -8,8 +8,8 @@ const locale = localeFrom(Astro.params.locale)
 if (!locale) return Astro.rewrite('/404')
 
 const t = translator(locale)
-// Signed in, the choice is the account's (every device); otherwise this browser's.
-const savedIn = Astro.locals.member ? 'account' : 'browser'
+// Signed in, the choice is the account's (every device); otherwise this browser's, unsaid here.
+const signedIn = Boolean(Astro.locals.member)
 const more = createRichTranslator(locale)('playerSettings.more', { cookies: 'link' as const })
 ---
 
@@ -18,7 +18,7 @@ const more = createRichTranslator(locale)('playerSettings.more', { cookies: 'lin
     <h1 class="m-0 font-display text-display-l uppercase">{t('playerSettings.title')}</h1>
     <div class="grid gap-3 max-w-player-text text-body text-secondary">
       <p class="m-0">{t('playerSettings.intro')}</p>
-      <p class="m-0">{t(`playerSettings.savedIn.${savedIn}`)}</p>
+      {signedIn && <p class="m-0">{t('playerSettings.savedInAccount')}</p>}
     </div>
     <PlayerSettings client:load locale={locale} />
     <p class="m-0 text-small text-secondary">

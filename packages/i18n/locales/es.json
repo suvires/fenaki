@@ -629,11 +629,8 @@
   },
   "playerSettings": {
     "title": "Preferencias de reproducción",
-    "intro": "Los cortos se ven en el reproductor de YouTube o de Vimeo. Antes de cargarlo te pedimos permiso, porque esa empresa recibe tu dirección IP y guarda datos en tu navegador. Si marcas un reproductor, sus cortos empiezan sin preguntarte.",
-    "savedIn": {
-      "account": "Se guarda en tu cuenta, así que vale en todos tus dispositivos.",
-      "browser": "Se guarda solo en este navegador. Con la sesión iniciada, se guarda en tu cuenta y vale en todos tus dispositivos."
-    },
+    "intro": "Cuando ves un corto en el reproductor de YouTube o de Vimeo, esa empresa recibe tu dirección IP y guarda datos en tu navegador. Te preguntaremos antes de reproducir cada corto, salvo que lo aceptes aquí para que no te preguntemos más.",
+    "savedInAccount": "Tus preferencias de reproducción se guardan en tu cuenta, así que se aplican en todos tus dispositivos.",
     "allow": "Reproducir los cortos de {provider} sin preguntarme",
     "error": "No hemos podido guardar el cambio. Inténtalo de nuevo.",
     "more": "Qué datos recibe cada reproductor, en la {cookies}.",
