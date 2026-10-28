@@ -25,6 +25,18 @@ export const Sponsors: CollectionConfig = {
     },
     { name: 'website', label: label('Website', 'Sitio web'), type: 'text' },
     {
+      name: 'logo',
+      label: label('Logo', 'Logo'),
+      type: 'upload',
+      relationTo: 'media',
+      admin: {
+        description: label(
+          'Optional. Shown on its sponsored collections and showcases, in place of the name.',
+          'Opcional. Aparece en sus colecciones patrocinadas y escaparates, en lugar del nombre.',
+        ),
+      },
+    },
+    {
       name: 'notes',
       label: common.notes,
       type: 'textarea',

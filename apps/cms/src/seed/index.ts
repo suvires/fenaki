@@ -6,7 +6,13 @@ import config from '@payload-config'
 import { getPayload } from 'payload'
 import { slugify } from '../fields/slug.ts'
 import sharp from 'sharp'
-import { SAMPLE_COLLECTION, SAMPLE_SHORTS, SAMPLE_SHOWCASE, SAMPLE_SPONSOR } from './data.ts'
+import {
+  SAMPLE_COLLECTION,
+  SAMPLE_RULES_COLLECTION,
+  SAMPLE_SHORTS,
+  SAMPLE_SHOWCASE,
+  SAMPLE_SPONSOR,
+} from './data.ts'
 import { ensureAdmin, ensureSampleMember, removeSamples, runSearchSync } from './shared.ts'
 
 const payload = await getPayload({ config })
@@ -88,7 +94,7 @@ log(`created ${shortIds.length} sample shorts with sources and licenses`)
 
 const sponsor = await payload.create({ collection: 'sponsors', data: SAMPLE_SPONSOR })
 await payload.create({
-  collection: 'collections',
+  collection: 'sponsored-collections',
   locale: 'es',
   data: {
     title: SAMPLE_COLLECTION.title,
@@ -104,6 +110,23 @@ await payload.create({
   },
 })
 log('created the sponsored sample collection')
+
+await payload.create({
+  collection: 'collections',
+  locale: 'es',
+  data: {
+    title: SAMPLE_RULES_COLLECTION.title,
+    slug: slugify(SAMPLE_RULES_COLLECTION.title),
+    description: SAMPLE_RULES_COLLECTION.description,
+    mode: 'rules',
+    rules: { types: ['animation'] },
+    sort: 'newest',
+    railSize: 12,
+    status: 'published',
+    sample: true,
+  },
+})
+log('created the sample collection by filters')
 
 // A plain typographic logo, generated: no real organization's mark.
 const logoSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="480" height="160"><rect width="480" height="160" fill="#f4efe6"/><text x="240" y="96" font-family="sans-serif" font-size="40" font-weight="700" text-anchor="middle" fill="#1a1714">ESCUELA · EJEMPLO</text></svg>`

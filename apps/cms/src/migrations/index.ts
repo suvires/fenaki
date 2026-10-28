@@ -21,6 +21,8 @@ import * as migration_20261027_183754_license_platform_terms_nc from './20261027
 import * as migration_20261028_083228_member_player_consent from './20261028_083228_member_player_consent';
 import * as migration_20261028_093617_short_genres_themes_audience from './20261028_093617_short_genres_themes_audience';
 import * as migration_20261028_100208_short_production_original_title_awards_review from './20261028_100208_short_production_original_title_awards_review';
+import * as migration_20261028_103200_collections_by_filters_and_sponsored from './20261028_103200_collections_by_filters_and_sponsored';
+import * as migration_20261028_114500_remove_animacion_de_autor from './20261028_114500_remove_animacion_de_autor';
 
 export const migrations = [
   {
@@ -136,6 +138,16 @@ export const migrations = [
   {
     up: migration_20261028_100208_short_production_original_title_awards_review.up,
     down: migration_20261028_100208_short_production_original_title_awards_review.down,
-    name: '20261028_100208_short_production_original_title_awards_review'
+    name: '20261028_100208_short_production_original_title_awards_review',
+  },
+  {
+    up: migration_20261028_103200_collections_by_filters_and_sponsored.up,
+    down: migration_20261028_103200_collections_by_filters_and_sponsored.down,
+    name: '20261028_103200_collections_by_filters_and_sponsored'
+  },
+  {
+    up: migration_20261028_114500_remove_animacion_de_autor.up,
+    down: migration_20261028_114500_remove_animacion_de_autor.down,
+    name: '20261028_114500_remove_animacion_de_autor'
   },
 ];

@@ -52,6 +52,10 @@ export function inLanguage(text: AdminLabel, language: string | undefined): stri
 }
 
 export const messages = {
+  slugTakenByCollection: label(
+    'Another collection already uses this address.',
+    'Otra colección ya usa esta dirección.',
+  ),
   atMostTwo: label('Choose two at most.', 'Elige dos como máximo.'),
   countryCode: label(
     'Use a two-letter uppercase country code.',

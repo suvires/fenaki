@@ -1,8 +1,8 @@
 /** What each page's Open Graph image says. Read from the CMS, rendered by lib/og.ts. */
 import { formatDuration, formatList, formatYear, type Locale } from '@fenaki/i18n'
 import { CREDIT_ROLES, posterTone } from './catalog.ts'
+import { activeSponsorOf, collectionCards, findCollection } from './collections.ts'
 import {
-  getCollection,
   getPerson,
   getShort,
   getShowcase,
@@ -10,7 +10,6 @@ import {
   peopleOf,
   rolesOf,
   shortsOf,
-  sponsorOf,
 } from './cms.ts'
 import { translator } from './i18n.ts'
 import type { OgCard } from './og.ts'
@@ -88,14 +87,15 @@ export async function documentCard(
     }
   }
   if (kind === 'colecciones') {
-    const collection = await getCollection(locale, slug)
+    const collection = await findCollection(locale, slug)
     if (!collection) return undefined
+    const { total } = await collectionCards(locale, collection, 0, 1)
     return {
-      eyebrow: t('collection.eyebrow', { count: shortsOf(collection).length }),
-      title: collection.title,
+      eyebrow: t('collection.eyebrow', { count: total }),
+      title: collection.doc.title,
       siteName,
       tagline,
-      tone: sponsorOf(collection) ? 'telon' : 'sala',
+      tone: activeSponsorOf(collection) ? 'telon' : 'sala',
     }
   }
   const showcase = await getShowcase(locale, slug)

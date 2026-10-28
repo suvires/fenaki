@@ -1,11 +1,13 @@
 ---
-import { ShortGrid, SponsorCredit } from '@fenaki/ui'
+import { Pagination, ShortGrid, SponsorCredit } from '@fenaki/ui'
 import NotFound from '../../../components/NotFound.astro'
 import Base from '../../../layouts/Base.astro'
 import { toCard } from '../../../lib/catalog.ts'
-import { getCollection, shortsOf, sponsorOf, toCardSource } from '../../../lib/cms.ts'
+import { sponsorLogoUrl } from '../../../lib/cms.ts'
 import { sponsorCredit } from '../../../lib/analytics.ts'
+import { activeSponsorOf, collectionCards, findCollection } from '../../../lib/collections.ts'
 import { localeFrom, paths, translator } from '../../../lib/i18n.ts'
+import { PAGE_SIZE, pageCount, pageHref, paginationProps, parsePage } from '../../../lib/paging.ts'
 import { collectionPage } from '../../../lib/seo.ts'
 import { siteUrl } from '../../../lib/services.ts'
 
@@ -13,28 +15,37 @@ const locale = localeFrom(Astro.params.locale)
 if (!locale) return Astro.rewrite('/404')
 
 const t = translator(locale)
-const collection = Astro.params.slug ? await getCollection(locale, Astro.params.slug) : undefined
+// FENAKI's collections and the sponsored ones share this address.
+const collection = Astro.params.slug ? await findCollection(locale, Astro.params.slug) : undefined
 if (!collection) Astro.response.status = 404
-const shorts = collection ? shortsOf(collection) : []
-const sponsor = collection ? sponsorOf(collection) : undefined
-const jsonLd = collection
+const base = collection ? paths.collection(locale, collection.doc.slug) : ''
+const requested = parsePage(Astro.url.searchParams)
+const { cards, total } = collection
+  ? await collectionCards(locale, collection, (requested - 1) * PAGE_SIZE, PAGE_SIZE)
+  : { cards: [], total: 0 }
+const pages = pageCount(total)
+if (collection && requested > pages) return Astro.redirect(pageHref(base, pages), 302)
+const sponsor = collection ? activeSponsorOf(collection) : undefined
+const doc = collection?.doc
+const jsonLd = doc
   ? collectionPage(siteUrl, {
-      name: collection.title,
-      description: collection.description,
-      url: paths.collection(locale, collection.slug),
-      items: shorts.map((s) => ({ name: s.title, url: paths.short(locale, s.slug) })),
+      name: doc.title,
+      description: doc.description,
+      url: base,
+      items: cards.map((card) => ({ name: card.title, url: paths.short(locale, card.slug) })),
     })
   : undefined
 ---
 
 <Base
   locale={locale}
-  title={collection?.title ?? t('errors.notFoundTitle')}
-  description={collection?.description ?? undefined}
-  ogImage={collection ? paths.og(locale, 'colecciones', collection.slug) : undefined}
+  title={doc?.title ?? t('errors.notFoundTitle')}
+  description={doc?.description ?? undefined}
+  ogImage={doc ? paths.og(locale, 'colecciones', doc.slug) : undefined}
   jsonLd={jsonLd}
+  noindex={requested > 1}
 >
-  {!collection ? (
+  {!doc ? (
     <NotFound locale={locale} />
   ) : (
     <>
@@ -50,32 +61,40 @@ const jsonLd = collection
             sponsor ? 'text-on-sponsored' : 'text-accent',
           ]}
         >
-          {t('collection.eyebrow', { count: shorts.length })}
+          {t('collection.eyebrow', { count: total })}
         </p>
         <h1 class="m-0 font-display text-display-l md:text-display-xl uppercase text-balance">
-          {collection.title}
+          {doc.title}
         </h1>
-        {collection.description && (
+        {doc.description && (
           <p
             class:list={[
               'm-0 max-w-hero-text text-body-l',
               sponsor ? 'text-on-sponsored' : 'text-secondary',
             ]}
           >
-            {collection.description}
+            {doc.description}
           </p>
         )}
         {sponsor && (
           <SponsorCredit
-            {...sponsorCredit(sponsor, t('collection.sponsoredBy'), collection.slug)}
+            {...sponsorCredit(
+              sponsor,
+              t('collection.sponsoredBy'),
+              doc.slug,
+              sponsorLogoUrl(sponsor),
+            )}
           />
         )}
       </header>
       <ShortGrid
-        items={shorts.map((short) =>
-          toCard(toCardSource(short), locale, t, paths.short(locale, short.slug)),
-        )}
+        items={cards.map((card) => toCard(card, locale, t, paths.short(locale, card.slug)))}
       />
+      {pages > 1 && (
+        <Pagination
+          {...paginationProps(t, Math.min(requested, pages), pages, (n) => pageHref(base, n))}
+        />
+      )}
     </>
   )}
 </Base>

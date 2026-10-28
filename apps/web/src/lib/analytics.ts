@@ -22,10 +22,17 @@ export function eventAttributes(
 }
 
 /** The sponsor credit of a collection: a link to the sponsor's site, counted as a click event. */
-export function sponsorCredit(sponsor: Sponsor, label: string, collection?: string) {
+export function sponsorCredit(
+  sponsor: Sponsor,
+  label: string,
+  collection?: string,
+  /** The sponsor's logo (lib/cms.ts `sponsorLogoUrl`), shown in place of the name. */
+  logoUrl?: string,
+) {
   return {
     label,
     name: sponsor.name,
+    logo: logoUrl ? { src: logoUrl } : undefined,
     href: sponsor.website ?? undefined,
     linkAttributes: sponsor.website
       ? eventAttributes(EVENTS.sponsorClick, {

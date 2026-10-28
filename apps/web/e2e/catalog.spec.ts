@@ -274,3 +274,16 @@ test('the account terms are linked from the footer and accepted at sign-up', asy
     }),
   ).toHaveAttribute('href', '/es/terminos-de-uso')
 })
+
+test('a collection by filters lists the shorts that meet them, on the home page and its own', async ({
+  page,
+}) => {
+  await page.goto('/es/')
+  const rail = page.getByRole('region', { name: 'Animación en corto' })
+  await expect(rail.getByRole('link', { name: /Cuerdas/ })).toBeVisible()
+  await page.goto('/es/colecciones/animacion-en-corto')
+  await expect(page.getByRole('heading', { level: 1, name: 'Animación en corto' })).toBeVisible()
+  await expect(page.getByRole('link', { name: /Cuerdas/ })).toBeVisible()
+  // Only animation: a fiction short of the sample catalog is not in it.
+  await expect(page.getByRole('link', { name: /Timecode/ })).toHaveCount(0)
+})

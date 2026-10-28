@@ -18,6 +18,16 @@ export const CHANNEL_KINDS = [
 ] as const
 export type ChannelKind = (typeof CHANNEL_KINDS)[number]
 
+/** Who runs the channel a source comes from. Collections filter by it («Publicado por»). */
+export const CHANNEL_KIND_LABELS = {
+  author: label('Author', 'Autor'),
+  producer: label('Producer', 'Productora'),
+  distributor: label('Distributor', 'Distribuidora'),
+  festival: label('Festival', 'Festival'),
+  school: label('Film school', 'Escuela de cine'),
+  institution: label('Institution', 'Institución'),
+}
+
 export const Sources: CollectionConfig = {
   slug: 'sources',
   labels: { singular: label('Source', 'Fuente'), plural: label('Sources', 'Fuentes') },
@@ -96,14 +106,7 @@ export const Sources: CollectionConfig = {
               name: 'kind',
               label: label('Who runs it', 'Quién lo gestiona'),
               type: 'select',
-              options: options({
-                author: label('Author', 'Autor'),
-                producer: label('Producer', 'Productora'),
-                distributor: label('Distributor', 'Distribuidora'),
-                festival: label('Festival', 'Festival'),
-                school: label('Film school', 'Escuela de cine'),
-                institution: label('Institution', 'Institución'),
-              }),
+              options: options(CHANNEL_KIND_LABELS),
             },
           ],
         },

@@ -4,7 +4,14 @@ import NotFound from '../../../components/NotFound.astro'
 import Base from '../../../layouts/Base.astro'
 import { sponsorCredit } from '../../../lib/analytics.ts'
 import { toCard } from '../../../lib/catalog.ts'
-import { getShowcase, logoOf, presenterOf, shortsOf, toCardSource } from '../../../lib/cms.ts'
+import {
+  sponsorLogoUrl,
+  getShowcase,
+  logoOf,
+  presenterOf,
+  shortsOf,
+  toCardSource,
+} from '../../../lib/cms.ts'
 import { localeFrom, paths, translator } from '../../../lib/i18n.ts'
 import { collectionPage } from '../../../lib/seo.ts'
 import { siteUrl } from '../../../lib/services.ts'
@@ -68,7 +75,12 @@ const jsonLd = showcase
         }
         sponsor={
           presenter
-            ? sponsorCredit(presenter, t('showcase.presentedBy'), `showcase:${showcase.slug}`)
+            ? sponsorCredit(
+                presenter,
+                t('showcase.presentedBy'),
+                `showcase:${showcase.slug}`,
+                sponsorLogoUrl(presenter),
+              )
             : undefined
         }
       />

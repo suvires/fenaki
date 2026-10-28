@@ -7,6 +7,7 @@ import type {
   Showcase,
   Source,
   Sponsor,
+  SponsoredCollection,
   Still,
 } from '@fenaki/cms/types'
 import type { Locale } from '@fenaki/i18n'
@@ -192,6 +193,45 @@ export async function getCollection(locale: Locale, slug: string): Promise<Colle
   return list.docs[0]
 }
 
+export async function listSponsoredCollections(locale: Locale): Promise<SponsoredCollection[]> {
+  const list = await get<List<SponsoredCollection>>('sponsored-collections', {
+    locale,
+    depth: 2,
+    limit: 50,
+    sort: '-featured',
+    'where[status][equals]': 'published',
+  })
+  return list.docs
+}
+
+export async function getSponsoredCollection(
+  locale: Locale,
+  slug: string,
+): Promise<SponsoredCollection | undefined> {
+  const list = await get<List<SponsoredCollection>>('sponsored-collections', {
+    locale,
+    depth: 2,
+    limit: 1,
+    'where[slug][equals]': slug,
+    'where[status][equals]': 'published',
+  })
+  return list.docs[0]
+}
+
+/** A page of a collection by filters, as the CMS resolves it: the shorts' ids and the total. */
+export async function collectionShortIds(
+  locale: Locale,
+  id: number,
+  offset: number,
+  limit: number,
+): Promise<{ ids: number[]; total: number }> {
+  return get<{ ids: number[]; total: number }>(`collections/${id}/shorts`, {
+    locale,
+    offset,
+    limit,
+  })
+}
+
 export async function getShowcase(locale: Locale, slug: string): Promise<Showcase | undefined> {
   const list = await get<List<Showcase>>('showcases', {
     locale,
@@ -215,7 +255,7 @@ export async function listShowcases(locale: Locale): Promise<Showcase[]> {
 
 /** Every published short and person, for the sitemap: slugs and dates only. */
 export async function listSitemapDocs(locale: Locale) {
-  const [shorts, collections] = await Promise.all([
+  const [shorts, collections, sponsored] = await Promise.all([
     get<List<Pick<Short, 'slug' | 'updatedAt' | 'credits'>>>('shorts', {
       locale,
       depth: 1,
@@ -233,12 +273,20 @@ export async function listSitemapDocs(locale: Locale) {
       'select[slug]': 'true',
       'select[updatedAt]': 'true',
     }),
+    get<List<Pick<SponsoredCollection, 'slug' | 'updatedAt'>>>('sponsored-collections', {
+      locale,
+      depth: 0,
+      limit: 200,
+      'where[status][equals]': 'published',
+      'select[slug]': 'true',
+      'select[updatedAt]': 'true',
+    }),
   ])
   const people = new Map<string, string>()
   for (const short of shorts.docs)
     for (const credit of short.credits ?? [])
       if (isObject<Person>(credit.person)) people.set(credit.person.slug, credit.person.updatedAt)
-  return { shorts: shorts.docs, collections: collections.docs, people }
+  return { shorts: shorts.docs, collections: [...collections.docs, ...sponsored.docs], people }
 }
 
 const isObject = <T>(value: number | T | null | undefined): value is T =>
@@ -322,7 +370,16 @@ export function presenterOf(showcase: Showcase): Sponsor | undefined {
   return isObject<Sponsor>(showcase.presentedBy) ? showcase.presentedBy : undefined
 }
 
-export function sponsorOf(collection: Collection, now = new Date()): Sponsor | undefined {
+/** The sponsor's logo as an absolute URL, when it has one. */
+export function sponsorLogoUrl(sponsor: Sponsor): string | undefined {
+  return isObject<Media>(sponsor.logo) ? cmsUrl(sponsor.logo.url) : undefined
+}
+
+/** The sponsor of a sponsored collection while its sponsorship lasts; none outside its dates. */
+export function sponsorOf(
+  collection: Pick<SponsoredCollection, 'sponsor' | 'sponsorshipStartsAt' | 'sponsorshipEndsAt'>,
+  now = new Date(),
+): Sponsor | undefined {
   if (!isObject<Sponsor>(collection.sponsor)) return undefined
   const starts = collection.sponsorshipStartsAt
     ? new Date(collection.sponsorshipStartsAt)

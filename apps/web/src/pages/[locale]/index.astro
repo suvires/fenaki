@@ -11,22 +11,21 @@ import { badgesFor, posterTone, toCard, toCurrentShort, toSavedShort } from '../
 import {
   getHeroShort,
   getRanking,
-  listCollections,
   listShorts,
   listShortsBySlugs,
   peopleOf,
-  shortsOf,
-  sponsorOf,
+  sponsorLogoUrl,
   stillPresentationOf,
   stillUrlOf,
   toCardSource,
 } from '../../lib/cms.ts'
 import { sponsorCredit } from '../../lib/analytics.ts'
+import { activeSponsorOf, homeCollections } from '../../lib/collections.ts'
 import { localeFrom, paths, translator } from '../../lib/i18n.ts'
 import { PAGE_SIZE } from '../../lib/paging.ts'
 import { previewEnabled, topTen } from '../../lib/ranking.ts'
 import { siteMode } from '../../lib/services.ts'
-import type { PublishedShort } from '../../lib/cms.ts'
+import type { CardSource } from '../../lib/catalog.ts'
 
 const locale = localeFrom(Astro.params.locale)
 if (!locale) return Astro.rewrite('/404')
@@ -42,10 +41,10 @@ const [account, unfinished] = member
     ])
   : [undefined, []]
 const [shorts, collections, savedShorts] = landing
-  ? [[], [], []]
+  ? [[], { rails: [] }, []]
   : await Promise.all([
       listShorts(locale),
-      listCollections(locale),
+      homeCollections(locale),
       // «Mi lista»'s rail: the current data of the account's 20 latest saved shorts.
       listShortsBySlugs(
         locale,
@@ -68,26 +67,29 @@ const heroDirectors = hero ? peopleOf(hero, 'director') : []
 const heroBackdrop = hero ? stillUrlOf(hero) : undefined
 const heroStill = hero ? stillPresentationOf(hero) : undefined
 
-const featured = collections.find((c) => c.featured) ?? collections[0]
-const featuredShorts = featured ? shortsOf(featured) : []
-const sponsor = featured ? sponsorOf(featured) : undefined
+// The featured collection (the hero further down) and the rails of the others, of both kinds.
+const featured = collections.featured
+const sponsor = featured ? activeSponsorOf(featured.collection) : undefined
 
-const rails: { key: string; title: string; href?: string; shorts: PublishedShort[] }[] = [
-  { key: 'latest', title: t('home.rails.latest'), href: paths.latest(locale), shorts },
+const rails: { key: string; title: string; href?: string; cards: CardSource[] }[] = [
+  {
+    key: 'latest',
+    title: t('home.rails.latest'),
+    href: paths.latest(locale),
+    cards: shorts.map(toCardSource),
+  },
   {
     key: 'animation',
     title: t('home.rails.animation'),
-    shorts: shorts.filter((s) => s.type === 'animation'),
+    cards: shorts.filter((s) => s.type === 'animation').map(toCardSource),
   },
-  ...collections
-    .filter((c) => c !== featured)
-    .map((c) => ({
-      key: `c-${c.id}`,
-      title: c.title,
-      href: paths.collection(locale, c.slug),
-      shorts: shortsOf(c),
-    })),
-].filter((rail) => rail.shorts.length > 0)
+  ...collections.rails.map(({ collection, cards }) => ({
+    key: `${collection.kind}-${collection.doc.id}`,
+    title: collection.doc.title,
+    href: paths.collection(locale, collection.doc.slug),
+    cards,
+  })),
+].filter((rail) => rail.cards.length > 0)
 // «Seguir viendo»: the unfinished viewings that are still published, newest first.
 const continueWatching = unfinished.flatMap((viewing) => {
   const short = shorts.find((s) => s.slug === viewing.slug)
@@ -186,28 +188,34 @@ const otherRails = rails.filter((rail) => rail.key !== 'latest')
           actionLabel={rail.href ? t('rail.seeAll') : undefined}
           actionHref={rail.href}
         >
-          {rail.shorts.map((short) => {
-            const card = toCardSource(short)
-            return <ShortCard {...toCard(card, locale, t, paths.short(locale, short.slug))} />
-          })}
+          {rail.cards.map((card) => (
+            <ShortCard {...toCard(card, locale, t, paths.short(locale, card.slug))} />
+          ))}
         </Rail>
       </div>
     ))}
   {!landing && featured && (
     <CollectionHero
       headingLevel={hero ? 2 : 1}
-      title={featured.title}
-      description={featured.description ?? ''}
+      title={featured.collection.doc.title}
+      description={featured.collection.doc.description ?? ''}
       ctaLabel={t('collection.cta')}
-      ctaHref={paths.collection(locale, featured.slug)}
+      ctaHref={paths.collection(locale, featured.collection.doc.slug)}
       sponsor={
-        sponsor ? sponsorCredit(sponsor, t('collection.sponsoredBy'), featured.slug) : undefined
+        sponsor
+          ? sponsorCredit(
+              sponsor,
+              t('collection.sponsoredBy'),
+              featured.collection.doc.slug,
+              sponsorLogoUrl(sponsor),
+            )
+          : undefined
       }
-      posters={featuredShorts.slice(0, 3).map((s) => ({
-        title: s.title,
-        director: peopleOf(s, 'director').join(', '),
-        year: s.year ?? undefined,
-        tone: posterTone(s.posterTone),
+      posters={featured.cards.slice(0, 3).map((card) => ({
+        title: card.title,
+        director: card.directors.join(', '),
+        year: card.year ?? undefined,
+        tone: posterTone(card.posterTone),
       }))}
     />
   )}
@@ -232,10 +240,9 @@ const otherRails = rails.filter((rail) => rail.key !== 'latest')
           actionLabel={rail.href ? t('rail.seeAll') : undefined}
           actionHref={rail.href}
         >
-          {rail.shorts.map((short) => {
-            const card = toCardSource(short)
-            return <ShortCard {...toCard(card, locale, t, paths.short(locale, short.slug))} />
-          })}
+          {rail.cards.map((card) => (
+            <ShortCard {...toCard(card, locale, t, paths.short(locale, card.slug))} />
+          ))}
         </Rail>
       </div>
     ))}

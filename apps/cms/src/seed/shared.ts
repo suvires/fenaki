@@ -18,6 +18,10 @@ export async function removeSamples(payload: Payload): Promise<void> {
   // The sample viewer goes first, with their list, ratings and viewings (a hook deletes those).
   await payload.delete({ collection: 'members', where: { sample: { equals: true } } })
   await payload.delete({ collection: 'collections', where: { sample: { equals: true } } })
+  await payload.delete({
+    collection: 'sponsored-collections',
+    where: { sample: { equals: true } },
+  })
   await payload.delete({ collection: 'showcases', where: { sample: { equals: true } } })
   await payload.delete({ collection: 'media', where: { filename: { like: 'sample-logo' } } })
   if (ids.length > 0) {

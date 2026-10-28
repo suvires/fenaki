@@ -64,6 +64,16 @@ export async function searchShorts(locale: Locale, query: string, page = 1): Pro
   }
 }
 
+/** These shorts' cards, in the order of the ids given; the ones not in the index are left out. */
+export async function cardsByIds(locale: Locale, ids: number[]): Promise<CardSource[]> {
+  if (ids.length === 0) return []
+  const response = await meili()
+    .index<ShortHit>(indexName(locale))
+    .search('', { filter: [`id IN [${ids.join(', ')}]`], limit: ids.length })
+  const byId = new Map(response.hits.map((hit) => [hit.id, toCardSource(hit)]))
+  return ids.flatMap((id) => byId.get(id) ?? [])
+}
+
 export interface BrowseResult {
   hits: CardSource[]
   total: number

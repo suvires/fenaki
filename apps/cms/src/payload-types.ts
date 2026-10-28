@@ -80,6 +80,7 @@ export interface Config {
     licenses: License;
     'license-documents': LicenseDocument;
     sponsors: Sponsor;
+    'sponsored-collections': SponsoredCollection;
     organizations: Organization;
     contacts: Contact;
     messages: Message;
@@ -115,6 +116,7 @@ export interface Config {
     licenses: LicensesSelect<false> | LicensesSelect<true>;
     'license-documents': LicenseDocumentsSelect<false> | LicenseDocumentsSelect<true>;
     sponsors: SponsorsSelect<false> | SponsorsSelect<true>;
+    'sponsored-collections': SponsoredCollectionsSelect<false> | SponsoredCollectionsSelect<true>;
     organizations: OrganizationsSelect<false> | OrganizationsSelect<true>;
     contacts: ContactsSelect<false> | ContactsSelect<true>;
     messages: MessagesSelect<false> | MessagesSelect<true>;
@@ -633,11 +635,47 @@ export interface Sponsor {
   name: string;
   website?: string | null;
   /**
+   * Optional. Shown on its sponsored collections and showcases, in place of the name.
+   */
+  logo?: (number | null) | Media;
+  /**
    * Internal. Never shown publicly.
    */
   notes?: string | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  /**
+   * What the image says, for people who cannot see it. For a logo, the organization’s name.
+   */
+  alt: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  sizes?: {
+    logo?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -838,20 +876,63 @@ export interface Collection {
   slug: string;
   description?: string | null;
   /**
+   * By filters, the collection grows on its own as shorts that match are published.
+   */
+  mode: 'rules' | 'manual';
+  /**
    * In display order. Drag to reorder.
    */
   shorts?: (number | Short)[] | null;
   /**
-   * Shown as the hero on the home page.
+   * A short enters when it meets every filter set; an empty filter does not count.
+   */
+  rules?: {
+    types?: ('fiction' | 'documentary' | 'animation' | 'experimental')[] | null;
+    genres?:
+      | (
+          | 'drama'
+          | 'comedy'
+          | 'horror'
+          | 'thriller'
+          | 'science-fiction'
+          | 'fantasy'
+          | 'romance'
+          | 'action-adventure'
+          | 'musical-dance'
+        )[]
+      | null;
+    themes?: ('society' | 'lgbtiq' | 'family' | 'memory-history' | 'nature-environment' | 'sport')[] | null;
+    region?: ('latin-america' | 'spain' | 'europe') | null;
+    /**
+     * Two-letter codes (AR, MX…), besides the region.
+     */
+    countries?: string[] | null;
+    channelKinds?: ('author' | 'producer' | 'distributor' | 'festival' | 'school' | 'institution')[] | null;
+    minMinutes?: number | null;
+    maxMinutes?: number | null;
+    yearFrom?: number | null;
+    yearTo?: number | null;
+    /**
+     * Two-letter code (es, en…).
+     */
+    originalLanguage?: string | null;
+    spanishSubtitles?: boolean | null;
+    noDialogue?: boolean | null;
+    allAudiences?: boolean | null;
+    withAwards?: boolean | null;
+  };
+  sort: 'newest' | 'year' | 'daily';
+  railSize: number;
+  /**
+   * Shown first, in this order, whether or not they meet the filters.
+   */
+  pinned?: (number | Short)[] | null;
+  excluded?: (number | Short)[] | null;
+  /**
+   * Shown as the hero on the home page, unless a sponsored collection in its dates is.
    */
   featured?: boolean | null;
   status: 'draft' | 'published';
-  /**
-   * Shorts under a non-commercial license and branded content cannot be in a sponsored collection.
-   */
-  sponsor?: (number | null) | Sponsor;
-  sponsorshipStartsAt?: string | null;
-  sponsorshipEndsAt?: string | null;
   /**
    * Sample data for development, not a catalog entry.
    */
@@ -906,35 +987,37 @@ export interface Showcase {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
+ * via the `definition` "sponsored-collections".
  */
-export interface Media {
+export interface SponsoredCollection {
   id: number;
+  title: string;
   /**
-   * What the image says, for people who cannot see it. For a logo, the organization’s name.
+   * Part of the URL. Generated from the title when left empty.
    */
-  alt: string;
+  slug: string;
+  description?: string | null;
+  /**
+   * Its name and logo are credited on the collection («Presentada por»).
+   */
+  sponsor: number | Sponsor;
+  sponsorshipStartsAt?: string | null;
+  sponsorshipEndsAt?: string | null;
+  /**
+   * In display order. Shorts under a non-commercial license and branded content cannot be here.
+   */
+  shorts: (number | Short)[];
+  /**
+   * Shown as the hero on the home page while the sponsorship lasts.
+   */
+  featured?: boolean | null;
+  status: 'draft' | 'published';
+  /**
+   * Sample data for development, not a catalog entry.
+   */
+  sample?: boolean | null;
   updatedAt: string;
   createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-  sizes?: {
-    logo?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1319,6 +1402,10 @@ export interface PayloadLockedDocument {
         value: number | Sponsor;
       } | null)
     | ({
+        relationTo: 'sponsored-collections';
+        value: number | SponsoredCollection;
+      } | null)
+    | ({
         relationTo: 'organizations';
         value: number | Organization;
       } | null)
@@ -1613,12 +1700,33 @@ export interface CollectionsSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   description?: T;
+  mode?: T;
   shorts?: T;
+  rules?:
+    | T
+    | {
+        types?: T;
+        genres?: T;
+        themes?: T;
+        region?: T;
+        countries?: T;
+        channelKinds?: T;
+        minMinutes?: T;
+        maxMinutes?: T;
+        yearFrom?: T;
+        yearTo?: T;
+        originalLanguage?: T;
+        spanishSubtitles?: T;
+        noDialogue?: T;
+        allAudiences?: T;
+        withAwards?: T;
+      };
+  sort?: T;
+  railSize?: T;
+  pinned?: T;
+  excluded?: T;
   featured?: T;
   status?: T;
-  sponsor?: T;
-  sponsorshipStartsAt?: T;
-  sponsorshipEndsAt?: T;
   sample?: T;
   importKey?: T;
   updatedAt?: T;
@@ -1767,7 +1875,26 @@ export interface LicenseDocumentsSelect<T extends boolean = true> {
 export interface SponsorsSelect<T extends boolean = true> {
   name?: T;
   website?: T;
+  logo?: T;
   notes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sponsored-collections_select".
+ */
+export interface SponsoredCollectionsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  description?: T;
+  sponsor?: T;
+  sponsorshipStartsAt?: T;
+  sponsorshipEndsAt?: T;
+  shorts?: T;
+  featured?: T;
+  status?: T;
+  sample?: T;
   updatedAt?: T;
   createdAt?: T;
 }

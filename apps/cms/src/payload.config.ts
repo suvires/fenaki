@@ -26,6 +26,7 @@ import { Shorts } from './collections/Shorts.ts'
 import { ScannedVideos } from './collections/ScannedVideos.ts'
 import { Showcases } from './collections/Showcases.ts'
 import { Sources } from './collections/Sources.ts'
+import { SponsoredCollections } from './collections/SponsoredCollections.ts'
 import { Sponsors } from './collections/Sponsors.ts'
 import { Stills } from './collections/Stills.ts'
 import { Users } from './collections/Users.ts'
@@ -89,6 +90,7 @@ export default buildConfig({
     Licenses,
     LicenseDocuments,
     Sponsors,
+    SponsoredCollections,
     Organizations,
     Contacts,
     Messages,

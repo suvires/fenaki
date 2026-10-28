@@ -125,6 +125,12 @@ export const SAMPLE_COLLECTION = {
   sponsorshipEndsAt: '2027-03-31T23:59:59.000Z',
 }
 
+/** FENAKI's own collection, by filters: every animated sample short. */
+export const SAMPLE_RULES_COLLECTION = {
+  title: 'Animación en corto',
+  description: 'Los cortos de animación del catálogo, del más reciente al más antiguo.',
+}
+
 /** A film school's showcase, presented by the sample sponsor. Fictional. */
 export const SAMPLE_SHOWCASE = {
   name: 'Escuela de Cine de Ejemplo',

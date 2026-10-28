@@ -21,6 +21,10 @@ export interface ShortSearchDocument {
   /** Genres and themes (catalog/taxonomy.ts): filters of the catalog. */
   genres: string[]
   themes: string[]
+  /** Who runs the channel of its first source (festival, school, author…): a collection filter. */
+  channelKind: string | null
+  /** It has awards or festival selections on record: a collection filter. */
+  hasAwards: boolean
   /** `all` when the short suits every audience, a filter of its own; null otherwise. */
   audience: 'all' | null
   /** The genres and themes in the index's locale («Terror», «Familia»), to search by them. */
@@ -52,6 +56,9 @@ export function durationBand(seconds: number): DurationBand {
 export const SHORTS_INDEX_SETTINGS = {
   searchableAttributes: ['title', 'directors', 'people', 'typeLabel', 'classLabels', 'synopsis'],
   filterableAttributes: [
+    'id',
+    'channelKind',
+    'hasAwards',
     'type',
     'genres',
     'themes',
@@ -66,6 +73,8 @@ export const SHORTS_INDEX_SETTINGS = {
     'country',
   ],
   sortableAttributes: ['publishedAt', 'year', 'durationSeconds'],
+  // Past the default 1000, so a large collection or the catalog pages to its end.
+  pagination: { maxTotalHits: 20000 },
   displayedAttributes: ['*'],
 }
 
@@ -112,7 +121,17 @@ export interface IndexableShort {
   brandedContent?: boolean | null
   publishedAt?: string | null
   credits?: { person: number | PersonLike; role: string }[] | null
-  sources?: { docs?: (number | { subtitles?: string[] | null; status?: string | null })[] } | null
+  awards?: unknown[] | null
+  sources?: {
+    docs?: (
+      | number
+      | {
+          subtitles?: string[] | null
+          status?: string | null
+          channel?: { kind?: string | null } | null
+        }
+    )[]
+  } | null
 }
 
 const nameOf = (person: number | PersonLike) => (typeof person === 'object' ? person.name : null)
@@ -152,6 +171,11 @@ export function toSearchDocument(
     genres: short.genres ?? [],
     themes: short.themes ?? [],
     audience: short.allAudiences ? 'all' : null,
+    channelKind:
+      (short.sources?.docs ?? []).flatMap((s) =>
+        typeof s === 'object' && s.channel?.kind ? [s.channel.kind] : [],
+      )[0] ?? null,
+    hasAwards: (short.awards ?? []).length > 0,
     classLabels,
     posterTone: short.posterTone ?? 'sala',
     still:
