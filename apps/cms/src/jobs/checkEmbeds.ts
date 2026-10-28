@@ -7,6 +7,7 @@ import { downloadThumbnail, thumbnailCandidates } from '../ingest/stills.ts'
 import { videoPageUrl } from '../ingest/url.ts'
 import { fetchYouTubeVideos, type YouTubeVideo } from '../ingest/youtube.ts'
 import type { HiddenReason } from '../collections/Shorts.ts'
+import { LONG_QUEUE } from './queue.ts'
 
 /** Pause between oEmbed requests: the check runs at night and is in no hurry. */
 const PAUSE_MS = 300
@@ -358,7 +359,7 @@ export const checkEmbedsTask: TaskConfig<{
     { name: 'hidden', type: 'number', required: true },
     { name: 'stills', type: 'number', required: true },
   ],
-  schedule: [{ cron: '0 0 3 * * *', queue: 'default' }],
+  schedule: [{ cron: '0 0 3 * * *', queue: LONG_QUEUE }],
   handler: async ({ req }) => {
     const output = await checkEmbeds(req)
     req.payload.logger.info(

@@ -28,10 +28,20 @@ case "$1" in
   jobs)
     # Jobs a stopped worker left half done go back to the queue first.
     payload run src/jobs/releaseInterrupted.ts
-    # 50 jobs every 10 seconds: a search sync takes well under a second, so a night's embed check
-    # (one sync per short touched) drains in minutes, not hours.
-    # Node's heap would stop near 300 MB by default; most of the role's 600 MB is for it.
-    exec node --max-old-space-size=480 node_modules/payload/bin.js jobs:run --cron '*/10 * * * * *' --limit 50 --queue default --handle-schedules
+    # Two workers, so a long job never holds back the short ones: `long` runs the embed check and
+    # the channel scans one at a time; `default` runs the rest, 50 every 10 seconds (a night's embed
+    # check queues one search sync per short it touches). Each handles its queue's schedules. Of
+    # the role's 600 MB, 320 go to the long worker's heap (the check reads the whole catalog) and
+    # 200 to the other's.
+    node --max-old-space-size=320 node_modules/payload/bin.js jobs:run --cron '*/30 * * * * *' --limit 1 --queue long --handle-schedules &
+    long=$!
+    node --max-old-space-size=200 node_modules/payload/bin.js jobs:run --cron '*/10 * * * * *' --limit 50 --queue default --handle-schedules &
+    default=$!
+    trap 'kill "$long" "$default" 2>/dev/null' TERM INT
+    # Whichever stops first stops the container, and the restart brings both back.
+    while kill -0 "$long" 2>/dev/null && kill -0 "$default" 2>/dev/null; do sleep 5; done
+    kill "$long" "$default" 2>/dev/null
+    exit 1
     ;;
   migrate)
     payload migrate

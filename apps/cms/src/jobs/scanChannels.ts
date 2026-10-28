@@ -1,5 +1,6 @@
 import type { TaskConfig } from 'payload'
 import { runChannelScan, scanActiveChannels, type ScanAllSummary } from '../ingest/channels/scan.ts'
+import { LONG_QUEUE } from './queue.ts'
 
 /**
  * Nightly, in the jobs worker: new videos of every active official channel go to the review
@@ -19,7 +20,7 @@ export const scanChannelsTask: TaskConfig<{
     { name: 'failed', type: 'number', required: true },
     { name: 'added', type: 'number', required: true },
   ],
-  schedule: [{ cron: '0 30 2 * * *', queue: 'default' }],
+  schedule: [{ cron: '0 30 2 * * *', queue: LONG_QUEUE }],
   handler: async ({ input, req }) => {
     if (input?.channelId) {
       const channel = await req.payload.findByID({

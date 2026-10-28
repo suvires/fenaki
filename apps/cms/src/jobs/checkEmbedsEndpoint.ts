@@ -1,5 +1,6 @@
 import type { Endpoint } from 'payload'
 import { isAdminUser } from '../access.ts'
+import { LONG_QUEUE } from './queue.ts'
 
 /** POST /api/sources/check-embeds: queues an embed check now, for the problems view. */
 export const checkEmbedsEndpoint: Endpoint = {
@@ -13,7 +14,7 @@ export const checkEmbedsEndpoint: Endpoint = {
       req,
     })
     if (pending.totalDocs === 0)
-      await req.payload.jobs.queue({ task: 'checkEmbeds', input: {}, req })
+      await req.payload.jobs.queue({ task: 'checkEmbeds', input: {}, queue: LONG_QUEUE, req })
     return Response.json({ queued: true }, { status: 202 })
   },
 }

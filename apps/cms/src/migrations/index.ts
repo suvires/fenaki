@@ -27,6 +27,7 @@ import * as migration_20261028_132226_previous_slugs from './20261028_132226_pre
 import * as migration_20261028_132300_queue_slug_regeneration_memorias_theme from './20261028_132300_queue_slug_regeneration_memorias_theme';
 import * as migration_20261028_134259_member_pending_email from './20261028_134259_member_pending_email';
 import * as migration_20261028_140000_activate_channels from './20261028_140000_activate_channels';
+import * as migration_20261028_150000_long_jobs_queue from './20261028_150000_long_jobs_queue';
 
 export const migrations = [
   {
@@ -173,5 +174,10 @@ export const migrations = [
     up: migration_20261028_140000_activate_channels.up,
     down: migration_20261028_140000_activate_channels.down,
     name: '20261028_140000_activate_channels'
+  },
+  {
+    up: migration_20261028_150000_long_jobs_queue.up,
+    down: migration_20261028_150000_long_jobs_queue.down,
+    name: '20261028_150000_long_jobs_queue',
   },
 ];

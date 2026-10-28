@@ -2,6 +2,12 @@ import { autoReview } from '../ai/review.ts'
 import type { PayloadRequest } from 'payload'
 
 /**
+ * The queue of the jobs that take a long time (the embed check, a channel scan): a worker of its
+ * own runs it, so they never hold back the short jobs of the default queue.
+ */
+export const LONG_QUEUE = 'long'
+
+/**
  * Queues a search sync for one short, unless one is already waiting: it reads the short when it
  * runs, so one is enough. (The nightly embed check touches every short; without this the queue
  * filled with copies that kept the other jobs waiting.) The jobs worker process runs it.
@@ -23,7 +29,12 @@ export async function queueIndexShort(req: PayloadRequest, shortId: number): Pro
 
 /** Queues a scan of one channel (its whole history when it is flagged). The jobs worker runs it. */
 export async function queueChannelScan(req: PayloadRequest, channelId: number): Promise<void> {
-  await req.payload.jobs.queue({ task: 'scanChannels', input: { channelId }, req })
+  await req.payload.jobs.queue({
+    task: 'scanChannels',
+    input: { channelId },
+    queue: LONG_QUEUE,
+    req,
+  })
 }
 
 /**
