@@ -9,7 +9,7 @@ export interface SiteFooterLink {
 export interface SiteFooterProps {
   /** Accessible name of the footer navigation. */
   label: string
-  /** One column per group, in order (two a row on phones, three on tablets, all in a row on wide screens). */
+  /** One column per group, in order (one on phones, three a row on tablets, all in a row on wide screens). */
   groups: SiteFooterLink[][]
   /** Accessible name of the monogram: the brand name. */
   brand: string
@@ -29,7 +29,7 @@ export function SiteFooter({ label, groups, brand, className }: SiteFooterProps)
         </div>
         <nav
           aria-label={label}
-          className="grid content-start grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-none lg:grid-flow-col lg:auto-cols-max lg:gap-12 lg:justify-self-end"
+          className="grid content-start gap-6 md:grid-cols-3 lg:grid-cols-none lg:grid-flow-col lg:auto-cols-max lg:gap-12 lg:justify-self-end"
         >
           {groups.map((links, index) => (
             <ul key={index} className="m-0 p-0 list-none grid content-start gap-2">
