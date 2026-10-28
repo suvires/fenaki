@@ -101,10 +101,10 @@ test('a remembered player choice skips the dialog until it is withdrawn', async 
 
   // Withdrawn from the page the footer links to: the dialog asks again.
   await page.getByRole('link', { name: 'Preferencias de reproducción' }).click()
-  const youtube = page.locator('[data-player-provider="youtube"]')
-  await expect(youtube).toContainText('Se carga sin preguntar')
-  await youtube.getByRole('button', { name: 'Volver a preguntarme' }).click()
-  await expect(youtube).toContainText('Te preguntamos antes de cargarlo')
+  const youtube = page.getByLabel('Reproducir los cortos de YouTube sin preguntarme')
+  await expect(youtube).toBeChecked()
+  await youtube.uncheck()
+  await expect(youtube).not.toBeChecked()
 
   await page.goto('/es/cortos/timecode', { waitUntil: 'networkidle' })
   await page.getByRole('button', { name: 'Ver ahora' }).click()

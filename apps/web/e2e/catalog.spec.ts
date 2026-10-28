@@ -163,7 +163,7 @@ test('hovering a card floats a preview with its actions, and leaving closes it',
   // «Mi lista» from the preview: the rail on the page follows.
   await expect(page.getByRole('region', { name: 'Mi lista' })).toHaveCount(0)
   await preview.getByRole('button', { name: 'Añadir a mi lista' }).click()
-  await expect(preview.getByRole('button', { name: 'En mi lista' })).toHaveAttribute(
+  await expect(preview.getByRole('button', { name: 'Quitar de mi lista' })).toHaveAttribute(
     'aria-pressed',
     'true',
   )

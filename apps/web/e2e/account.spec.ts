@@ -131,7 +131,7 @@ test('a viewer signs up, verifies, signs in, keeps a list, ratings and progress,
   await test.step('save a short and rate another from the preview', async () => {
     await open(page, '/es/cortos/madre')
     await page.getByRole('button', { name: 'Añadir a mi lista' }).click()
-    await expect(page.getByRole('button', { name: 'En mi lista' })).toHaveAttribute(
+    await expect(page.getByRole('button', { name: 'Quitar de mi lista' })).toHaveAttribute(
       'aria-pressed',
       'true',
     )
@@ -208,7 +208,12 @@ test('a viewer signs up, verifies, signs in, keeps a list, ratings and progress,
     // History: everything watched, with progress and a way to remove it.
     await open(page, '/es/historial')
     await expect(page.getByRole('link', { name: /Timecode/ })).toBeVisible()
-    await page.getByRole('button', { name: 'Quitar Timecode del historial' }).click()
+    // On a screen with a pointer that hovers, from the card's preview (its aspa).
+    await page.locator('[data-short-card="timecode"]').first().hover()
+    await page
+      .locator('[data-short-preview]')
+      .getByRole('button', { name: 'Quitar del historial' })
+      .click()
     await expect(page.getByText('Todavía no has visto ningún corto')).toBeVisible()
 
     // Finished viewings leave «Seguir viendo» but stay in the history.
