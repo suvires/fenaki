@@ -1,5 +1,5 @@
 import { createTranslator, type Locale } from '@fenaki/i18n'
-import { Button, ShortGrid, type ShortCardProps } from '@fenaki/ui'
+import { Button, Dialog, ShortGrid, type ShortCardProps } from '@fenaki/ui'
 import { useState } from 'react'
 import { api } from '../../lib/accountClient.ts'
 
@@ -31,6 +31,8 @@ export function HistoryGrid({ locale, items: initial }: HistoryGridProps) {
     setItems([])
     const result = await api('viewings', 'DELETE', { all: true })
     if (!result.ok) setItems(before)
+    // The pager is the server's: back to the first page, which now says the history is empty.
+    else if (window.location.search) window.location.replace(window.location.pathname)
   }
 
   if (items.length === 0)
@@ -38,25 +40,26 @@ export function HistoryGrid({ locale, items: initial }: HistoryGridProps) {
 
   return (
     <div className="grid gap-6">
-      <div className="flex flex-wrap items-center gap-3">
-        {confirming ? (
+      <div>
+        <Button variant="secondary" onClick={() => setConfirming(true)}>
+          {t('account.history.clear')}
+        </Button>
+      </div>
+      <Dialog
+        open={confirming}
+        onClose={() => setConfirming(false)}
+        title={t('account.history.clearConfirm')}
+        actions={
           <>
-            <span role="status" className="text-secondary">
-              {t('account.history.clearConfirm')}
-            </span>
-            <Button size="sm" onClick={clear}>
-              {t('account.history.clearYes')}
-            </Button>
-            <Button size="sm" variant="ghost" onClick={() => setConfirming(false)}>
+            <Button variant="secondary" onClick={() => setConfirming(false)}>
               {t('account.history.clearNo')}
             </Button>
+            <Button onClick={clear}>{t('account.history.clearYes')}</Button>
           </>
-        ) : (
-          <Button size="sm" variant="secondary" onClick={() => setConfirming(true)}>
-            {t('account.history.clear')}
-          </Button>
-        )}
-      </div>
+        }
+      >
+        <p className="m-0">{t('account.history.clearText')}</p>
+      </Dialog>
       <ShortGrid
         items={items}
         footer={(item) => (

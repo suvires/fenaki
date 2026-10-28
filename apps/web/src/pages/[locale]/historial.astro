@@ -46,7 +46,7 @@ const items = viewings.flatMap((viewing) => {
 
 <Base locale={locale} title={t('account.history.title')} noindex>
   <div class="grid gap-8">
-    <PageHeader title={t('account.history.title')} description={t('account.history.lead')} />
+    <PageHeader title={t('account.history.title')} />
     <HistoryGrid client:load locale={locale} items={items} />
     {pages > 1 && <Pagination {...paginationProps(t, page, pages, (n) => pageHref(base, n))} />}
   </div>

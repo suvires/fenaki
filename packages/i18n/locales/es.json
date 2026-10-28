@@ -595,12 +595,12 @@
     },
     "history": {
       "title": "Historial",
-      "lead": "Los cortos que has visto con la sesión iniciada, el último primero.",
       "empty": "Todavía no has visto ningún corto con la sesión iniciada.",
       "remove": "Quitar del historial",
       "removeNamed": "Quitar {title} del historial",
       "clear": "Borrar historial",
       "clearConfirm": "¿Borrar todo el historial?",
+      "clearText": "Se quitarán todos los cortos que has visto, también de «Seguir viendo». No se puede deshacer.",
       "clearYes": "Sí, borrar todo",
       "clearNo": "Cancelar"
     }
