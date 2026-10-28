@@ -1,0 +1,229 @@
+{
+ "publish": [
+  {
+   "id": 6120,
+   "type": "fiction",
+   "language": "es",
+   "synopsis": "Pilar y Manuel se preparan para una noche de gala y glamour, pero llevan demasiado tiempo escondiendo los problemas de su relación."
+  },
+  {
+   "id": 6126,
+   "type": "fiction",
+   "language": "es",
+   "synopsis": "Tras años de mala vida en El Cairo, Farid deja su trabajo en McDonald's y se interna en el desierto para ser monje copto en el monasterio de San Macario. Allí vive entre penitencia, oración y fe."
+  },
+  {
+   "id": 21551,
+   "type": "fiction",
+   "language": "es",
+   "synopsis": "Una abuela de 75 años sueña con ir a morir a la exótica Samarcanda y convoca una comida para despedirse de sus nietos. La despedida no sale como esperaba y la historia toma un rumbo único."
+  },
+  {
+   "id": 21766,
+   "type": "fiction",
+   "language": "es"
+  },
+  {
+   "id": 21806,
+   "type": "fiction",
+   "language": "es",
+   "year": 2018
+  },
+  {
+   "id": 21809,
+   "type": "fiction",
+   "language": "es",
+   "year": 2016
+  },
+  {
+   "id": 21812,
+   "type": "fiction",
+   "language": "es",
+   "year": 2016
+  },
+  {
+   "id": 21816,
+   "type": "experimental",
+   "language": "es",
+   "year": 2017
+  },
+  {
+   "id": 22261,
+   "type": "fiction",
+   "language": "es"
+  },
+  {
+   "id": 22419,
+   "type": "fiction",
+   "language": "es"
+  },
+  {
+   "id": 22429,
+   "type": "fiction",
+   "language": "es"
+  },
+  {
+   "id": 22565,
+   "type": "fiction",
+   "language": "es"
+  },
+  {
+   "id": 22621,
+   "type": "fiction",
+   "language": "es"
+  },
+  {
+   "id": 22709,
+   "type": "fiction",
+   "language": "es"
+  },
+  {
+   "id": 22740,
+   "type": "fiction",
+   "language": "es"
+  },
+  {
+   "id": 22747,
+   "type": "fiction",
+   "language": "es"
+  },
+  {
+   "id": 22806,
+   "type": "fiction",
+   "language": "es",
+   "synopsis": "La historia de Joey y de su camino hacia el cambio y la aceptación del mundo."
+  },
+  {
+   "id": 22810,
+   "type": "fiction",
+   "language": "es",
+   "synopsis": "Alejandro afronta discriminación y exclusión por su identidad de género en el deporte inclusivo, y sigue adelante con valentía y el apoyo de amigos y familiares."
+  },
+  {
+   "id": 22812,
+   "type": "fiction",
+   "language": "es",
+   "synopsis": "Una entrevista a una competidora transexual que, tras ganar una competencia de natación, recibe críticas por competir en la categoría femenina."
+  },
+  {
+   "id": 22825,
+   "type": "fiction",
+   "language": "es",
+   "synopsis": "En un talk show, el organizador de los Juegos Olímpicos abre un diálogo sobre cómo incluir de forma justa a las personas transexuales en el deporte."
+  },
+  {
+   "id": 22842,
+   "type": "fiction",
+   "language": "es"
+  },
+  {
+   "id": 22898,
+   "type": "fiction",
+   "language": "es",
+   "synopsis": "Julieta espera a Romeo al pie de su balcón, pero las visitas de su padre y del conde Paris hacen la velada más entretenida de lo esperado. Es una versión con títeres de la tragedia de Shakespeare."
+  },
+  {
+   "id": 23033,
+   "type": "fiction",
+   "language": "es"
+  },
+  {
+   "id": 23153,
+   "type": "fiction",
+   "language": "es",
+   "synopsis": "En 1987 Steven Spielberg elige Trebujena para rodar «El Imperio del Sol» y el pueblo se revoluciona; un fanático busca a su ídolo en medio del choque cultural."
+  },
+  {
+   "id": 23412,
+   "type": "fiction",
+   "language": "es"
+  },
+  {
+   "id": 23415,
+   "type": "fiction",
+   "language": "es"
+  },
+  {
+   "id": 23417,
+   "type": "fiction",
+   "language": "es"
+  },
+  {
+   "id": 23419,
+   "type": "fiction",
+   "language": "es"
+  },
+  {
+   "id": 23421,
+   "type": "fiction",
+   "language": "es"
+  },
+  {
+   "id": 23423,
+   "type": "fiction",
+   "language": "es"
+  },
+  {
+   "id": 23425,
+   "type": "fiction",
+   "language": "es"
+  },
+  {
+   "id": 23429,
+   "type": "fiction",
+   "language": "es"
+  },
+  {
+   "id": 23432,
+   "type": "fiction",
+   "language": "es"
+  },
+  {
+   "id": 23435,
+   "type": "fiction",
+   "language": "es"
+  },
+  {
+   "id": 23517,
+   "type": "fiction",
+   "language": "es"
+  },
+  {
+   "id": 23554,
+   "type": "fiction",
+   "language": "es"
+  },
+  {
+   "id": 23654,
+   "type": "fiction",
+   "language": "es"
+  },
+  {
+   "id": 25203,
+   "type": "fiction",
+   "language": "es"
+  }
+ ],
+ "withdraw": [
+  21289,
+  21539,
+  21543,
+  21554,
+  21793,
+  22363,
+  22702,
+  22834,
+  22838,
+  22912,
+  23815,
+  23826,
+  23834,
+  23843,
+  23851,
+  23861,
+  24210,
+  24226,
+  24272,
+  25505
+ ]
+}

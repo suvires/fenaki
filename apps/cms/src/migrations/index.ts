@@ -33,7 +33,9 @@ import * as migration_20261028_152926_submissions_without_code from './20261028_
 import * as migration_20261028_153152_member_has_submissions from './20261028_153152_member_has_submissions';
 import * as migration_20261028_180352_short_embeddings from './20261028_180352_short_embeddings';
 import * as migration_20261028_180500_queue_short_embeddings from './20261028_180500_queue_short_embeddings'
-import * as migration_20261028_211800_requeue_short_embeddings from './20261028_211800_requeue_short_embeddings';
+import * as migration_20261028_211800_requeue_short_embeddings from './20261028_211800_requeue_short_embeddings'
+import * as migration_20261028_224500_drop_collection_sponsor_columns from './20261028_224500_drop_collection_sponsor_columns'
+import * as migration_20261028_235500_synopses_and_review_round_5 from './20261028_235500_synopses_and_review_round_5';
 
 export const migrations = [
   {
@@ -215,5 +217,15 @@ export const migrations = [
     up: migration_20261028_211800_requeue_short_embeddings.up,
     down: migration_20261028_211800_requeue_short_embeddings.down,
     name: '20261028_211800_requeue_short_embeddings',
+  },
+  {
+    up: migration_20261028_224500_drop_collection_sponsor_columns.up,
+    down: migration_20261028_224500_drop_collection_sponsor_columns.down,
+    name: '20261028_224500_drop_collection_sponsor_columns',
+  },
+  {
+    up: migration_20261028_235500_synopses_and_review_round_5.up,
+    down: migration_20261028_235500_synopses_and_review_round_5.down,
+    name: '20261028_235500_synopses_and_review_round_5',
   },
 ];
