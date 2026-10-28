@@ -65,7 +65,7 @@ export interface ShortPreviewProps {
 
 /**
  * The floating preview of a short that opens when the pointer rests on its card: the still with the
- * title, then the actions (play, «Mi lista», rating and, in the history, removing it from there), the facts, the director and the synopsis.
+ * title, then the actions (play, «Mi lista», removing it from the history when it is there, rating), the facts, the director and the synopsis.
  * Anywhere but the buttons leads to the short's page: a link stretched over the whole panel. Presentational: the page's preview island positions it and keeps the state.
  */
 export function ShortPreview({
@@ -156,13 +156,6 @@ export function ShortPreview({
             aria-pressed={saved}
             onClick={onToggleSaved}
           />
-          <RatingButtons
-            value={rating}
-            onChange={onRate}
-            labels={labels.rating}
-            expanded={ratingExpanded}
-            tooltip={ratingTooltip}
-          />
           {onRemoveFromHistory && labels.removeFromHistory ? (
             <IconButton
               icon="close"
@@ -170,6 +163,13 @@ export function ShortPreview({
               onClick={onRemoveFromHistory}
             />
           ) : null}
+          <RatingButtons
+            value={rating}
+            onChange={onRate}
+            labels={labels.rating}
+            expanded={ratingExpanded}
+            tooltip={ratingTooltip}
+          />
         </div>
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-meta text-primary">
           {seconds ? <Duration seconds={seconds} locale={locale} muted={false} /> : null}
