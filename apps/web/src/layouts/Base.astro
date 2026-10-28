@@ -8,8 +8,7 @@ import { AccountSync } from '../islands/account/AccountSync.tsx'
 import { CardPreview } from '../islands/CardPreview.tsx'
 import { loadAccountState } from '../lib/account/data.ts'
 import { paths, translator } from '../lib/i18n.ts'
-import { contactLinks } from '../lib/contact.ts'
-import { contactEmail, csp, siteMode, siteUrl, umami } from '../lib/services.ts'
+import { csp, siteMode, siteUrl, umami } from '../lib/services.ts'
 import { absoluteUrl, hreflangLinks, jsonLdScript, type Alternates } from '../lib/seo.ts'
 
 interface Props {
@@ -72,31 +71,36 @@ const pageTitle = title
 const metaDescription = description ?? t('site.description')
 const canonical = absoluteUrl(siteUrl, canonicalPath)
 const image = absoluteUrl(siteUrl, ogImage)
-const contact = contactLinks(contactEmail, t)
 const legalLinks = [
   { label: t('footer.links.legalNotice'), href: paths.legal(locale, 'aviso-legal') },
   { label: t('footer.links.privacy'), href: paths.legal(locale, 'privacidad') },
   { label: t('footer.links.cookies'), href: paths.legal(locale, 'cookies') },
 ]
 // Before launch the landing page only links the legal pages: there is no catalog to talk about.
-// Columns: the catalog, then taking part (takedown, sponsors, showcases), then legal and credits.
+// Columns: the catalog, its genres, sponsors, takedown and credits, the viewer's account and
+// preferences, and the legal pages.
+const GENRES = ['fiction', 'documentary', 'animation', 'experimental'] as const
 const footerGroups = landing
   ? [legalLinks]
   : [
       [
         { label: t('footer.links.browse'), href: paths.browse(locale) },
-        ...(contact ? [contact.propose] : []),
+        { label: t('footer.links.latest'), href: paths.latest(locale) },
+        { label: t('footer.links.myList'), href: paths.myList(locale) },
       ],
+      GENRES.map((type) => ({ label: t(`short.types.${type}`), href: paths.genre(locale, type) })),
+      [{ label: t('footer.links.sponsor'), href: paths.sponsor(locale, 'collection') }],
       [
         { label: t('footer.links.takedown'), href: paths.legal(locale, 'retirada-de-contenidos') },
-        { label: t('footer.links.sponsor'), href: paths.sponsor(locale, 'collection') },
-        { label: t('footer.links.showcase'), href: paths.sponsor(locale, 'showcase') },
+        { label: t('footer.links.credits'), href: paths.credits(locale) },
+      ],
+      [
+        { label: t('footer.links.account'), href: paths.account(locale) },
+        { label: t('footer.links.playerSettings'), href: paths.playerSettings(locale) },
       ],
       [
         ...legalLinks,
         { label: t('footer.links.terms'), href: paths.legal(locale, 'terminos-de-uso') },
-        { label: t('footer.links.playerSettings'), href: paths.playerSettings(locale) },
-        { label: t('footer.links.credits'), href: paths.credits(locale) },
       ],
     ]
 ---

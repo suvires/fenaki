@@ -9,20 +9,29 @@ const meta = {
     groups: [
       [
         { label: 'Todos los cortos', href: '#browse' },
-        { label: 'Proponer un corto', href: '#propose' },
+        { label: 'Novedades', href: '#latest' },
+        { label: 'Mi lista', href: '#my-list' },
       ],
       [
+        { label: 'Ficción', href: '#fiction' },
+        { label: 'Documental', href: '#documentary' },
+        { label: 'Animación', href: '#animation' },
+        { label: 'Experimental', href: '#experimental' },
+      ],
+      [{ label: 'Patrocinar una colección', href: '#sponsor' }],
+      [
         { label: 'Pedir la retirada de un corto', href: '#takedown' },
-        { label: 'Patrocinar una colección', href: '#sponsor' },
-        { label: 'Escaparates para festivales y escuelas', href: '#showcase' },
+        { label: 'Créditos', href: '#credits' },
+      ],
+      [
+        { label: 'Mi cuenta', href: '#account' },
+        { label: 'Preferencias de reproducción', href: '#player-settings' },
       ],
       [
         { label: 'Aviso legal', href: '#legal-notice' },
         { label: 'Política de privacidad', href: '#privacy' },
         { label: 'Política de cookies', href: '#cookies' },
         { label: 'Términos de uso', href: '#terms' },
-        { label: 'Preferencias de reproducción', href: '#player-settings' },
-        { label: 'Créditos', href: '#credits' },
       ],
     ],
     brand: 'FENAKI',

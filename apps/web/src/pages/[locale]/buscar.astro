@@ -1,4 +1,5 @@
 ---
+import { PageHeader } from '@fenaki/ui'
 import { SearchIsland } from '../../islands/SearchIsland.tsx'
 import Base from '../../layouts/Base.astro'
 import { localeFrom, translator } from '../../lib/i18n.ts'
@@ -23,8 +24,9 @@ if (query) {
 ---
 
 <Base locale={locale} title={t('search.title')}>
-  <section class="grid gap-6">
-    <h1 class="m-0 font-display text-display-l uppercase">{t('search.title')}</h1>
+  {/* The same header as the other pages (account, legal texts). */}
+  <section class="grid gap-12 py-8">
+    <PageHeader title={t('search.title')} />
     <SearchIsland
       client:load
       locale={locale}

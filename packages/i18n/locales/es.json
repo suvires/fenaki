@@ -253,8 +253,10 @@
       "cookies": "Política de cookies",
       "terms": "Términos de uso",
       "sponsor": "Patrocinar una colección",
-      "showcase": "Escaparates para festivales y escuelas",
       "browse": "Todos los cortos",
+      "latest": "Novedades",
+      "myList": "Mi lista",
+      "account": "Mi cuenta",
       "credits": "Créditos",
       "playerSettings": "Preferencias de reproducción"
     }
