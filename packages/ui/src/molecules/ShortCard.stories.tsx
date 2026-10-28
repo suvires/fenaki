@@ -28,7 +28,7 @@ export const BrandedWithImage: Story = {
     image: backdrop,
     badges: [
       { label: 'Contenido de marca', tone: 'branded' },
-      { label: 'Sub ES', tone: 'info' },
+      { label: 'Para todos los públicos', tone: 'info' },
     ],
   },
 }

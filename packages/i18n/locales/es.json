@@ -90,6 +90,12 @@
       }
     },
     "directedBy": "Dirigido por {names}",
+    "language": {
+      "title": "Idioma y subtítulos",
+      "spoken": "Idioma original",
+      "subtitles": "Subtítulos",
+      "none": "Ninguno conocido"
+    },
     "credits": "Créditos",
     "awards": "Premios",
     "awardResults": {
@@ -185,9 +191,9 @@
   },
   "badges": {
     "new": "Nuevo",
-    "subtitles": "Sub {language}",
     "noDialogue": "Sin diálogos",
-    "branded": "Contenido de marca"
+    "branded": "Contenido de marca",
+    "allAudiences": "Para todos los públicos"
   },
   "providers": {
     "youtube": "YouTube",

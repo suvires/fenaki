@@ -20,6 +20,8 @@ export interface CardSource {
   type: string
   noDialogue?: boolean | null
   brandedContent?: boolean | null
+  /** Suits every audience: a badge of its own. */
+  allAudiences?: boolean | null
   subtitles: string[]
   publishedAt?: string | number | null
 }
@@ -73,21 +75,19 @@ export function isNew(publishedAt: CardSource['publishedAt'], clock: BadgeClock)
 
 /**
  * Up to three badges. Branded content always comes first (advertising must be identifiable), then
- * the most useful: new, subtitles in the viewer's language, then form.
+ * new (worked out from when the short was published on FENAKI), for all audiences and no
+ * dialogue. Subtitles and the type are not badges: the short's page and its preview say them.
  */
 export function badgesFor(
   short: CardSource,
-  locale: Locale,
   t: Translate,
   clock: BadgeClock,
 ): { label: string; tone?: BadgeTone }[] {
   const badges: { label: string; tone?: BadgeTone }[] = []
   if (short.brandedContent) badges.push({ label: t('badges.branded'), tone: 'branded' })
   if (isNew(short.publishedAt, clock)) badges.push({ label: t('badges.new'), tone: 'accent' })
-  if (short.subtitles.includes(locale))
-    badges.push({ label: t('badges.subtitles', { language: locale.toUpperCase() }), tone: 'info' })
+  if (short.allAudiences) badges.push({ label: t('badges.allAudiences'), tone: 'info' })
   if (short.noDialogue) badges.push({ label: t('badges.noDialogue') })
-  else if (short.type === 'animation') badges.push({ label: t('short.types.animation') })
   return badges.slice(0, 3)
 }
 
@@ -125,7 +125,7 @@ export function toCard(
     imageTextColor: short.stillTextColor ?? undefined,
     imageHasTitle: short.stillIncludesTitle ?? undefined,
     href,
-    badges: badgesFor(short, locale, t, clock),
+    badges: badgesFor(short, t, clock),
     typeLabel: typeLabel(short, t),
   }
 }
@@ -156,6 +156,6 @@ export function toCurrentShort(
     ...toSavedShort(short, locale),
     synopsis: short.synopsis || undefined,
     typeLabel: typeLabel(short, t),
-    badges: badgesFor(short, locale, t, clock),
+    badges: badgesFor(short, t, clock),
   }
 }

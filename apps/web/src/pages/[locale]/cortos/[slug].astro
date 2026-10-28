@@ -1,6 +1,6 @@
 ---
 import { badgeClock } from '../../../lib/services.ts'
-import { formatCountry, formatYear } from '@fenaki/i18n'
+import { formatCountry, formatLanguage, formatList, formatYear } from '@fenaki/i18n'
 import { Rail, ShareButton, ShortCard } from '@fenaki/ui'
 import NotFound from '../../../components/NotFound.astro'
 import PeopleLinks from '../../../components/PeopleLinks.astro'
@@ -113,12 +113,21 @@ const details = short
       ...(short.year ? [formatYear(short.year, locale)] : []),
       ...(short.country ? [formatCountry(short.country, locale)] : []),
       t(`short.types.${short.type}`),
-      ...(card?.subtitles.includes(locale)
-        ? [t('badges.subtitles', { language: locale.toUpperCase() })]
-        : []),
       ...(short.noDialogue ? [t('badges.noDialogue')] : []),
     ]
   : []
+
+// «Idioma y subtítulos»: the spoken language, and the subtitles its official player offers, the
+// viewer's language first. Intl writes language names in lowercase: a value starts with a capital.
+const capital = (text: string) => text.charAt(0).toLocaleUpperCase(locale) + text.slice(1)
+const spoken = short?.noDialogue
+  ? t('badges.noDialogue')
+  : short?.originalLanguage
+    ? capital(formatLanguage(short.originalLanguage, locale))
+    : undefined
+const subtitles = [...(card?.subtitles ?? [])]
+  .sort((a, b) => Number(b === locale) - Number(a === locale))
+  .map((code) => formatLanguage(code, locale))
 ---
 
 <Base
@@ -228,6 +237,27 @@ const details = short
                 </li>
               ))}
             </ul>
+          </section>
+        )}
+        {(spoken || subtitles.length > 0) && (
+          <section class="grid gap-2" aria-labelledby="language">
+            <h2 id="language" class="m-0 font-display text-title uppercase">
+              {t('short.language.title')}
+            </h2>
+            <dl class="m-0 grid grid-cols-[max-content_1fr] gap-x-4 gap-y-1 text-body">
+              {spoken && (
+                <>
+                  <dt class="text-secondary">{t('short.language.spoken')}</dt>
+                  <dd class="m-0">{spoken}</dd>
+                </>
+              )}
+              <dt class="text-secondary">{t('short.language.subtitles')}</dt>
+              <dd class="m-0">
+                {subtitles.length > 0
+                  ? capital(formatList(subtitles, locale))
+                  : t('short.language.none')}
+              </dd>
+            </dl>
           </section>
         )}
         {credits.length > 0 && (

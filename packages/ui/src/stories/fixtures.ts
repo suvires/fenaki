@@ -10,7 +10,7 @@ export const SHORTS: ShortCardProps[] = [
     year: 2016,
     seconds: 900,
     tone: 'tungsteno',
-    badges: [{ label: 'Sub ES', tone: 'info' }],
+    badges: [{ label: 'Para todos los públicos', tone: 'info' }],
   },
   {
     title: 'Cuerdas',

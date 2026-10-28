@@ -22,6 +22,8 @@ export interface ShortHit {
   type: string
   noDialogue: boolean
   brandedContent?: boolean
+  /** `all` when it suits every audience. */
+  audience?: 'all' | null
   subtitles: string[]
   publishedAt: number | null
 }
@@ -108,6 +110,7 @@ function toCardSource(hit: ShortHit): CardSource {
     type: hit.type,
     noDialogue: hit.noDialogue,
     brandedContent: hit.brandedContent,
+    allAudiences: hit.audience === 'all',
     subtitles: hit.subtitles,
     publishedAt: hit.publishedAt,
   }

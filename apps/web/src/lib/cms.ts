@@ -358,6 +358,7 @@ export function toCardSource(short: PublishedShort): CardSource {
     type: short.type,
     noDialogue: short.noDialogue,
     brandedContent: short.brandedContent,
+    allAudiences: short.allAudiences,
     // By primary language, as in the search index: «es-ES» counts as Spanish.
     subtitles: [
       ...new Set(

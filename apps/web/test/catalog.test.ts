@@ -56,43 +56,34 @@ describe('isNew', () => {
 })
 
 describe('badgesFor', () => {
-  it('orders new, subtitles in the locale, then form, and keeps three at most', () => {
+  it('orders new, for all audiences and no dialogue, and keeps three at most', () => {
     const badges = badgesFor(
-      { ...short, publishedAt: '2026-10-20T10:00:00Z', subtitles: ['es', 'en'] },
-      'es',
+      { ...short, publishedAt: '2026-10-20T10:00:00Z', allAudiences: true, subtitles: ['es'] },
       t,
       launched,
     )
     expect(badges).toEqual([
       { label: 'Nuevo', tone: 'accent' },
-      { label: 'Sub ES', tone: 'info' },
+      { label: 'Para todos los públicos', tone: 'info' },
       { label: 'Sin diálogos' },
     ])
   })
 
   it('always puts branded content first, even with three other badges', () => {
     const badges = badgesFor(
-      {
-        ...short,
-        brandedContent: true,
-        publishedAt: '2026-10-20T10:00:00Z',
-        subtitles: ['es'],
-      },
-      'es',
+      { ...short, brandedContent: true, publishedAt: '2026-10-20T10:00:00Z', allAudiences: true },
       t,
       launched,
     )
     expect(badges).toEqual([
       { label: 'Contenido de marca', tone: 'branded' },
       { label: 'Nuevo', tone: 'accent' },
-      { label: 'Sub ES', tone: 'info' },
+      { label: 'Para todos los públicos', tone: 'info' },
     ])
   })
 
-  it('falls back to the animation badge when the short has dialogue', () => {
-    expect(badgesFor({ ...short, noDialogue: false }, 'es', t, launched)).toEqual([
-      { label: 'Animación' },
-    ])
+  it('has no badge for the type or the subtitles', () => {
+    expect(badgesFor({ ...short, noDialogue: false, subtitles: ['es'] }, t, launched)).toEqual([])
   })
 })
 

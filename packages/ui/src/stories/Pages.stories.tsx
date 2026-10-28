@@ -71,7 +71,7 @@ export const Short: Story = {
         loadedLabel="Aquí se carga el reproductor de YouTube"
         hero={{
           seconds: 900,
-          details: [{ label: 'Juanjo Giménez', href: '#' }, '2016', 'España', 'Ficción', 'Sub ES'],
+          details: [{ label: 'Juanjo Giménez', href: '#' }, '2016', 'España', 'Ficción'],
           synopsis:
             'Luna y Diego son los vigilantes de un aparcamiento. Ella trabaja de día y él de noche, y solo se cruzan en el cambio de turno.',
           clampSynopsis: false,

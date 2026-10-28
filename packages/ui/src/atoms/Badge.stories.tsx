@@ -11,7 +11,7 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Neutral: Story = {}
-export const Info: Story = { args: { tone: 'info', children: 'Sub ES' } }
+export const Info: Story = { args: { tone: 'info', children: 'Para todos los públicos' } }
 export const Accent: Story = { args: { tone: 'accent', children: 'Nuevo' } }
 export const Branded: Story = { args: { tone: 'branded', children: 'Contenido de marca' } }
 export const AllTones: Story = {
