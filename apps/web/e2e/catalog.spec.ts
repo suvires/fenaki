@@ -128,7 +128,7 @@ test('a short added to «Mi lista» appears in the rail and the list page, and s
   await page.locator('section').first().getByRole('button', { name: 'En mi lista' }).click()
   await expect(page.getByRole('region', { name: 'Mi lista' })).toHaveCount(0)
   await page.goto('/es/mi-lista')
-  await expect(page.getByText(/Guarda cortos con/)).toBeVisible()
+  await expect(page.getByText(/Todavía no has añadido ningún corto/)).toBeVisible()
 })
 
 /** Hovers the first card of the home page and waits for its floating preview. */

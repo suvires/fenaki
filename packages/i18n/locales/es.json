@@ -36,7 +36,7 @@
     },
     "myList": {
       "title": "Mi lista",
-      "empty": "Guarda cortos con «Añadir a mi lista» y aparecerán aquí."
+      "empty": "Todavía no has añadido ningún corto. Pulsa «Añadir a mi lista» en cualquier corto y aparecerá aquí."
     },
     "top10": {
       "title": "Lo más visto",
