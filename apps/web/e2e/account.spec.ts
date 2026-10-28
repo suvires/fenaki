@@ -131,7 +131,7 @@ test('a viewer signs up, verifies, signs in, keeps a list, ratings and progress,
   await test.step('save a short and rate another from the preview', async () => {
     await open(page, '/es/cortos/madre')
     await page.getByRole('button', { name: 'Añadir a mi lista' }).click()
-    await expect(page.getByRole('button', { name: 'Quitar de mi lista' })).toHaveAttribute(
+    await expect(page.getByRole('button', { name: 'En mi lista' })).toHaveAttribute(
       'aria-pressed',
       'true',
     )
