@@ -32,6 +32,8 @@ export interface ShortCardProps {
   progress?: number
   /** Says it in words, for the card's accessible name: «Visto al 45 %». */
   progressLabel?: string
+  /** A card of the viewer's history («Seguir viendo», «Historial»): its preview offers to remove it. */
+  inHistory?: boolean
   /** Fill the grid cell instead of the fixed rail width. */
   stretch?: boolean
   className?: string
@@ -61,6 +63,7 @@ export function ShortCard({
   typeLabel,
   progress,
   progressLabel,
+  inHistory = false,
   stretch = false,
   className,
 }: ShortCardProps) {
@@ -81,6 +84,7 @@ export function ShortCard({
       data-image-text={previewable && image ? imageTextColor : undefined}
       data-image-title={previewable && image && imageHasTitle ? '' : undefined}
       data-type={previewable ? typeLabel : undefined}
+      data-in-history={previewable && inHistory ? '' : undefined}
       className={cx(
         'group relative block rounded-sm text-inherit no-underline outline-hidden',
         stretch ? 'w-full' : 'w-(--short-card-width)',

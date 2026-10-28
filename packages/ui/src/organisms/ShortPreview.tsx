@@ -34,6 +34,8 @@ export interface ShortPreviewProps {
   onToggleSaved?: () => void
   rating?: Rating
   onRate?: RatingButtonsProps['onChange']
+  /** A short of the viewer's history: the aspa that removes it from there. */
+  onRemoveFromHistory?: () => void
   labels: {
     /** «Ver ahora» */
     play: string
@@ -41,6 +43,8 @@ export interface ShortPreviewProps {
     addToList: string
     /** «En mi lista» */
     inMyList: string
+    /** «Quitar del historial», when the panel offers it. */
+    removeFromHistory?: string
     /** «Más información»: the name of the link that covers the panel. */
     more: string
     rating: RatingButtonsProps['labels']
@@ -61,7 +65,7 @@ export interface ShortPreviewProps {
 
 /**
  * The floating preview of a short that opens when the pointer rests on its card: the still with the
- * title, then the actions (play, «Mi lista», rating), the facts, the director and the synopsis.
+ * title, then the actions (play, «Mi lista», rating and, in the history, removing it from there), the facts, the director and the synopsis.
  * Anywhere but the buttons leads to the short's page: a link stretched over the whole panel. Presentational: the page's preview island positions it and keeps the state.
  */
 export function ShortPreview({
@@ -83,6 +87,7 @@ export function ShortPreview({
   onToggleSaved,
   rating,
   onRate,
+  onRemoveFromHistory,
   labels,
   floating = true,
   entering = false,
@@ -158,6 +163,13 @@ export function ShortPreview({
             expanded={ratingExpanded}
             tooltip={ratingTooltip}
           />
+          {onRemoveFromHistory && labels.removeFromHistory ? (
+            <IconButton
+              icon="close"
+              label={labels.removeFromHistory}
+              onClick={onRemoveFromHistory}
+            />
+          ) : null}
         </div>
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-meta text-primary">
           {seconds ? <Duration seconds={seconds} locale={locale} muted={false} /> : null}

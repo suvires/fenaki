@@ -19,6 +19,7 @@ const meta = {
       play: 'Ver ahora',
       addToList: 'Añadir a mi lista',
       inMyList: 'En mi lista',
+      removeFromHistory: 'Quitar del historial',
       more: 'Más información',
       rating: {
         rate: 'Valorar',
@@ -43,6 +44,9 @@ export const ImageIncludesTitle: Story = { args: { image: backdrop, imageHasTitl
 /** Without a still: the landscape typographic poster. */
 export const WithPoster: Story = {}
 export const SavedInMyList: Story = { args: { image: backdrop, saved: true } }
+export const InHistory: Story = {
+  args: { image: backdrop, onRemoveFromHistory: () => undefined },
+}
 export const Liked: Story = { args: { image: backdrop, rating: 'like' } }
 export const Branded: Story = {
   args: {

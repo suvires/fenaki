@@ -142,18 +142,21 @@ const otherRails = rails.filter((rail) => rail.key !== 'latest')
   )}
   {/* «Seguir viendo»: only for a signed-in viewer, and only while something is unfinished. */}
   {continueWatching.length > 0 && (
-    <Rail
-      arrows={{ previous: t('rail.previous'), next: t('rail.next') }}
-      title={t('home.continueWatching.title')}
-    >
-      {continueWatching.map(({ short, progress }) => (
-        <ShortCard
-          {...toCard(toCardSource(short), locale, t, paths.short(locale, short.slug), clock)}
-          progress={progress}
-          progressLabel={t('short.progress', { percent: Math.round(progress * 100) })}
-        />
-      ))}
-    </Rail>
+    <div data-continue-watching>
+      <Rail
+        arrows={{ previous: t('rail.previous'), next: t('rail.next') }}
+        title={t('home.continueWatching.title')}
+      >
+        {continueWatching.map(({ short, progress }) => (
+          <ShortCard
+            {...toCard(toCardSource(short), locale, t, paths.short(locale, short.slug), clock)}
+            progress={progress}
+            progressLabel={t('short.progress', { percent: Math.round(progress * 100) })}
+            inHistory
+          />
+        ))}
+      </Rail>
+    </div>
   )}
   {/* Renders nothing until the viewer has saved something. */}
   {!landing && (
@@ -242,4 +245,15 @@ const otherRails = rails.filter((rail) => rail.key !== 'latest')
         </Rail>
       </div>
     ))}
+  <script>
+    import { onRemovedFromHistory } from '../../lib/history.ts'
+
+    // «Seguir viendo» is rendered here, not by an island: a short removed from the history (from
+    // its preview) leaves the rail, and the rail goes once it is empty.
+    onRemovedFromHistory((slug) => {
+      const rail = document.querySelector('[data-continue-watching]')
+      rail?.querySelector(`[data-short-card="${CSS.escape(slug)}"]`)?.remove()
+      if (rail && !rail.querySelector('[data-short-card]')) rail.remove()
+    })
+  </script>
 </Base>

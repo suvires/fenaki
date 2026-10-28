@@ -1,7 +1,8 @@
 import { createTranslator, type Locale } from '@fenaki/i18n'
 import { Button, Dialog, ShortGrid, type ShortCardProps } from '@fenaki/ui'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { api } from '../../lib/accountClient.ts'
+import { onRemovedFromHistory, removeFromHistory } from '../../lib/history.ts'
 
 interface HistoryGridProps {
   locale: Locale
@@ -18,12 +19,14 @@ export function HistoryGrid({ locale, items: initial }: HistoryGridProps) {
   const [items, setItems] = useState(initial)
   const [confirming, setConfirming] = useState(false)
 
-  async function remove(slug: string) {
-    const before = items
-    setItems(items.filter((item) => item.slug !== slug))
-    const result = await api('viewings', 'DELETE', { slug, locale })
-    if (!result.ok) setItems(before)
-  }
+  // Removed from the card's preview (its aspa) or from the button under the card.
+  useEffect(
+    () =>
+      onRemovedFromHistory((slug) =>
+        setItems((before) => before.filter((item) => item.slug !== slug)),
+      ),
+    [],
+  )
 
   async function clear() {
     const before = items
@@ -61,14 +64,15 @@ export function HistoryGrid({ locale, items: initial }: HistoryGridProps) {
         <p className="m-0">{t('account.history.clearText')}</p>
       </Dialog>
       <ShortGrid
-        items={items}
+        items={items.map((item) => ({ ...item, inHistory: true }))}
+        // Where there is no floating preview (touch screens), the card has the button under it.
         footer={(item) => (
-          <div>
+          <div className="[@media(hover:hover)_and_(pointer:fine)]:hidden">
             <Button
               variant="ghost"
               size="sm"
               aria-label={t('account.history.removeNamed', { title: item.title })}
-              onClick={() => remove((item as { slug: string }).slug)}
+              onClick={() => void removeFromHistory((item as { slug: string }).slug, locale)}
             >
               {t('account.history.remove')}
             </Button>

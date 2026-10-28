@@ -12,6 +12,7 @@ import {
   type PreviewTimer,
 } from '../lib/cardPreview.ts'
 import { posterTone } from '../lib/catalog.ts'
+import { removeFromHistory } from '../lib/history.ts'
 import { has, subscribe as subscribeList, toggle, type NewSavedShort } from '../lib/myList.ts'
 import { getRating, setRating, subscribe as subscribeRatings } from '../lib/myRatings.ts'
 
@@ -30,6 +31,8 @@ interface PreviewData {
   synopsis?: string
   badges: { label: string; tone?: BadgeTone }[]
   href: string
+  /** The card is in the viewer's history: the panel offers to remove it. */
+  inHistory: boolean
 }
 
 const HOVER = '(hover: hover) and (pointer: fine)'
@@ -69,6 +72,7 @@ function readCard(card: HTMLElement): PreviewData | undefined {
     synopsis: card.querySelector('[data-card-synopsis]')?.textContent ?? undefined,
     badges,
     href,
+    inHistory: card.dataset.inHistory !== undefined,
   }
 }
 
@@ -76,12 +80,13 @@ interface FloatingProps extends CardPreviewProps {
   data: PreviewData
   /** The card's box when the preview opened. */
   cardBox: Box
+  onClose: () => void
 }
 
 type Phase = 'measure' | 'enter' | 'shown'
 
 /** The panel, placed over its card. It is measured hidden, starts at the card's box and grows. */
-function Floating({ data, cardBox, locale, labels }: FloatingProps) {
+function Floating({ data, cardBox, locale, labels, onClose }: FloatingProps) {
   const { short } = data
   const panel = useRef<HTMLDivElement>(null)
   const [phase, setPhase] = useState<Phase>('measure')
@@ -162,6 +167,14 @@ function Floating({ data, cardBox, locale, labels }: FloatingProps) {
       onToggleSaved={() => toggle(short)}
       rating={rating}
       onRate={(value) => setRating(short.slug, value)}
+      onRemoveFromHistory={
+        data.inHistory
+          ? () => {
+              onClose()
+              void removeFromHistory(short.slug, locale)
+            }
+          : undefined
+      }
       labels={labels}
     />,
     document.body,
@@ -262,5 +275,12 @@ export function CardPreview(props: CardPreviewProps) {
   }, [hoverable])
 
   if (!open) return null
-  return <Floating key={open.data.short.slug} {...props} {...open} />
+  return (
+    <Floating
+      key={open.data.short.slug}
+      {...props}
+      {...open}
+      onClose={() => timer.current?.close()}
+    />
+  )
 }
