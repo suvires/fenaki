@@ -7,7 +7,7 @@ import { MyListButton } from '../../islands/MyListButton.tsx'
 import { loadAccountState, loadViewings } from '../../lib/account/data.ts'
 import { MyListRail } from '../../islands/MyListRail.tsx'
 import Base from '../../layouts/Base.astro'
-import { posterTone, toCard, toCurrentShort, toSavedShort } from '../../lib/catalog.ts'
+import { badgesFor, posterTone, toCard, toCurrentShort, toSavedShort } from '../../lib/catalog.ts'
 import {
   getHeroShort,
   getRanking,
@@ -114,6 +114,7 @@ const otherRails = rails.filter((rail) => rail.key !== 'latest')
           ...(hero.year ? [formatYear(hero.year, locale)] : []),
           t(`short.types.${hero.type}`),
         ]}
+        badges={badgesFor(toCardSource(hero), t)}
         synopsis={hero.synopsis ?? undefined}
         ctaLabel={t('home.hero.cta')}
         ctaHref={paths.play(locale, hero.slug)}

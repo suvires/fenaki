@@ -49,6 +49,17 @@ export const InMyList: Story = {
 
 /** An abstract gradient made for the catalog: never a third-party film image. */
 export const WithBackdrop: Story = { args: { backdrop } }
+/** Badges after the details, as in the preview. */
+export const WithBadges: Story = {
+  args: {
+    backdrop,
+    badges: [
+      { label: 'Contenido de marca', tone: 'branded' },
+      { label: 'Para todos los públicos', tone: 'info' },
+      { label: 'Sin diálogos' },
+    ],
+  },
+}
 
 /** A light still: the editor marked dark text. */
 export const WithLightBackdrop: Story = {

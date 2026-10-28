@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import type { Locale } from '@fenaki/i18n'
 import { cx } from '../foundations/cx.ts'
 import { stillTextClass, type StillTextColor } from '../foundations/stillText.ts'
+import { Badge, type BadgeTone } from '../atoms/Badge.tsx'
 import { Button } from '../atoms/Button.tsx'
 import { Duration } from '../atoms/Duration.tsx'
 import { Poster, type PosterProps } from '../atoms/Poster.tsx'
@@ -15,6 +16,8 @@ export interface ShortHeroProps {
   locale?: Locale
   /** The rest of the details line, already formatted: director, year, type. A link when it has `href`. */
   details?: (string | { label: string; href: string })[]
+  /** The short's badges («Contenido de marca», «Sin diálogos»…), after the details, as in the preview. */
+  badges?: { label: string; tone?: BadgeTone }[]
   /** Clamped to three lines, unless `clampSynopsis` is false (the short's own page shows it whole). */
   synopsis?: string
   clampSynopsis?: boolean
@@ -60,6 +63,7 @@ export function ShortHero({
   seconds,
   locale,
   details = [],
+  badges = [],
   synopsis,
   clampSynopsis = true,
   ctaLabel,
@@ -128,6 +132,11 @@ export function ShortHero({
             </span>
           ),
         )}
+        {badges.map((badge) => (
+          <Badge key={badge.label} tone={badge.tone}>
+            {badge.label}
+          </Badge>
+        ))}
       </p>
       {synopsis ? (
         <p className={cx('m-0 max-w-hero-text text-body-l', clampSynopsis && 'line-clamp-3')}>

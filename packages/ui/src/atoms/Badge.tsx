@@ -16,13 +16,13 @@ const TONES = {
   branded: 'bg-sponsored text-on-sponsored',
 } as const
 
-/** A one- or two-word fact about a short, in the uppercase timecode voice. */
+/** A one- or two-word fact about a short, in the uppercase timecode voice, as a pill. */
 export function Badge({ tone = 'neutral', className, children, ...rest }: BadgeProps) {
   return (
     <span
       {...rest}
       className={cx(
-        'inline-flex items-center min-h-(--badge-height) px-2 py-hair rounded-xs font-mono text-label uppercase',
+        'inline-flex items-center min-h-(--badge-height) px-3 py-hair rounded-full font-mono text-label uppercase',
         TONES[tone],
         className,
       )}
