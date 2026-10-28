@@ -116,7 +116,7 @@ const otherRails = rails.filter((rail) => rail.key !== 'latest')
         ]}
         synopsis={hero.synopsis ?? undefined}
         ctaLabel={t('home.hero.cta')}
-        ctaHref={paths.short(locale, hero.slug)}
+        ctaHref={paths.play(locale, hero.slug)}
         poster={{
           title: hero.title,
           director: heroDirectors.join(', '),

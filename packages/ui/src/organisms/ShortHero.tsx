@@ -18,7 +18,8 @@ export interface ShortHeroProps {
   /** Clamped to three lines, unless `clampSynopsis` is false (the short's own page shows it whole). */
   synopsis?: string
   clampSynopsis?: boolean
-  ctaLabel: string
+  /** The main action. Without it there is none (the short's page while it plays). */
+  ctaLabel?: string
   ctaHref?: string
   /** The main action as a button instead of a link, such as playing the short on its own page. */
   onCta?: () => void
@@ -35,12 +36,19 @@ export interface ShortHeroProps {
   backdropHasTitle?: boolean
   /** 1 when it opens the page; 2 under another page title. */
   headingLevel?: 1 | 2
+  /**
+   * `overlay` (the home page): the text over the still. `stacked` (a short's page): the still on
+   * its own, whole, and every detail under it, the title too.
+   */
+  layout?: 'overlay' | 'stacked'
+  /** In a stacked hero, what takes the still's place: the player, once it plays. */
+  media?: ReactNode
   className?: string
 }
 
 /**
  * The featured short at the top of the home page, under the header, and the top of a short's own
- * page before it plays (see PlayerGate). One per page.
+ * page, where the player takes the still's place (see PlayerGate). One per page.
  * The poster is decorative (the title is already the heading) and only shows from `md` up.
  */
 export function ShortHero({
@@ -61,10 +69,89 @@ export function ShortHero({
   backdropTextColor,
   backdropHasTitle = false,
   headingLevel = 1,
+  layout = 'overlay',
+  media,
   className,
 }: ShortHeroProps) {
   const Heading = headingLevel === 1 ? 'h1' : 'h2'
-  const text = backdrop ? stillTextClass(backdropTextColor) : 'text-primary'
+  const stacked = layout === 'stacked'
+  const text = backdrop && !stacked ? stillTextClass(backdropTextColor) : 'text-primary'
+  const info = (
+    <div className={cx('grid gap-4 min-w-0', text)}>
+      {eyebrow ? <p className="m-0 font-mono text-label uppercase text-accent">{eyebrow}</p> : null}
+      <Heading
+        className={cx(
+          'm-0 font-display text-display-l md:text-display-xl uppercase text-balance',
+          backdrop && backdropHasTitle && !stacked && 'sr-only',
+        )}
+      >
+        {title}
+      </Heading>
+      <p className="m-0 flex flex-wrap items-center gap-x-3 gap-y-1 text-meta">
+        <Duration seconds={seconds} locale={locale} inherit />
+        {details.map((detail) =>
+          typeof detail === 'string' ? (
+            <span key={detail} className="before:content-['·'] before:mr-3">
+              {detail}
+            </span>
+          ) : (
+            <span key={detail.href} className="before:content-['·'] before:mr-3">
+              <a
+                href={detail.href}
+                className="text-inherit underline underline-offset-2 hover:text-accent rounded-xs focus-visible:focus-ring"
+              >
+                {detail.label}
+              </a>
+            </span>
+          ),
+        )}
+      </p>
+      {synopsis ? (
+        <p className={cx('m-0 max-w-hero-text text-body-l', clampSynopsis && 'line-clamp-3')}>
+          {synopsis}
+        </p>
+      ) : null}
+      <div className="flex flex-wrap gap-3">
+        {ctaLabel ? (
+          <Button
+            variant="primary"
+            size="lg"
+            icon="play"
+            href={onCta ? undefined : ctaHref}
+            onClick={onCta}
+            {...ctaAttributes}
+          >
+            {ctaLabel}
+          </Button>
+        ) : null}
+        {secondaryAction}
+      </div>
+    </div>
+  )
+
+  if (stacked)
+    return (
+      <section className={cx('grid gap-6', className)}>
+        <div className="relative aspect-still max-w-full overflow-hidden rounded-lg bg-raised shadow-md">
+          {media ??
+            (backdrop ? (
+              <img
+                src={backdrop}
+                alt=""
+                decoding="async"
+                fetchPriority="high"
+                className="absolute inset-0 size-full object-cover"
+              />
+            ) : (
+              <div aria-hidden="true" className="absolute inset-0">
+                <Poster {...poster} shape="landscape" className="size-full rounded-none" />
+              </div>
+            ))}
+        </div>
+        {info}
+      </section>
+    )
+
   return (
     <section
       className={cx(
@@ -87,56 +174,7 @@ export function ShortHero({
           className="absolute inset-0 -z-10 size-full object-cover"
         />
       ) : null}
-      <div className={cx('grid gap-4 min-w-0', text)}>
-        {eyebrow ? (
-          <p className="m-0 font-mono text-label uppercase text-accent">{eyebrow}</p>
-        ) : null}
-        <Heading
-          className={cx(
-            'm-0 font-display text-display-l md:text-display-xl uppercase text-balance',
-            backdrop && backdropHasTitle && 'sr-only',
-          )}
-        >
-          {title}
-        </Heading>
-        <p className="m-0 flex flex-wrap items-center gap-x-3 gap-y-1 text-meta">
-          <Duration seconds={seconds} locale={locale} inherit />
-          {details.map((detail) =>
-            typeof detail === 'string' ? (
-              <span key={detail} className="before:content-['·'] before:mr-3">
-                {detail}
-              </span>
-            ) : (
-              <span key={detail.href} className="before:content-['·'] before:mr-3">
-                <a
-                  href={detail.href}
-                  className="text-inherit underline underline-offset-2 hover:text-accent rounded-xs focus-visible:focus-ring"
-                >
-                  {detail.label}
-                </a>
-              </span>
-            ),
-          )}
-        </p>
-        {synopsis ? (
-          <p className={cx('m-0 max-w-hero-text text-body-l', clampSynopsis && 'line-clamp-3')}>
-            {synopsis}
-          </p>
-        ) : null}
-        <div className="flex flex-wrap gap-3">
-          <Button
-            variant="primary"
-            size="lg"
-            icon="play"
-            href={onCta ? undefined : ctaHref}
-            onClick={onCta}
-            {...ctaAttributes}
-          >
-            {ctaLabel}
-          </Button>
-          {secondaryAction}
-        </div>
-      </div>
+      {info}
       {backdrop ? null : (
         <div aria-hidden="true" className="hidden md:block w-hero-poster">
           <Poster {...poster} />

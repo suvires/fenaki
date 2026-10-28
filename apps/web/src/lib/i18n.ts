@@ -10,9 +10,14 @@ export function translator(locale: Locale = defaultLocale) {
 }
 
 /** Paths are locale-prefixed even while `es` is the only locale. */
+/** On a short's page, the player starts on arrival: «Ver ahora» was pressed on another page. */
+export const PLAY_PARAM = 'play'
+
 export const paths = {
   home: (locale: Locale) => `/${locale}/`,
   short: (locale: Locale, slug: string) => `/${locale}/cortos/${slug}`,
+  /** A short's page that starts playing (see PLAY_PARAM). */
+  play: (locale: Locale, slug: string) => `/${locale}/cortos/${slug}?${PLAY_PARAM}=1`,
   collection: (locale: Locale, slug: string) => `/${locale}/colecciones/${slug}`,
   person: (locale: Locale, slug: string) => `/${locale}/personas/${slug}`,
   browse: (locale: Locale) => `/${locale}/cortos`,

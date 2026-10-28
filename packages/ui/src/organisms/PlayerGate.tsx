@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { cx } from '../foundations/cx.ts'
 import { Button } from '../atoms/Button.tsx'
 import { ShortHero, type ShortHeroProps } from './ShortHero.tsx'
@@ -28,6 +28,11 @@ export interface PlayerGateProps {
    * dialog). Without it the player loads on the press.
    */
   confirmPlay?: (play: () => void) => void
+  /**
+   * Starts once, as if the main button were pressed: the viewer pressed «Ver ahora» on another
+   * page. `confirmPlay` still decides (a remembered choice plays; otherwise the dialog asks).
+   */
+  startOnMount?: boolean
   /** Extra attributes for the play button, such as the analytics event (`data-umami-event`). */
   playAttributes?: Record<`data-${string}`, string>
   /**
@@ -54,6 +59,7 @@ export function PlayerGate({
   startOverLabel,
   onFrame,
   confirmPlay,
+  startOnMount = false,
   playAttributes,
   hero,
   className,
@@ -67,32 +73,39 @@ export function PlayerGate({
     if (confirmPlay) confirmPlay(play)
     else play()
   }
-  if (hero && !loaded)
-    return (
-      <ShortHero
-        {...hero}
-        title={title}
-        ctaLabel={resume ? resume.label : playLabel}
-        onCta={() => start(resume ? resume.embedSrc : embedSrc)}
-        ctaAttributes={playAttributes}
-        secondaryAction={
-          <>
-            {resume && startOverLabel ? (
-              <Button
-                variant="secondary"
-                size="lg"
-                onClick={() => start(embedSrc)}
-                {...playAttributes}
-              >
-                {startOverLabel}
-              </Button>
-            ) : null}
-            {hero.secondaryAction}
-          </>
-        }
-        className={className}
+  const startedOnMount = useRef(false)
+  useEffect(() => {
+    if (!startOnMount || startedOnMount.current) return
+    startedOnMount.current = true
+    start(resume ? resume.embedSrc : embedSrc)
+    // Once, when the page asks for it: later prop changes are not a new press.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [startOnMount])
+  // The player once the viewer chose to play: the provider's frame, or what replaces it.
+  const player = src ? (
+    <>
+      <span role="status" className="sr-only">
+        {loadedLabel}
+      </span>
+      <iframe
+        ref={onFrame}
+        src={src}
+        title={embedTitle ?? title}
+        className="absolute inset-0 size-full border-0"
+        allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+        allowFullScreen
+        referrerPolicy="strict-origin-when-cross-origin"
       />
-    )
+    </>
+  ) : (
+    <div
+      role="status"
+      className="absolute inset-0 grid place-content-center p-6 text-center font-mono text-secondary"
+    >
+      {loadedLabel}
+    </div>
+  )
+
   const box = (
     <div
       className={cx(
@@ -101,29 +114,7 @@ export function PlayerGate({
       )}
     >
       {loaded ? (
-        src ? (
-          <>
-            <span role="status" className="sr-only">
-              {loadedLabel}
-            </span>
-            <iframe
-              ref={onFrame}
-              src={src}
-              title={embedTitle ?? title}
-              className="absolute inset-0 size-full border-0"
-              allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-              allowFullScreen
-              referrerPolicy="strict-origin-when-cross-origin"
-            />
-          </>
-        ) : (
-          <div
-            role="status"
-            className="absolute inset-0 grid place-content-center p-6 text-center font-mono text-secondary"
-          >
-            {loadedLabel}
-          </div>
-        )
+        player
       ) : (
         <div className="absolute inset-0 grid content-end gap-3 p-6 bg-linear-to-t from-canvas from-0% to-transparent to-85%">
           <p className="m-0 font-display text-display-l uppercase">{title}</p>
@@ -158,15 +149,33 @@ export function PlayerGate({
     </div>
   )
   if (!hero) return box
-  // Playing: the title and the hero's other action stay under the player.
-  const Heading = hero.headingLevel === 2 ? 'h2' : 'h1'
+  // The short's page: the still, and every detail under it; playing, the player takes the still's
+  // place and the details stay.
   return (
-    <div className={cx('grid gap-4', className)}>
-      {box}
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <Heading className="m-0 font-display text-title uppercase">{title}</Heading>
-        {hero.secondaryAction}
-      </div>
-    </div>
+    <ShortHero
+      {...hero}
+      layout="stacked"
+      title={title}
+      media={loaded ? player : undefined}
+      ctaLabel={loaded ? undefined : resume ? resume.label : playLabel}
+      onCta={() => start(resume ? resume.embedSrc : embedSrc)}
+      ctaAttributes={playAttributes}
+      secondaryAction={
+        <>
+          {!loaded && resume && startOverLabel ? (
+            <Button
+              variant="secondary"
+              size="lg"
+              onClick={() => start(embedSrc)}
+              {...playAttributes}
+            >
+              {startOverLabel}
+            </Button>
+          ) : null}
+          {hero.secondaryAction}
+        </>
+      }
+      className={className}
+    />
   )
 }

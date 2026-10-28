@@ -99,6 +99,11 @@ test('a remembered player choice skips the dialog until it is withdrawn', async 
   await expect(page.getByRole('status')).toBeVisible()
   await expect(page.getByRole('dialog')).toHaveCount(0)
 
+  // «Ver ahora» from another page (`?play=1`): it plays on arrival, and the address loses it.
+  await page.goto('/es/cortos/timecode?play=1', { waitUntil: 'networkidle' })
+  await expect(page.getByRole('status')).toBeVisible()
+  await expect(page).toHaveURL(/\/es\/cortos\/timecode$/)
+
   // Withdrawn from the page the footer links to: the dialog asks again.
   await page.getByRole('link', { name: 'Preferencias de reproducción' }).click()
   const youtube = page.getByLabel('Reproducir los cortos de YouTube sin preguntarme')
@@ -108,6 +113,10 @@ test('a remembered player choice skips the dialog until it is withdrawn', async 
 
   await page.goto('/es/cortos/timecode', { waitUntil: 'networkidle' })
   await page.getByRole('button', { name: 'Ver ahora' }).click()
+  await expect(page.getByRole('dialog')).toBeVisible()
+
+  // Not remembered, `?play=1` asks at once: the viewer already pressed «Ver ahora».
+  await page.goto('/es/cortos/timecode?play=1', { waitUntil: 'networkidle' })
   await expect(page.getByRole('dialog')).toBeVisible()
 })
 

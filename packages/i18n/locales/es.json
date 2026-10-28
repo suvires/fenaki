@@ -92,6 +92,7 @@
     "directedBy": "Dirigido por {names}",
     "language": {
       "title": "Idioma y subtítulos",
+      "only": "Idioma",
       "spoken": "Idioma original",
       "subtitles": "Subtítulos"
     },

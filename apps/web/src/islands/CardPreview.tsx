@@ -19,6 +19,7 @@ import {
   type PreviewTimer,
 } from '../lib/cardPreview.ts'
 import { posterTone } from '../lib/catalog.ts'
+import { PLAY_PARAM } from '../lib/i18n.ts'
 import { removeFromHistory } from '../lib/history.ts'
 import { has, subscribe as subscribeList, toggle, type NewSavedShort } from '../lib/myList.ts'
 import { getRating, setRating, subscribe as subscribeRatings } from '../lib/myRatings.ts'
@@ -189,6 +190,7 @@ function Floating({ data, cardBox, card, locale, labels, onClose }: FloatingProp
       synopsis={data.synopsis}
       badges={data.badges}
       href={data.href}
+      playHref={`${data.href}?${PLAY_PARAM}=1`}
       saved={saved}
       onToggleSaved={() => {
         toggle(short)

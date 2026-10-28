@@ -28,8 +28,10 @@ export interface ShortPreviewProps {
   typeLabel?: string
   synopsis?: string
   badges?: { label: string; tone?: BadgeTone }[]
-  /** The short's page: the play button and the rest of the panel lead there. */
+  /** The short's page: the rest of the panel leads there. */
   href: string
+  /** Where the play button leads: the page, playing. Defaults to `href`. */
+  playHref?: string
   /** Whether the short is in «Mi lista». */
   saved?: boolean
   onToggleSaved?: () => void
@@ -84,6 +86,7 @@ export function ShortPreview({
   synopsis,
   badges,
   href,
+  playHref,
   saved = false,
   onToggleSaved,
   rating,
@@ -150,7 +153,7 @@ export function ShortPreview({
       <div className="grid gap-3 p-4">
         {/* Above the panel-wide link, so the buttons keep their own actions. */}
         <div className="relative z-10 flex items-center gap-2">
-          <IconButton icon="play" label={labels.play} variant="primary" href={href} />
+          <IconButton icon="play" label={labels.play} variant="primary" href={playHref ?? href} />
           <LabelledIconButton
             icon={saved ? 'check' : 'plus'}
             label={saved ? labels.removeFromList : labels.addToList}

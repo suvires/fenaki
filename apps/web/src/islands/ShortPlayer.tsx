@@ -8,6 +8,7 @@ import {
   remember,
   type PlayerProvider,
 } from '../lib/playerConsent.ts'
+import { PLAY_PARAM } from '../lib/i18n.ts'
 import { trackPlayer } from '../lib/playerTracking.ts'
 
 /** Each provider's own privacy policy, linked from the consent dialog. */
@@ -75,6 +76,20 @@ export function ShortPlayer({
   )
   useEffect(() => () => stop.current?.(), [])
 
+  // «Ver ahora» pressed on another page (the home hero, a preview) arrives as `?play=1`: the
+  // player starts here as if pressed, and the parameter leaves the address.
+  // Read once while hydrating: it changes no markup, only what the gate does after mounting.
+  const [playOnArrival] = useState(
+    () =>
+      typeof window !== 'undefined' && new URLSearchParams(window.location.search).has(PLAY_PARAM),
+  )
+  useEffect(() => {
+    if (!playOnArrival) return
+    const url = new URL(window.location.href)
+    url.searchParams.delete(PLAY_PARAM)
+    history.replaceState(history.state, '', url)
+  }, [playOnArrival])
+
   // The play waiting for the viewer's answer in the consent dialog.
   const [pending, setPending] = useState<() => void>()
   const consentProvider = isPlayerProvider(provider) ? provider : undefined
@@ -95,6 +110,7 @@ export function ShortPlayer({
         resume={resume ? { label: resume.label, embedSrc: embed(resume.seconds) } : undefined}
         startOverLabel={resume?.startOverLabel}
         onFrame={onFrame}
+        startOnMount={playOnArrival}
       />
       {consentProvider ? (
         <ConsentDialog
