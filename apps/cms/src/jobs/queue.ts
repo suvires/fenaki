@@ -1,8 +1,23 @@
 import { autoReview } from '../ai/review.ts'
 import type { PayloadRequest } from 'payload'
 
-/** Queues a search sync for one short. The jobs worker process runs it. */
+/**
+ * Queues a search sync for one short, unless one is already waiting: it reads the short when it
+ * runs, so one is enough. (The nightly embed check touches every short; without this the queue
+ * filled with copies that kept the other jobs waiting.) The jobs worker process runs it.
+ */
 export async function queueIndexShort(req: PayloadRequest, shortId: number): Promise<void> {
+  const waiting = await req.payload.count({
+    collection: 'payload-jobs',
+    where: {
+      taskSlug: { equals: 'indexShort' },
+      'input.shortId': { equals: shortId },
+      completedAt: { exists: false },
+      processing: { equals: false },
+    },
+    req,
+  })
+  if (waiting.totalDocs > 0) return
   await req.payload.jobs.queue({ task: 'indexShort', input: { shortId }, req })
 }
 
