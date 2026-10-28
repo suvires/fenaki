@@ -9,7 +9,7 @@ export interface SiteFooterLink {
 export interface SiteFooterProps {
   /** Accessible name of the footer navigation. */
   label: string
-  /** One column per group, in order (one under another; on wide screens all in a row, equal, across the width next to the monogram). */
+  /** One column per group, in order (one under another; on wide screens all in a row, equal, across the width; the monogram's column is as wide as one of them). */
   groups: SiteFooterLink[][]
   /** Accessible name of the monogram: the brand name. */
   brand: string
@@ -20,7 +20,7 @@ export interface SiteFooterProps {
 export function SiteFooter({ label, groups, brand, className }: SiteFooterProps) {
   return (
     <footer className={cx('grid gap-8 pt-8', className)}>
-      <div className="grid gap-8 lg:grid-cols-[auto_1fr] lg:gap-16">
+      <div className="grid gap-8 lg:grid-cols-[1fr_5fr] lg:gap-8">
         <div className="grid content-start gap-4">
           <Monogram
             label={brand}
