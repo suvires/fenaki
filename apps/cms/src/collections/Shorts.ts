@@ -11,6 +11,7 @@ import { addFromUrlEndpoint } from '../ingest/addFromUrl.ts'
 import { slugField } from '../fields/slug.ts'
 import { statusField } from '../fields/status.ts'
 import { queueIndexShort } from '../jobs/queue.ts'
+import { queueEmbedShort } from '../related/embeddings.ts'
 import { common, groups, inLanguage, label, messages, options } from '../labels.ts'
 
 export const SHORT_TYPES = ['fiction', 'documentary', 'animation', 'experimental'] as const
@@ -563,6 +564,13 @@ export const Shorts: CollectionConfig = {
         if (doc.status === 'published' || previousDoc?.status === 'published') {
           await queueIndexShort(req, doc.id)
         }
+        // «Si te ha gustado» compares what shorts are about: a new or changed text, a new embedding.
+        const embedded = ['title', 'originalTitle', 'synopsis', 'type', 'genres', 'themes'] as const
+        const textChanged = embedded.some(
+          (field) => JSON.stringify(doc[field]) !== JSON.stringify(previousDoc?.[field]),
+        )
+        if (doc.status === 'published' && (previousDoc?.status !== 'published' || textChanged))
+          await queueEmbedShort(req, doc.id)
         // Publishing a short sent from «Sube tu corto» approves the submission and tells its sender.
         if (doc.status === 'published' && previousDoc?.status !== 'published')
           await approveSubmissionsOf(req, doc)

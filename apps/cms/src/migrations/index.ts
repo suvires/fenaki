@@ -31,6 +31,8 @@ import * as migration_20261028_150000_long_jobs_queue from './20261028_150000_lo
 import * as migration_20261028_151802_submissions from './20261028_151802_submissions';
 import * as migration_20261028_152926_submissions_without_code from './20261028_152926_submissions_without_code';
 import * as migration_20261028_153152_member_has_submissions from './20261028_153152_member_has_submissions';
+import * as migration_20261028_180352_short_embeddings from './20261028_180352_short_embeddings';
+import * as migration_20261028_180500_queue_short_embeddings from './20261028_180500_queue_short_embeddings';
 
 export const migrations = [
   {
@@ -196,6 +198,16 @@ export const migrations = [
   {
     up: migration_20261028_153152_member_has_submissions.up,
     down: migration_20261028_153152_member_has_submissions.down,
-    name: '20261028_153152_member_has_submissions'
+    name: '20261028_153152_member_has_submissions',
+  },
+  {
+    up: migration_20261028_180352_short_embeddings.up,
+    down: migration_20261028_180352_short_embeddings.down,
+    name: '20261028_180352_short_embeddings',
+  },
+  {
+    up: migration_20261028_180500_queue_short_embeddings.up,
+    down: migration_20261028_180500_queue_short_embeddings.down,
+    name: '20261028_180500_queue_short_embeddings',
   },
 ];

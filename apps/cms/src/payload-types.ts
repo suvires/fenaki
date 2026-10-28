@@ -167,6 +167,7 @@ export interface Config {
       reviewShort: TaskReviewShort;
       reviewBacklog: TaskReviewBacklog;
       regenerateSlugs: TaskRegenerateSlugs;
+      embedShorts: TaskEmbedShorts;
       inline: {
         input: unknown;
         output: unknown;
@@ -1325,7 +1326,8 @@ export interface PayloadJob {
           | 'scanChannels'
           | 'reviewShort'
           | 'reviewBacklog'
-          | 'regenerateSlugs';
+          | 'regenerateSlugs'
+          | 'embedShorts';
         taskID: string;
         input?:
           | {
@@ -1370,6 +1372,7 @@ export interface PayloadJob {
         | 'reviewShort'
         | 'reviewBacklog'
         | 'regenerateSlugs'
+        | 'embedShorts'
       )
     | null;
   queue?: string | null;
@@ -2457,6 +2460,18 @@ export interface TaskRegenerateSlugs {
   input?: unknown;
   output: {
     changed: number;
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskEmbedShorts".
+ */
+export interface TaskEmbedShorts {
+  input: {
+    shortId?: number | null;
+  };
+  output: {
+    embedded: number;
   };
 }
 /**

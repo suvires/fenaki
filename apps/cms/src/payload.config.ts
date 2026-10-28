@@ -39,6 +39,7 @@ import { regenerateSlugsTask } from './jobs/regenerateSlugs.ts'
 import { reviewBacklogTask, reviewShortTask } from './jobs/reviewShorts.ts'
 import { scanChannelsTask } from './jobs/scanChannels.ts'
 import { indexShortTask } from './jobs/indexShort.ts'
+import { embedShortsTask } from './related/embeddings.ts'
 import { purgeWaitlistTask } from './jobs/purgeWaitlist.ts'
 import { syncInboxTask } from './jobs/syncInbox.ts'
 import { initSentry, reportApiError } from './sentry.ts'
@@ -124,6 +125,7 @@ export default buildConfig({
       reviewShortTask,
       reviewBacklogTask,
       regenerateSlugsTask,
+      embedShortsTask,
     ],
     deleteJobOnComplete: true,
   },

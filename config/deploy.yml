@@ -58,6 +58,8 @@ x-cms-env: &cms-env
     - VIMEO_ACCESS_TOKEN
     # Optional: Claude reviews every short in the review queue (nightly batch at 04:00 UTC).
     - ANTHROPIC_API_KEY
+    # Optional: embeddings (Voyage AI) of what each short is about, for «Si te ha gustado».
+    - VOYAGE_API_KEY
 
 servers:
   cms:
