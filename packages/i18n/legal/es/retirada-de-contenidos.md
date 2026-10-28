@@ -1,6 +1,7 @@
-# Procedimiento de retirada de contenidos
-
-Última actualización: 26 de octubre de 2026
+---
+title: Procedimiento de retirada de contenidos
+updated: 2026-10-26
+---
 
 FENAKI solo incluye cortometrajes publicados por sus titulares en canales oficiales, con licencia abierta o con cesión firmada. Si consideras que algún contenido de FENAKI infringe tus derechos o es ilícito, puedes notificarlo mediante este procedimiento. Responderemos lo antes posible.
 

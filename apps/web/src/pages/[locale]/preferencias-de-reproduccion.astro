@@ -16,7 +16,6 @@ const more = createRichTranslator(locale)('playerSettings.more', { cookies: 'lin
 
 <TextPage locale={locale} title={t('playerSettings.title')} noindex>
   <Prose>
-    <h1>{t('playerSettings.title')}</h1>
     <p>{t('playerSettings.intro')}</p>
     {signedIn && <p>{t('playerSettings.savedInAccount')}</p>}
     <p>

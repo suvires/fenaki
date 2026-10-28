@@ -1,6 +1,7 @@
-# Política de cookies
-
-Última actualización: 28 de octubre de 2026
+---
+title: Política de cookies
+updated: 2026-10-28
+---
 
 ## 1. Cookies y tecnologías similares
 

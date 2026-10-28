@@ -1,16 +1,28 @@
 ---
+import { PageHeader } from '@fenaki/ui'
 import type { ComponentProps } from 'astro/types'
 import Base from './Base.astro'
 
-type Props = ComponentProps<typeof Base>
+type Props = ComponentProps<typeof Base> & {
+  /** The page's heading, also its document title. */
+  title: string
+  /** Under the heading: the date of a legal text, a short line about the page. */
+  lead?: string
+}
+
+const { lead, ...base } = Astro.props
 ---
 
 {/*
-  A page to read: legal texts, credits, preferences. One column at the reading width of Prose,
-  so every text page lines up whether it is Markdown or a page with controls between paragraphs.
+  A page to read: legal texts, credits, preferences. The same header as «Mi cuenta», then one
+  column at the reading width of Prose, so every text page lines up whether it is Markdown or a
+  page with controls between paragraphs.
 */}
-<Base {...Astro.props}>
-  <article class="grid gap-6 max-w-prose min-w-0">
-    <slot />
-  </article>
+<Base {...base}>
+  <div class="grid gap-12 py-8">
+    <PageHeader title={base.title} description={lead} />
+    <article class="grid gap-6 max-w-prose min-w-0">
+      <slot />
+    </article>
+  </div>
 </Base>

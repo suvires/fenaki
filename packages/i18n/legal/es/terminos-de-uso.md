@@ -1,6 +1,7 @@
-# Términos de uso de las cuentas
-
-Última actualización: 26 de octubre de 2026
+---
+title: Términos de uso de las cuentas
+updated: 2026-10-26
+---
 
 Estos términos se aplican si creas una cuenta en FENAKI. Para ver cortos no es necesaria una cuenta; en ese caso solo se aplica el [aviso legal](/es/aviso-legal). El tratamiento de tus datos se explica en la [política de privacidad](/es/privacidad).
 

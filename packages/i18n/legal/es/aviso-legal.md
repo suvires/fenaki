@@ -1,6 +1,7 @@
-# Aviso legal
-
-Última actualización: 26 de octubre de 2026
+---
+title: Aviso legal
+updated: 2026-10-26
+---
 
 ## 1. Titularidad
 

@@ -238,6 +238,7 @@
       "privacyPolicyTitle": "Política de privacidad",
       "terms": "términos de uso"
     },
+    "updated": "Última actualización: {date}",
     "draft": {
       "label": "Borrador",
       "text": "Este texto está pendiente de revisión legal. Los datos entre corchetes se completarán antes de publicarlo."

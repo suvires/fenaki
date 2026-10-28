@@ -1,6 +1,7 @@
-# Política de privacidad
-
-Última actualización: 28 de octubre de 2026
+---
+title: Política de privacidad
+updated: 2026-10-28
+---
 
 FENAKI trata los mínimos datos posibles. Puedes ver el catálogo sin registrarte, la analítica no usa cookies y los reproductores de YouTube y Vimeo solo se cargan si das tu consentimiento. Esta política explica qué datos tratamos, para qué, durante cuánto tiempo y qué derechos tienes, según el Reglamento (UE) 2016/679 (RGPD) y la Ley Orgánica 3/2018 de Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD).
 

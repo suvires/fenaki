@@ -1,4 +1,5 @@
 ---
+import { formatDate } from '@fenaki/i18n'
 import { Notice, Prose } from '@fenaki/ui'
 import { getEntry, render } from 'astro:content'
 import TextPage from '../../layouts/TextPage.astro'
@@ -13,11 +14,12 @@ const entry = await getEntry('legal', `${locale}/${page}`)
 if (!entry) return Astro.rewrite('/404')
 
 const t = translator(locale)
-const { Content, headings } = await render(entry)
-const title = headings.find((heading) => heading.depth === 1)?.text ?? page
+const { Content } = await render(entry)
+const { title, updated } = entry.data
+const lead = updated ? t('legal.updated', { date: formatDate(updated, locale) }) : undefined
 ---
 
-<TextPage locale={locale} title={title}>
+<TextPage locale={locale} title={title} lead={lead}>
   {legalDraft && <Notice label={t('legal.draft.label')}>{t('legal.draft.text')}</Notice>}
   <Prose>
     <Content />
