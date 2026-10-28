@@ -85,13 +85,15 @@ interface FloatingProps extends CardPreviewProps {
   data: PreviewData
   /** The card's box when the preview opened. */
   cardBox: Box
+  /** The card itself: when it leaves the page (removed from «Mi lista»), the preview closes. */
+  card: HTMLElement
   onClose: () => void
 }
 
 type Phase = 'measure' | 'enter' | 'shown'
 
 /** The panel, placed over its card. It is measured hidden, starts at the card's box and grows. */
-function Floating({ data, cardBox, locale, labels, onClose }: FloatingProps) {
+function Floating({ data, cardBox, card, locale, labels, onClose }: FloatingProps) {
   const { short } = data
   const panel = useRef<HTMLDivElement>(null)
   const [phase, setPhase] = useState<Phase>('measure')
@@ -169,7 +171,16 @@ function Floating({ data, cardBox, locale, labels, onClose }: FloatingProps) {
       badges={data.badges}
       href={data.href}
       saved={saved}
-      onToggleSaved={() => toggle(short)}
+      onToggleSaved={() => {
+        const removing = saved
+        toggle(short)
+        // On «Mi lista» (its page and its rail) the card goes with it: so does its preview, once
+        // the list has rendered without it.
+        if (removing)
+          requestAnimationFrame(() => {
+            if (!card.isConnected) onClose()
+          })
+      }}
       rating={rating}
       onRate={(value) => setRating(short.slug, value)}
       onRemoveFromHistory={
@@ -214,7 +225,7 @@ function token(name: string, fallback: number): number {
  */
 export function CardPreview(props: CardPreviewProps) {
   const [hoverable, setHoverable] = useState(false)
-  const [open, setOpen] = useState<{ data: PreviewData; cardBox: Box }>()
+  const [open, setOpen] = useState<{ data: PreviewData; cardBox: Box; card: HTMLElement }>()
   const timer = useRef<PreviewTimer<HTMLElement>>(undefined)
 
   useEffect(() => {
@@ -232,7 +243,7 @@ export function CardPreview(props: CardPreviewProps) {
       closeDelay: token('--short-preview-delay-close', 150),
       onOpen: (card) => {
         const data = readCard(card)
-        setOpen(data ? { data, cardBox: box(card.getBoundingClientRect()) } : undefined)
+        setOpen(data ? { data, cardBox: box(card.getBoundingClientRect()), card } : undefined)
       },
       onClose: () => setOpen(undefined),
     })
