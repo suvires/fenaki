@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { dailyOrder, rulesFilter } from '../src/collections/rules.ts'
-import { REGION_COUNTRIES } from '../src/collections/regions.ts'
+import { REGION_COUNTRIES } from '@fenaki/i18n'
 
 describe('rulesFilter', () => {
   it('leaves out every empty rule', () => {

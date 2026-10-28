@@ -4,6 +4,7 @@ const CATALOG_ROUTES = [
   /^\/[a-z]{2}\/colecciones(\/|$)/,
   /^\/[a-z]{2}\/personas(\/|$)/,
   /^\/[a-z]{2}\/escaparates(\/|$)/,
+  /^\/[a-z]{2}\/temas(\/|$)/,
   /^\/[a-z]{2}\/buscar\/?$/,
   /^\/api\/search\/?$/,
   /^\/api\/shorts\/?$/,

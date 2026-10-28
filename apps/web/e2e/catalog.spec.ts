@@ -1,12 +1,16 @@
 import { expect, test, type Page } from '@playwright/test'
 
-test('the browse page filters by facets with shareable URLs', async ({ page }) => {
+test('the browse page filters with dropdowns and shareable URLs', async ({ page }) => {
   await page.goto('/es/cortos')
   await expect(page.getByRole('heading', { level: 1, name: 'Todos los cortos' })).toBeAttached()
   await expect(page.getByRole('status')).toHaveText('6 cortos')
 
-  const duration = page.getByRole('region', { name: 'Duración' })
-  await duration.getByRole('link', { name: /Más de 15 min/ }).click()
+  const bar = page.getByRole('navigation', { name: 'Filtros' })
+  await bar.locator('summary', { hasText: 'Duración' }).click()
+  await bar
+    .getByRole('list', { name: 'Duración' })
+    .getByRole('link', { name: /Más de 15 min/ })
+    .click()
   await expect(page).toHaveURL(/\/es\/cortos\?duration=long$/)
   await expect(page.getByRole('status')).toHaveText('2 cortos con estos filtros')
   await expect(page.getByRole('link', { name: /Madre/ })).toBeVisible()
@@ -14,14 +18,55 @@ test('the browse page filters by facets with shareable URLs', async ({ page }) =
   // Filtered pages are not indexed; the unfiltered page is the canonical one.
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, follow')
 
-  // A shared URL opens the same selection; the selected option clears it.
-  await page.goto('/es/cortos?duration=long&form=live-action')
-  await expect(page.getByRole('status')).toHaveText('2 cortos con estos filtros')
+  // The menu the link came from opens again, and a second value adds to the first.
+  const durations = bar.getByRole('list', { name: 'Duración' })
+  await durations.getByRole('link', { name: /De 5 a 15 min/ }).click()
+  await expect(page).toHaveURL(/\/es\/cortos\?duration=long,mid$/)
+  await expect(page.getByRole('status')).toHaveText('6 cortos con estos filtros')
+
+  // Each chosen value is a chip that takes it out.
   await page
-    .getByRole('region', { name: 'Forma' })
-    .getByRole('link', { name: /Imagen real/ })
+    .getByRole('list', { name: 'Filtros activos' })
+    .getByRole('link', { name: 'Quitar De 5 a 15 min' })
     .click()
   await expect(page).toHaveURL(/\/es\/cortos\?duration=long$/)
+
+  // A shared URL opens the same selection and order; «Quitar filtros» keeps the order.
+  await page.goto('/es/cortos?duration=long&type=fiction&sort=shortest')
+  await expect(page.getByRole('status')).toHaveText('2 cortos con estos filtros')
+  await expect(page.locator('main a[href^="/es/cortos/"]').first()).toHaveAttribute(
+    'href',
+    '/es/cortos/madre',
+  )
+  await page.getByRole('link', { name: 'Quitar filtros' }).click()
+  await expect(page).toHaveURL(/\/es\/cortos\?sort=shortest$/)
+  await expect(page.getByRole('status')).toHaveText('6 cortos')
+})
+
+test('on a phone the filters open in a sheet that stays open between choices', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 800 })
+  await page.goto('/es/cortos')
+  await page.locator('summary', { hasText: /^Filtros/ }).click()
+  const sheet = page.getByRole('dialog', { name: 'Filtros' })
+  await sheet.getByRole('link', { name: /Más de 15 min/ }).click()
+  await expect(page).toHaveURL(/\/es\/cortos\?duration=long$/)
+  await expect(sheet).toBeVisible()
+  await sheet.getByRole('link', { name: 'Ver 2 cortos' }).click()
+  await expect(sheet).toBeHidden()
+  await expect(page.getByRole('status')).toHaveText('2 cortos con estos filtros')
+})
+
+test('theme pages list their shorts and link to the filtered catalog', async ({ page }) => {
+  await page.goto('/es/temas')
+  await expect(page.getByRole('heading', { level: 1, name: 'Explora por tema' })).toBeVisible()
+  await page.getByRole('link', { name: /Memoria e historia/ }).click()
+  await expect(page).toHaveURL(/\/es\/temas\/memoria-e-historia$/)
+  await expect(page.getByRole('heading', { level: 1, name: 'Memoria e historia' })).toBeVisible()
+  await expect(page.getByRole('link', { name: 'Afinar con más filtros' })).toHaveAttribute(
+    'href',
+    '/es/cortos?theme=memory-history',
+  )
+  expect((await page.request.get('/es/temas/nada')).status()).toBe(404)
 })
 
 test('credits link to person pages with their shorts', async ({ page }) => {

@@ -1,5 +1,8 @@
-/** The countries (ISO 3166-1 alpha-2) of each region a collection can filter by. */
-export const REGION_COUNTRIES: Record<'latin-america' | 'spain' | 'europe', string[]> = {
+/** The countries (ISO 3166-1 alpha-2) of each region: collections and the catalog filter by them. */
+export const REGIONS = ['latin-america', 'spain', 'europe'] as const
+export type Region = (typeof REGIONS)[number]
+
+export const REGION_COUNTRIES: Record<Region, string[]> = {
   'latin-america': [
     'AR',
     'BO',

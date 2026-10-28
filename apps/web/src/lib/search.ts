@@ -2,7 +2,13 @@ import type { Locale } from '@fenaki/i18n'
 import { MEILISEARCH_HOST } from 'astro:env/server'
 import { getSecret, SEARCH_INDEX_PREFIX } from 'astro:env/server'
 import { Meilisearch } from 'meilisearch'
-import { browseQueries, mergeFacets, PAGE_SIZE, type FacetCounts, type Filters } from './browse.ts'
+import {
+  browseQueries,
+  filterCounts,
+  PAGE_SIZE,
+  type BrowseState,
+  type FilterCounts,
+} from './browse.ts'
 import { cmsUrl } from './cms.ts'
 import type { CardSource } from './catalog.ts'
 
@@ -64,6 +70,14 @@ export async function searchShorts(locale: Locale, query: string, page = 1): Pro
   }
 }
 
+/** How many shorts each theme has: the theme tiles of the home and the themes page. */
+export async function themeCounts(locale: Locale): Promise<Record<string, number>> {
+  const response = await meili()
+    .index(indexName(locale))
+    .search('', { limit: 0, facets: ['themes'] })
+  return response.facetDistribution?.themes ?? {}
+}
+
 /** These shorts' cards, in the order of the ids given; the ones not in the index are left out. */
 export async function cardsByIds(locale: Locale, ids: number[]): Promise<CardSource[]> {
   if (ids.length === 0) return []
@@ -78,18 +92,18 @@ export interface BrowseResult {
   hits: CardSource[]
   total: number
   pages: number
-  /** Counts per index attribute and value, given the other active filters. */
-  facets: FacetCounts
+  /** Counts per filter and value, given the other active filters. */
+  counts: FilterCounts
 }
 
 /** One page of the browse page, with the facet counts, in a single multi-search request. */
 export async function browseShorts(
   locale: Locale,
-  filters: Filters,
+  state: BrowseState,
   page: number,
 ): Promise<BrowseResult> {
   const { results } = await meili().multiSearch({
-    queries: browseQueries(indexName(locale), filters, page),
+    queries: browseQueries(indexName(locale), state, page),
   })
   const [main, ...others] = results
   const total = main?.totalHits ?? main?.estimatedTotalHits ?? 0
@@ -97,8 +111,8 @@ export async function browseShorts(
     hits: ((main?.hits ?? []) as ShortHit[]).map(toCardSource),
     total,
     pages: Math.max(1, Math.ceil(total / PAGE_SIZE)),
-    facets: mergeFacets(
-      filters,
+    counts: filterCounts(
+      state.filters,
       main?.facetDistribution,
       others.map((result) => result.facetDistribution),
     ),

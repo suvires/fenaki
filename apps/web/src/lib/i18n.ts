@@ -24,6 +24,9 @@ export const paths = {
   /** The browse page filtered by type (a «genre» in the header). */
   genre: (locale: Locale, type: 'fiction' | 'documentary' | 'animation' | 'experimental') =>
     `/${locale}/cortos?type=${type}`,
+  /** The themes (lib/topics.ts): the index, and one page per theme by its localized slug. */
+  topics: (locale: Locale) => `/${locale}/temas`,
+  topic: (locale: Locale, slug: string) => `/${locale}/temas/${slug}`,
   /** The latest shorts, one rail per genre. */
   latest: (locale: Locale) => `/${locale}/novedades`,
   /** The viewer's saved shorts (kept in their browser, so the page is never indexed). */

@@ -75,6 +75,8 @@ export const SHORTS_INDEX_SETTINGS = {
   sortableAttributes: ['publishedAt', 'year', 'durationSeconds'],
   // Past the default 1000, so a large collection or the catalog pages to its end.
   pagination: { maxTotalHits: 20000 },
+  // Every country and year, past the default 100: the region and decade counts add them up.
+  faceting: { maxValuesPerFacet: 500 },
   displayedAttributes: ['*'],
 }
 

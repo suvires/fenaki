@@ -6,7 +6,7 @@
  */
 import { searchClient } from '../search/client.ts'
 import { shortsIndexName } from '../search/document.ts'
-import { REGION_COUNTRIES } from './regions.ts'
+import { REGION_COUNTRIES } from '@fenaki/i18n'
 
 export interface CollectionRules {
   types?: string[] | null

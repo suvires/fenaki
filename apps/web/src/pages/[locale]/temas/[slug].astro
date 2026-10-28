@@ -1,0 +1,99 @@
+---
+import { Button, PageHeader, Pagination, Rail, ShortGrid, TopicCard } from '@fenaki/ui'
+import NotFound from '../../../components/NotFound.astro'
+import Base from '../../../layouts/Base.astro'
+import { browseHref } from '../../../lib/browse.ts'
+import { toCard } from '../../../lib/catalog.ts'
+import { localeFrom, paths, translator } from '../../../lib/i18n.ts'
+import { pageHref, paginationProps, parsePage } from '../../../lib/paging.ts'
+import { browseShorts, type BrowseResult } from '../../../lib/search.ts'
+import { collectionPage } from '../../../lib/seo.ts'
+import { siteUrl } from '../../../lib/services.ts'
+import { THEMES, topicFromSlug, topicHref, topicText } from '../../../lib/topics.ts'
+
+const locale = localeFrom(Astro.params.locale)
+if (!locale) return Astro.rewrite('/404')
+
+const t = translator(locale)
+const theme = topicFromSlug(locale, Astro.params.slug)
+if (!theme) Astro.response.status = 404
+const base = theme ? topicHref(locale, theme) : ''
+const page = parsePage(Astro.url.searchParams)
+
+let result: BrowseResult | undefined
+if (theme) {
+  try {
+    result = await browseShorts(locale, { filters: { theme: [theme] } }, page)
+  } catch {
+    Astro.response.status = 503
+  }
+}
+if (result && page > result.pages) return Astro.redirect(pageHref(base, result.pages), 302)
+
+const name = theme ? t(`short.themes.${theme}`) : ''
+const text = theme ? topicText(locale, theme) : undefined
+const jsonLd =
+  theme && text && result
+    ? collectionPage(siteUrl, {
+        name: text.title,
+        description: text.intro,
+        url: base,
+        items: result.hits.map((hit) => ({ name: hit.title, url: paths.short(locale, hit.slug) })),
+      })
+    : undefined
+---
+
+<Base
+  locale={locale}
+  title={text?.title ?? t('errors.notFoundTitle')}
+  description={text?.intro}
+  canonicalPath={base || undefined}
+  ogImage={paths.ogPage(locale, 'browse')}
+  jsonLd={jsonLd}
+  noindex={page > 1}
+>
+  {!theme || !text ? (
+    <NotFound locale={locale} />
+  ) : (
+    <>
+      <PageHeader
+        eyebrow={result ? t('topics.eyebrow', { count: result.total }) : undefined}
+        title={name}
+        description={text.intro}
+      >
+        <div>
+          <Button
+            variant="secondary"
+            href={browseHref(paths.browse(locale), { filters: { theme: [theme] } })}
+          >
+            {t('topics.refine')}
+          </Button>
+        </div>
+      </PageHeader>
+      {!result ? (
+        <p role="status" class="m-0 text-body-l text-secondary">
+          {t('browse.unavailable')}
+        </p>
+      ) : (
+        <>
+          <ShortGrid
+            items={result.hits.map((hit) => toCard(hit, locale, t, paths.short(locale, hit.slug)))}
+          />
+          {result.pages > 1 && (
+            <Pagination {...paginationProps(t, page, result.pages, (n) => pageHref(base, n))} />
+          )}
+        </>
+      )}
+      <Rail
+        arrows={{ previous: t('rail.previous'), next: t('rail.next') }}
+        title={t('topics.others')}
+        actionLabel={t('topics.seeAll')}
+        actionHref={paths.topics(locale)}
+      >
+        {THEMES.filter((other) => other !== theme).map((other) => (
+          <TopicCard title={t(`short.themes.${other}`)} href={topicHref(locale, other)} />
+        ))}
+      </Rail>
+    </>
+  )}
+</Base>

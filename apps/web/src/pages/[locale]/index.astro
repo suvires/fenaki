@@ -1,6 +1,14 @@
 ---
 import { TOP10_PREVIEW } from 'astro:env/server'
-import { CollectionHero, Rail, RankedItem, RankedRail, ShortCard, ShortHero } from '@fenaki/ui'
+import {
+  CollectionHero,
+  Rail,
+  RankedItem,
+  RankedRail,
+  ShortCard,
+  ShortHero,
+  TopicCard,
+} from '@fenaki/ui'
 import { formatList, formatYear } from '@fenaki/i18n'
 import Landing from '../../components/Landing.astro'
 import { MyListButton } from '../../islands/MyListButton.tsx'
@@ -24,7 +32,9 @@ import { activeSponsorOf, homeCollections } from '../../lib/collections.ts'
 import { localeFrom, paths, translator } from '../../lib/i18n.ts'
 import { PAGE_SIZE } from '../../lib/paging.ts'
 import { previewEnabled, topTen } from '../../lib/ranking.ts'
+import { themeCounts } from '../../lib/search.ts'
 import { siteMode } from '../../lib/services.ts'
+import { THEMES, topicHref } from '../../lib/topics.ts'
 import type { CardSource } from '../../lib/catalog.ts'
 
 const locale = localeFrom(Astro.params.locale)
@@ -40,8 +50,8 @@ const [account, unfinished] = member
       loadViewings(member, locale, { unfinished: true, limit: 20 }).catch(() => []),
     ])
   : [undefined, []]
-const [shorts, collections, savedShorts] = landing
-  ? [[], { rails: [] }, []]
+const [shorts, collections, savedShorts, topicCounts] = landing
+  ? [[], { rails: [] }, [], undefined]
   : await Promise.all([
       listShorts(locale),
       homeCollections(locale),
@@ -50,6 +60,8 @@ const [shorts, collections, savedShorts] = landing
         locale,
         (account?.list ?? []).slice(0, PAGE_SIZE).map((entry) => entry.slug),
       ),
+      // «Explora por tema»: without the search engine the row just goes.
+      themeCounts(locale).catch(() => undefined),
     ])
 
 // «Lo más visto»: only a real ranking of ten (or the development preview).
@@ -230,6 +242,22 @@ const otherRails = rails.filter((rail) => rail.key !== 'latest')
         </RankedItem>
       ))}
     </RankedRail>
+  )}
+  {!landing && topicCounts && (
+    <Rail
+      arrows={{ previous: t('rail.previous'), next: t('rail.next') }}
+      title={t('topics.heading')}
+      actionLabel={t('topics.seeAll')}
+      actionHref={paths.topics(locale)}
+    >
+      {THEMES.map((theme) => (
+        <TopicCard
+          title={t(`short.themes.${theme}`)}
+          href={topicHref(locale, theme)}
+          meta={topicCounts[theme] ? t('browse.count', { count: topicCounts[theme] }) : undefined}
+        />
+      ))}
+    </Rail>
   )}
   {!landing &&
     otherRails.map((rail) => (

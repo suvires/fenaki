@@ -25,3 +25,4 @@ export {
   formatWeekday,
   formatYear,
 } from './format.ts'
+export { REGION_COUNTRIES, REGIONS, type Region } from './regions.ts'

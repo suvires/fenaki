@@ -98,6 +98,8 @@
     },
     "sheet": {
       "title": "Ficha técnica",
+      "genres": "Género",
+      "themes": "Tema",
       "originalTitle": "Título original",
       "production": "Producción",
       "publishedBy": "Publicado por"
@@ -318,25 +320,27 @@
   },
   "browse": {
     "title": "Todos los cortos",
-    "description": "Filtra por duración, idioma, subtítulos, forma, tipo, género, tema, público o país. Cada combinación tiene su propia dirección para compartirla.",
+    "description": "Filtra por género, tema, duración, tipo, idioma, país y más. Cada combinación tiene su propia dirección para compartirla.",
     "filtersLabel": "Filtros",
     "filters": {
-      "duration": "Duración",
-      "language": "Idioma original",
-      "subtitles": "Subtítulos",
-      "form": "Forma",
-      "type": "Tipo",
+      "button": "Filtros",
       "genre": "Género",
       "theme": "Tema",
-      "audience": "Público",
-      "country": "País"
+      "duration": "Duración",
+      "type": "Tipo",
+      "language": "Idioma",
+      "region": "Región",
+      "country": "País",
+      "more": "Más filtros",
+      "decade": "Década",
+      "channel": "Publicado por"
     },
     "values": {
-      "subtitlesEs": "En español",
-      "animation": "Animación",
-      "liveAction": "Imagen real",
+      "subtitlesEs": "Subtítulos en español",
       "noDialogue": "Sin diálogos",
-      "allAudiences": "Para todos los públicos"
+      "allAudiences": "Para todos los públicos",
+      "awards": "Con premios",
+      "decade": "{start}–{end}"
     },
     "count": {
       "one": "{count} corto",
@@ -347,7 +351,7 @@
       "other": "{count} cortos con estos filtros"
     },
     "empty": "Ningún corto coincide con estos filtros.",
-    "clear": "Quitar los filtros",
+    "clear": "Quitar filtros",
     "unavailable": "Los filtros no están disponibles ahora. Prueba de nuevo en unos minutos.",
     "pagination": {
       "label": "Páginas",
@@ -355,7 +359,36 @@
       "previous": "Anterior",
       "next": "Siguiente"
     },
-    "filteredTitle": "{filters} · Cortos"
+    "filteredTitle": "{filters} · Cortos",
+    "regions": {
+      "latin-america": "Latinoamérica",
+      "spain": "España",
+      "europe": "Europa"
+    },
+    "channels": {
+      "author": "Sus autores",
+      "producer": "Productoras",
+      "distributor": "Distribuidoras",
+      "festival": "Festivales",
+      "school": "Escuelas de cine",
+      "institution": "Instituciones"
+    },
+    "sort": {
+      "label": "Orden",
+      "button": "Orden: {sort}",
+      "newest": "Más recientes",
+      "year": "Por año",
+      "shortest": "Más cortos primero"
+    },
+    "active": "Filtros activos",
+    "remove": "Quitar {filter}",
+    "sheet": {
+      "close": "Cerrar los filtros",
+      "results": {
+        "one": "Ver {count} corto",
+        "other": "Ver {count} cortos"
+      }
+    }
   },
   "showcase": {
     "eyebrow": "Escaparate · {kind}",
@@ -711,5 +744,49 @@
     "error": "No hemos podido guardar el cambio. Inténtalo de nuevo.",
     "more": "Qué datos recibe cada reproductor, en la {cookies}.",
     "cookiesLink": "política de cookies"
+  },
+  "topics": {
+    "title": "Temas",
+    "heading": "Explora por tema",
+    "description": "Cortometrajes por los temas de los que hablan: sociedad, LGTBIQ+, familia, memoria e historia, naturaleza y medio ambiente, y deporte. Todos en un solo lugar.",
+    "seeAll": "Ver todos los temas",
+    "eyebrow": {
+      "one": "Tema · {count} corto",
+      "other": "Tema · {count} cortos"
+    },
+    "refine": "Afinar con más filtros",
+    "others": "Otros temas",
+    "pages": {
+      "society": {
+        "slug": "sociedad",
+        "title": "Cortos sobre sociedad",
+        "intro": "Cortometrajes sobre cómo vivimos juntos: el trabajo, la desigualdad, la migración, la ciudad y la política del día a día. Ficciones, documentales y animaciones de autores, escuelas y festivales de todo el mundo, en un solo lugar."
+      },
+      "lgbtiq": {
+        "slug": "lgtbiq",
+        "title": "Cortos LGTBIQ+",
+        "intro": "Historias de identidad, deseo, familias elegidas y orgullo. Cortometrajes LGTBIQ+ de ficción, documental y animación de todo el mundo, reunidos en un solo lugar."
+      },
+      "family": {
+        "slug": "familia",
+        "title": "Cortos sobre familia",
+        "intro": "Madres, padres, hijos, abuelos y hermanos: cortometrajes sobre los vínculos que nos forman, las despedidas y los reencuentros. Ficción, documental y animación de todo el mundo."
+      },
+      "memory-history": {
+        "slug": "memoria-e-historia",
+        "title": "Cortos sobre memoria e historia",
+        "intro": "Cortometrajes que vuelven al pasado para entender el presente: guerras, dictaduras, exilios, archivos familiares y las historias que no salen en los libros."
+      },
+      "nature-environment": {
+        "slug": "naturaleza-y-medio-ambiente",
+        "title": "Cortos sobre naturaleza y medio ambiente",
+        "intro": "El paisaje, los animales, el clima y lo que le hacemos al planeta. Cortometrajes documentales, de ficción y de animación sobre la naturaleza y el medio ambiente."
+      },
+      "sport": {
+        "slug": "deporte",
+        "title": "Cortos sobre deporte",
+        "intro": "Atletas, equipos, entrenamientos y derrotas. Cortometrajes sobre el deporte y lo que cuenta de quienes lo practican, del barrio a la alta competición."
+      }
+    }
   }
 }

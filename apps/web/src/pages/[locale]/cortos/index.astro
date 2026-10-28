@@ -1,12 +1,24 @@
 ---
-import { formatCountry, formatLanguage, type MessageKey } from '@fenaki/i18n'
-import { Button, FacetGroup, Pagination, ShortGrid, type FacetOption } from '@fenaki/ui'
+import { formatCountry, formatLanguage, REGIONS, type MessageKey } from '@fenaki/i18n'
+import {
+  ActiveFilters,
+  FilterBar,
+  Pagination,
+  ShortGrid,
+  type ActiveFilter,
+  type FacetOption,
+  type FilterBarGroup,
+} from '@fenaki/ui'
 import Base from '../../../layouts/Base.astro'
 import {
   browseHref,
-  FILTERS,
+  CHANNEL_KINDS,
+  DURATIONS,
+  filterCount,
+  FILTER_KEYS,
   hasFilters,
   parseBrowseParams,
+  SORT_KEYS,
   toggleHref,
   type FilterKey,
 } from '../../../lib/browse.ts'
@@ -22,93 +34,118 @@ if (!locale) return Astro.rewrite('/404')
 
 const t = translator(locale)
 const base = paths.browse(locale)
-const { filters, page } = parseBrowseParams(Astro.url.searchParams)
+const { page, ...state } = parseBrowseParams(Astro.url.searchParams)
+const { filters } = state
 
 let result: BrowseResult | undefined
 try {
-  result = await browseShorts(locale, filters, page)
+  result = await browseShorts(locale, state, page)
 } catch {
   Astro.response.status = 503
 }
 if (result && page > result.pages) {
-  return Astro.redirect(browseHref(base, filters, result.pages), 302)
+  return Astro.redirect(browseHref(base, state, result.pages), 302)
 }
 
-const counts = (key: FilterKey) => result?.facets[FILTERS[key]] ?? {}
+const counts = (key: FilterKey) => result?.counts[key] ?? {}
 const option = (key: FilterKey, value: string, label: string): FacetOption => ({
   label,
-  href: toggleHref(base, filters, key, value),
+  href: toggleHref(base, state, key, value),
   count: counts(key)[value] ?? 0,
-  selected: filters[key] === value,
+  selected: filters[key]?.includes(value) ?? false,
 })
 /** Every value the index knows for a filter, most frequent first. */
-const byCount = (key: FilterKey, label: (value: string) => string) =>
+const byCount = (key: FilterKey, label: (value: string) => string, skip: string[] = []) =>
   Object.entries(counts(key))
+    .filter(([value]) => !skip.includes(value))
     .sort(([a, x], [b, y]) => y - x || a.localeCompare(b))
     .map(([value]) => option(key, value, label(value)))
+/** A label for every value, so the chips name the chosen ones even with no matches. */
+const labels: Record<FilterKey, (value: string) => string> = {
+  genre: (genre) => t(`short.genres.${genre}` as MessageKey),
+  theme: (theme) => t(`short.themes.${theme}` as MessageKey),
+  duration: (band) => t(`home.filters.${band}` as MessageKey),
+  type: (type) => t(`short.types.${type}` as MessageKey),
+  lang: (code) => formatLanguage(code, locale),
+  region: (region) => t(`browse.regions.${region}` as MessageKey),
+  country: (code) => formatCountry(code, locale),
+  decade: (start) => t('browse.values.decade', { start, end: Number(start) + 9 }),
+  channel: (kind) => t(`browse.channels.${kind}` as MessageKey),
+  subs: () => t('browse.values.subtitlesEs'),
+  nodialogue: () => t('browse.values.noDialogue'),
+  audience: () => t('browse.values.allAudiences'),
+  awards: () => t('browse.values.awards'),
+}
+const group = (key: string, label: string, options: FacetOption[]): FilterBarGroup => ({
+  key,
+  label,
+  options,
+})
 
-const groups: { key: FilterKey; label: string; options: FacetOption[] }[] = [
-  {
-    key: 'duration',
-    label: t('browse.filters.duration'),
-    options: (['short', 'mid', 'long'] as const).map((band) =>
-      option('duration', band, t(`home.filters.${band}`)),
-    ),
-  },
-  {
-    key: 'lang',
-    label: t('browse.filters.language'),
-    options: byCount('lang', (code) =>
-      code === 'zxx' ? t('browse.values.noDialogue') : formatLanguage(code, locale),
-    ),
-  },
-  {
-    key: 'subs',
-    label: t('browse.filters.subtitles'),
-    options: [option('subs', locale, t('browse.values.subtitlesEs'))],
-  },
-  {
-    key: 'form',
-    label: t('browse.filters.form'),
-    options: [
-      option('form', 'animation', t('browse.values.animation')),
-      option('form', 'live-action', t('browse.values.liveAction')),
-    ],
-  },
-  {
-    key: 'type',
-    label: t('browse.filters.type'),
-    options: byCount('type', (type) => t(`short.types.${type}` as MessageKey)),
-  },
-  {
-    key: 'genre',
-    label: t('browse.filters.genre'),
-    options: byCount('genre', (genre) => t(`short.genres.${genre}` as MessageKey)),
-  },
-  {
-    key: 'theme',
-    label: t('browse.filters.theme'),
-    options: byCount('theme', (theme) => t(`short.themes.${theme}` as MessageKey)),
-  },
-  {
-    key: 'audience',
-    label: t('browse.filters.audience'),
-    options: [option('audience', 'all', t('browse.values.allAudiences'))],
-  },
-  {
-    key: 'country',
-    label: t('browse.filters.country'),
-    options: byCount('country', (code) => formatCountry(code, locale)),
-  },
+const groups = [
+  group('genre', t('browse.filters.genre'), byCount('genre', labels.genre)),
+  group('theme', t('browse.filters.theme'), byCount('theme', labels.theme)),
+  group(
+    'duration',
+    t('browse.filters.duration'),
+    DURATIONS.map((band) => option('duration', band, labels.duration(band))),
+  ),
+  group('type', t('browse.filters.type'), byCount('type', labels.type)),
+  // «Sin diálogos» is a filter of its own, under «Más filtros».
+  group('lang', t('browse.filters.language'), byCount('lang', labels.lang, ['zxx'])),
+  group('country', t('browse.filters.country'), [
+    ...REGIONS.map((region) => option('region', region, labels.region(region))),
+    ...byCount('country', labels.country),
+  ]),
 ]
+const more = {
+  label: t('browse.filters.more'),
+  toggles: group('more', t('browse.filters.more'), [
+    option('subs', locale, labels.subs('')),
+    option('nodialogue', '1', labels.nodialogue('')),
+    option('audience', 'all', labels.audience('')),
+    option('awards', '1', labels.awards('')),
+  ]),
+  groups: [
+    group(
+      'decade',
+      t('browse.filters.decade'),
+      Object.keys(counts('decade'))
+        .sort((a, b) => Number(b) - Number(a))
+        .map((start) => option('decade', start, labels.decade(start))),
+    ),
+    group(
+      'channel',
+      t('browse.filters.channel'),
+      CHANNEL_KINDS.map((kind) => option('channel', kind, labels.channel(kind))),
+    ),
+  ],
+}
+const sortName = (key: (typeof SORT_KEYS)[number]) => t(`browse.sort.${key}`)
+const sort = {
+  label: t('browse.sort.label'),
+  name: t('browse.sort.button', { sort: sortName(state.sort) }),
+  options: SORT_KEYS.map((key) => ({
+    label: sortName(key),
+    href: browseHref(base, { ...state, sort: key }),
+    selected: key === state.sort,
+  })),
+}
 
 const filtered = hasFilters(filters)
-const selectedLabels = groups.flatMap((g) =>
-  g.options.filter((o) => o.selected).map((o) => o.label),
+const active: ActiveFilter[] = FILTER_KEYS.flatMap((key) =>
+  (filters[key] ?? []).map((value) => {
+    const label = labels[key](value)
+    return {
+      label,
+      href: toggleHref(base, state, key, value),
+      removeLabel: t('browse.remove', { filter: label }),
+    }
+  }),
 )
 const countLabel = (count: number) => t('browse.count', { count })
 const jsonLd =
-  result && !filtered && page === 1
+  result && !filtered && page === 1 && state.sort === 'newest'
     ? collectionPage(siteUrl, {
         name: t('browse.title'),
         description: t('browse.description'),
@@ -122,11 +159,11 @@ const jsonLd =
   locale={locale}
   title={
     filtered
-      ? t('browse.filteredTitle', { filters: selectedLabels.join(' · ') })
+      ? t('browse.filteredTitle', { filters: active.map((filter) => filter.label).join(' · ') })
       : t('browse.title')
   }
   description={t('browse.description')}
-  noindex={filtered || page > 1}
+  noindex={filtered || page > 1 || state.sort !== 'newest'}
   canonicalPath={base}
   ogImage={paths.ogPage(locale, 'browse')}
   jsonLd={jsonLd}
@@ -139,26 +176,39 @@ const jsonLd =
     </p>
   ) : (
     <>
-      <section aria-label={t('browse.filtersLabel')} class="grid gap-4">
-        {groups.map((group) => (
-          <FacetGroup label={group.label} options={group.options} countLabel={countLabel} />
-        ))}
-      </section>
       <div class="grid gap-4">
-        <div class="flex flex-wrap items-center gap-4">
-          <p role="status" class="m-0 text-body text-secondary">
-            {result.total === 0
-              ? t('browse.empty')
-              : filtered
-                ? t('browse.results', { count: result.total })
-                : t('browse.count', { count: result.total })}
-          </p>
-          {filtered && (
-            <Button variant="ghost" href={base}>
-              {t('browse.clear')}
-            </Button>
-          )}
-        </div>
+        <FilterBar
+          label={t('browse.filters.button')}
+          groups={groups}
+          more={more}
+          sort={sort}
+          sheet={{
+            button: t('browse.filters.button'),
+            title: t('browse.filters.button'),
+            selected: filterCount(filters),
+            results: {
+              label: t('browse.sheet.results', { count: result.total }),
+              href: browseHref(base, state),
+            },
+            closeLabel: t('browse.sheet.close'),
+          }}
+          countLabel={countLabel}
+        />
+        <ActiveFilters
+          label={t('browse.active')}
+          filters={active}
+          clear={{
+            label: t('browse.clear'),
+            href: browseHref(base, { filters: {}, sort: state.sort }),
+          }}
+        />
+        <p role="status" class="m-0 text-body text-secondary">
+          {result.total === 0
+            ? t('browse.empty')
+            : filtered
+              ? t('browse.results', { count: result.total })
+              : t('browse.count', { count: result.total })}
+        </p>
         {result.hits.length > 0 && (
           <ShortGrid
             items={result.hits.map((hit) => toCard(hit, locale, t, paths.short(locale, hit.slug)))}
@@ -166,10 +216,56 @@ const jsonLd =
         )}
         {result.pages > 1 && (
           <Pagination
-            {...paginationProps(t, page, result.pages, (n) => browseHref(base, filters, n))}
+            {...paginationProps(t, page, result.pages, (n) => browseHref(base, state, n))}
           />
         )}
       </div>
     </>
   )}
 </Base>
+
+<script>
+  // The filter menus are native <details>: this closes the others when one opens, closes them on
+  // Escape or a click outside, and reopens the one a filter link came from (its #anchor).
+  const menus = [...document.querySelectorAll<HTMLDetailsElement>('details[data-filter-menu]')]
+  const lockScroll = () =>
+    document.documentElement.classList.toggle(
+      'overflow-hidden',
+      menus.some((menu) => menu.open && menu.id === 'filtros'),
+    )
+  for (const menu of menus) {
+    menu.addEventListener('toggle', () => {
+      if (menu.open) for (const other of menus) if (other !== menu) other.open = false
+      lockScroll()
+    })
+  }
+  document.addEventListener('click', (event) => {
+    const target = event.target as Element
+    const close = target.closest('[data-filter-close]')
+    if (close) {
+      // It links to this same page: closing the sheet is enough.
+      event.preventDefault()
+      for (const menu of menus) menu.open = false
+      return
+    }
+    for (const menu of menus) if (menu.open && !menu.contains(target)) menu.open = false
+  })
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') return
+    const open = menus.find((menu) => menu.open)
+    if (!open) return
+    open.open = false
+    open.querySelector('summary')?.focus()
+  })
+  const anchor = location.hash
+    ? document.getElementById(decodeURIComponent(location.hash.slice(1)))
+    : null
+  const from = anchor ? anchor.closest<HTMLDetailsElement>('details[data-filter-menu]') : null
+  // Only on the layout that shows it: the sheet is hidden on wide screens, the menus on small ones.
+  if (anchor && from && from.offsetParent !== null) {
+    from.open = true
+    if (anchor === from) window.scrollTo({ top: 0 })
+    else anchor.scrollIntoView({ block: 'start' })
+    history.replaceState(history.state, '', location.pathname + location.search)
+  }
+</script>

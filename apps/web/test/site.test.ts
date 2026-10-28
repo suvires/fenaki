@@ -25,6 +25,8 @@ describe('isHiddenInMode', () => {
       '/es/colecciones/x',
       '/es/personas/nacho-vigalondo',
       '/es/escaparates/x',
+      '/es/temas',
+      '/es/temas/familia',
       '/es/buscar',
       '/api/search',
       '/api/shorts',

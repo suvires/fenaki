@@ -6,6 +6,7 @@ import {
   formatList,
   formatListParts,
   formatYear,
+  type MessageKey,
 } from '@fenaki/i18n'
 import { Rail, ShareButton, ShortCard } from '@fenaki/ui'
 import NotFound from '../../../components/NotFound.astro'
@@ -28,6 +29,8 @@ import {
   toCardSource,
 } from '../../../lib/cms.ts'
 import { EVENTS, eventAttributes } from '../../../lib/analytics.ts'
+import { browseHref } from '../../../lib/browse.ts'
+import { THEMES, topicHref, type Theme } from '../../../lib/topics.ts'
 import { embedPageUrl } from '../../../lib/embed.ts'
 import { clock, resumable } from '../../../lib/playerProgress.ts'
 import { videoObject } from '../../../lib/seo.ts'
@@ -155,8 +158,32 @@ const spoken = short?.noDialogue
 // «Ficha técnica»: the original title, the production and the channel that publishes the source
 // the page plays (a festival, a school, its makers).
 const channel = source?.channel
-const sheet = short
+// Its genres and themes lead, as links: the catalog filtered by the genre, the theme's page.
+const classLinks = (
+  values: string[] | null | undefined,
+  link: (value: string) => { value: string; href: string },
+) => (values ?? []).filter(Boolean).map(link)
+const genres = classLinks(short?.genres, (genre) => ({
+  value: t(`short.genres.${genre}` as MessageKey),
+  href: browseHref(paths.browse(locale), { filters: { genre: [genre] } }),
+}))
+const themes = classLinks(
+  short?.themes?.filter((theme): theme is Theme => (THEMES as readonly string[]).includes(theme)),
+  (theme) => ({
+    value: t(`short.themes.${theme}` as MessageKey),
+    href: topicHref(locale, theme as Theme),
+  }),
+)
+type SheetRow = {
+  term: string
+  value?: string
+  href?: string
+  links?: { value: string; href: string }[]
+}
+const sheet: SheetRow[] = short
   ? [
+      ...(genres.length ? [{ term: t('short.sheet.genres'), links: genres }] : []),
+      ...(themes.length ? [{ term: t('short.sheet.themes'), links: themes }] : []),
       ...(short.originalTitle
         ? [{ term: t('short.sheet.originalTitle'), value: short.originalTitle }]
         : []),
@@ -319,7 +346,19 @@ const subtitles = [...(card?.subtitles ?? [])]
                 <>
                   <dt class="text-secondary">{row.term}</dt>
                   <dd class="m-0">
-                    {row.href ? (
+                    {row.links ? (
+                      row.links.map((link, index) => (
+                        <>
+                          {index > 0 && ', '}
+                          <a
+                            href={link.href}
+                            class="text-primary underline underline-offset-4 hover:no-underline rounded-xs focus-visible:focus-ring"
+                          >
+                            {link.value}
+                          </a>
+                        </>
+                      ))
+                    ) : row.href ? (
                       <a
                         href={row.href}
                         rel="noopener"

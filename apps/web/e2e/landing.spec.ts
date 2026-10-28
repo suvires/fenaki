@@ -56,6 +56,7 @@ test('the catalog routes are not public before launch', async ({ request }) => {
     '/es/colecciones/imprescindibles-del-corto-espanol',
     '/es/personas/juanjo-gimenez',
     '/es/escaparates/escuela-de-cine-de-ejemplo',
+    '/es/temas/familia',
     '/og/es/cortos/timecode.png',
   ])
     expect((await request.get(path)).status()).toBe(404)

@@ -3,10 +3,11 @@ import { listShowcases, listSitemapDocs } from '../lib/cms.ts'
 import { LEGAL_PAGES, localeFrom, paths } from '../lib/i18n.ts'
 import { sitemapXml, type SitemapEntry } from '../lib/seo.ts'
 import { siteMode, siteUrl } from '../lib/services.ts'
+import { THEMES, topicHref } from '../lib/topics.ts'
 
 /**
  * One locale's sitemap. Before launch it lists only the public pages (landing, sponsorship,
- * legal); with the catalog, every published short, collection, person and showcase too.
+ * legal); with the catalog, every theme and every published short, collection, person and showcase too.
  */
 export const GET: APIRoute = async ({ params }) => {
   const locale = localeFrom(params.locale)
@@ -25,6 +26,8 @@ export const GET: APIRoute = async ({ params }) => {
     entries.push(
       page(paths.browse(locale)),
       page(paths.latest(locale)),
+      page(paths.topics(locale)),
+      ...THEMES.map((theme) => page(topicHref(locale, theme))),
       ...docs.shorts.map((s) => page(paths.short(locale, s.slug), s.updatedAt)),
       ...docs.collections.map((c) => page(paths.collection(locale, c.slug), c.updatedAt)),
       ...[...docs.people].map(([slug, updatedAt]) => page(paths.person(locale, slug), updatedAt)),

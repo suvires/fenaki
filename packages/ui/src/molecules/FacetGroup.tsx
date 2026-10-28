@@ -16,21 +16,23 @@ export interface FacetGroupProps {
   options: FacetOption[]
   /** Read with each count by screen readers: «{count} cortos» is built by the caller. */
   countLabel?: (count: number) => string
+  /** Anchor of the section, so a link can come back to it (the FilterBar's sheet). */
+  id?: string
   className?: string
 }
 
 /**
  * One filter of the browse page as links, so every combination has a shareable URL and works
- * without JavaScript. Single choice: the selected option links back to the page without it.
+ * without JavaScript. Each option links to the page with it added, or taken out when selected.
  * Options with no matches are left out unless selected.
  */
-export function FacetGroup({ label, options, countLabel, className }: FacetGroupProps) {
-  const id = useId()
+export function FacetGroup({ label, options, countLabel, id, className }: FacetGroupProps) {
+  const headingId = useId()
   const visible = options.filter((option) => option.selected || option.count !== 0)
   if (visible.length === 0) return null
   return (
-    <section aria-labelledby={id} className={cx('grid gap-2', className)}>
-      <h2 id={id} className="m-0 font-mono text-label uppercase text-secondary">
+    <section id={id} aria-labelledby={headingId} className={cx('grid gap-2', className)}>
+      <h2 id={headingId} className="m-0 font-mono text-label uppercase text-secondary">
         {label}
       </h2>
       <ul className="m-0 p-0 list-none flex flex-wrap gap-2">

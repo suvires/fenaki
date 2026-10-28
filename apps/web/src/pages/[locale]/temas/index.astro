@@ -1,0 +1,49 @@
+---
+import { PageHeader, TopicCard } from '@fenaki/ui'
+import Base from '../../../layouts/Base.astro'
+import { localeFrom, paths, translator } from '../../../lib/i18n.ts'
+import { themeCounts } from '../../../lib/search.ts'
+import { collectionPage } from '../../../lib/seo.ts'
+import { siteUrl } from '../../../lib/services.ts'
+import { THEMES, topicHref } from '../../../lib/topics.ts'
+
+const locale = localeFrom(Astro.params.locale)
+if (!locale) return Astro.rewrite('/404')
+
+const t = translator(locale)
+const counts = await themeCounts(locale).catch(() => ({}) as Record<string, number>)
+const topics = THEMES.map((theme) => ({
+  title: t(`short.themes.${theme}`),
+  href: topicHref(locale, theme),
+  count: counts[theme] ?? 0,
+}))
+const jsonLd = collectionPage(siteUrl, {
+  name: t('topics.heading'),
+  description: t('topics.description'),
+  url: paths.topics(locale),
+  items: topics.map((topic) => ({ name: topic.title, url: topic.href })),
+})
+---
+
+<Base
+  locale={locale}
+  title={t('topics.title')}
+  description={t('topics.description')}
+  canonicalPath={paths.topics(locale)}
+  ogImage={paths.ogPage(locale, 'browse')}
+  jsonLd={jsonLd}
+>
+  <PageHeader title={t('topics.heading')} description={t('topics.description')} />
+  <ul class="m-0 p-0 list-none grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    {topics.map((topic) => (
+      <li>
+        <TopicCard
+          stretch
+          title={topic.title}
+          href={topic.href}
+          meta={topic.count > 0 ? t('browse.count', { count: topic.count }) : undefined}
+        />
+      </li>
+    ))}
+  </ul>
+</Base>

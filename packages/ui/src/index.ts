@@ -25,6 +25,18 @@ export { Tooltip, type TooltipProps } from './atoms/Tooltip.tsx'
 export { Checkbox, type CheckboxProps } from './molecules/Checkbox.tsx'
 export { FacetGroup, type FacetGroupProps, type FacetOption } from './molecules/FacetGroup.tsx'
 export { FilterChips, type FilterChipsProps } from './molecules/FilterChips.tsx'
+export { TopicCard, type TopicCardProps } from './molecules/TopicCard.tsx'
+export {
+  FilterMenu,
+  FilterOptions,
+  type FilterMenuProps,
+  type FilterOptionsProps,
+} from './molecules/FilterMenu.tsx'
+export {
+  ActiveFilters,
+  type ActiveFilter,
+  type ActiveFiltersProps,
+} from './molecules/ActiveFilters.tsx'
 export { LicenseNote, type LicenseNoteProps, type LicenseRoute } from './molecules/LicenseNote.tsx'
 export { Notice, type NoticeProps, type NoticeTone } from './molecules/Notice.tsx'
 export { OfferCard, type OfferCardProps } from './molecules/OfferCard.tsx'
@@ -44,6 +56,7 @@ export { Rail, type RailProps } from './organisms/Rail.tsx'
 export { RankedItem, RankedRail, type RankedItemProps } from './organisms/RankedRail.tsx'
 export { ShareButton, type ShareButtonProps, type ShareTarget } from './organisms/ShareButton.tsx'
 export { ShortGrid, type ShortGridProps } from './organisms/ShortGrid.tsx'
+export { FilterBar, type FilterBarGroup, type FilterBarProps } from './organisms/FilterBar.tsx'
 export { ShortHero, type ShortHeroProps } from './organisms/ShortHero.tsx'
 export { ShortPreview, type ShortPreviewProps } from './organisms/ShortPreview.tsx'
 export { ShowcaseHero, type ShowcaseHeroProps } from './organisms/ShowcaseHero.tsx'
