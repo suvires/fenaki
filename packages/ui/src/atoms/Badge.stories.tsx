@@ -24,3 +24,5 @@ export const AllTones: Story = {
     </div>
   ),
 }
+
+export const Large: Story = { args: { size: 'lg', children: 'Sin diálogos' } }

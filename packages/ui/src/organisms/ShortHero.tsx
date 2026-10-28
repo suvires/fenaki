@@ -145,7 +145,7 @@ export function ShortHero({
           ),
         )}
         {badges.map((badge) => (
-          <Badge key={badge.label} tone={badge.tone}>
+          <Badge key={badge.label} tone={badge.tone} size={stacked ? 'lg' : 'md'}>
             {badge.label}
           </Badge>
         ))}
