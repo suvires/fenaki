@@ -60,20 +60,37 @@ export async function checkEmbeds(
     where: {
       or: [{ status: { equals: 'published' } }, { hiddenReason: { exists: true } }],
     },
+    // Only what the check reads: with every field, the whole catalog did not fit in the worker.
+    select: { title: true, status: true, still: true, hiddenReason: true },
     depth: 0,
     limit: 0,
     pagination: false,
     req,
   })
-  const byId = new Map<number, Short>(shorts.docs.map((short) => [short.id, short]))
+  const byId = new Map<number, Short>(shorts.docs.map((short) => [short.id, short as Short]))
   const sources = await payload.find({
     collection: 'sources',
     where: { short: { in: [...byId.keys()] }, provider: { in: ['youtube', 'vimeo'] } },
+    select: {
+      short: true,
+      provider: true,
+      externalId: true,
+      url: true,
+      status: true,
+      embeddable: true,
+      ageRestricted: true,
+      checkNote: true,
+      lastCheckedAt: true,
+      problemSince: true,
+      channel: true,
+      thumbnailUrl: true,
+    },
     depth: 0,
     limit: 0,
     pagination: false,
     req,
   })
+  const sourceDocs = sources.docs as Source[]
 
   const checkedSince = Date.now() - RECHECK_AFTER_MS
   const recent = (source: Source) =>
@@ -82,7 +99,7 @@ export async function checkEmbeds(
   // One YouTube Data API request per 50 videos, when there is a key.
   const keys = ingestKeys()
   let api: Map<string, YouTubeVideo> | undefined
-  const youtubeIds = sources.docs
+  const youtubeIds = sourceDocs
     .filter((s) => s.provider === 'youtube' && !recent(s))
     .map((s) => s.externalId)
   if (keys.youtube && youtubeIds.length > 0) {
@@ -107,7 +124,7 @@ export async function checkEmbeds(
   const playable = new Map<number, boolean>()
   const oembedThumbnails = new Map<number, string>()
 
-  for (const source of sources.docs) {
+  for (const source of sourceDocs) {
     if (recent(source)) {
       // Already checked tonight: what it found is stored, and counts for hiding its short.
       const stored: Assessment = {
@@ -185,7 +202,7 @@ export async function checkEmbeds(
 
   await refreshStills(req, {
     shorts: [...byId.values()],
-    sources: sources.docs,
+    sources: sourceDocs,
     playable,
     oembedThumbnails,
     fetchFn,
@@ -242,12 +259,25 @@ async function refreshStills(req: PayloadRequest, ctx: StillsContext) {
   const stills = await payload.find({
     collection: 'stills',
     where: { short: { in: ctx.shorts.map((short) => short.id) } },
+    select: { short: true, origin: true, fetchedAt: true },
     depth: 0,
     limit: 0,
     pagination: false,
     req,
   })
-  const stillsOf = (shortId: number) => stills.docs.filter((still) => idOf(still.short) === shortId)
+  // By short, once: looking them up in the whole list for every short was quadratic.
+  const stillsByShort = new Map<number, Still[]>()
+  for (const still of stills.docs as Still[]) {
+    const shortId = idOf(still.short)
+    if (shortId !== undefined)
+      stillsByShort.set(shortId, [...(stillsByShort.get(shortId) ?? []), still])
+  }
+  const sourcesByShort = new Map<number, Source[]>()
+  for (const source of ctx.sources) {
+    const shortId = shortIdOf(source)
+    sourcesByShort.set(shortId, [...(sourcesByShort.get(shortId) ?? []), source])
+  }
+  const stillsOf = (shortId: number) => stillsByShort.get(shortId) ?? []
 
   for (const short of ctx.shorts) {
     try {
@@ -255,8 +285,8 @@ async function refreshStills(req: PayloadRequest, ctx: StillsContext) {
       // An author still is final: the checker neither replaces nor removes it.
       if (own.some((still: Still) => still.origin === 'author')) continue
       const provider = own.filter((still) => still.origin === 'provider')
-      const source = ctx.sources.find(
-        (candidate) => shortIdOf(candidate) === short.id && ctx.playable.get(candidate.id),
+      const source = (sourcesByShort.get(short.id) ?? []).find((candidate) =>
+        ctx.playable.get(candidate.id),
       )
 
       if (short.status !== 'published' || !source) {
