@@ -289,7 +289,10 @@ export const Collections: CollectionConfig = {
         },
         {
           name: 'withAwards',
-          label: label('With awards or festival selections', 'Con premios o festivales'),
+          label: label(
+            'With awards (won, nominated or shortlisted)',
+            'Con premios (ganados, nominaciones o preselecciones)',
+          ),
           type: 'checkbox',
         },
       ],

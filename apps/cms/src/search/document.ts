@@ -23,7 +23,7 @@ export interface ShortSearchDocument {
   themes: string[]
   /** Who runs the channel of its first source (festival, school, author…): a collection filter. */
   channelKind: string | null
-  /** It has awards or festival selections on record: a collection filter. */
+  /** It won, was nominated or shortlisted for an award (selections do not count): a collection filter. */
   hasAwards: boolean
   /** `all` when the short suits every audience, a filter of its own; null otherwise. */
   audience: 'all' | null
@@ -121,7 +121,7 @@ export interface IndexableShort {
   brandedContent?: boolean | null
   publishedAt?: string | null
   credits?: { person: number | PersonLike; role: string }[] | null
-  awards?: unknown[] | null
+  awards?: { result?: string | null }[] | null
   sources?: {
     docs?: (
       | number
@@ -175,7 +175,7 @@ export function toSearchDocument(
       (short.sources?.docs ?? []).flatMap((s) =>
         typeof s === 'object' && s.channel?.kind ? [s.channel.kind] : [],
       )[0] ?? null,
-    hasAwards: (short.awards ?? []).length > 0,
+    hasAwards: (short.awards ?? []).some((award) => award.result !== 'selected'),
     classLabels,
     posterTone: short.posterTone ?? 'sala',
     still:
