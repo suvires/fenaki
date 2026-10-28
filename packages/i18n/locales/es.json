@@ -279,6 +279,7 @@
   "footer": {
     "label": "Pie de página",
     "links": {
+      "submit": "Sube tu corto",
       "takedown": "Pedir la retirada de un corto",
       "legalNotice": "Aviso legal",
       "privacy": "Política de privacidad",
@@ -734,6 +735,26 @@
       "fallback": "¿No funciona el botón? Copia este enlace en el navegador: {url}",
       "ignore": "El enlace caduca en 1 hora. Si no lo has pedido tú, ignora este email: tu contraseña no cambia.",
       "footer": "Te enviamos este email desde {site}. {privacyPolicy}"
+    },
+    "submissionApproved": {
+      "subject": "Tu corto ya está en FENAKI",
+      "preview": "Lo hemos revisado y ya se puede ver.",
+      "title": "Tu corto ya está en FENAKI",
+      "intro": "Hemos revisado el corto que enviaste desde «Sube tu corto» y ya está publicado. Ya puedes quitar el código de su descripción en YouTube o Vimeo.",
+      "button": "Ver tu corto",
+      "fallback": "¿No funciona el botón? Copia este enlace en el navegador: {url}",
+      "ignore": "Recibes este email porque enviaste este corto desde tu cuenta de FENAKI.",
+      "footer": "Te enviamos este email desde {site}. {privacyPolicy}"
+    },
+    "submissionRejected": {
+      "subject": "Tu corto no ha entrado en FENAKI",
+      "preview": "Te contamos el motivo.",
+      "title": "Tu corto no ha entrado en FENAKI",
+      "intro": "Hemos revisado el corto que enviaste desde «Sube tu corto» y esta vez no lo hemos publicado. Este es el motivo:",
+      "button": "Ver tus envíos",
+      "fallback": "¿No funciona el botón? Copia este enlace en el navegador: {url}",
+      "ignore": "Si tienes dudas, responde a este email. Recibes este email porque enviaste este corto desde tu cuenta de FENAKI.",
+      "footer": "Te enviamos este email desde {site}. {privacyPolicy}"
     }
   },
   "playerSettings": {
@@ -787,6 +808,80 @@
         "title": "Cortos sobre deporte",
         "intro": "Atletas, equipos, entrenamientos y derrotas. Cortometrajes sobre el deporte y lo que cuenta de quienes lo practican, del barrio a la alta competición."
       }
+    }
+  },
+  "submit": {
+    "title": "Sube tu corto",
+    "description": "Si tu corto está en YouTube o Vimeo, en tu canal o en el canal oficial de quien lo publica, puede estar en FENAKI. Lo revisamos y te avisamos por email.",
+    "requirements": {
+      "title": "Qué necesitas",
+      "video": "El corto en YouTube o Vimeo, público o no listado, con la inserción en otras webs permitida.",
+      "rights": "Que el canal sea tuyo, o el oficial de quien lo publica: la productora, la distribuidora, el festival, la escuela o la institución.",
+      "code": "Poner un código en la descripción del corto en YouTube o Vimeo mientras lo revisamos. Te lo damos al enviarlo; cuando lo publiquemos, puedes quitarlo."
+    },
+    "signedOut": {
+      "title": "Inicia sesión para enviarlo",
+      "text": "Así podrás seguir el estado de tu envío y te avisaremos por email.",
+      "signIn": "Iniciar sesión",
+      "signUp": "Crear cuenta"
+    },
+    "form": {
+      "title": "Envía tu corto",
+      "url": {
+        "label": "Enlace del corto",
+        "placeholder": "https://www.youtube.com/watch?v=…",
+        "hint": "En YouTube o Vimeo."
+      },
+      "relation": {
+        "label": "¿Quién lo envía?",
+        "placeholder": "Elige una opción"
+      },
+      "relations": {
+        "author": "Soy su autor o autora",
+        "producer": "La productora",
+        "distributor": "La distribuidora",
+        "festival": "Un festival",
+        "school": "Una escuela de cine",
+        "institution": "Una institución"
+      },
+      "terms": "Declaro que el canal es mío o el oficial de quien tiene los derechos del corto, y acepto las {terms}.",
+      "termsLink": "condiciones de envío",
+      "submit": "Enviar"
+    },
+    "list": {
+      "title": "Tus envíos",
+      "empty": "Todavía no has enviado ningún corto.",
+      "code": "Copia este código y pégalo en cualquier parte de la descripción del corto en YouTube o Vimeo. Después, pulsa «Comprobar».",
+      "copy": "Copiar código",
+      "copied": "Código copiado",
+      "verify": "Comprobar",
+      "reason": "Motivo: {reason}"
+    },
+    "status": {
+      "awaiting-code": "Falta el código",
+      "in-review": "En revisión",
+      "approved": "Publicado",
+      "rejected": "No publicado"
+    },
+    "statusText": {
+      "in-review": "Hemos encontrado el código. Lo revisamos y te avisamos por email.",
+      "approved": "Ya está en FENAKI. Puedes quitar el código de la descripción."
+    },
+    "error": {
+      "invalid_url": "Pega el enlace de un corto de YouTube o Vimeo.",
+      "invalid_relation": "Elige quién lo envía.",
+      "terms": "Marca la casilla para aceptar las condiciones.",
+      "already_in_catalog": "Este corto ya está en FENAKI.",
+      "already_submitted": "Alguien ya ha enviado este corto y lo estamos revisando.",
+      "too_many": "Tienes 10 envíos pendientes. Espera a que revisemos alguno para enviar más.",
+      "unreachable": "YouTube o Vimeo no han respondido. Prueba de nuevo en unos minutos.",
+      "broken": "Este enlace no lleva a ningún corto. Revísalo.",
+      "private": "Este corto es privado. Hazlo público o no listado y vuelve a enviarlo.",
+      "not_embeddable": "Este corto no permite la inserción en otras webs. Actívala en YouTube o Vimeo y vuelve a enviarlo.",
+      "age_restricted": "Este corto tiene restricción de edad y no se puede ver fuera de YouTube.",
+      "not_found": "No encontramos este envío.",
+      "code_not_found": "Todavía no vemos el código en la descripción. Comprueba que está guardado y prueba de nuevo en un minuto.",
+      "unverifiable": "Ahora no podemos leer la descripción. Prueba de nuevo más tarde."
     }
   }
 }

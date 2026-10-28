@@ -77,7 +77,7 @@ const legalLinks = [
   { label: t('footer.links.cookies'), href: paths.legal(locale, 'cookies') },
 ]
 // Before launch the landing page only links the legal pages: there is no catalog to talk about.
-// Columns: the catalog, sponsors, takedown and credits, the viewer's account and preferences, and
+// Columns: the catalog, «Sube tu corto» and sponsors, takedown and credits, the viewer's account and preferences, and
 // the legal pages.
 const footerGroups = landing
   ? [legalLinks]
@@ -87,7 +87,10 @@ const footerGroups = landing
         { label: t('footer.links.latest'), href: paths.latest(locale) },
         { label: t('footer.links.myList'), href: paths.myList(locale) },
       ],
-      [{ label: t('footer.links.sponsor'), href: paths.sponsor(locale, 'collection') }],
+      [
+        { label: t('footer.links.submit'), href: paths.submit(locale) },
+        { label: t('footer.links.sponsor'), href: paths.sponsor(locale, 'collection') },
+      ],
       [
         { label: t('footer.links.takedown'), href: paths.legal(locale, 'retirada-de-contenidos') },
         { label: t('footer.links.credits'), href: paths.credits(locale) },

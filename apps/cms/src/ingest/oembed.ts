@@ -14,6 +14,8 @@ export type OEmbedResult =
       durationSeconds: number | null
       /** Vimeo only. */
       uploadedAt: string | null
+      /** Vimeo only: the video's description. */
+      description?: string | null
     }
   /** The owner switched embedding off. */
   | { kind: 'not-embeddable'; httpStatus: number }
@@ -84,5 +86,6 @@ export async function fetchOEmbed(
     thumbnailUrl: str(body.thumbnail_url),
     durationSeconds: Number.isFinite(duration) && duration > 0 ? Math.round(duration) : null,
     uploadedAt: str(body.upload_date) ? new Date(String(body.upload_date)).toISOString() : null,
+    ...(str(body.description) ? { description: str(body.description) } : {}),
   }
 }

@@ -26,6 +26,8 @@ export { Checkbox, type CheckboxProps } from './molecules/Checkbox.tsx'
 export { FacetGroup, type FacetGroupProps, type FacetOption } from './molecules/FacetGroup.tsx'
 export { FilterChips, type FilterChipsProps } from './molecules/FilterChips.tsx'
 export { TopicCard, type TopicCardProps } from './molecules/TopicCard.tsx'
+export { SelectField, type SelectFieldProps } from './molecules/SelectField.tsx'
+export { SubmissionItem, type SubmissionItemProps } from './molecules/SubmissionItem.tsx'
 export {
   FilterMenu,
   FilterOptions,

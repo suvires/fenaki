@@ -46,6 +46,8 @@ export const LIMITS = {
   delete: [5, 10 * MINUTE],
   merge: [20, 10 * MINUTE],
   export: [10, 10 * MINUTE],
+  // «Sube tu corto»: each submission or check asks YouTube or Vimeo.
+  submit: [20, 10 * MINUTE],
   session: [120, MINUTE],
   write: [240, MINUTE],
   progress: [240, MINUTE],

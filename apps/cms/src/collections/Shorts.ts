@@ -6,6 +6,7 @@ import { requiredToPublish } from '../fields/requiredToPublish.ts'
 import { GENRE_LABELS, MAX_CLASSES, THEME_LABELS } from '../catalog/taxonomy.ts'
 import { analyzeShortEndpoint, applyReviewEndpoint } from '../ai/endpoints.ts'
 import { relatedShortsEndpoint } from '../related/related.ts'
+import { approveSubmissionsOf } from '../submissions/notify.ts'
 import { addFromUrlEndpoint } from '../ingest/addFromUrl.ts'
 import { slugField } from '../fields/slug.ts'
 import { statusField } from '../fields/status.ts'
@@ -562,6 +563,9 @@ export const Shorts: CollectionConfig = {
         if (doc.status === 'published' || previousDoc?.status === 'published') {
           await queueIndexShort(req, doc.id)
         }
+        // Publishing a short sent from «Sube tu corto» approves the submission and tells its sender.
+        if (doc.status === 'published' && previousDoc?.status !== 'published')
+          await approveSubmissionsOf(req, doc)
       },
     ],
     // Viewers' list, ratings and viewings of a deleted short go with it, before the short itself.

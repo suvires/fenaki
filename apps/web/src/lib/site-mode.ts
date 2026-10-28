@@ -9,7 +9,7 @@ const CATALOG_ROUTES = [
   /^\/api\/search\/?$/,
   /^\/api\/shorts\/?$/,
   // Accounts open with the catalog.
-  /^\/[a-z]{2}\/(crear-cuenta|iniciar-sesion|cuenta|historial)(\/|$)/,
+  /^\/[a-z]{2}\/(crear-cuenta|iniciar-sesion|cuenta|historial|sube-tu-corto)(\/|$)/,
   /^\/api\/account(\/|$)/,
   /^\/og\/[a-z]{2}\/(cortos|colecciones|personas|escaparates)\//,
   /^\/og\/[a-z]{2}\/browse\.png$/,

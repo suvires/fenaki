@@ -30,6 +30,7 @@ import { SponsoredCollections } from './collections/SponsoredCollections.ts'
 import { Sponsors } from './collections/Sponsors.ts'
 import { Stills } from './collections/Stills.ts'
 import { Users } from './collections/Users.ts'
+import { Submissions } from './submissions/Submissions.ts'
 import { Viewings } from './collections/Viewings.ts'
 import { emailAdapter } from './email.ts'
 import { checkEmbedsTask } from './jobs/checkEmbeds.ts'
@@ -100,6 +101,7 @@ export default buildConfig({
     ListItems,
     Ratings,
     Viewings,
+    Submissions,
   ],
   globals: [InboxState, HomePage, Ranking, CatalogSettings],
   cors: [process.env.WEB_URL ?? 'http://localhost:4321'],

@@ -1,0 +1,59 @@
+---
+import { Button, Notice, PageHeader } from '@fenaki/ui'
+import { SubmitShort } from '../../islands/SubmitShort.tsx'
+import Base from '../../layouts/Base.astro'
+import { cms } from '../../lib/account/payload.ts'
+import type { Submission } from '../../lib/account/submissions.ts'
+import { localeFrom, paths, translator } from '../../lib/i18n.ts'
+
+const locale = localeFrom(Astro.params.locale)
+if (!locale) return Astro.rewrite('/404')
+
+const t = translator(locale)
+const member = Astro.locals.member
+// The member's submissions, rendered with the page; the island keeps them up to date.
+const submissions = member
+  ? await cms<{ docs: Submission[] }>('submissions/mine', { token: member.token })
+      .then((result) => (result.status === 200 ? (result.data?.docs ?? []) : []))
+      .catch(() => [])
+  : []
+const requirements = (['video', 'rights', 'code'] as const).map((key) =>
+  t(`submit.requirements.${key}`),
+)
+---
+
+<Base locale={locale} title={t('submit.title')} description={t('submit.description')}>
+  <div class="grid gap-10 max-w-(--container-article) py-8">
+    <PageHeader title={t('submit.title')} description={t('submit.description')} />
+    <section aria-labelledby="requirements" class="grid gap-3">
+      <h2 id="requirements" class="m-0 text-title">
+        {t('submit.requirements.title')}
+      </h2>
+      <ol class="m-0 pl-6 grid gap-2 text-body">
+        {requirements.map((requirement) => (
+          <li>{requirement}</li>
+        ))}
+      </ol>
+    </section>
+    {member ? (
+      <SubmitShort
+        client:load
+        locale={locale}
+        termsHref={paths.legal(locale, 'terminos-de-uso')}
+        initial={submissions}
+      />
+    ) : (
+      <Notice title={t('submit.signedOut.title')}>
+        <p class="m-0">{t('submit.signedOut.text')}</p>
+        <div class="flex flex-wrap gap-3 pt-2">
+          <Button href={paths.signIn(locale, paths.submit(locale))}>
+            {t('submit.signedOut.signIn')}
+          </Button>
+          <Button variant="secondary" href={paths.signUp(locale)}>
+            {t('submit.signedOut.signUp')}
+          </Button>
+        </div>
+      </Notice>
+    )}
+  </div>
+</Base>

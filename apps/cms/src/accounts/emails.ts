@@ -14,6 +14,8 @@ import {
 import { palettes, typography, variables } from '@fenaki/tokens'
 
 export type AccountEmailKind = 'verify' | 'reset' | 'email'
+/** The account's emails plus the replies to a «Sube tu corto» submission. */
+export type EmailKind = AccountEmailKind | 'submissionApproved' | 'submissionRejected'
 
 const escapeHtml = (text: string) =>
   text
@@ -64,18 +66,17 @@ export function accountLink(
   return `${origin}/${locale}/cuenta/${page}?token=${encodeURIComponent(token)}`
 }
 
-export function accountEmailSubject(
-  kind: AccountEmailKind,
-  locale: Locale = defaultLocale,
-): string {
+export function accountEmailSubject(kind: EmailKind, locale: Locale = defaultLocale): string {
   return createTranslator(locale)(`accountEmail.${kind}.subject`)
 }
 
 export function accountEmailHtml(
-  kind: AccountEmailKind,
+  kind: EmailKind,
   url: string,
   locale: Locale = defaultLocale,
   origin = siteOrigin(),
+  /** A paragraph of its own under the introduction: the reason a submission was rejected. */
+  detail?: string,
 ): string {
   const t = createTranslator(locale)
   const rich = createRichTranslator(locale)
@@ -131,6 +132,7 @@ export function accountEmailHtml(
 <tr><td style="padding:${space('8')}">
 ${paragraph(escapeHtml(t(key('title'))), `${typeStyle('title')};margin-bottom:${space('2')}`)}
 ${paragraph(escapeHtml(t(key('intro'))), typeStyle('body-l'))}
+${detail ? paragraph(escapeHtml(detail).replaceAll('\n', '<br>')) : ''}
 <p style="margin:${space('2')} 0 ${space('6')}"><a href="${escapeHtml(url)}" style="display:block;text-align:center;padding:${space('3')} ${space('6')};background:${card.accent};color:${card['text-on-accent']};${typeStyle('button-lg')};text-decoration:none;border-radius:${pill}">${escapeHtml(t(key('button')))}</a></p>
 ${paragraph(fallback, `${typeStyle('small')};color:${card['text-secondary']}`)}
 ${paragraph(escapeHtml(t(key('ignore'))), `${typeStyle('small')};color:${card['text-secondary']};margin-bottom:0`)}

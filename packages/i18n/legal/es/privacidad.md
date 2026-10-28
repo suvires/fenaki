@@ -92,6 +92,16 @@ Los cortos se ven en el reproductor oficial de YouTube (Google) o de Vimeo. No s
 - **Responsabilidad:** FENAKI decide insertar el reproductor y por eso es corresponsable con Google o Vimeo de la recogida y transmisión de esos datos (sentencia _Fashion ID_, C-40/17). Lo que esas empresas hagan después con ellos es responsabilidad suya: consulta la [política de privacidad de Google](https://policies.google.com/privacy?hl=es) y la [de Vimeo](https://vimeo.com/privacy).
 - **Si tienes cuenta e iniciaste sesión,** FENAKI lee del reproductor el punto del corto por el que vas para ofrecerte «Seguir viendo» (ver 2.5). Sin sesión no se registra nada.
 
+### 2.9 Envío de cortos («Sube tu corto»)
+
+|               |                                                                                                                                                                                                                                        |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Datos         | Tu cuenta, el enlace del vídeo que envías, en calidad de qué lo envías (autor, productora, festival…), la fecha en que aceptas las condiciones de envío, el código de verificación y el estado y, en su caso, el motivo de la revisión |
+| Finalidad     | Comprobar que el canal es tuyo o el oficial de quien tiene los derechos, revisar el corto y avisarte por email de si lo publicamos                                                                                                     |
+| Base jurídica | Ejecución del contrato (art. 6.1.b RGPD): el envío que nos pides al aceptar las [condiciones de envío](/es/terminos-de-uso)                                                                                                            |
+| Conservación  | Mientras tu cuenta exista. Al borrarla eliminamos tus envíos; los cortos ya publicados siguen en el catálogo, sin vínculo con tu cuenta                                                                                                |
+| Herramientas  | Nuestro propio servidor; la API de YouTube o Vimeo para leer la descripción del vídeo, y Amazon SES para los emails                                                                                                                    |
+
 ## 3. Menores de edad
 
 FENAKI no está dirigido a menores de 14 años y no recogemos a sabiendas sus datos. Si tienes menos de 14 años, no te suscribas, no crees una cuenta ni nos envíes datos sin el consentimiento de tu madre, padre o tutor legal (art. 7 LOPDGDD).

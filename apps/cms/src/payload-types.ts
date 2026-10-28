@@ -89,6 +89,7 @@ export interface Config {
     'list-items': ListItem;
     ratings: Rating;
     viewings: Viewing;
+    submissions: Submission;
     'payload-kv': PayloadKv;
     'payload-jobs': PayloadJob;
     'payload-locked-documents': PayloadLockedDocument;
@@ -125,6 +126,7 @@ export interface Config {
     'list-items': ListItemsSelect<false> | ListItemsSelect<true>;
     ratings: RatingsSelect<false> | RatingsSelect<true>;
     viewings: ViewingsSelect<false> | ViewingsSelect<true>;
+    submissions: SubmissionsSelect<false> | SubmissionsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -1219,6 +1221,37 @@ export interface Viewing {
   createdAt: string;
 }
 /**
+ * Shorts proposed by viewers from «Sube tu corto». Publishing the short approves its submission; rejecting one emails the reason to its sender.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "submissions".
+ */
+export interface Submission {
+  id: number;
+  member: number | Member;
+  videoTitle?: string | null;
+  url: string;
+  provider: 'youtube' | 'vimeo';
+  externalId: string;
+  relation: 'author' | 'producer' | 'distributor' | 'festival' | 'school' | 'institution';
+  note?: string | null;
+  /**
+   * The sender puts it in the video description to prove the channel is theirs.
+   */
+  code: string;
+  status: 'awaiting-code' | 'in-review' | 'approved' | 'rejected';
+  /**
+   * Sent to the sender, in Spanish. Save with the status «Rejected».
+   */
+  reason?: string | null;
+  short?: (number | null) | Short;
+  acceptedTermsAt: string;
+  verifiedAt?: string | null;
+  notifiedAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -1449,6 +1482,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'viewings';
         value: number | Viewing;
+      } | null)
+    | ({
+        relationTo: 'submissions';
+        value: number | Submission;
       } | null);
   globalSlug?: string | null;
   user:
@@ -2085,6 +2122,28 @@ export interface ViewingsSelect<T extends boolean = true> {
   positionSeconds?: T;
   durationSeconds?: T;
   completed?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "submissions_select".
+ */
+export interface SubmissionsSelect<T extends boolean = true> {
+  member?: T;
+  videoTitle?: T;
+  url?: T;
+  provider?: T;
+  externalId?: T;
+  relation?: T;
+  note?: T;
+  code?: T;
+  status?: T;
+  reason?: T;
+  short?: T;
+  acceptedTermsAt?: T;
+  verifiedAt?: T;
+  notifiedAt?: T;
   updatedAt?: T;
   createdAt?: T;
 }

@@ -63,6 +63,11 @@ export interface CreateShortOptions {
   origin: string
   /** Set by the channel scanner: the registered channel is the source's official channel. */
   channel?: ChannelOrigin
+  /**
+   * Sent from «Sube tu corto»: who runs the channel, as the sender said, and the evidence (the
+   * verification code found in the video's description).
+   */
+  claimed?: { kind: ChannelKind; officialEvidence: string }
   /** Used when the providers do not say what language is spoken. */
   defaultLanguage?: string | null
 }
@@ -118,8 +123,9 @@ export async function createShortWithSource(
             url: channel.url,
             externalId: channel.externalId ?? metadata.channel.externalId,
           }
-        : metadata.channel,
+        : { ...metadata.channel, ...(options.claimed ? { kind: options.claimed.kind } : {}) },
       ...(channel ? { officialEvidence: channel.officialEvidence, ingestChannel: channel.id } : {}),
+      ...(options.claimed ? { officialEvidence: options.claimed.officialEvidence } : {}),
       subtitles: languages.subtitles,
       autoSubtitles: languages.autoSubtitles,
       captions: captionsValue(languages.hasCaptions),

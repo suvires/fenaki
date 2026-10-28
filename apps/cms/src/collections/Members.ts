@@ -101,11 +101,12 @@ export const Members: CollectionConfig = {
   },
   hooks: {
     beforeValidate: [onlyWhatTheViewerMaySet, checkPassword],
-    // The account's data goes with it: list, ratings and viewings (a GDPR erasure leaves nothing).
+    // The account's data goes with it: list, ratings, viewings and submissions (a GDPR erasure
+    // leaves nothing; the shorts already created from a submission stay, without the sender).
     // Before the account itself: their rows point at it.
     beforeDelete: [
       async ({ id, req }) => {
-        for (const collection of ['list-items', 'ratings', 'viewings'] as const)
+        for (const collection of ['list-items', 'ratings', 'viewings', 'submissions'] as const)
           await req.payload.delete({
             collection,
             where: { member: { equals: id } },

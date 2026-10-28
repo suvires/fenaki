@@ -447,3 +447,29 @@ test('Astro origin check: the sign-out form passes from behind the proxy, a fore
   // Astro's own refusal (the route's would be JSON): the check is on.
   expect(await foreign.text()).toContain('Cross-site POST form submissions are forbidden')
 })
+
+test('«Sube tu corto» asks to sign in, then checks the link and the terms', async ({ page }) => {
+  await open(page, '/es/sube-tu-corto')
+  await expect(page.getByRole('heading', { level: 1, name: 'Sube tu corto' })).toBeVisible()
+  await page.getByRole('main').getByRole('link', { name: 'Iniciar sesión' }).click()
+  await expect(page).toHaveURL(/\/es\/iniciar-sesion\?next=%2Fes%2Fsube-tu-corto$/)
+
+  const email = uniqueEmail('submit')
+  await signUp(page, email)
+  await verify(page, email)
+  await signIn(page, email, PASSWORD, '/es/sube-tu-corto')
+  await expect(page).toHaveURL(/\/es\/sube-tu-corto$/)
+  await expect(page.getByText('Todavía no has enviado ningún corto.')).toBeVisible()
+
+  // Everything missing is said under its field, before anything is sent.
+  await page.getByRole('button', { name: 'Enviar' }).click()
+  await expect(page.getByText('Elige quién lo envía.')).toBeVisible()
+  await expect(page.getByText('Marca la casilla para aceptar las condiciones.')).toBeVisible()
+
+  // Only YouTube or Vimeo: the server refuses anything else, without asking any provider.
+  await page.getByLabel('Enlace del corto').fill('https://example.com/mi-corto')
+  await page.getByLabel('¿Quién lo envía?').selectOption('author')
+  await page.getByLabel(/Declaro que el canal es mío/).check()
+  await page.getByRole('button', { name: 'Enviar' }).click()
+  await expect(page.getByText('Pega el enlace de un corto de YouTube o Vimeo.')).toBeVisible()
+})

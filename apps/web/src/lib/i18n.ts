@@ -27,6 +27,8 @@ export const paths = {
   /** The themes (lib/topics.ts): the index, and one page per theme by its localized slug. */
   topics: (locale: Locale) => `/${locale}/temas`,
   topic: (locale: Locale, slug: string) => `/${locale}/temas/${slug}`,
+  /** «Sube tu corto»: what it takes, and the form for signed-in members. */
+  submit: (locale: Locale) => `/${locale}/sube-tu-corto`,
   /** The latest shorts, one rail per genre. */
   latest: (locale: Locale) => `/${locale}/novedades`,
   /** The viewer's saved shorts (kept in their browser, so the page is never indexed). */

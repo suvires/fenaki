@@ -30,7 +30,8 @@ describe('createTranslator', () => {
   it('addresses the viewer as «tú», never «vosotros»', async () => {
     const { messages } = await import('../src/index.ts')
     const text = JSON.stringify(messages.es)
-    expect(text).not.toMatch(/\b(vosotros|vuestr[oa]s?|os)\b/i)
+    // Letter boundaries, not \b: in «envíos» the accented letter would count as a word break.
+    expect(text).not.toMatch(/(?<!\p{L})(vosotros|vuestr[oa]s?|os)(?!\p{L})/iu)
     expect(text).not.toMatch(/vídeo|clip(?!s\b)/i)
   })
 })

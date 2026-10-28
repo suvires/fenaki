@@ -112,7 +112,7 @@ export async function buildMetadata(
     uploadedAt: api?.publishedAt ?? ok?.uploadedAt ?? null,
     originalLanguage: primaryLanguage(api?.audioLanguage) ?? tmdb?.originalLanguage ?? null,
     languages: extras.languages ?? (api ? youtubeLanguages(api) : noLanguages()),
-    description: extras.description ?? api?.description ?? null,
+    description: extras.description ?? api?.description ?? ok?.description ?? null,
     assessment: assess(oembed ?? ASSUMED_OK, api),
     tmdb,
   }

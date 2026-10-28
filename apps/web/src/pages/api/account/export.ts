@@ -1,6 +1,7 @@
 import { defaultLocale } from '@fenaki/i18n'
 import { cms, type Page } from '../../../lib/account/payload.ts'
 import { accountRoute, fail } from '../../../lib/account/route.ts'
+import type { Submission } from '../../../lib/account/submissions.ts'
 
 interface Row {
   short: { slug?: string | null; title?: string | null } | number | null
@@ -12,7 +13,7 @@ const shortOf = (row: Row) =>
     ? { slug: row.short.slug, title: row.short.title }
     : null
 
-/** The member's data as one JSON file: the account, the list, the ratings, the viewings. */
+/** The member's data as one JSON file: the account, the list, ratings, viewings and submissions. */
 export const GET = accountRoute({ limit: 'export', member: true }, async ({ member }) => {
   const query = (fields: string[]) => ({
     locale: defaultLocale,
@@ -22,7 +23,7 @@ export const GET = accountRoute({ limit: 'export', member: true }, async ({ memb
     'populate[shorts][title]': true,
     ...Object.fromEntries(fields.map((field) => [`select[${field}]`, true])),
   })
-  const [me, list, ratings, viewings] = await Promise.all([
+  const [me, list, ratings, viewings, submissions] = await Promise.all([
     cms<{
       user?: {
         email: string
@@ -42,8 +43,9 @@ export const GET = accountRoute({ limit: 'export', member: true }, async ({ memb
       token: member.token,
       query: query(['short', 'positionSeconds', 'durationSeconds', 'completed', 'updatedAt']),
     }),
+    cms<{ docs: Submission[] }>('submissions/mine', { token: member.token }),
   ])
-  if (me.status !== 200 || list.status !== 200 || ratings.status !== 200 || viewings.status !== 200)
+  if ([me, list, ratings, viewings, submissions].some((result) => result.status !== 200))
     return fail('server', 503)
   const rows = (page: typeof list) =>
     (page.data?.docs ?? []).map(({ short, id: _id, ...rest }) => ({
@@ -61,6 +63,7 @@ export const GET = accountRoute({ limit: 'export', member: true }, async ({ memb
     myList: rows(list),
     ratings: rows(ratings),
     viewings: rows(viewings),
+    submissions: (submissions.data?.docs ?? []).map(({ id: _id, ...rest }) => rest),
   }
   return new Response(JSON.stringify(body, null, 2), {
     headers: {
