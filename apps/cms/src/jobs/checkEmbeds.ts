@@ -11,6 +11,13 @@ import type { HiddenReason } from '../collections/Shorts.ts'
 /** Pause between oEmbed requests: the check runs at night and is in no hurry. */
 const PAUSE_MS = 300
 
+/**
+ * A source checked this recently is not asked again: a check cut short (a deploy restarts the
+ * worker) resumes where it stopped instead of starting over. Shorter than a day, so every night
+ * still checks everything once.
+ */
+export const RECHECK_AFTER_MS = 20 * 60 * 60 * 1000
+
 const shortIdOf = (source: Source) =>
   typeof source.short === 'object' ? source.short.id : source.short
 
@@ -26,6 +33,8 @@ const isPlayable = (source: Pick<Source, 'embeddable' | 'ageRestricted' | 'statu
 
 export interface CheckSummary {
   checked: number
+  /** Checked recently (by this night's run before it was cut short): their stored state counts. */
+  skipped: number
   problems: number
   inconclusive: number
   hidden: number
@@ -66,10 +75,16 @@ export async function checkEmbeds(
     req,
   })
 
+  const checkedSince = Date.now() - RECHECK_AFTER_MS
+  const recent = (source: Source) =>
+    Boolean(source.lastCheckedAt && Date.parse(source.lastCheckedAt) > checkedSince)
+
   // One YouTube Data API request per 50 videos, when there is a key.
   const keys = ingestKeys()
   let api: Map<string, YouTubeVideo> | undefined
-  const youtubeIds = sources.docs.filter((s) => s.provider === 'youtube').map((s) => s.externalId)
+  const youtubeIds = sources.docs
+    .filter((s) => s.provider === 'youtube' && !recent(s))
+    .map((s) => s.externalId)
   if (keys.youtube && youtubeIds.length > 0) {
     try {
       api = await fetchYouTubeVideos(youtubeIds, keys.youtube, fetchFn)
@@ -78,7 +93,14 @@ export async function checkEmbeds(
     }
   }
 
-  const summary: CheckSummary = { checked: 0, problems: 0, inconclusive: 0, hidden: 0, stills: 0 }
+  const summary: CheckSummary = {
+    checked: 0,
+    skipped: 0,
+    problems: 0,
+    inconclusive: 0,
+    hidden: 0,
+    stills: 0,
+  }
   const results = new Map<number, { assessment: Assessment; reason?: HiddenReason }[]>()
   const now = new Date().toISOString()
   /** The playable state of each source after this check; inconclusive checks keep the stored one. */
@@ -86,6 +108,24 @@ export async function checkEmbeds(
   const oembedThumbnails = new Map<number, string>()
 
   for (const source of sources.docs) {
+    if (recent(source)) {
+      // Already checked tonight: what it found is stored, and counts for hiding its short.
+      const stored: Assessment = {
+        conclusive: true,
+        status: source.status === 'broken' || source.status === 'private' ? source.status : 'ok',
+        embeddable: source.embeddable !== false,
+        ageRestricted: Boolean(source.ageRestricted),
+        note: source.checkNote ?? '',
+      }
+      const shortId = shortIdOf(source)
+      results.set(shortId, [
+        ...(results.get(shortId) ?? []),
+        { assessment: stored, reason: unplayableReason(stored) },
+      ])
+      playable.set(source.id, isPlayable(source))
+      summary.skipped += 1
+      continue
+    }
     const url = source.url || videoPageUrl(source.provider, source.externalId)
     if (!url) continue
     const oembed = await fetchOEmbed(
@@ -227,6 +267,10 @@ async function refreshStills(req: PayloadRequest, ctx: StillsContext) {
         continue
       }
 
+      // Refreshed tonight already (a resumed check): nothing to download again.
+      const fetchedAt = provider[0]?.fetchedAt
+      if (fetchedAt && Date.parse(fetchedAt) > Date.now() - RECHECK_AFTER_MS) continue
+
       const candidates = thumbnailCandidates(
         source.provider,
         source.externalId,
@@ -278,6 +322,7 @@ export const checkEmbedsTask: TaskConfig<{
   retries: 1,
   outputSchema: [
     { name: 'checked', type: 'number', required: true },
+    { name: 'skipped', type: 'number', required: true },
     { name: 'problems', type: 'number', required: true },
     { name: 'inconclusive', type: 'number', required: true },
     { name: 'hidden', type: 'number', required: true },
@@ -287,7 +332,7 @@ export const checkEmbedsTask: TaskConfig<{
   handler: async ({ req }) => {
     const output = await checkEmbeds(req)
     req.payload.logger.info(
-      `checkEmbeds: ${output.checked} sources checked, ${output.problems} problems, ${output.inconclusive} inconclusive, ${output.hidden} shorts hidden, ${output.stills} stills refreshed`,
+      `checkEmbeds: ${output.checked} sources checked (${output.skipped} already checked tonight), ${output.problems} problems, ${output.inconclusive} inconclusive, ${output.hidden} shorts hidden, ${output.stills} stills refreshed`,
     )
     return { output }
   },

@@ -107,7 +107,14 @@ describe('checkEmbeds', () => {
       ],
     })
     const summary = await checkEmbeds(req, oembedByVideo({ bbbbbbbbbbb: 404, ccccccccccc: 401 }), 0)
-    expect(summary).toEqual({ checked: 4, problems: 2, inconclusive: 0, hidden: 1, stills: 0 })
+    expect(summary).toEqual({
+      checked: 4,
+      skipped: 0,
+      problems: 2,
+      inconclusive: 0,
+      hidden: 1,
+      stills: 0,
+    })
     expect(updates.find((u) => u.collection === 'sources' && u.id === 20)?.data).toMatchObject({
       status: 'broken',
       problemSince: expect.any(String),
@@ -124,6 +131,34 @@ describe('checkEmbeds', () => {
         req,
       },
     ])
+  })
+
+  it('resumes a check cut short: sources checked tonight are not asked again, but still count', async () => {
+    const tonight = new Date(Date.now() - 60 * 60 * 1000).toISOString()
+    const { req, updates } = fakeRequest({
+      shorts: [
+        { id: 1, title: 'Checked tonight', status: 'published' },
+        { id: 2, title: 'Broken tonight', status: 'published' },
+      ],
+      sources: [
+        { ...source(10, 1, 'aaaaaaaaaaa'), lastCheckedAt: tonight },
+        { ...source(20, 2, 'bbbbbbbbbbb'), lastCheckedAt: tonight, status: 'broken' },
+      ],
+    })
+    const asked: string[] = []
+    const summary = await checkEmbeds(
+      req,
+      async (url) => {
+        asked.push(String(url))
+        return new Response('{}', { status: 200 })
+      },
+      0,
+    )
+    // The provider is not asked again (only the missing still is downloaded).
+    expect(asked.filter((url) => url.includes('oembed'))).toEqual([])
+    expect(summary).toMatchObject({ checked: 0, skipped: 2, hidden: 1 })
+    expect(updates.filter((u) => u.collection === 'sources')).toEqual([])
+    expect(updates.find((u) => u.collection === 'shorts')?.id).toBe(2)
   })
 
   it('changes nothing but the note when the provider does not answer', async () => {
