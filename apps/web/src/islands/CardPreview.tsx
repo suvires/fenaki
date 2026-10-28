@@ -1,6 +1,13 @@
 import type { Locale } from '@fenaki/i18n'
 import { ShortPreview, type BadgeTone, type Rating, type ShortPreviewProps } from '@fenaki/ui'
-import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+} from 'react'
 import { createPortal } from 'react-dom'
 import {
   createPreviewTimer,
@@ -85,7 +92,10 @@ interface FloatingProps extends CardPreviewProps {
   data: PreviewData
   /** The card's box when the preview opened. */
   cardBox: Box
-  /** The card itself: when it leaves the page (removed from «Mi lista»), the preview closes. */
+  /**
+   * The card itself: when it leaves the page (removed from «Mi lista» or the history), the preview
+   * closes.
+   */
   card: HTMLElement
   onClose: () => void
 }
@@ -114,6 +124,15 @@ function Floating({ data, cardBox, card, locale, labels, onClose }: FloatingProp
     sync()
     return subscribeRatings(sync)
   }, [short.slug])
+
+  // The card left the page (its short was removed from the list it was in): the preview goes too.
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      if (!card.isConnected) onClose()
+    })
+    observer.observe(document.body, { childList: true, subtree: true })
+    return () => observer.disconnect()
+  }, [card, onClose])
 
   useLayoutEffect(() => {
     const element = panel.current
@@ -172,14 +191,7 @@ function Floating({ data, cardBox, card, locale, labels, onClose }: FloatingProp
       href={data.href}
       saved={saved}
       onToggleSaved={() => {
-        const removing = saved
         toggle(short)
-        // On «Mi lista» (its page and its rail) the card goes with it: so does its preview, once
-        // the list has rendered without it.
-        if (removing)
-          requestAnimationFrame(() => {
-            if (!card.isConnected) onClose()
-          })
       }}
       rating={rating}
       onRate={(value) => setRating(short.slug, value)}
@@ -227,6 +239,7 @@ export function CardPreview(props: CardPreviewProps) {
   const [hoverable, setHoverable] = useState(false)
   const [open, setOpen] = useState<{ data: PreviewData; cardBox: Box; card: HTMLElement }>()
   const timer = useRef<PreviewTimer<HTMLElement>>(undefined)
+  const close = useCallback(() => timer.current?.close(), [])
 
   useEffect(() => {
     const query = window.matchMedia(HOVER)
@@ -242,7 +255,8 @@ export function CardPreview(props: CardPreviewProps) {
       openDelay: token('--short-preview-delay-open', 450),
       closeDelay: token('--short-preview-delay-close', 150),
       onOpen: (card) => {
-        const data = readCard(card)
+        // A card already gone from the page (removed while the pointer rested on it) has no box.
+        const data = card.isConnected ? readCard(card) : undefined
         setOpen(data ? { data, cardBox: box(card.getBoundingClientRect()), card } : undefined)
       },
       onClose: () => setOpen(undefined),
@@ -297,12 +311,5 @@ export function CardPreview(props: CardPreviewProps) {
   }, [hoverable])
 
   if (!open) return null
-  return (
-    <Floating
-      key={open.data.short.slug}
-      {...props}
-      {...open}
-      onClose={() => timer.current?.close()}
-    />
-  )
+  return <Floating key={open.data.short.slug} {...props} {...open} onClose={close} />
 }
