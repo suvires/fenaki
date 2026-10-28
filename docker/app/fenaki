@@ -28,7 +28,9 @@ case "$1" in
   jobs)
     # Jobs a stopped worker left half done go back to the queue first.
     payload run src/jobs/releaseInterrupted.ts
-    exec node node_modules/payload/bin.js jobs:run --cron '*/10 * * * * *' --queue default --handle-schedules
+    # 50 jobs every 10 seconds: a search sync takes well under a second, so a night's embed check
+    # (one sync per short touched) drains in minutes, not hours.
+    exec node node_modules/payload/bin.js jobs:run --cron '*/10 * * * * *' --limit 50 --queue default --handle-schedules
     ;;
   migrate)
     payload migrate
