@@ -128,6 +128,7 @@
         "fenaki": "FENAKI no pone cookies de publicidad ni de seguimiento.",
         "policy": "Política de privacidad de {provider}",
         "remember": "Recordar mi elección para los cortos de {provider}",
+        "changeAccount": "Se guarda en tu cuenta, para todos tus dispositivos. Puedes cambiarlo cuando quieras en «Preferencias de reproducción», al pie de la página.",
         "accept": "Aceptar y reproducir",
         "cancel": "Cancelar",
         "change": "Puedes cambiarlo cuando quieras en «Preferencias de reproducción», al pie de la página."
@@ -628,11 +629,14 @@
   },
   "playerSettings": {
     "title": "Preferencias de reproducción",
-    "intro": "Los cortos se ven en el reproductor oficial de YouTube o Vimeo. Antes de cargarlo te preguntamos, salvo que hayas pedido que recordemos tu elección. Aquí puedes ver y retirar esas elecciones. Se guardan solo en este navegador.",
-    "allowed": "Se carga sin preguntar",
-    "ask": "Te preguntamos antes de cargarlo",
-    "withdraw": "Volver a preguntarme",
-    "more": "Qué datos recibe cada reproductor: {cookies}.",
+    "intro": "Los cortos se ven en el reproductor de YouTube o de Vimeo. Antes de cargarlo te pedimos permiso, porque esa empresa recibe tu dirección IP y guarda datos en tu navegador. Si marcas un reproductor, sus cortos empiezan sin preguntarte.",
+    "savedIn": {
+      "account": "Se guarda en tu cuenta, así que vale en todos tus dispositivos.",
+      "browser": "Se guarda solo en este navegador. Con la sesión iniciada, se guarda en tu cuenta y vale en todos tus dispositivos."
+    },
+    "allow": "Reproducir los cortos de {provider} sin preguntarme",
+    "error": "No hemos podido guardar el cambio. Inténtalo de nuevo.",
+    "more": "Qué datos recibe cada reproductor, en la {cookies}.",
     "cookiesLink": "política de cookies"
   }
 }

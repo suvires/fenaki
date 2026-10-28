@@ -1,6 +1,6 @@
 # Política de cookies
 
-Última actualización: 26 de octubre de 2026
+Última actualización: 28 de octubre de 2026
 
 ## 1. Cookies y tecnologías similares
 
@@ -16,7 +16,7 @@ Una cookie es un pequeño archivo que una web guarda en tu navegador para record
 
 FENAKI no muestra un banner de cookies porque no usa cookies que lo requieran. Solo los reproductores de YouTube y Vimeo (apartado 4.3) requieren tu consentimiento, que se solicita en el momento de reproducir, con dos botones del mismo nivel: «Cancelar» y «Aceptar y reproducir». Si cancelas, puedes seguir navegando por el catálogo con normalidad.
 
-En esa ventana puedes marcar «Recordar mi elección» para que los cortos de ese proveedor se carguen sin volver a solicitar tu consentimiento. Si no la marcas, se solicitará cada vez. Puedes retirar tu elección en cualquier momento, con un clic, desde «Preferencias de reproducción», en el pie de página.
+En esa ventana puedes marcar «Recordar mi elección» para que los cortos de ese proveedor se carguen sin volver a solicitar tu consentimiento. Si no la marcas, se solicitará cada vez. Sin sesión iniciada, tu elección se guarda solo en ese navegador; con la sesión iniciada, se guarda en tu cuenta y vale en todos los dispositivos donde inicies sesión. Puedes darla o retirarla en cualquier momento, con un clic, desde «Preferencias de reproducción», en el pie de página.
 
 ## 4. Cookies y tecnologías utilizadas
 
@@ -24,7 +24,7 @@ En esa ventana puedes marcar «Recordar mi elección» para que los cortos de es
 
 | Nombre                     | Proveedor | Finalidad                                                                      | Duración                                                                                | Tipo                                                                                                                                                                                     |
 | -------------------------- | --------- | ------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `fenaki:player-consent:v1` | FENAKI    | Recordar qué reproductores (YouTube, Vimeo) has autorizado de forma permanente | Hasta que lo retires en «Preferencias de reproducción» o borres los datos del navegador | Propia, `localStorage`. Solo existe si marcas «Recordar mi elección»; no se envía a nuestros servidores                                                                                  |
+| `fenaki:player-consent:v1` | FENAKI    | Recordar qué reproductores (YouTube, Vimeo) has autorizado de forma permanente | Hasta que lo retires en «Preferencias de reproducción» o borres los datos del navegador | Propia, `localStorage`. Solo existe si lo eliges sin sesión iniciada; no se envía a nuestros servidores. Con la sesión iniciada, tu elección se guarda en tu cuenta, no en el navegador  |
 | `fenaki:my-list:v1`        | FENAKI    | Guardar en tu navegador los cortos que añades a «Mi lista»                     | Hasta que la quites o borres los datos del navegador                                    | Propia, `localStorage`. La guardas tú al pulsar «Añadir a mi lista»; no se envía a nuestros servidores. Si tienes cuenta e inicias sesión, se añade a tu cuenta y se borra del navegador |
 | `fenaki:my-ratings:v1`     | FENAKI    | Guardar en tu navegador las valoraciones que das a los cortos                  | Hasta que la quites o borres los datos del navegador                                    | Propia, `localStorage`. La guardas tú al valorar un corto; no se envía a nuestros servidores. Si tienes cuenta e inicias sesión, se añade a tu cuenta y se borra del navegador           |
 | `__Host-fenaki-session`    | FENAKI    | Mantener tu sesión iniciada cuando tienes cuenta                               | 30 días como máximo; se borra al cerrar sesión o al borrar la cuenta                    | Propia, solo se instala si inicias sesión                                                                                                                                                |

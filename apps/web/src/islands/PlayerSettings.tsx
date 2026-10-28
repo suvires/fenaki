@@ -1,45 +1,52 @@
 import { createTranslator, type Locale } from '@fenaki/i18n'
-import { Button } from '@fenaki/ui'
-import { useEffect, useState } from 'react'
-import { forget, isRemembered, PLAYER_PROVIDERS, subscribe } from '../lib/playerConsent.ts'
+import { Checkbox, Notice } from '@fenaki/ui'
+import { useEffect, useId, useState } from 'react'
+import { isRemembered, PLAYER_PROVIDERS, setRemembered, subscribe } from '../lib/playerConsent.ts'
 
 interface PlayerSettingsProps {
   locale: Locale
 }
 
-/** Each player provider and whether it loads without asking, with the way to withdraw that choice. */
+/** One checkbox per player provider: checked, its shorts play without asking first. */
 export function PlayerSettings({ locale }: PlayerSettingsProps) {
   const t = createTranslator(locale)
-  // Read in the browser: the server never knows the choice, so it renders every provider as «ask».
-  const [remembered, setRemembered] = useState<Record<string, boolean>>({})
+  const id = useId()
+  // Read in the browser: until then every provider renders as «ask», and nothing can be changed.
+  const [remembered, setState] = useState<Record<string, boolean>>()
+  const [failed, setFailed] = useState(false)
   useEffect(() => {
     const sync = () =>
-      setRemembered(Object.fromEntries(PLAYER_PROVIDERS.map((p) => [p, isRemembered(p)])))
+      setState(Object.fromEntries(PLAYER_PROVIDERS.map((p) => [p, isRemembered(p)])))
     sync()
     return subscribe(sync)
   }, [])
 
   return (
-    <ul className="m-0 p-0 list-none grid gap-3">
-      {PLAYER_PROVIDERS.map((provider) => (
-        <li
-          key={provider}
-          data-player-provider={provider}
-          className="flex flex-wrap items-center justify-between gap-3 rounded-md bg-raised p-4"
-        >
-          <div className="grid gap-1">
-            <span className="text-body text-primary">{t(`providers.${provider}`)}</span>
-            <span className="text-meta text-secondary">
-              {remembered[provider] ? t('playerSettings.allowed') : t('playerSettings.ask')}
-            </span>
-          </div>
-          {remembered[provider] ? (
-            <Button variant="secondary" size="sm" onClick={() => forget(provider)}>
-              {t('playerSettings.withdraw')}
-            </Button>
-          ) : null}
-        </li>
-      ))}
-    </ul>
+    <div className="grid gap-3">
+      <ul className="m-0 p-0 list-none grid gap-3">
+        {PLAYER_PROVIDERS.map((provider) => (
+          <li key={provider} data-player-provider={provider} className="rounded-md bg-raised p-4">
+            <Checkbox
+              id={`${id}-${provider}`}
+              checked={remembered?.[provider] ?? false}
+              disabled={!remembered}
+              onChange={(event) => {
+                setFailed(false)
+                void setRemembered(provider, event.currentTarget.checked).then((ok) =>
+                  setFailed(!ok),
+                )
+              }}
+            >
+              {t('playerSettings.allow', { provider: t(`providers.${provider}`) })}
+            </Checkbox>
+          </li>
+        ))}
+      </ul>
+      {failed ? (
+        <Notice tone="danger" role="alert">
+          {t('playerSettings.error')}
+        </Notice>
+      ) : null}
+    </div>
   )
 }

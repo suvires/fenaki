@@ -18,6 +18,7 @@ import * as migration_20261027_111231_ledger_and_languages from './20261027_1112
 import * as migration_20261027_112208_ai_review from './20261027_112208_ai_review';
 import * as migration_20261027_174600_channel_min_duration from './20261027_174600_channel_min_duration';
 import * as migration_20261027_183754_license_platform_terms_nc from './20261027_183754_license_platform_terms_nc';
+import * as migration_20261028_083228_member_player_consent from './20261028_083228_member_player_consent';
 
 export const migrations = [
   {
@@ -118,6 +119,11 @@ export const migrations = [
   {
     up: migration_20261027_183754_license_platform_terms_nc.up,
     down: migration_20261027_183754_license_platform_terms_nc.down,
-    name: '20261027_183754_license_platform_terms_nc'
+    name: '20261027_183754_license_platform_terms_nc',
+  },
+  {
+    up: migration_20261028_083228_member_player_consent.up,
+    down: migration_20261028_083228_member_player_consent.down,
+    name: '20261028_083228_member_player_consent'
   },
 ];

@@ -100,10 +100,11 @@ export function ShortPlayer({
         <ConsentDialog
           locale={locale}
           provider={consentProvider}
+          signedIn={tracking}
           open={pending !== undefined}
           onCancel={() => setPending(undefined)}
           onAccept={(remembered) => {
-            if (remembered) remember(consentProvider)
+            if (remembered) void remember(consentProvider)
             pending?.()
             setPending(undefined)
           }}
@@ -116,6 +117,8 @@ export function ShortPlayer({
 interface ConsentDialogProps {
   locale: Locale
   provider: PlayerProvider
+  /** Signed in, a remembered choice goes to the account (every device): the dialog says so. */
+  signedIn: boolean
   open: boolean
   onCancel: () => void
   onAccept: (remember: boolean) => void
@@ -126,7 +129,14 @@ interface ConsentDialogProps {
  * and what its player keeps in the browser), with its privacy policy. «Aceptar y reproducir» is
  * the consent; the viewer may have it remembered for that provider.
  */
-function ConsentDialog({ locale, provider, open, onCancel, onAccept }: ConsentDialogProps) {
+function ConsentDialog({
+  locale,
+  provider,
+  signedIn,
+  open,
+  onCancel,
+  onAccept,
+}: ConsentDialogProps) {
   const t = createTranslator(locale)
   const name = t(`providers.${provider}`)
   const rememberId = useId()
@@ -174,7 +184,9 @@ function ConsentDialog({ locale, provider, open, onCancel, onAccept }: ConsentDi
       >
         {t('short.player.consent.remember', { provider: name })}
       </Checkbox>
-      <p className="m-0 text-meta">{t('short.player.consent.change')}</p>
+      <p className="m-0 text-meta">
+        {t(signedIn ? 'short.player.consent.changeAccount' : 'short.player.consent.change')}
+      </p>
     </Dialog>
   )
 }

@@ -9,6 +9,8 @@ import type { Rating } from '@fenaki/ui'
 export interface PageAccountState {
   list: { slug: string; savedAt: number }[]
   ratings: Record<string, Rating>
+  /** The players allowed without asking (lib/playerConsent.ts). */
+  playerConsent?: string[]
 }
 
 export const STATE_ELEMENT_ID = 'fenaki-account'
@@ -21,7 +23,7 @@ export function isSignedIn(): boolean {
 
 let state: PageAccountState | undefined
 
-/** The list and ratings the server rendered into this page, read once. */
+/** The list, ratings and player choices the server rendered into this page, read once. */
 export function pageState(): PageAccountState {
   if (state) return state
   state = { list: [], ratings: {} }

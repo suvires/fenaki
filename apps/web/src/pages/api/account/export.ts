@@ -23,7 +23,14 @@ export const GET = accountRoute({ limit: 'export', member: true }, async ({ memb
     ...Object.fromEntries(fields.map((field) => [`select[${field}]`, true])),
   })
   const [me, list, ratings, viewings] = await Promise.all([
-    cms<{ user?: { email: string; name?: string | null; createdAt?: string } }>('members/me', {
+    cms<{
+      user?: {
+        email: string
+        name?: string | null
+        playerConsent?: string[] | null
+        createdAt?: string
+      }
+    }>('members/me', {
       token: member.token,
     }),
     cms<Page<Row>>('list-items', { token: member.token, query: query(['short', 'savedAt']) }),
@@ -49,6 +56,7 @@ export const GET = accountRoute({ limit: 'export', member: true }, async ({ memb
       email: me.data?.user?.email,
       name: me.data?.user?.name ?? null,
       createdAt: me.data?.user?.createdAt,
+      playersAllowedWithoutAsking: me.data?.user?.playerConsent ?? [],
     },
     myList: rows(list),
     ratings: rows(ratings),

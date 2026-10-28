@@ -992,6 +992,10 @@ export interface Member {
    * Sample account for development, not a real viewer.
    */
   sample?: boolean | null;
+  /**
+   * The member chose to load these players without the consent dialog, on every device. They change it at «Preferencias de reproducción».
+   */
+  playerConsent?: ('youtube' | 'vimeo')[] | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -1805,6 +1809,7 @@ export interface UsersSelect<T extends boolean = true> {
 export interface MembersSelect<T extends boolean = true> {
   name?: T;
   sample?: T;
+  playerConsent?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;

@@ -9,7 +9,7 @@ import {
   MIN_PASSWORD_LENGTH,
   SESSION_SECONDS,
 } from '../accounts/rules.ts'
-import { groups, inLanguage, label, messages } from '../labels.ts'
+import { groups, inLanguage, label, messages, options } from '../labels.ts'
 
 /** A member reads and changes only themselves; admins read everyone (support, GDPR requests). */
 const itself: Access = ({ req }) =>
@@ -132,6 +132,22 @@ export const Members: CollectionConfig = {
         description: label(
           'Sample account for development, not a real viewer.',
           'Cuenta de ejemplo para desarrollo, no es un espectador real.',
+        ),
+      },
+    },
+    {
+      name: 'playerConsent',
+      label: label('Players allowed without asking', 'Reproductores permitidos sin preguntar'),
+      type: 'select',
+      hasMany: true,
+      options: options({
+        youtube: label('YouTube', 'YouTube'),
+        vimeo: label('Vimeo', 'Vimeo'),
+      }),
+      admin: {
+        description: label(
+          'The member chose to load these players without the consent dialog, on every device. They change it at «Preferencias de reproducción».',
+          'El miembro eligió cargar estos reproductores sin la ventana de consentimiento, en todos sus dispositivos. Lo cambia en «Preferencias de reproducción».',
         ),
       },
     },

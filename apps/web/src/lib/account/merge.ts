@@ -45,7 +45,7 @@ export interface MergePlan {
  * newest ones are kept. Added oldest first, so the account's order matches the browser's.
  */
 export function planMerge(
-  account: AccountState,
+  account: Pick<AccountState, 'list' | 'ratings'>,
   incoming: Incoming,
   caps: { list: number; ratings: number },
 ): MergePlan {

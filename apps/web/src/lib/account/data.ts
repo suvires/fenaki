@@ -5,6 +5,7 @@
  */
 import type { Locale } from '@fenaki/i18n'
 import { cms, type CmsResult, type Page } from './payload.ts'
+import type { PlayerProvider } from '../playerConsent.ts'
 import type { RatingValue } from './rules.ts'
 import type { SessionMember } from './session.ts'
 
@@ -35,6 +36,7 @@ export interface ViewingEntry {
 export interface AccountState {
   list: ListEntry[]
   ratings: Record<string, RatingValue>
+  playerConsent: PlayerProvider[]
 }
 
 type Related = number | { id: number; slug?: string | null } | null | undefined
@@ -177,12 +179,15 @@ export async function loadViewing(
 
 const states = new WeakMap<SessionMember, Promise<AccountState>>()
 
-/** The list and ratings of the member, once per request: the layout and the page share it. */
+/**
+ * The list, ratings and player choices of the member, once per request: the layout and the page
+ * share it.
+ */
 export function loadAccountState(member: SessionMember, locale: Locale): Promise<AccountState> {
   let state = states.get(member)
   if (!state) {
     state = Promise.all([loadList(member, locale), loadRatings(member, locale)]).then(
-      ([list, ratings]) => ({ list, ratings }),
+      ([list, ratings]) => ({ list, ratings, playerConsent: member.playerConsent }),
     )
     states.set(member, state)
   }

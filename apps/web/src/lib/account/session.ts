@@ -5,6 +5,7 @@
  * refreshes the token before it runs out.
  */
 import type { AstroCookies } from 'astro'
+import { PLAYER_PROVIDERS, type PlayerProvider } from '../playerConsent.ts'
 import { siteUrl } from '../services.ts'
 import { cms } from './payload.ts'
 
@@ -13,6 +14,8 @@ export interface SessionMember {
   id: number
   email: string
   name?: string
+  /** The players the member chose to load without asking, on every device. */
+  playerConsent: PlayerProvider[]
   token: string
 }
 
@@ -37,7 +40,13 @@ export function clearSession(cookies: AstroCookies): void {
 }
 
 interface MeResponse {
-  user: { id: number; email: string; name?: string | null; collection?: string } | null
+  user: {
+    id: number
+    email: string
+    name?: string | null
+    playerConsent?: string[] | null
+    collection?: string
+  } | null
   exp?: number
 }
 
@@ -63,6 +72,7 @@ export async function resolveSession(token: string): Promise<Resolved> {
     id: user.id,
     email: user.email,
     name: user.name ?? undefined,
+    playerConsent: PLAYER_PROVIDERS.filter((p) => user.playerConsent?.includes(p)),
     token,
   }
 
