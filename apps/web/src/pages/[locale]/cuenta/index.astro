@@ -19,6 +19,7 @@ const t = translator(locale)
       client:load
       locale={locale}
       email={member.email}
+      pendingEmail={member.pendingEmail}
       name={member.name ?? ''}
       exportHref="/api/account/export"
       signOutAction="/api/account/logout"

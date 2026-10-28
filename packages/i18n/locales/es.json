@@ -521,6 +521,8 @@
       "error": {
         "email": "Ese email no parece completo. Revisa que tenga @ y un dominio, por ejemplo nombre@ejemplo.com.",
         "emailEmpty": "Escribe tu email.",
+        "emailTaken": "Ese email ya lo usa otra cuenta.",
+        "emailSame": "Ese ya es tu email.",
         "passwordEmpty": "Escribe tu contraseña.",
         "passwordShort": "La contraseña debe tener al menos 10 caracteres.",
         "passwordMismatch": "Las dos contraseñas no coinciden.",
@@ -562,6 +564,16 @@
         "unverified": "Aún no has verificado tu email. Abre el enlace que te enviamos al crear la cuenta; si no lo encuentras, crea la cuenta otra vez con el mismo email y te mandamos otro."
       }
     },
+    "confirmEmail": {
+      "title": "Confirmar tu nuevo email",
+      "working": "Confirmando tu email…",
+      "okTitle": "Email cambiado",
+      "okText": "Tu cuenta ya usa este email. Úsalo la próxima vez que inicies sesión.",
+      "failTitle": "El enlace no es válido o ha caducado",
+      "failText": "Pide el cambio de nuevo desde «Mi cuenta» para recibir un enlace nuevo.",
+      "takenText": "Ese email lo empezó a usar otra cuenta mientras tanto. Tu cuenta sigue con el email anterior.",
+      "account": "Ir a mi cuenta"
+    },
     "verify": {
       "title": "Verificar tu email",
       "working": "Verificando tu email…",
@@ -599,11 +611,30 @@
       "signedInAs": "Has iniciado sesión como {email}.",
       "profile": {
         "title": "Tus datos",
-        "submit": "Guardar",
+        "saving": "Guardando…",
         "saved": "Guardado."
       },
+      "email": {
+        "label": "Email",
+        "change": "Cambiar email",
+        "dialogTitle": "Cambiar tu email",
+        "dialogText": "Te enviaremos un enlace al email nuevo. Tu cuenta seguirá usando el actual hasta que lo abras.",
+        "new": {
+          "label": "Email nuevo"
+        },
+        "password": {
+          "label": "Tu contraseña"
+        },
+        "submit": "Enviar enlace",
+        "cancel": "Cancelar",
+        "sent": "Te hemos enviado un enlace a {email}. Ábrelo para usar ese email; hasta entonces tu cuenta sigue con el actual.",
+        "pending": "Pendiente de confirmar: {email}. Abre el enlace que te enviamos a esa dirección.",
+        "wrong": "La contraseña no es correcta."
+      },
       "password": {
-        "title": "Cambiar la contraseña",
+        "title": "Contraseña",
+        "change": "Cambiar contraseña",
+        "dialogTitle": "Cambiar la contraseña",
         "current": {
           "label": "Contraseña actual"
         },
@@ -611,6 +642,7 @@
           "label": "Contraseña nueva"
         },
         "submit": "Cambiar contraseña",
+        "cancel": "Cancelar",
         "saved": "Contraseña cambiada.",
         "wrong": "La contraseña actual no es correcta."
       },
@@ -645,6 +677,16 @@
     }
   },
   "accountEmail": {
+    "email": {
+      "subject": "Confirma tu nuevo email",
+      "preview": "Un clic y tu cuenta de FENAKI usará este email.",
+      "title": "Confirma tu nuevo email",
+      "intro": "Has pedido que tu cuenta de FENAKI use este email. Hasta que lo confirmes, sigue con el anterior.",
+      "button": "Confirmar email",
+      "fallback": "¿No funciona el botón? Copia este enlace en el navegador: {url}",
+      "ignore": "Si no lo has pedido tú, ignora este email: tu cuenta no cambia. El enlace caduca en 24 horas.",
+      "footer": "Te enviamos este email desde {site}. {privacyPolicy}"
+    },
     "verify": {
       "subject": "Verifica tu email para activar tu cuenta",
       "preview": "Un clic y tu cuenta de FENAKI estará lista.",

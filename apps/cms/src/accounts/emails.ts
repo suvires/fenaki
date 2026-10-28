@@ -13,7 +13,7 @@ import {
 } from '@fenaki/i18n'
 import { palettes, typography, variables } from '@fenaki/tokens'
 
-export type AccountEmailKind = 'verify' | 'reset'
+export type AccountEmailKind = 'verify' | 'reset' | 'email'
 
 const escapeHtml = (text: string) =>
   text
@@ -59,7 +59,8 @@ export function accountLink(
   locale: Locale = defaultLocale,
   origin = siteOrigin(),
 ): string {
-  const page = kind === 'verify' ? 'verificar' : 'restablecer'
+  const page =
+    kind === 'verify' ? 'verificar' : kind === 'email' ? 'confirmar-email' : 'restablecer'
   return `${origin}/${locale}/cuenta/${page}?token=${encodeURIComponent(token)}`
 }
 

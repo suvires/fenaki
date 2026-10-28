@@ -14,6 +14,8 @@ export interface SessionMember {
   id: number
   email: string
   name?: string
+  /** A new email they asked for, until they open the link sent to it. */
+  pendingEmail?: string
   /** The players the member chose to load without asking, on every device. */
   playerConsent: PlayerProvider[]
   token: string
@@ -45,6 +47,7 @@ interface MeResponse {
     email: string
     name?: string | null
     playerConsent?: string[] | null
+    pendingEmail?: string | null
     collection?: string
   } | null
   exp?: number
@@ -72,6 +75,7 @@ export async function resolveSession(token: string): Promise<Resolved> {
     id: user.id,
     email: user.email,
     name: user.name ?? undefined,
+    pendingEmail: user.pendingEmail ?? undefined,
     playerConsent: PLAYER_PROVIDERS.filter((p) => user.playerConsent?.includes(p)),
     token,
   }

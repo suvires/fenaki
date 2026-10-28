@@ -1140,6 +1140,12 @@ export interface Member {
    */
   sample?: boolean | null;
   /**
+   * The member asked to change their email; it changes once they open the link sent there.
+   */
+  pendingEmail?: string | null;
+  pendingEmailToken?: string | null;
+  pendingEmailExpiresAt?: string | null;
+  /**
    * The member chose to load these players without the consent dialog, on every device. They change it at «Preferencias de reproducción».
    */
   playerConsent?: ('youtube' | 'vimeo')[] | null;
@@ -2023,6 +2029,9 @@ export interface UsersSelect<T extends boolean = true> {
 export interface MembersSelect<T extends boolean = true> {
   name?: T;
   sample?: T;
+  pendingEmail?: T;
+  pendingEmailToken?: T;
+  pendingEmailExpiresAt?: T;
   playerConsent?: T;
   updatedAt?: T;
   createdAt?: T;

@@ -1,0 +1,31 @@
+---
+import { Button, Notice, PageHeader } from '@fenaki/ui'
+import { ConfirmEmail } from '../../../islands/account/ConfirmEmail.tsx'
+import Base from '../../../layouts/Base.astro'
+import { looksLikeToken } from '../../../lib/account/outcomes.ts'
+import { localeFrom, paths, translator } from '../../../lib/i18n.ts'
+
+const locale = localeFrom(Astro.params.locale)
+if (!locale) return Astro.rewrite('/404')
+
+const t = translator(locale)
+const token = Astro.url.searchParams.get('token')
+---
+
+<Base locale={locale} title={t('account.confirmEmail.title')} noindex>
+  <section class="grid gap-6 max-w-(--container-narrow) py-8">
+    <PageHeader title={t('account.confirmEmail.title')} />
+    {looksLikeToken(token) ? (
+      <ConfirmEmail client:load locale={locale} token={token} accountHref={paths.account(locale)} />
+    ) : (
+      <Notice tone="danger" role="alert" title={t('account.confirmEmail.failTitle')}>
+        <p class="m-0">{t('account.confirmEmail.failText')}</p>
+        <div>
+          <Button variant="secondary" href={paths.account(locale)}>
+            {t('account.confirmEmail.account')}
+          </Button>
+        </div>
+      </Notice>
+    )}
+  </section>
+</Base>

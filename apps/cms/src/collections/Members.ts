@@ -1,6 +1,7 @@
 import type { Access, CollectionBeforeValidateHook, CollectionConfig } from 'payload'
 import { ValidationError } from 'payload'
 import { isAdminField, isAdminUser, isMemberUser } from '../access.ts'
+import { changeEmailEndpoint, confirmEmailEndpoint } from '../accounts/changeEmail.ts'
 import { resendVerificationEndpoint } from '../accounts/resendVerification.ts'
 import { accountEmailHtml, accountEmailSubject, accountLink } from '../accounts/emails.ts'
 import {
@@ -88,7 +89,7 @@ export const Members: CollectionConfig = {
       generateEmailSubject: () => accountEmailSubject('reset'),
     },
   },
-  endpoints: [resendVerificationEndpoint],
+  endpoints: [resendVerificationEndpoint, changeEmailEndpoint, confirmEmailEndpoint],
   access: {
     admin: () => false,
     read: readMembers,
@@ -134,6 +135,33 @@ export const Members: CollectionConfig = {
           'Cuenta de ejemplo para desarrollo, no es un espectador real.',
         ),
       },
+    },
+    {
+      name: 'pendingEmail',
+      label: label('New email, waiting for confirmation', 'Email nuevo, pendiente de confirmar'),
+      type: 'email',
+      // Only the change-email endpoints write these, with overrideAccess.
+      access: { create: () => false, update: () => false },
+      admin: {
+        readOnly: true,
+        description: label(
+          'The member asked to change their email; it changes once they open the link sent there.',
+          'El miembro pidió cambiar su email; cambia cuando abra el enlace enviado a esa dirección.',
+        ),
+      },
+    },
+    {
+      name: 'pendingEmailToken',
+      type: 'text',
+      index: true,
+      access: { read: () => false, create: () => false, update: () => false },
+      admin: { hidden: true },
+    },
+    {
+      name: 'pendingEmailExpiresAt',
+      type: 'date',
+      access: { create: () => false, update: () => false },
+      admin: { hidden: true },
     },
     {
       name: 'playerConsent',

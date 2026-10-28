@@ -7,6 +7,10 @@ export function errorKey(code: string | undefined): MessageKey {
       return 'account.common.error.emailEmpty'
     case 'email_invalid':
       return 'account.common.error.email'
+    case 'email_taken':
+      return 'account.common.error.emailTaken'
+    case 'email_same':
+      return 'account.common.error.emailSame'
     case 'password_empty':
       return 'account.common.error.passwordEmpty'
     case 'password_short':

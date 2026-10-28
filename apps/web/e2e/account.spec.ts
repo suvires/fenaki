@@ -86,7 +86,7 @@ test('a viewer signs up, verifies, signs in, keeps a list, ratings and progress,
 }) => {
   test.setTimeout(120_000)
   const violations = watchViolations(page)
-  const email = uniqueEmail('flow')
+  let email = uniqueEmail('flow')
 
   // What a visitor kept in this browser before having an account.
   await open(page, '/es/')
@@ -235,8 +235,8 @@ test('a viewer signs up, verifies, signs in, keeps a list, ratings and progress,
   await test.step('the account page: name, a copy of the data', async () => {
     await open(page, '/es/cuenta')
     await expect(page.getByText(`Has iniciado sesión como ${email}`)).toBeVisible()
+    // Saved as it is typed: no button.
     await page.getByLabel('Nombre (opcional)').fill('Ana')
-    await page.getByRole('button', { name: 'Guardar', exact: true }).click()
     await expect(page.getByText('Guardado.')).toBeVisible()
     await page.reload({ waitUntil: 'networkidle' })
     await expect(page.getByLabel('Nombre (opcional)')).toHaveValue('Ana')
@@ -294,14 +294,37 @@ test('a viewer signs up, verifies, signs in, keeps a list, ratings and progress,
     await expect(page.getByRole('button', { name: 'Cuenta', exact: true })).toBeVisible()
   })
 
+  await test.step('change the email: it changes once the link sent to the new one is opened', async () => {
+    const next = uniqueEmail('moved')
+    await open(page, '/es/cuenta')
+    await page.getByRole('button', { name: 'Cambiar email' }).click()
+    const dialog = page.getByRole('dialog', { name: 'Cambiar tu email' })
+    await dialog.getByLabel('Email nuevo').fill(next)
+    await dialog.getByLabel('Tu contraseña').fill('no-es-esta-clave-1')
+    await dialog.getByRole('button', { name: 'Enviar enlace' }).click()
+    await expect(dialog.getByText('La contraseña no es correcta.')).toBeVisible()
+    await dialog.getByLabel('Tu contraseña').fill('otra-clave-distinta-2')
+    await dialog.getByRole('button', { name: 'Enviar enlace' }).click()
+    await expect(page.getByRole('status').filter({ hasText: next })).toBeVisible()
+    // Until the link is opened, the account keeps the old email.
+    await expect(page.getByText(`Has iniciado sesión como ${email}`)).toBeVisible()
+    const mail = await waitForEmail(next, 'Confirma tu nuevo email')
+    await open(page, linkIn(mail, 'confirmar-email'))
+    await expect(page.getByRole('status')).toContainText('Tu cuenta ya usa este email')
+    email = next
+    await open(page, '/es/cuenta')
+    await expect(page.getByText(`Has iniciado sesión como ${email}`)).toBeVisible()
+  })
+
   await test.step('delete the account', async () => {
     await open(page, '/es/cuenta')
     await page.getByRole('button', { name: 'Borrar mi cuenta' }).click()
-    await page.getByLabel('Contraseña', { exact: true }).fill('no-es-esta-clave-1')
-    await page.getByRole('button', { name: 'Sí, borrar mi cuenta' }).click()
-    await expect(page.getByText('La contraseña no es correcta.')).toBeVisible()
-    await page.getByLabel('Contraseña', { exact: true }).fill('otra-clave-distinta-2')
-    await page.getByRole('button', { name: 'Sí, borrar mi cuenta' }).click()
+    const dialog = page.getByRole('dialog', { name: '¿Seguro que quieres borrar tu cuenta?' })
+    await dialog.getByLabel('Contraseña', { exact: true }).fill('no-es-esta-clave-1')
+    await dialog.getByRole('button', { name: 'Sí, borrar mi cuenta' }).click()
+    await expect(dialog.getByText('La contraseña no es correcta.')).toBeVisible()
+    await dialog.getByLabel('Contraseña', { exact: true }).fill('otra-clave-distinta-2')
+    await dialog.getByRole('button', { name: 'Sí, borrar mi cuenta' }).click()
     await expect(page).toHaveURL(/\/es\/iniciar-sesion\?notice=deleted$/)
     await expect(page.getByRole('status')).toContainText('Tu cuenta se ha borrado')
 
