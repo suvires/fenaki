@@ -15,12 +15,13 @@ const GENRES = ['fiction', 'documentary', 'animation', 'experimental'] as const
 /** How many of the latest shorts each genre's rail shows. */
 const PER_GENRE = 20
 
-// Newest first (listShorts sorts by publication date): one rail per genre, empty genres left out.
-const shorts = await listShorts(locale, 1000)
-const rails = GENRES.map((type) => ({
-  type,
-  shorts: shorts.filter((short) => short.type === type).slice(0, PER_GENRE),
-})).filter((rail) => rail.shorts.length > 0)
+// Newest first (listShorts sorts by publication date): one rail per genre, each asked for its own
+// latest, so a genre published less often still fills its rail. Empty genres are left out.
+const rails = (
+  await Promise.all(
+    GENRES.map(async (type) => ({ type, shorts: await listShorts(locale, PER_GENRE, { type }) })),
+  )
+).filter((rail) => rail.shorts.length > 0)
 ---
 
 <Base locale={locale} title={t('home.rails.latest')}>

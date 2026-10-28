@@ -34,13 +34,18 @@ interface List<T> {
 /** Populates credits (people) and the join field of sources. */
 const SHORT_DEPTH = 1
 
-export async function listShorts(locale: Locale, limit = 100): Promise<PublishedShort[]> {
+export async function listShorts(
+  locale: Locale,
+  limit = 100,
+  filter: { type?: Short['type'] } = {},
+): Promise<PublishedShort[]> {
   const list = await get<List<PublishedShort>>('shorts', {
     locale,
     depth: SHORT_DEPTH,
     limit,
     sort: '-publishedAt',
     'where[status][equals]': 'published',
+    ...(filter.type ? { 'where[type][equals]': filter.type } : {}),
   })
   return list.docs
 }
