@@ -20,6 +20,7 @@ import * as migration_20261027_174600_channel_min_duration from './20261027_1746
 import * as migration_20261027_183754_license_platform_terms_nc from './20261027_183754_license_platform_terms_nc';
 import * as migration_20261028_083228_member_player_consent from './20261028_083228_member_player_consent';
 import * as migration_20261028_093617_short_genres_themes_audience from './20261028_093617_short_genres_themes_audience';
+import * as migration_20261028_100208_short_production_original_title_awards_review from './20261028_100208_short_production_original_title_awards_review';
 
 export const migrations = [
   {
@@ -130,6 +131,11 @@ export const migrations = [
   {
     up: migration_20261028_093617_short_genres_themes_audience.up,
     down: migration_20261028_093617_short_genres_themes_audience.down,
-    name: '20261028_093617_short_genres_themes_audience'
+    name: '20261028_093617_short_genres_themes_audience',
+  },
+  {
+    up: migration_20261028_100208_short_production_original_title_awards_review.up,
+    down: migration_20261028_100208_short_production_original_title_awards_review.down,
+    name: '20261028_100208_short_production_original_title_awards_review'
   },
 ];

@@ -123,6 +123,26 @@ const spoken = short?.noDialogue
   : short?.originalLanguage
     ? capital(formatLanguage(short.originalLanguage, locale))
     : undefined
+// «Ficha técnica»: the original title, the production and the channel that publishes the source
+// the page plays (a festival, a school, its makers).
+const channel = source?.channel
+const sheet = short
+  ? [
+      ...(short.originalTitle
+        ? [{ term: t('short.sheet.originalTitle'), value: short.originalTitle }]
+        : []),
+      ...(short.production ? [{ term: t('short.sheet.production'), value: short.production }] : []),
+      ...(channel?.name
+        ? [
+            {
+              term: t('short.sheet.publishedBy'),
+              value: channel.name,
+              href: channel.url ?? undefined,
+            },
+          ]
+        : []),
+    ]
+  : []
 const subtitles = [...(card?.subtitles ?? [])]
   .sort((a, b) => Number(b === locale) - Number(a === locale))
   .map((code) => formatLanguage(code, locale))
@@ -255,6 +275,33 @@ const subtitles = [...(card?.subtitles ?? [])]
                   <dd class="m-0">{capital(formatList(subtitles, locale))}</dd>
                 </>
               )}
+            </dl>
+          </section>
+        )}
+        {sheet.length > 0 && (
+          <section class="grid gap-2" aria-labelledby="sheet">
+            <h2 id="sheet" class="m-0 font-display text-title uppercase">
+              {t('short.sheet.title')}
+            </h2>
+            <dl class="m-0 grid grid-cols-[max-content_1fr] gap-x-4 gap-y-1 text-body">
+              {sheet.map((row) => (
+                <>
+                  <dt class="text-secondary">{row.term}</dt>
+                  <dd class="m-0">
+                    {row.href ? (
+                      <a
+                        href={row.href}
+                        rel="noopener"
+                        class="text-primary underline underline-offset-4 hover:no-underline rounded-xs focus-visible:focus-ring"
+                      >
+                        {row.value}
+                      </a>
+                    ) : (
+                      row.value
+                    )}
+                  </dd>
+                </>
+              ))}
             </dl>
           </section>
         )}

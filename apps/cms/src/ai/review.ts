@@ -221,6 +221,10 @@ export function reviewData(review: ShortReview, model: string) {
     themes: review.themes,
     allAudiences: review.allAudiences,
     titleInThumbnail: review.titleInThumbnail,
+    originalTitle: review.originalTitle,
+    production: review.production,
+    otherLanguages: review.otherLanguages,
+    awards: review.awards,
     technique: review.technique,
     brandedContent: review.brandedContent,
     brand: review.brand,
@@ -279,6 +283,24 @@ export async function analyzeShort(
     `aiReview: «${loaded.short.title}» → ${reviewed.kind === 'review' ? reviewed.review.recommendation : reviewed.kind} (${usage.input} in, ${usage.output} out, ${usage.cacheRead} cached tokens)`,
   )
   return reviewed
+}
+
+/** The public page of the short's first source: where its description can be read. */
+async function firstSourceUrl(req: PayloadRequest, shortId: number): Promise<string | null> {
+  const sources = await req.payload.find({
+    collection: 'sources',
+    where: { short: { equals: shortId } },
+    depth: 0,
+    limit: 1,
+    sort: 'id',
+    req,
+  })
+  const source = sources.docs[0]
+  if (!source) return null
+  if (source.url) return source.url
+  if (source.provider === 'youtube') return `https://www.youtube.com/watch?v=${source.externalId}`
+  if (source.provider === 'vimeo') return `https://vimeo.com/${source.externalId}`
+  return null
 }
 
 /** A slug no other person uses: «ana-ruiz», then «ana-ruiz-2». */
@@ -351,6 +373,32 @@ export async function applyReview(req: PayloadRequest, shortId: number): Promise
     fill('genres', proposal.genres)
   if ((short.themes ?? []).length === 0 && (proposal.themes ?? []).length > 0)
     fill('themes', proposal.themes)
+  if (emptyText(short.production) && proposal.production) fill('production', proposal.production)
+  if (
+    emptyText(short.originalTitle) &&
+    proposal.originalTitle &&
+    proposal.originalTitle.toLocaleLowerCase('es') !== short.title.toLocaleLowerCase('es')
+  )
+    fill('originalTitle', proposal.originalTitle)
+  if ((short.otherLanguages ?? []).length === 0 && (proposal.otherLanguages ?? []).length > 0)
+    fill(
+      'otherLanguages',
+      (proposal.otherLanguages ?? []).filter((code) => code !== short.originalLanguage),
+    )
+  // An award needs the page that states it: the video's own page, whose description says so.
+  if ((short.awards ?? []).length === 0 && (proposal.awards ?? []).length > 0) {
+    const page = await firstSourceUrl(req, shortId)
+    if (page)
+      fill(
+        'awards',
+        (proposal.awards ?? []).map((award) => ({
+          name: award.name,
+          result: award.result,
+          year: award.year ?? null,
+          source: page,
+        })),
+      )
+  }
   // A box nobody ticks unless it applies: the proposal only ever ticks it.
   if (proposal.allAudiences && !short.allAudiences) fill('allAudiences', true)
 

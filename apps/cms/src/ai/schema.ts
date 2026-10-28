@@ -19,6 +19,7 @@ export const SPOKEN_KINDS = ['es', 'none', 'other'] as const
 export const SUBTITLE_ANSWERS = ['yes', 'no', 'unknown'] as const
 /** The short types the catalog has («genre» in the brief). */
 export const GENRES = ['fiction', 'documentary', 'animation', 'experimental'] as const
+export const AWARD_RESULTS = ['won', 'nominated', 'selected', 'shortlisted'] as const
 export const TECHNIQUES = ['animation', 'live-action', 'mixed', 'unknown'] as const
 export const CREDIT_ROLES = [
   'director',
@@ -48,6 +49,14 @@ export interface ShortReview {
   allAudiences: boolean
   /** The thumbnail shows the film's title (a poster): cards then draw no title over it. */
   titleInThumbnail: boolean
+  /** The title in the film's own language, when the one given is a translation. */
+  originalTitle: string | null
+  /** The production company or school the data names. */
+  production: string | null
+  /** ISO 639-1 codes of other languages spoken, besides the main one. */
+  otherLanguages: string[]
+  /** Awards, nominations and festival selections the description states. */
+  awards: { name: string; result: (typeof AWARD_RESULTS)[number]; year: number | null }[]
   technique: (typeof TECHNIQUES)[number]
   brandedContent: boolean
   brand: string | null
@@ -80,6 +89,10 @@ export const REVIEW_SCHEMA = {
     'themes',
     'allAudiences',
     'titleInThumbnail',
+    'originalTitle',
+    'production',
+    'otherLanguages',
+    'awards',
     'technique',
     'brandedContent',
     'brand',
@@ -112,6 +125,22 @@ export const REVIEW_SCHEMA = {
     themes: { type: 'array', items: { type: 'string', enum: [...SHORT_THEMES] } },
     allAudiences: { type: 'boolean' },
     titleInThumbnail: { type: 'boolean' },
+    originalTitle: nullable(text),
+    production: nullable(text),
+    otherLanguages: { type: 'array', items: text },
+    awards: {
+      type: 'array',
+      items: {
+        type: 'object',
+        additionalProperties: false,
+        required: ['name', 'result', 'year'],
+        properties: {
+          name: text,
+          result: { type: 'string', enum: [...AWARD_RESULTS] },
+          year: nullable({ type: 'integer' }),
+        },
+      },
+    },
     technique: { type: 'string', enum: [...TECHNIQUES] },
     brandedContent: { type: 'boolean' },
     brand: nullable(text),
@@ -177,6 +206,34 @@ export function parseReview(raw: string): ShortReview | null {
     themes: cleanClasses(SHORT_THEMES, value.themes),
     allAudiences: value.allAudiences,
     titleInThumbnail: value.titleInThumbnail,
+    originalTitle: orNull(value.originalTitle),
+    production: orNull(value.production)?.slice(0, 200) ?? null,
+    otherLanguages: Array.isArray(value.otherLanguages)
+      ? [
+          ...new Set(
+            value.otherLanguages.flatMap((code: unknown) =>
+              typeof code === 'string' && /^[a-z]{2,3}$/i.test(code.trim())
+                ? [code.trim().toLowerCase()]
+                : [],
+            ),
+          ),
+        ]
+      : [],
+    awards: Array.isArray(value.awards)
+      ? value.awards.flatMap((award: Record<string, unknown>) => {
+          const name = orNull(award?.name)
+          if (!name || !isOneOf(AWARD_RESULTS, award.result)) return []
+          const year =
+            typeof award.year === 'number' && Number.isInteger(award.year) ? award.year : null
+          return [
+            {
+              name,
+              result: award.result,
+              year: year && year >= 1888 && year <= 2100 ? year : null,
+            },
+          ]
+        })
+      : [],
     technique: value.technique,
     brandedContent: value.brandedContent,
     brand: orNull(value.brand),

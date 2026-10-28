@@ -36,6 +36,10 @@ const review: ShortReview = {
   themes: ['family'],
   allAudiences: true,
   titleInThumbnail: false,
+  originalTitle: null,
+  production: 'Kandor Graphics',
+  otherLanguages: [],
+  awards: [{ name: 'Goya al mejor cortometraje de animación', result: 'won', year: 2014 }],
   technique: 'animation',
   brandedContent: false,
   brand: null,
@@ -528,6 +532,37 @@ describe('storing and applying', () => {
     })
     await applyReview(world.req, 2)
     expect(world.shorts[1]).toMatchObject({ allAudiences: true })
+  })
+
+  it('fills production, original title and awards, with the video page as the source', async () => {
+    const world = fakePayload({
+      shorts: [
+        baseShort({
+          aiReview: {
+            status: 'analyzed',
+            production: 'ECAM',
+            originalTitle: 'The Rope',
+            awards: [{ name: 'Festival de Málaga', result: 'selected', year: 2015 }],
+          },
+        }),
+      ],
+      sources: [baseSource()],
+    })
+    expect(await applyReview(world.req, 1)).toEqual(
+      expect.arrayContaining(['production', 'originalTitle', 'awards']),
+    )
+    expect(world.shorts[0]).toMatchObject({
+      production: 'ECAM',
+      originalTitle: 'The Rope',
+      awards: [
+        {
+          name: 'Festival de Málaga',
+          result: 'selected',
+          year: 2015,
+          source: 'https://www.youtube.com/watch?v=abcdefghijk',
+        },
+      ],
+    })
   })
 
   it('replaces a language that was only the channel’s default', async () => {

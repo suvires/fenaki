@@ -81,6 +81,36 @@ export const Shorts: CollectionConfig = {
     { name: 'title', label: common.title, type: 'text', required: true, localized: true },
     slugField('title', { localized: true }),
     {
+      type: 'row',
+      fields: [
+        {
+          name: 'originalTitle',
+          label: label('Original title', 'Título original'),
+          type: 'text',
+          admin: {
+            width: '50%',
+            description: label(
+              'Only when it differs from the title: the film was made in another language.',
+              'Solo si es distinto del título: el corto se hizo en otro idioma.',
+            ),
+          },
+        },
+        {
+          name: 'production',
+          label: label('Production', 'Producción'),
+          type: 'text',
+          maxLength: 200,
+          admin: {
+            width: '50%',
+            description: label(
+              'The production company or the school, as the credits name them.',
+              'La productora o la escuela, como la nombran los créditos.',
+            ),
+          },
+        },
+      ],
+    },
+    {
       name: 'synopsis',
       label: label('Synopsis', 'Sinopsis'),
       type: 'textarea',

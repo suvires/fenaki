@@ -1,6 +1,7 @@
 import type { Field } from 'payload'
 import { isAuthenticatedField } from '../access.ts'
 import type {
+  AWARD_RESULTS,
   CREDIT_ROLES,
   GENRES,
   NOT_COMPLETE_REASONS,
@@ -51,6 +52,12 @@ const labels = {
     mixed: label('Mixed', 'Mixta'),
     unknown: label('Unknown', 'No se sabe'),
   } satisfies Record<(typeof TECHNIQUES)[number], AdminLabel>,
+  awardResult: {
+    won: label('Won', 'Ganador'),
+    nominated: label('Nominated', 'Nominado'),
+    selected: label('Official selection', 'Selección oficial'),
+    shortlisted: label('Shortlisted', 'Preseleccionado'),
+  } satisfies Record<(typeof AWARD_RESULTS)[number], AdminLabel>,
   role: {
     director: label('Director', 'Dirección'),
     writer: label('Writer', 'Guion'),
@@ -203,6 +210,34 @@ export const aiReviewField: Field = {
           name: 'titleInThumbnail',
           label: label('Title on the thumbnail', 'Título en la miniatura'),
           type: 'checkbox',
+        },
+      ],
+    },
+    {
+      type: 'row',
+      fields: [
+        { name: 'originalTitle', label: label('Original title', 'Título original'), type: 'text' },
+        { name: 'production', label: label('Production', 'Producción'), type: 'text' },
+        {
+          name: 'otherLanguages',
+          label: label('Other spoken languages', 'Otros idiomas hablados'),
+          type: 'text',
+          hasMany: true,
+        },
+      ],
+    },
+    {
+      name: 'awards',
+      label: label('Awards found', 'Premios encontrados'),
+      type: 'array',
+      fields: [
+        {
+          type: 'row',
+          fields: [
+            { name: 'name', label: label('Award', 'Premio'), type: 'text', required: true },
+            select('result', label('Result', 'Resultado'), labels.awardResult),
+            { name: 'year', label: label('Year', 'Año'), type: 'number' },
+          ],
         },
       ],
     },

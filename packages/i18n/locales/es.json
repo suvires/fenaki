@@ -96,6 +96,12 @@
       "spoken": "Idioma original",
       "subtitles": "Subtítulos"
     },
+    "sheet": {
+      "title": "Ficha técnica",
+      "originalTitle": "Título original",
+      "production": "Producción",
+      "publishedBy": "Publicado por"
+    },
     "credits": "Créditos",
     "awards": "Premios",
     "awardResults": {

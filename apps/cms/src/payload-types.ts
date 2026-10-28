@@ -217,6 +217,14 @@ export interface Short {
    * Part of the URL. Generated from the title when left empty.
    */
   slug: string;
+  /**
+   * Only when it differs from the title: the film was made in another language.
+   */
+  originalTitle?: string | null;
+  /**
+   * The production company or the school, as the credits name them.
+   */
+  production?: string | null;
   synopsis?: string | null;
   /**
    * Running time in seconds.
@@ -383,6 +391,17 @@ export interface Short {
     themes?: ('society' | 'lgbtiq' | 'family' | 'memory-history' | 'nature-environment' | 'sport')[] | null;
     allAudiences?: boolean | null;
     titleInThumbnail?: boolean | null;
+    originalTitle?: string | null;
+    production?: string | null;
+    otherLanguages?: string[] | null;
+    awards?:
+      | {
+          name: string;
+          result?: ('won' | 'nominated' | 'selected' | 'shortlisted') | null;
+          year?: number | null;
+          id?: string | null;
+        }[]
+      | null;
     restrictions?: string | null;
     reuploadSigns?: string | null;
     synopsis?: string | null;
@@ -1390,6 +1409,8 @@ export interface PayloadMigration {
 export interface ShortsSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
+  originalTitle?: T;
+  production?: T;
   synopsis?: T;
   durationSeconds?: T;
   year?: T;
@@ -1460,6 +1481,17 @@ export interface ShortsSelect<T extends boolean = true> {
         themes?: T;
         allAudiences?: T;
         titleInThumbnail?: T;
+        originalTitle?: T;
+        production?: T;
+        otherLanguages?: T;
+        awards?:
+          | T
+          | {
+              name?: T;
+              result?: T;
+              year?: T;
+              id?: T;
+            };
         restrictions?: T;
         reuploadSigns?: T;
         synopsis?: T;
