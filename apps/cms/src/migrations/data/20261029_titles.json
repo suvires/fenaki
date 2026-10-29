@@ -1,0 +1,1204 @@
+{
+ "titles": [
+  {
+   "id": 158,
+   "from": "Orbitas",
+   "to": "Órbitas"
+  },
+  {
+   "id": 277,
+   "from": "Fabula Soul",
+   "to": "Fábula Soul"
+  },
+  {
+   "id": 743,
+   "from": "Fabrica de sueños",
+   "to": "Fábrica de sueños"
+  },
+  {
+   "id": 861,
+   "from": "Sonidos De La Sierra",
+   "to": "Sonidos de la sierra"
+  },
+  {
+   "id": 931,
+   "from": "Poker de dramas",
+   "to": "Póker de dramas"
+  },
+  {
+   "id": 1358,
+   "from": "Achuguayo!!!",
+   "to": "Achuguayo!"
+  },
+  {
+   "id": 1363,
+   "from": "Achuguayo!!!",
+   "to": "Achuguayo!"
+  },
+  {
+   "id": 2289,
+   "from": "PROLOGUE",
+   "to": "Prologue"
+  },
+  {
+   "id": 2296,
+   "from": "LA SEÑAL",
+   "to": "La señal"
+  },
+  {
+   "id": 2905,
+   "from": "Lagrimas de Dragón",
+   "to": "Lágrimas de Dragón"
+  },
+  {
+   "id": 4297,
+   "from": "Onirico",
+   "to": "Onírico"
+  },
+  {
+   "id": 4439,
+   "from": "Carmen´s manifiesto",
+   "to": "Carmen's manifiesto"
+  },
+  {
+   "id": 5989,
+   "from": "No me mees el angel",
+   "to": "No me mees el ángel"
+  },
+  {
+   "id": 6140,
+   "from": "On My Mind (short film)",
+   "to": "On My Mind"
+  },
+  {
+   "id": 6182,
+   "from": "Hi I´m new",
+   "to": "Hi I'm new"
+  },
+  {
+   "id": 6310,
+   "from": "Los látidos del átomo",
+   "to": "Los latidos del átomo"
+  },
+  {
+   "id": 6456,
+   "from": "El tunel del tiempo",
+   "to": "El túnel del tiempo"
+  },
+  {
+   "id": 6462,
+   "from": "Persecucion",
+   "to": "Persecución"
+  },
+  {
+   "id": 6495,
+   "from": "¡¡Y punto!",
+   "to": "¡Y punto!"
+  },
+  {
+   "id": 6496,
+   "from": "Lo mas justo",
+   "to": "Lo más justo"
+  },
+  {
+   "id": 6528,
+   "from": "Regreso al paraiso",
+   "to": "Regreso al paraíso"
+  },
+  {
+   "id": 6534,
+   "from": "Que corto ni que corto",
+   "to": "Qué corto ni qué corto"
+  },
+  {
+   "id": 6553,
+   "from": "Jardin sin flores",
+   "to": "Jardín sin flores"
+  },
+  {
+   "id": 6572,
+   "from": "Salítre y lava",
+   "to": "Salitre y lava"
+  },
+  {
+   "id": 6630,
+   "from": "Batido de platano",
+   "to": "Batido de plátano"
+  },
+  {
+   "id": 6644,
+   "from": "Finca paraiso",
+   "to": "Finca paraíso"
+  },
+  {
+   "id": 6760,
+   "from": "Empatia",
+   "to": "Empatía"
+  },
+  {
+   "id": 6797,
+   "from": "Codigo Fénix",
+   "to": "Código Fénix"
+  },
+  {
+   "id": 6840,
+   "from": "Cari, se me acabo el amor",
+   "to": "Cari, se me acabó el amor"
+  },
+  {
+   "id": 6944,
+   "from": "Mirate eso",
+   "to": "Mírate eso"
+  },
+  {
+   "id": 6985,
+   "from": "Extraterrestres a mi",
+   "to": "Extraterrestres a mí"
+  },
+  {
+   "id": 7034,
+   "from": "La busqueda",
+   "to": "La búsqueda"
+  },
+  {
+   "id": 7140,
+   "from": "Ey, tio",
+   "to": "Ey, tío"
+  },
+  {
+   "id": 7193,
+   "from": "La linea roja",
+   "to": "La línea roja"
+  },
+  {
+   "id": 7337,
+   "from": "Deshaucio",
+   "to": "Desahucio"
+  },
+  {
+   "id": 7451,
+   "from": "L´heure de l´apéro",
+   "to": "L'heure de l'apéro"
+  },
+  {
+   "id": 8584,
+   "from": "Primeros sintomas",
+   "to": "Primeros síntomas"
+  },
+  {
+   "id": 8646,
+   "from": "EL SECUESTRO",
+   "to": "El secuestro"
+  },
+  {
+   "id": 8673,
+   "from": "Sombras en linea",
+   "to": "Sombras en línea"
+  },
+  {
+   "id": 8785,
+   "from": "La habitacion roja",
+   "to": "La habitación roja"
+  },
+  {
+   "id": 8834,
+   "from": "Ambicion",
+   "to": "Ambición"
+  },
+  {
+   "id": 8879,
+   "from": "¿Iahora?",
+   "to": "¿Y ahora?"
+  },
+  {
+   "id": 8912,
+   "from": "Como el buen cafe",
+   "to": "Como el buen café"
+  },
+  {
+   "id": 8957,
+   "from": "Que bien se está cuando se está bien",
+   "to": "Qué bien se está cuando se está bien"
+  },
+  {
+   "id": 9181,
+   "from": "¿Quiéres jugar?",
+   "to": "¿Quieres jugar?"
+  },
+  {
+   "id": 9209,
+   "from": "PITI",
+   "to": "Piti"
+  },
+  {
+   "id": 9210,
+   "from": "SANGRO",
+   "to": "Sangro"
+  },
+  {
+   "id": 9212,
+   "from": "HOY NO ME APETECE MORIR",
+   "to": "Hoy no me apetece morir"
+  },
+  {
+   "id": 9213,
+   "from": "TRUST",
+   "to": "Trust"
+  },
+  {
+   "id": 9219,
+   "from": "LOS RUSOS",
+   "to": "Los rusos"
+  },
+  {
+   "id": 9390,
+   "from": "Nuevos metodos de resistencia ante un mundo de injusticia",
+   "to": "Nuevos métodos de resistencia ante un mundo de injusticia"
+  },
+  {
+   "id": 11270,
+   "from": "Anatomia de un maniqui",
+   "to": "Anatomía de un maniquí"
+  },
+  {
+   "id": 11353,
+   "from": "Quién es ella?",
+   "to": "¿Quién es ella?"
+  },
+  {
+   "id": 11363,
+   "from": "Jesus y el padre Jose",
+   "to": "Jesús y el padre José"
+  },
+  {
+   "id": 11377,
+   "from": "Quien se metio con Mayra",
+   "to": "Quien se metió con Mayra"
+  },
+  {
+   "id": 11386,
+   "from": "La vanidad de las luciernagas",
+   "to": "La vanidad de las luciérnagas"
+  },
+  {
+   "id": 11424,
+   "from": "Atrás de las puertas - Corto ECU",
+   "to": "Atrás de las puertas"
+  },
+  {
+   "id": 11425,
+   "from": "Lejos - Corto ECU",
+   "to": "Lejos"
+  },
+  {
+   "id": 11457,
+   "from": "Ratón Perez",
+   "to": "Ratón Pérez"
+  },
+  {
+   "id": 13044,
+   "from": "Usted qué haría?",
+   "to": "¿Usted qué haría?"
+  },
+  {
+   "id": 13072,
+   "from": "Un fosil y un mochuelo",
+   "to": "Un fósil y un mochuelo"
+  },
+  {
+   "id": 13117,
+   "from": "Él poeta y sus cosas",
+   "to": "El poeta y sus cosas"
+  },
+  {
+   "id": 13248,
+   "from": "Aquel último beso de aquel ultimo verano",
+   "to": "Aquel último beso de aquel último verano"
+  },
+  {
+   "id": 13339,
+   "from": "Nausea",
+   "to": "Náusea"
+  },
+  {
+   "id": 13350,
+   "from": "TODO A 100",
+   "to": "Todo a 100"
+  },
+  {
+   "id": 13434,
+   "from": "MIND SPEAKS",
+   "to": "Mind Speaks"
+  },
+  {
+   "id": 13435,
+   "from": "YUREI",
+   "to": "Yurei"
+  },
+  {
+   "id": 13541,
+   "from": "EL COMETA",
+   "to": "El cometa"
+  },
+  {
+   "id": 13567,
+   "from": "MADRUGADA",
+   "to": "Madrugada"
+  },
+  {
+   "id": 13669,
+   "from": "FUEGO",
+   "to": "Fuego"
+  },
+  {
+   "id": 13697,
+   "from": "JUEGOS DE MESA (y otras formas de empezar una guerra)",
+   "to": "Juegos de mesa (y otras formas de empezar una guerra)"
+  },
+  {
+   "id": 13720,
+   "from": "CINECITÁ",
+   "to": "Cinecitá"
+  },
+  {
+   "id": 13764,
+   "from": "SOMOS SEIS",
+   "to": "Somos seis"
+  },
+  {
+   "id": 13810,
+   "from": "Ya están aqui",
+   "to": "Ya están aquí"
+  },
+  {
+   "id": 13812,
+   "from": "Esto no  es una curva",
+   "to": "Esto no es una curva"
+  },
+  {
+   "id": 13884,
+   "from": "La cámara de papá (Dad\\'s camera)",
+   "to": "La cámara de papá (Dad's camera)"
+  },
+  {
+   "id": 13928,
+   "from": "Si-Si-My Love!!",
+   "to": "Si-Si-My Love!"
+  },
+  {
+   "id": 13973,
+   "from": "Panico en las tuberías",
+   "to": "Pánico en las tuberías"
+  },
+  {
+   "id": 13984,
+   "from": "A las18h",
+   "to": "A las 18h"
+  },
+  {
+   "id": 13995,
+   "from": "El increible viaje de Alpha Roja",
+   "to": "El increíble viaje de Alpha Roja"
+  },
+  {
+   "id": 14018,
+   "from": "Corazon bravo",
+   "to": "Corazón bravo"
+  },
+  {
+   "id": 14059,
+   "from": "PERSPECTIVA",
+   "to": "Perspectiva"
+  },
+  {
+   "id": 18365,
+   "from": "Un juego de traicion",
+   "to": "Un juego de traición"
+  },
+  {
+   "id": 18384,
+   "from": "La ultima toma",
+   "to": "La última toma"
+  },
+  {
+   "id": 18390,
+   "from": "Pisando la linea",
+   "to": "Pisando la línea"
+  },
+  {
+   "id": 18401,
+   "from": "El viene por ti",
+   "to": "Él viene por ti"
+  },
+  {
+   "id": 18414,
+   "from": "¿Donde van las mariposas cuando llueve?",
+   "to": "¿Dónde van las mariposas cuando llueve?"
+  },
+  {
+   "id": 18426,
+   "from": "Uy! que rico",
+   "to": "¡Uy! ¡Qué rico!"
+  },
+  {
+   "id": 18440,
+   "from": "Entre marmól y memorias",
+   "to": "Entre mármol y memorias"
+  },
+  {
+   "id": 18491,
+   "from": "Un ultimo recuerdo",
+   "to": "Un último recuerdo"
+  },
+  {
+   "id": 18498,
+   "from": "Cartas del pasaso",
+   "to": "Cartas del pasado"
+  },
+  {
+   "id": 18512,
+   "from": "Aunque no es perfecto esta bien",
+   "to": "Aunque no es perfecto está bien"
+  },
+  {
+   "id": 18520,
+   "from": "Una parte de mi",
+   "to": "Una parte de mí"
+  },
+  {
+   "id": 18531,
+   "from": "Con su ultimo aliento",
+   "to": "Con su último aliento"
+  },
+  {
+   "id": 18536,
+   "from": "Lo que llega primero (Ejercicio 5to semestre. Analisis del Film)",
+   "to": "Lo que llega primero"
+  },
+  {
+   "id": 18543,
+   "from": "La ultima Carta",
+   "to": "La última carta"
+  },
+  {
+   "id": 18546,
+   "from": "La Ultima Gota",
+   "to": "La última gota"
+  },
+  {
+   "id": 18559,
+   "from": "Llego la Hora",
+   "to": "Llegó la hora"
+  },
+  {
+   "id": 18592,
+   "from": "CASA",
+   "to": "Casa"
+  },
+  {
+   "id": 18608,
+   "from": "La melancolia de la nieve",
+   "to": "La melancolía de la nieve"
+  },
+  {
+   "id": 18811,
+   "from": "¡¡Sorpresa!!",
+   "to": "¡Sorpresa!"
+  },
+  {
+   "id": 18819,
+   "from": "Adios al miedo",
+   "to": "Adiós al miedo"
+  },
+  {
+   "id": 18839,
+   "from": "ÉL",
+   "to": "Él"
+  },
+  {
+   "id": 18905,
+   "from": "Miguel Angel",
+   "to": "Miguel Ángel"
+  },
+  {
+   "id": 18914,
+   "from": "Operacion Pastel",
+   "to": "Operación Pastel"
+  },
+  {
+   "id": 18958,
+   "from": "Sin recuerdos de tí",
+   "to": "Sin recuerdos de ti"
+  },
+  {
+   "id": 18984,
+   "from": "Una ultima llamada",
+   "to": "Una última llamada"
+  },
+  {
+   "id": 19014,
+   "from": "A dogs life",
+   "to": "A Dog's Life"
+  },
+  {
+   "id": 19021,
+   "from": "¿Donde está Carlos?",
+   "to": "¿Dónde está Carlos?"
+  },
+  {
+   "id": 19040,
+   "from": "Lucky Girl | Festival de Cortos ESCINE 2023 #CuentaTúHistoria",
+   "to": "Lucky Girl"
+  },
+  {
+   "id": 19043,
+   "from": "Admiracion esperada",
+   "to": "Admiración esperada"
+  },
+  {
+   "id": 19049,
+   "from": "Noche de caida",
+   "to": "Noche de caída"
+  },
+  {
+   "id": 19152,
+   "from": "¿Por que lloras?",
+   "to": "¿Por qué lloras?"
+  },
+  {
+   "id": 19157,
+   "from": "Vinculos inquebrantables (la amistad)",
+   "to": "Vínculos inquebrantables (la amistad)"
+  },
+  {
+   "id": 19229,
+   "from": "Heroe",
+   "to": "Héroe"
+  },
+  {
+   "id": 19313,
+   "from": "Estres y ansiedad",
+   "to": "Estrés y ansiedad"
+  },
+  {
+   "id": 19371,
+   "from": "¡Que bonito fuera poder retrocederte!",
+   "to": "¡Qué bonito fuera poder retrocederte!"
+  },
+  {
+   "id": 19394,
+   "from": "Repetir :)",
+   "to": "Repetir"
+  },
+  {
+   "id": 19426,
+   "from": "Es bueno o malo el uso de la tablet y el celular?",
+   "to": "¿Es bueno o malo el uso de la tablet y el celular?"
+  },
+  {
+   "id": 19467,
+   "from": "Lettre a ma solitude",
+   "to": "Lettre à ma solitude"
+  },
+  {
+   "id": 19594,
+   "from": "Ya me canse",
+   "to": "Ya me cansé"
+  },
+  {
+   "id": 19608,
+   "from": "Bicentenario - Lo mejor esta por venir",
+   "to": "Bicentenario - Lo mejor está por venir"
+  },
+  {
+   "id": 19637,
+   "from": "Efecto pandemico",
+   "to": "Efecto pandémico"
+  },
+  {
+   "id": 19677,
+   "from": "Encuentrate en esta cuarentena",
+   "to": "Encuéntrate en esta cuarentena"
+  },
+  {
+   "id": 19726,
+   "from": "Lo que paso en mi cuarentena",
+   "to": "Lo que pasó en mi cuarentena"
+  },
+  {
+   "id": 19735,
+   "from": "Trasición",
+   "to": "Transición"
+  },
+  {
+   "id": 19749,
+   "from": "Y como va tu cuarentena?..Pues",
+   "to": "¿Y cómo va tu cuarentena?..Pues"
+  },
+  {
+   "id": 19771,
+   "from": "Un policia en cuarentena",
+   "to": "Un policía en cuarentena"
+  },
+  {
+   "id": 19776,
+   "from": "Cuarentena: ¿Y mañana que?",
+   "to": "Cuarentena: ¿Y mañana qué?"
+  },
+  {
+   "id": 19809,
+   "from": "No hay opción!",
+   "to": "¡No hay opción!"
+  },
+  {
+   "id": 19890,
+   "from": "Por que me quedo en casa?",
+   "to": "¿Por qué me quedo en casa?"
+  },
+  {
+   "id": 19892,
+   "from": "Un dia de cuarentena entre artistas",
+   "to": "Un día de cuarentena entre artistas"
+  },
+  {
+   "id": 19928,
+   "from": "Cita rapida",
+   "to": "Cita rápida"
+  },
+  {
+   "id": 19935,
+   "from": "La ultima vez",
+   "to": "La última vez"
+  },
+  {
+   "id": 19960,
+   "from": "La ultima vez que te vi",
+   "to": "La última vez que te vi"
+  },
+  {
+   "id": 20077,
+   "from": "Te encontre en la calle",
+   "to": "Te encontré en la calle"
+  },
+  {
+   "id": 20932,
+   "from": "The Scapers 2: Cuando los angeles lleven pistolas",
+   "to": "The Scapers 2: Cuando los ángeles lleven pistolas"
+  },
+  {
+   "id": 21199,
+   "from": "Sin pecado concebida\" - Tercer Semestre (2024B)",
+   "to": "Sin pecado concebida"
+  },
+  {
+   "id": 21203,
+   "from": "Operacion El Nuevo",
+   "to": "Operación El Nuevo"
+  },
+  {
+   "id": 21206,
+   "from": "Lo que a mi me pasa",
+   "to": "Lo que a mí me pasa"
+  },
+  {
+   "id": 21218,
+   "from": "2040:  La Paradoja de la Humanidad",
+   "to": "2040: La Paradoja de la Humanidad"
+  },
+  {
+   "id": 21297,
+   "from": "Rebelion en el cole",
+   "to": "Rebelión en el cole"
+  },
+  {
+   "id": 21359,
+   "from": "Angel de la muerte",
+   "to": "Ángel de la muerte"
+  },
+  {
+   "id": 21381,
+   "from": "Y ahora qué?",
+   "to": "¿Y ahora qué?"
+  },
+  {
+   "id": 21508,
+   "from": "¿Tenia que pasar esto?",
+   "to": "¿Tenía que pasar esto?"
+  },
+  {
+   "id": 21551,
+   "from": "SHAMARKANDA SUBTÍTULOS",
+   "to": "Shamarkanda"
+  },
+  {
+   "id": 21552,
+   "from": "Un poema a mi mismo",
+   "to": "Un poema a mí mismo"
+  },
+  {
+   "id": 21562,
+   "from": "Bienvenidos a una pagina de mi vida",
+   "to": "Bienvenidos a una página de mi vida"
+  },
+  {
+   "id": 21766,
+   "from": "Petite Olivia\": Cuarto Semestre (2019B)",
+   "to": "Petite Olivia"
+  },
+  {
+   "id": 21806,
+   "from": "LA MENTIRA",
+   "to": "La mentira"
+  },
+  {
+   "id": 21809,
+   "from": "FLOWERS",
+   "to": "Flowers"
+  },
+  {
+   "id": 21812,
+   "from": "ESTRELLA FUGAZ",
+   "to": "Estrella fugaz"
+  },
+  {
+   "id": 21816,
+   "from": "PUZZLE WALKMOVIE IN MADRID",
+   "to": "Puzzle Walkmovie in Madrid"
+  },
+  {
+   "id": 21830,
+   "from": "Dos entradas, cinco dias",
+   "to": "Dos entradas, cinco días"
+  },
+  {
+   "id": 21962,
+   "from": "Por favor, cuentame",
+   "to": "Por favor, cuéntame"
+  },
+  {
+   "id": 22043,
+   "from": "Hazte oir",
+   "to": "Hazte oír"
+  },
+  {
+   "id": 22098,
+   "from": "La capsula del tiempo",
+   "to": "La cápsula del tiempo"
+  },
+  {
+   "id": 22144,
+   "from": "No mas vino",
+   "to": "No más vino"
+  },
+  {
+   "id": 22180,
+   "from": "El canto del pètirrojo",
+   "to": "El canto del petirrojo"
+  },
+  {
+   "id": 22255,
+   "from": "Cádaver en Caspe… el exquisito calor",
+   "to": "Cadáver en Caspe… el exquisito calor"
+  },
+  {
+   "id": 22261,
+   "from": "ESPAÑOL Y CINE",
+   "to": "Español y cine"
+  },
+  {
+   "id": 22350,
+   "from": "Senora Bien",
+   "to": "Señora Bien"
+  },
+  {
+   "id": 22359,
+   "from": "Habitos atomicos",
+   "to": "Hábitos atómicos"
+  },
+  {
+   "id": 22360,
+   "from": "Lagrimas de otoño",
+   "to": "Lágrimas de otoño"
+  },
+  {
+   "id": 22367,
+   "from": "¿Espejito, espejito, quien es más necio que yo?",
+   "to": "¿Espejito, espejito, quién es más necio que yo?"
+  },
+  {
+   "id": 22419,
+   "from": "Inversión. Práctica de los estudiantes de ciclo 2.",
+   "to": "Inversión"
+  },
+  {
+   "id": 22429,
+   "from": "QUIRÓFANO. Práctica de nuestras estudiantes de ciclo 2.",
+   "to": "Quirófano"
+  },
+  {
+   "id": 22462,
+   "from": "El eco de las piedras\", de asoc. de Mujeres Grecina de Villarraguz y Fran Muñoz. (Casares, 2026)",
+   "to": "El eco de las piedras"
+  },
+  {
+   "id": 22465,
+   "from": "Lo que quedo Despues",
+   "to": "Lo que quedó después"
+  },
+  {
+   "id": 22471,
+   "from": "Erika\", de Brendan Mariani. (Casares, 2026)",
+   "to": "Erika"
+  },
+  {
+   "id": 22491,
+   "from": "Erase una vez en la biblioteca",
+   "to": "Érase una vez en la biblioteca"
+  },
+  {
+   "id": 22529,
+   "from": "Archivo Iris.mp4",
+   "to": "Archivo Iris"
+  },
+  {
+   "id": 22546,
+   "from": "Cajas vacias",
+   "to": "Cajas vacías"
+  },
+  {
+   "id": 22614,
+   "from": "Exploracion Urbana",
+   "to": "Exploración urbana"
+  },
+  {
+   "id": 22709,
+   "from": "SI O NO",
+   "to": "Sí o no"
+  },
+  {
+   "id": 22810,
+   "from": "Un juego limpio.",
+   "to": "Un juego limpio"
+  },
+  {
+   "id": 22825,
+   "from": "LIMITES SON ETIQUETAS | CortoFest 2024",
+   "to": "Límites son etiquetas"
+  },
+  {
+   "id": 22846,
+   "from": "Shhh!!!",
+   "to": "Shhh!"
+  },
+  {
+   "id": 22949,
+   "from": "Castiga con dulzura, premia con severidad.",
+   "to": "Castiga con dulzura, premia con severidad"
+  },
+  {
+   "id": 22990,
+   "from": "Mascaras",
+   "to": "Máscaras"
+  },
+  {
+   "id": 22995,
+   "from": "Animas",
+   "to": "Ánimas"
+  },
+  {
+   "id": 23012,
+   "from": "LA INCREIBLE (PERO CIERTA) HISTORIA DE VACALLANES Y JUAN SEBASTIÁN",
+   "to": "La increíble (pero cierta) historia de Vacallanes y Juan Sebastián"
+  },
+  {
+   "id": 23032,
+   "from": "Junto a mi",
+   "to": "Junto a mí"
+  },
+  {
+   "id": 23052,
+   "from": "Echame una mano",
+   "to": "Échame una mano"
+  },
+  {
+   "id": 23059,
+   "from": "El Fotografo",
+   "to": "El Fotógrafo"
+  },
+  {
+   "id": 23071,
+   "from": "Toc - toc ¿quien llama?",
+   "to": "Toc - toc ¿quién llama?"
+  },
+  {
+   "id": 23078,
+   "from": "Escuchame",
+   "to": "Escúchame"
+  },
+  {
+   "id": 23153,
+   "from": "Steven quiere conocerte\", de Dani Llamas y Silvia Moreno. Sección Oficial Nuevo Cine Andaluz 2024",
+   "to": "Steven quiere conocerte"
+  },
+  {
+   "id": 23300,
+   "from": "Codigo Gray",
+   "to": "Código Gray"
+  },
+  {
+   "id": 23304,
+   "from": "Que Hacemos con el Gato",
+   "to": "¿Qué Hacemos con el Gato?"
+  },
+  {
+   "id": 23310,
+   "from": "Mr  Tinder",
+   "to": "Mr Tinder"
+  },
+  {
+   "id": 23331,
+   "from": "Una relacion en puertas",
+   "to": "Una relación en puertas"
+  },
+  {
+   "id": 23413,
+   "from": "Veintiún días tinene una margarita",
+   "to": "Veintiún días tiene una margarita"
+  },
+  {
+   "id": 23427,
+   "from": "Menudo parguela!!!!",
+   "to": "¡Menudo parguela!"
+  },
+  {
+   "id": 23540,
+   "from": "Las 3 PRUEBAS",
+   "to": "Las 3 pruebas"
+  },
+  {
+   "id": 23554,
+   "from": "Érase una vez\".  Taller de cortos para niños, III Festival Nuevo Cine Andaluz (Casares, 2016)",
+   "to": "Érase una vez"
+  },
+  {
+   "id": 23563,
+   "from": "Ciencia ficcion",
+   "to": "Ciencia ficción"
+  },
+  {
+   "id": 23565,
+   "from": "Estadistica-mente",
+   "to": "Estadística-mente"
+  },
+  {
+   "id": 23594,
+   "from": "Lo has oido",
+   "to": "Lo has oído"
+  },
+  {
+   "id": 23597,
+   "from": "El periodico",
+   "to": "El periódico"
+  },
+  {
+   "id": 23606,
+   "from": "Un segundo de vertigo",
+   "to": "Un segundo de vértigo"
+  },
+  {
+   "id": 23654,
+   "from": "TRAPOS VIEJOS. Nou Prodigi, escuela de cine de Barcelona.",
+   "to": "Trapos viejos"
+  },
+  {
+   "id": 23731,
+   "from": "Todo por el exito",
+   "to": "Todo por el éxito"
+  },
+  {
+   "id": 23922,
+   "from": "Perfeccion",
+   "to": "Perfección"
+  },
+  {
+   "id": 23930,
+   "from": "L' Unique",
+   "to": "L'Unique"
+  },
+  {
+   "id": 23939,
+   "from": "La layenda de Ahmad Ibm Abdallah",
+   "to": "La leyenda de Ahmad Ibm Abdallah"
+  },
+  {
+   "id": 24058,
+   "from": "Monotonia",
+   "to": "Monotonía"
+  },
+  {
+   "id": 24135,
+   "from": "El secreto de jorge luis",
+   "to": "El secreto de Jorge Luis"
+  },
+  {
+   "id": 24259,
+   "from": "La decision",
+   "to": "La decisión"
+  },
+  {
+   "id": 24279,
+   "from": "Cuidate Clara",
+   "to": "Cuídate, Clara"
+  },
+  {
+   "id": 24335,
+   "from": "Entre petalos y vagones",
+   "to": "Entre pétalos y vagones"
+  },
+  {
+   "id": 24384,
+   "from": "Empatia",
+   "to": "Empatía"
+  },
+  {
+   "id": 24428,
+   "from": "La melodie du silence",
+   "to": "La mélodie du silence"
+  },
+  {
+   "id": 24445,
+   "from": "Dos dias para no olvidar",
+   "to": "Dos días para no olvidar"
+  },
+  {
+   "id": 24458,
+   "from": "¿Y Donde quedó el amor?",
+   "to": "¿Y dónde quedó el amor?"
+  },
+  {
+   "id": 24531,
+   "from": "Te haré reir hasta llorar",
+   "to": "Te haré reír hasta llorar"
+  },
+  {
+   "id": 24560,
+   "from": "Cambia Tu História",
+   "to": "Cambia tu historia"
+  },
+  {
+   "id": 24569,
+   "from": "Violencia Domestica",
+   "to": "Violencia doméstica"
+  },
+  {
+   "id": 24576,
+   "from": "Despues de mi",
+   "to": "Después de mí"
+  },
+  {
+   "id": 24589,
+   "from": "La caceria final",
+   "to": "La cacería final"
+  },
+  {
+   "id": 24592,
+   "from": "La Camara Maldita",
+   "to": "La Cámara Maldita"
+  },
+  {
+   "id": 24601,
+   "from": "Llego tu hora",
+   "to": "Llegó tu hora"
+  },
+  {
+   "id": 24605,
+   "from": "Mancebia",
+   "to": "Mancebía"
+  },
+  {
+   "id": 24638,
+   "from": "¿Porque no? Mi película interescolar",
+   "to": "¿Por qué no? Mi película interescolar"
+  },
+  {
+   "id": 24646,
+   "from": "Un Dia de Bromas",
+   "to": "Un Día de Bromas"
+  },
+  {
+   "id": 24656,
+   "from": "Un dia normal que nunca termino",
+   "to": "Un día normal que nunca terminó"
+  },
+  {
+   "id": 24673,
+   "from": "Accion y secuestro",
+   "to": "Acción y secuestro"
+  },
+  {
+   "id": 24690,
+   "from": "Los jovenes y las drogas",
+   "to": "Los jóvenes y las drogas"
+  },
+  {
+   "id": 24693,
+   "from": "Prohibir tambien es violencia",
+   "to": "Prohibir también es violencia"
+  },
+  {
+   "id": 24724,
+   "from": "violencia de genero",
+   "to": "Violencia de género"
+  },
+  {
+   "id": 24736,
+   "from": "Las redes sociales y los jovenes",
+   "to": "Las redes sociales y los jóvenes"
+  },
+  {
+   "id": 24758,
+   "from": "El Ultimo Dia",
+   "to": "El Último Día"
+  },
+  {
+   "id": 24763,
+   "from": "Excesos yo no lo elegi",
+   "to": "Excesos yo no lo elegí"
+  },
+  {
+   "id": 24786,
+   "from": "Almohadon de plumas",
+   "to": "Almohadón de plumas"
+  },
+  {
+   "id": 24828,
+   "from": "Por siempre Matias",
+   "to": "Por siempre Matías"
+  },
+  {
+   "id": 24841,
+   "from": "Operacion Diller",
+   "to": "Operación Diller"
+  },
+  {
+   "id": 24931,
+   "from": "La increíble historia de una hombre que podía volar y no sabía como",
+   "to": "La increíble historia de un hombre que podía volar y no sabía cómo"
+  },
+  {
+   "id": 25203,
+   "from": "Sin Sanju II. Nominado Metacine. Feelmotion 2016",
+   "to": "Sin Sanju II"
+  },
+  {
+   "id": 25436,
+   "from": "What the F*ish?!!",
+   "to": "What the F*ish?!"
+  },
+  {
+   "id": 25455,
+   "from": "Ah!! Un niño!!",
+   "to": "¡Ah! ¡Un niño!"
+  }
+ ]
+}

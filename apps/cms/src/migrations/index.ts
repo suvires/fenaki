@@ -1,41 +1,42 @@
-import * as migration_20261025_113022_initial from './20261025_113022_initial';
-import * as migration_20261025_115917_waitlist_purge_task from './20261025_115917_waitlist_purge_task';
-import * as migration_20261025_123044_official_channel_and_review from './20261025_123044_official_channel_and_review';
-import * as migration_20261025_123953_embed_check_task from './20261025_123953_embed_check_task';
-import * as migration_20261025_124459_showcases from './20261025_124459_showcases';
-import * as migration_20261025_175727_crm from './20261025_175727_crm';
-import * as migration_20261025_183142_distributor_type from './20261025_183142_distributor_type';
-import * as migration_20261025_223519_stills from './20261025_223519_stills';
-import * as migration_20261025_231009_still_card_size from './20261025_231009_still_card_size';
-import * as migration_20261025_233011_ranking_global from './20261025_233011_ranking_global';
-import * as migration_20261026_002047_still_text_presentation from './20261026_002047_still_text_presentation';
-import * as migration_20261026_003244_home_page from './20261026_003244_home_page';
-import * as migration_20261026_012129_short_awards from './20261026_012129_short_awards';
-import * as migration_20261026_015039_accounts from './20261026_015039_accounts';
-import * as migration_20261027_081705_channels from './20261027_081705_channels';
-import * as migration_20261027_095840_crm_rights from './20261027_095840_crm_rights';
-import * as migration_20261027_111231_ledger_and_languages from './20261027_111231_ledger_and_languages';
-import * as migration_20261027_112208_ai_review from './20261027_112208_ai_review';
-import * as migration_20261027_174600_channel_min_duration from './20261027_174600_channel_min_duration';
-import * as migration_20261027_183754_license_platform_terms_nc from './20261027_183754_license_platform_terms_nc';
-import * as migration_20261028_083228_member_player_consent from './20261028_083228_member_player_consent';
-import * as migration_20261028_093617_short_genres_themes_audience from './20261028_093617_short_genres_themes_audience';
-import * as migration_20261028_100208_short_production_original_title_awards_review from './20261028_100208_short_production_original_title_awards_review';
-import * as migration_20261028_103200_collections_by_filters_and_sponsored from './20261028_103200_collections_by_filters_and_sponsored';
-import * as migration_20261028_114500_remove_animacion_de_autor from './20261028_114500_remove_animacion_de_autor';
-import * as migration_20261028_132226_previous_slugs from './20261028_132226_previous_slugs';
-import * as migration_20261028_132300_queue_slug_regeneration_memorias_theme from './20261028_132300_queue_slug_regeneration_memorias_theme';
-import * as migration_20261028_134259_member_pending_email from './20261028_134259_member_pending_email';
-import * as migration_20261028_140000_activate_channels from './20261028_140000_activate_channels';
-import * as migration_20261028_150000_long_jobs_queue from './20261028_150000_long_jobs_queue';
-import * as migration_20261028_151802_submissions from './20261028_151802_submissions';
-import * as migration_20261028_152926_submissions_without_code from './20261028_152926_submissions_without_code';
-import * as migration_20261028_153152_member_has_submissions from './20261028_153152_member_has_submissions';
-import * as migration_20261028_180352_short_embeddings from './20261028_180352_short_embeddings';
+import * as migration_20261025_113022_initial from './20261025_113022_initial'
+import * as migration_20261025_115917_waitlist_purge_task from './20261025_115917_waitlist_purge_task'
+import * as migration_20261025_123044_official_channel_and_review from './20261025_123044_official_channel_and_review'
+import * as migration_20261025_123953_embed_check_task from './20261025_123953_embed_check_task'
+import * as migration_20261025_124459_showcases from './20261025_124459_showcases'
+import * as migration_20261025_175727_crm from './20261025_175727_crm'
+import * as migration_20261025_183142_distributor_type from './20261025_183142_distributor_type'
+import * as migration_20261025_223519_stills from './20261025_223519_stills'
+import * as migration_20261025_231009_still_card_size from './20261025_231009_still_card_size'
+import * as migration_20261025_233011_ranking_global from './20261025_233011_ranking_global'
+import * as migration_20261026_002047_still_text_presentation from './20261026_002047_still_text_presentation'
+import * as migration_20261026_003244_home_page from './20261026_003244_home_page'
+import * as migration_20261026_012129_short_awards from './20261026_012129_short_awards'
+import * as migration_20261026_015039_accounts from './20261026_015039_accounts'
+import * as migration_20261027_081705_channels from './20261027_081705_channels'
+import * as migration_20261027_095840_crm_rights from './20261027_095840_crm_rights'
+import * as migration_20261027_111231_ledger_and_languages from './20261027_111231_ledger_and_languages'
+import * as migration_20261027_112208_ai_review from './20261027_112208_ai_review'
+import * as migration_20261027_174600_channel_min_duration from './20261027_174600_channel_min_duration'
+import * as migration_20261027_183754_license_platform_terms_nc from './20261027_183754_license_platform_terms_nc'
+import * as migration_20261028_083228_member_player_consent from './20261028_083228_member_player_consent'
+import * as migration_20261028_093617_short_genres_themes_audience from './20261028_093617_short_genres_themes_audience'
+import * as migration_20261028_100208_short_production_original_title_awards_review from './20261028_100208_short_production_original_title_awards_review'
+import * as migration_20261028_103200_collections_by_filters_and_sponsored from './20261028_103200_collections_by_filters_and_sponsored'
+import * as migration_20261028_114500_remove_animacion_de_autor from './20261028_114500_remove_animacion_de_autor'
+import * as migration_20261028_132226_previous_slugs from './20261028_132226_previous_slugs'
+import * as migration_20261028_132300_queue_slug_regeneration_memorias_theme from './20261028_132300_queue_slug_regeneration_memorias_theme'
+import * as migration_20261028_134259_member_pending_email from './20261028_134259_member_pending_email'
+import * as migration_20261028_140000_activate_channels from './20261028_140000_activate_channels'
+import * as migration_20261028_150000_long_jobs_queue from './20261028_150000_long_jobs_queue'
+import * as migration_20261028_151802_submissions from './20261028_151802_submissions'
+import * as migration_20261028_152926_submissions_without_code from './20261028_152926_submissions_without_code'
+import * as migration_20261028_153152_member_has_submissions from './20261028_153152_member_has_submissions'
+import * as migration_20261028_180352_short_embeddings from './20261028_180352_short_embeddings'
 import * as migration_20261028_180500_queue_short_embeddings from './20261028_180500_queue_short_embeddings'
 import * as migration_20261028_211800_requeue_short_embeddings from './20261028_211800_requeue_short_embeddings'
 import * as migration_20261028_224500_drop_collection_sponsor_columns from './20261028_224500_drop_collection_sponsor_columns'
-import * as migration_20261028_235500_synopses_and_review_round_5 from './20261028_235500_synopses_and_review_round_5';
+import * as migration_20261028_235500_synopses_and_review_round_5 from './20261028_235500_synopses_and_review_round_5'
+import * as migration_20261029_090000_clean_titles from './20261029_090000_clean_titles'
 
 export const migrations = [
   {
@@ -228,4 +229,9 @@ export const migrations = [
     down: migration_20261028_235500_synopses_and_review_round_5.down,
     name: '20261028_235500_synopses_and_review_round_5',
   },
-];
+  {
+    up: migration_20261029_090000_clean_titles.up,
+    down: migration_20261029_090000_clean_titles.down,
+    name: '20261029_090000_clean_titles',
+  },
+]

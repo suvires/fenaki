@@ -5,7 +5,11 @@ import { slugify } from '../fields/slug.ts'
 const PASS_MODEL = 'claude-code-pass'
 
 /** A slug no other short uses now or used before (a used one still redirects). */
-async function freeSlug(req: PayloadRequest, base: string, shortId: number): Promise<string> {
+export async function freeSlug(
+  req: PayloadRequest,
+  base: string,
+  shortId: number,
+): Promise<string> {
   for (let n = 1; ; n++) {
     const slug = n === 1 ? base : `${base}-${n}`
     const taken = await req.payload.count({
