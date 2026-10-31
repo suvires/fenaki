@@ -7,6 +7,7 @@ import { fetchPlays, umamiConfig, type UmamiConfig } from '../ranking/umami.ts'
 export const RANKING_SIZE = 10
 export const RANKING_DAYS = 7
 const DAY_MS = 24 * 60 * 60 * 1000
+const RANKING_PAGE_SIZE = 1000
 
 export interface RankableShort {
   id: number
@@ -66,23 +67,31 @@ export async function computeRanking(
   const windowStart = windowEnd - RANKING_DAYS * DAY_MS
   const plays = await fetchPlays(config, { startAt: windowStart, endAt: windowEnd }, fetchFn)
 
-  const published = await payload.find({
-    collection: 'shorts',
-    where: { status: { equals: 'published' } },
-    locale: 'all',
-    depth: 0,
-    limit: 0,
-    pagination: false,
-    req,
-  })
-  const ids = rankShorts(
-    plays,
-    published.docs.map((short) => ({
-      id: short.id,
-      slugs: slugsOf(short.slug as Short['slug'] | Record<string, string>),
-      publishedAt: short.publishedAt,
-    })),
-  )
+  // Only the fields the ranking reads, a page at a time: whole documents of the full catalog in
+  // every locale ran the worker out of its 200 MB heap.
+  const shorts: RankableShort[] = []
+  for (let page = 1; ; page++) {
+    const published = await payload.find({
+      collection: 'shorts',
+      where: { status: { equals: 'published' } },
+      select: { slug: true, publishedAt: true },
+      locale: 'all',
+      depth: 0,
+      limit: RANKING_PAGE_SIZE,
+      page,
+      sort: 'id',
+      req,
+    })
+    for (const short of published.docs) {
+      shorts.push({
+        id: short.id,
+        slugs: slugsOf(short.slug as Short['slug'] | Record<string, string>),
+        publishedAt: short.publishedAt,
+      })
+    }
+    if (!published.hasNextPage) break
+  }
+  const ids = rankShorts(plays, shorts)
 
   await payload.updateGlobal({
     slug: 'ranking',
