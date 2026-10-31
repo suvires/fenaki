@@ -343,6 +343,8 @@ resource "cloudflare_zero_trust_access_application" "cms_public" {
   destinations = [
     { type = "public", uri = "cms.${var.domain}/up" },
     { type = "public", uri = "cms.${var.domain}/api/media/file" },
+    # The shorts' images (collection `stills`, public read): the site's pages load them from here.
+    { type = "public", uri = "cms.${var.domain}/api/stills/file" },
   ]
   policies = [{ id = cloudflare_zero_trust_access_policy.everyone[0].id, precedence = 1 }]
 }
