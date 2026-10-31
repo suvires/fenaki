@@ -414,11 +414,11 @@
   "sponsor": {
     "title": "Patrocina FENAKI",
     "eyebrow": "Para organizaciones",
-    "lead": "El mejor cine, en cortos. FENAKI reúne en un solo lugar los cortometrajes que festivales, escuelas, productoras y autores publican en abierto, con la experiencia de una plataforma de streaming.",
+    "lead": "El mejor cine, en cortos. FENAKI reúne en un solo lugar los cortometrajes que festivales, escuelas, productoras y cineastas publican en abierto, con la experiencia de una plataforma de streaming.",
     "pillars": {
       "broad": {
         "title": "Todo en un solo lugar.",
-        "text": "Más de 9.000 cortos de festivales, escuelas, productoras y autores, en un único catálogo."
+        "text": "Miles de cortos de festivales, escuelas, productoras y cineastas, en un único catálogo."
       },
       "useful": {
         "title": "Fácil de explorar.",
@@ -426,14 +426,14 @@
       }
     },
     "audience": {
-      "title": "Para quién",
+      "title": "Quién ve FENAKI",
       "viewers": "Personas que quieren ver buen cine en formato corto, sin suscripción, en cualquier país de habla hispana.",
       "teachers": "Docentes que buscan cortos para usar en clase.",
       "filmmakers": "Cortometrajistas que buscan público después del circuito de festivales."
     },
     "founders": {
-      "title": "Por qué ahora",
-      "text": "FENAKI se construye en público: cada día contamos en redes cómo avanza. Hoy partimos de cero en audiencia, y lo decimos así. A las primeras organizaciones les ofrecemos ser fundadoras del proyecto: aparecer en su lanzamiento, asociar su nombre a una colección o tener su propia sala desde el primer día, y recibir cifras medidas, no estimadas. Por eso el precio de fundador es la mitad del de lista, solo para las tres primeras organizaciones de cada producto."
+      "title": "Por qué FENAKI",
+      "text": "Tu nombre aparece junto a cine que la gente elige ver, no en un anuncio que interrumpe. Cada colección y cada sala forma parte de un catálogo que se explora por tema, género, país y premios,. Lo que contratas se mide con cifras reales, no estimadas."
     },
     "offersTitle": "Dos formas de estar en FENAKI",
     "includes": "Incluye",
@@ -443,7 +443,7 @@
       "title": "Colección patrocinada",
       "description": "Una colección de FENAKI con tu nombre durante un mes, sobre el tema que propongas.",
       "includes": {
-        "header": "Cabecera en la colección y en la portada",
+        "header": "Cabecera en la portada y en la colección durante todo el mes",
         "newsletter": "2 menciones en la newsletter",
         "social": "3 publicaciones en redes",
         "report": "Informe de cifras"
@@ -457,7 +457,7 @@
       "description": "Tu sala permanente en FENAKI: una página con tu nombre, tu identidad y tu selección de cortos.",
       "includes": {
         "page": "Página permanente con tu logo, tu texto y tu web",
-        "launch": "Difusión en el lanzamiento y en la newsletter",
+        "promotion": "Difusión en redes y en la newsletter",
         "report": "Informe de cifras"
       },
       "listPrice": "700 € + IVA",
@@ -465,7 +465,7 @@
     },
     "guarantee": {
       "title": "Garantía",
-      "text": "Garantizamos lo que depende de nosotros: los días en portada, las menciones en la newsletter y las publicaciones en redes incluidas. Si alguno no se cumple, lo compensamos con más presencia. No prometemos visitas: te enseñamos las reales."
+      "text": "Garantizamos lo que depende de nosotros: la cabecera en la portada durante el mes, las menciones en la newsletter y las publicaciones en redes incluidas. Si alguna no se cumple, lo compensamos con más presencia. No prometemos visitas: te enseñamos las reales."
     },
     "figures": {
       "title": "Cifras que puedes comprobar",
@@ -481,7 +481,7 @@
     },
     "contact": {
       "title": "Siguiente paso",
-      "text": "Escríbenos con lo que te interesa y te proponemos una llamada de 20 minutos. Si te encaja, reservamos tu plaza de fundador con un acuerdo de una página y una factura.",
+      "text": "Escríbenos con lo que te interesa y te proponemos una llamada de 20 minutos. Si te encaja, lo cerramos con un acuerdo de una página y una factura.",
       "soon": "Muy pronto tendrás aquí una dirección de contacto."
     },
     "description": "Colecciones patrocinadas y salas propias para festivales, escuelas de cine e instituciones culturales en FENAKI. El mejor cine, en cortos."
