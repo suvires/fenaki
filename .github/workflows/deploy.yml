@@ -112,6 +112,7 @@ jobs:
           BACKUP_S3_SECRET_ACCESS_KEY: ${{ secrets.BACKUP_S3_SECRET_ACCESS_KEY }}
           BACKUP_AGE_RECIPIENT: ${{ secrets.BACKUP_AGE_RECIPIENT }}
           BACKUP_HEARTBEAT_URL: ${{ secrets.BACKUP_HEARTBEAT_URL }}
+          JOBS_HEARTBEAT_URL: ${{ secrets.JOBS_HEARTBEAT_URL }}
         run: |
           case "$COMMAND" in
             rollback)

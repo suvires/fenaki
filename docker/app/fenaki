@@ -39,7 +39,17 @@ case "$1" in
     default=$!
     trap 'kill "$long" "$default" 2>/dev/null' TERM INT
     # Whichever stops first stops the container, and the restart brings both back.
-    while kill -0 "$long" 2>/dev/null && kill -0 "$default" 2>/dev/null; do sleep 5; done
+    # The uptime monitor's heartbeat goes out only once both workers have run for 5 minutes in a
+    # row, then every 5 minutes: a worker that stays down or keeps restarting (a job running it out
+    # of memory on every start) never reaches it, and the monitor alerts.
+    up=0
+    while kill -0 "$long" 2>/dev/null && kill -0 "$default" 2>/dev/null; do
+      sleep 5
+      up=$((up + 5))
+      if [ -n "${JOBS_HEARTBEAT_URL:-}" ] && [ $((up % 300)) -eq 0 ]; then
+        node -e 'fetch(process.env.JOBS_HEARTBEAT_URL, { signal: AbortSignal.timeout(10000) }).catch(() => {})' || true
+      fi
+    done
     kill "$long" "$default" 2>/dev/null
     exit 1
     ;;

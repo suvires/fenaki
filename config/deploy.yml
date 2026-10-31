@@ -60,6 +60,8 @@ x-cms-env: &cms-env
     - ANTHROPIC_API_KEY
     # Optional: embeddings (Voyage AI) of what each short is about, for «Si te ha gustado».
     - VOYAGE_API_KEY
+    # Optional: the uptime monitor's heartbeat for the jobs worker (docker/app/fenaki).
+    - JOBS_HEARTBEAT_URL
 
 servers:
   cms:
