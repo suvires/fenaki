@@ -100,11 +100,10 @@ servers:
     env:
       clear:
         SITE_URL: https://fenaki.tv
-        # `landing` until the public launch, then `catalog` (one deploy; see docs/deploy.md).
-        SITE_MODE: landing
+        # `catalog` since the public launch on 31 Oct 2026; `landing` brings back the pre-launch page.
+        SITE_MODE: catalog
         # The legal texts are published; set true again to show the «Borrador» notice.
         LEGAL_DRAFT: false
-        # ISO 8601, set at the launch (e.g. 2026-11-20T09:00:00+01:00).
         # Empty hides the links that write to it, until the mailbox exists.
         CONTACT_EMAIL: hola@fenaki.tv
         CMS_URL: http://fenaki-cms:3000
