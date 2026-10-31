@@ -37,6 +37,7 @@ import * as migration_20261028_211800_requeue_short_embeddings from './20261028_
 import * as migration_20261028_224500_drop_collection_sponsor_columns from './20261028_224500_drop_collection_sponsor_columns'
 import * as migration_20261028_235500_synopses_and_review_round_5 from './20261028_235500_synopses_and_review_round_5'
 import * as migration_20261029_090000_clean_titles from './20261029_090000_clean_titles'
+import * as migration_20261031_120000_launch_order from './20261031_120000_launch_order'
 
 export const migrations = [
   {
@@ -233,5 +234,10 @@ export const migrations = [
     up: migration_20261029_090000_clean_titles.up,
     down: migration_20261029_090000_clean_titles.down,
     name: '20261029_090000_clean_titles',
+  },
+  {
+    up: migration_20261031_120000_launch_order.up,
+    down: migration_20261031_120000_launch_order.down,
+    name: '20261031_120000_launch_order',
   },
 ]
