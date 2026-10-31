@@ -63,11 +63,14 @@ export function Rail({ title, actionLabel, actionHref, arrows, className, childr
       </header>
       <div className="relative min-w-0">
         {/* As tall as its cards: nothing scrolls or reserves room vertically. The padding, given back
-            by the negative margin, only keeps focus rings and shadows from being clipped. */}
+            by the negative margin, keeps focus rings (4px) from being clipped. On a phone the row
+            also runs to the screen's edges (the page's 16px gutter); from md the gutter is wider,
+            so the row ends at the column, like the titles, the hero and the footer. */}
         <div
           data-rail-track={arrows ? '' : undefined}
           className={cx(
-            'flex gap-4 overflow-x-auto overflow-y-hidden snap-x snap-mandatory scroll-pl-4 -mx-4 px-4 -my-1 py-1 *:snap-start *:flex-none',
+            'flex gap-4 overflow-x-auto overflow-y-hidden snap-x snap-mandatory -my-1 py-1 *:snap-start *:flex-none',
+            '-mx-4 px-4 scroll-pl-4 md:-mx-1 md:px-1 md:scroll-pl-1',
             arrows && '[scrollbar-width:none] [&::-webkit-scrollbar]:hidden',
           )}
         >
