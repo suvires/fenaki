@@ -62,7 +62,13 @@ export async function checkEmbeds(
       or: [{ status: { equals: 'published' } }, { hiddenReason: { exists: true } }],
     },
     // Only what the check reads: with every field, the whole catalog did not fit in the worker.
-    select: { title: true, status: true, still: true, hiddenReason: true },
+    select: {
+      title: true,
+      status: true,
+      still: true,
+      hiddenReason: true,
+      aiReview: { titleInThumbnail: true },
+    },
     depth: 0,
     limit: 0,
     pagination: false,
@@ -328,9 +334,17 @@ async function refreshStills(req: PayloadRequest, ctx: StillsContext) {
         fetchedAt: new Date().toISOString(),
       }
       const existing = provider[0]
+      // A new still takes the AI review's finding that the thumbnail carries the title, so cards
+      // draw none on top: the review usually runs before the first still exists. A refreshed
+      // still keeps what it had (an editor may have changed it).
       const saved = existing
         ? await payload.update({ collection: 'stills', id: existing.id, data, file, req })
-        : await payload.create({ collection: 'stills', data, file, req })
+        : await payload.create({
+            collection: 'stills',
+            data: { ...data, includesTitle: short.aiReview?.titleInThumbnail === true },
+            file,
+            req,
+          })
       if (idOf(short.still) !== saved.id)
         await payload.update({ collection: 'shorts', id: short.id, data: { still: saved.id }, req })
       // More than one provider still would be an orphan: keep the table tidy.
