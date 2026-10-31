@@ -378,8 +378,8 @@
     "sort": {
       "label": "Orden",
       "button": "Orden: {sort}",
-      "newest": "Más recientes",
-      "year": "Por año",
+      "newest": "Últimos añadidos",
+      "year": "Año de producción",
       "shortest": "Más cortos primero"
     },
     "active": "Filtros activos",

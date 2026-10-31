@@ -62,10 +62,10 @@ const meta = {
     },
     sort: {
       label: 'Orden',
-      name: 'Orden: Más recientes',
+      name: 'Orden: Últimos añadidos',
       options: [
-        { label: 'Más recientes', href: '?', selected: true },
-        { label: 'Por año', href: '?sort=year' },
+        { label: 'Últimos añadidos', href: '?', selected: true },
+        { label: 'Año de producción', href: '?sort=year' },
         { label: 'Más cortos primero', href: '?sort=shortest' },
       ],
     },

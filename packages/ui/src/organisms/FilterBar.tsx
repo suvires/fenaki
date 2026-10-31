@@ -18,7 +18,7 @@ export interface FilterBarProps {
   groups: FilterBarGroup[]
   /** The rest, in one «Más filtros» menu: on/off filters first, then the lists. */
   more: { label: string; toggles: FilterBarGroup; groups: FilterBarGroup[] }
-  /** The order of the results: `label` names the list («Orden»), `name` is its button («Orden: Más recientes»). */
+  /** The order of the results: `label` names the list («Orden»), `name` is its button («Orden: Últimos añadidos»). */
   sort: { label: string; name: string; options: FacetOption[] }
   /** The sheet that holds every filter on small screens. */
   sheet: {

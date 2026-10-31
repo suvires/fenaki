@@ -308,8 +308,11 @@ export const Collections: CollectionConfig = {
           required: true,
           defaultValue: 'newest',
           options: options({
-            newest: label('Newest first', 'Más recientes primero'),
-            year: label('By year, newest first', 'Por año, del más reciente'),
+            newest: label('Latest added to FENAKI first', 'Últimos añadidos a FENAKI primero'),
+            year: label(
+              'By year of production, newest first',
+              'Por año de producción, del más reciente',
+            ),
             daily: label('A mix that changes daily', 'Una mezcla que cambia cada día'),
           }),
           admin: { width: '50%' },
