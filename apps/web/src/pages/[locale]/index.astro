@@ -34,7 +34,7 @@ import { PAGE_SIZE } from '../../lib/paging.ts'
 import { previewEnabled, topTen } from '../../lib/ranking.ts'
 import { themeCounts } from '../../lib/search.ts'
 import { siteMode } from '../../lib/services.ts'
-import { THEMES, topicHref, topicTone } from '../../lib/topics.ts'
+import { THEMES, topicHref } from '../../lib/topics.ts'
 import type { CardSource } from '../../lib/catalog.ts'
 
 const locale = localeFrom(Astro.params.locale)
@@ -252,7 +252,6 @@ const otherRails = rails.filter((rail) => rail.key !== 'latest')
     >
       {THEMES.map((theme) => (
         <TopicCard
-          tone={topicTone(theme)}
           title={t(`short.themes.${theme}`)}
           href={topicHref(locale, theme)}
           meta={topicCounts[theme] ? t('browse.count', { count: topicCounts[theme] }) : undefined}
