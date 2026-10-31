@@ -32,6 +32,21 @@ interface List<T> {
   totalDocs: number
 }
 
+/** Every document of a list, a page at a time (the CMS caps each page). */
+async function getAll<T>(
+  path: string,
+  params: Record<string, string | number>,
+  pageSize = 1000,
+): Promise<List<T>> {
+  const docs: T[] = []
+  for (let page = 1; ; page++) {
+    const list = await get<List<T>>(path, { ...params, limit: pageSize, page, sort: 'id' })
+    docs.push(...list.docs)
+    if (list.docs.length < pageSize || docs.length >= list.totalDocs)
+      return { docs, totalDocs: list.totalDocs }
+  }
+}
+
 /** Populates credits (people) and the join field of sources. */
 const SHORT_DEPTH = 1
 
@@ -269,10 +284,9 @@ export async function listShowcases(locale: Locale): Promise<Showcase[]> {
 /** Every published short and person, for the sitemap: slugs and dates only. */
 export async function listSitemapDocs(locale: Locale) {
   const [shorts, collections, sponsored] = await Promise.all([
-    get<List<Pick<Short, 'slug' | 'updatedAt' | 'credits'>>>('shorts', {
+    getAll<Pick<Short, 'slug' | 'updatedAt' | 'credits'>>('shorts', {
       locale,
       depth: 1,
-      limit: 1000,
       'where[status][equals]': 'published',
       'select[slug]': 'true',
       'select[updatedAt]': 'true',
