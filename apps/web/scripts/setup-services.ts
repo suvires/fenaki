@@ -5,7 +5,7 @@
  *   pnpm setup:services      (from the repository root; reads apps/web/.env)
  *
  * listmonk: site URL, sender, SMTP server (Mailpit locally, Amazon SES in production), privacy
- * settings, the two waitlist lists and the confirmation email template.
+ * settings, the two waitlist lists and the confirmation email templates (launch notice and weekly selection).
  * Umami: the website the tracking script reports to, with the id in UMAMI_WEBSITE_ID.
  */
 import { defaultLocale, locales } from '@fenaki/i18n'
@@ -128,23 +128,24 @@ async function configureListmonk(client: Listmonk) {
     log(`listmonk: created the list «${list.name}»`)
   }
 
-  for (const locale of locales) {
-    const name = confirmationTemplateName(locale)
-    const { subject, body } = confirmationEmail(locale)
-    const template: Partial<ListmonkTemplate> & Record<string, unknown> = {
-      name,
-      type: 'tx',
-      subject,
-      body,
+  for (const locale of locales)
+    for (const kind of ['launch', 'weekly'] as const) {
+      const name = confirmationTemplateName(locale, kind)
+      const { subject, body } = confirmationEmail(locale, kind)
+      const template: Partial<ListmonkTemplate> & Record<string, unknown> = {
+        name,
+        type: 'tx',
+        subject,
+        body,
+      }
+      const existing = await client.templateByName(name)
+      if (existing) {
+        await client.request('PUT', `/api/templates/${existing.id}`, { body: template })
+      } else {
+        await client.request('POST', '/api/templates', { body: template })
+      }
+      log(`listmonk: ${existing ? 'updated' : 'created'} the template ${name}`)
     }
-    const existing = await client.templateByName(name)
-    if (existing) {
-      await client.request('PUT', `/api/templates/${existing.id}`, { body: template })
-    } else {
-      await client.request('POST', '/api/templates', { body: template })
-    }
-    log(`listmonk: ${existing ? 'updated' : 'created'} the template ${name}`)
-  }
 }
 
 const DEFAULT_UMAMI_PASSWORD = 'umami'

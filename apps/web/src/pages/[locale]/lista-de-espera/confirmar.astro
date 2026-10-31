@@ -2,7 +2,7 @@
 import { Button, Notice } from '@fenaki/ui'
 import Base from '../../../layouts/Base.astro'
 import { localeFrom, paths, translator } from '../../../lib/i18n.ts'
-import { listmonk } from '../../../lib/services.ts'
+import { listmonk, siteMode } from '../../../lib/services.ts'
 import { formatWeekday } from '@fenaki/i18n'
 import { confirm, NEWSLETTER_SCHEDULE, type ConfirmResult } from '@fenaki/waitlist'
 
@@ -21,15 +21,21 @@ try {
   result = { status: 'failed' }
   Astro.response.status = 503
 }
+const weekday = formatWeekday(NEWSLETTER_SCHEDULE.weekday, locale)
+// Before the launch the landing's form is where to sign up again; after it, the band above the footer.
+const signUpAgain =
+  siteMode === 'landing' ? paths.landingSection(locale, 'waitlist') : paths.newsletter(locale)
 const title =
   result.status === 'confirmed'
-    ? t('waitlist.confirmed.title')
+    ? result.launch
+      ? t('waitlist.confirmed.title')
+      : t('newsletter.confirmed.title')
     : result.status === 'expired'
       ? t('waitlist.expired.title')
       : t('waitlist.title')
 ---
 
-<Base locale={locale} title={title} noindex backdrop>
+<Base locale={locale} title={title} noindex backdrop newsletter={false}>
   {/* The landing page's narrow centred column, so the page reads as its continuation. */}
   <section class="w-full max-w-landing mx-auto grid gap-6 py-8">
     <h1 class="m-0 font-display text-display-l md:text-display-xl uppercase text-balance">
@@ -37,13 +43,15 @@ const title =
     </h1>
     {result.status === 'confirmed' && (
       <>
-        <p class="m-0 text-body-l">{t('waitlist.confirmed.text')}</p>
-        {result.newsletter && (
-          <p class="m-0 text-body-l">
-            {t('waitlist.confirmed.newsletter', {
-              weekday: formatWeekday(NEWSLETTER_SCHEDULE.weekday, locale),
-            })}
-          </p>
+        {result.launch ? (
+          <>
+            <p class="m-0 text-body-l">{t('waitlist.confirmed.text')}</p>
+            {result.newsletter && (
+              <p class="m-0 text-body-l">{t('waitlist.confirmed.newsletter', { weekday })}</p>
+            )}
+          </>
+        ) : (
+          <p class="m-0 text-body-l">{t('newsletter.confirmed.text', { weekday })}</p>
         )}
       </>
     )}
@@ -51,7 +59,7 @@ const title =
       <>
         <p class="m-0 text-body-l">{t('waitlist.expired.text')}</p>
         <div>
-          <Button size="lg" href={paths.landingSection(locale, 'waitlist')}>
+          <Button size="lg" href={signUpAgain}>
             {t('waitlist.expired.back')}
           </Button>
         </div>

@@ -13,6 +13,9 @@ export function translator(locale: Locale = defaultLocale) {
 /** On a short's page, the player starts on arrival: «Ver ahora» was pressed on another page. */
 export const PLAY_PARAM = 'play'
 
+/** The id of the weekly selection's signup band (islands/NewsletterSignup.tsx). */
+export const NEWSLETTER_ANCHOR = 'newsletter'
+
 export const paths = {
   home: (locale: Locale) => `/${locale}/`,
   short: (locale: Locale, slug: string) => `/${locale}/cortos/${slug}`,
@@ -51,6 +54,8 @@ export const paths = {
     `/${locale}/buscar${query ? `?q=${encodeURIComponent(query)}` : ''}`,
   /** A section of the landing page: its waitlist form. */
   landingSection: (locale: Locale, section: 'waitlist') => `/${locale}/#${section}`,
+  /** The weekly selection's signup band, above the footer of every catalog page. */
+  newsletter: (locale: Locale) => `/${locale}/#${NEWSLETTER_ANCHOR}`,
   waitlistConfirm: (locale: Locale) => `/${locale}/lista-de-espera/confirmar`,
   /** Where the waitlist form goes once the confirmation email is on its way. */
   waitlistPending: (locale: Locale) => `/${locale}/lista-de-espera/revisa-tu-email`,

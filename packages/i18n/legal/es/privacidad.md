@@ -1,6 +1,6 @@
 ---
 title: Política de privacidad
-updated: 2026-10-28
+updated: 2026-10-31
 ---
 
 FENAKI trata los mínimos datos posibles. Puedes ver el catálogo sin registrarte, la analítica no usa cookies y los reproductores de YouTube y Vimeo solo se cargan si das tu consentimiento. Esta política explica qué datos tratamos, para qué, durante cuánto tiempo y qué derechos tienes, según el Reglamento (UE) 2016/679 (RGPD) y la Ley Orgánica 3/2018 de Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD).
@@ -26,7 +26,17 @@ FENAKI trata los mínimos datos posibles. Puedes ver el catálogo sin registrart
 | Conservación  | Hasta que te avisemos del lanzamiento o te des de baja. Después guardamos bloqueada solo la prueba de tu consentimiento y de la baja, durante el plazo de prescripción de las posibles responsabilidades |
 | Herramientas  | listmonk, instalado en nuestro propio servidor, y Amazon SES para el envío                                                                                                                               |
 
-### 2.2 Consultas
+### 2.2 Newsletter (selección semanal)
+
+|               |                                                                                                                                                                                                                                                    |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Datos         | Email, idioma, fecha, hora e IP de la suscripción y de su confirmación (doble confirmación) y estado de la suscripción                                                                                                                             |
+| Finalidad     | Enviarte cada semana una selección de cortos del catálogo de FENAKI. Puede incluir la mención de una colección patrocinada, sin que cedamos tus datos a quien la patrocina                                                                         |
+| Base jurídica | Tu consentimiento (art. 6.1.a RGPD y art. 21 LSSI). Puedes retirarlo en cualquier momento con el enlace de baja de cada email                                                                                                                      |
+| Conservación  | Hasta que te des de baja. Si no confirmas la suscripción en 7 días, borramos tu email. Después de la baja guardamos bloqueada solo la prueba de tu consentimiento y de la baja, durante el plazo de prescripción de las posibles responsabilidades |
+| Herramientas  | listmonk, instalado en nuestro propio servidor, y Amazon SES para el envío                                                                                                                                                                         |
+
+### 2.3 Consultas
 
 |               |                                                                                                                                                                                                                                          |
 | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -36,7 +46,7 @@ FENAKI trata los mínimos datos posibles. Puedes ver el catálogo sin registrart
 | Conservación  | El tiempo necesario para atender tu consulta y, después, hasta 12 meses por si hay seguimiento                                                                                                                                           |
 | Herramientas  | Email de OVHcloud                                                                                                                                                                                                                        |
 
-### 2.3 Avisos de retirada de contenidos
+### 2.4 Avisos de retirada de contenidos
 
 |                |                                                                                                                                                                                                                              |
 | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -46,7 +56,7 @@ FENAKI trata los mínimos datos posibles. Puedes ver el catálogo sin registrart
 | Conservación   | 3 años desde el cierre del aviso                                                                                                                                                                                             |
 | Comunicaciones | Podemos comunicar los datos imprescindibles a la persona afectada por el aviso (por ejemplo, el titular del canal del que procede el corto) cuando sea necesario para resolverlo, y a autoridades o juzgados si lo requieren |
 
-### 2.4 Patrocinadores, festivales y escuelas
+### 2.5 Patrocinadores, festivales y escuelas
 
 |               |                                                                                                                                                                                                                                      |
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -55,7 +65,7 @@ FENAKI trata los mínimos datos posibles. Puedes ver el catálogo sin registrart
 | Base jurídica | Interés legítimo para tratar datos de contacto profesionales (art. 6.1.f RGPD y art. 19 LOPDGDD); ejecución del contrato (art. 6.1.b) y obligaciones fiscales (art. 6.1.c) una vez contratado                                        |
 | Conservación  | Contactos sin contrato: hasta que se opongan o, como máximo, 2 años desde el último contacto. Datos de contratos y facturas: 6 años (art. 30 del Código de Comercio) y, a efectos tributarios, el plazo de la Ley General Tributaria |
 
-### 2.5 Cuentas de usuario
+### 2.6 Cuentas de usuario
 
 |               |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -68,14 +78,14 @@ FENAKI trata los mínimos datos posibles. Puedes ver el catálogo sin registrart
 
 Sin cuenta, o antes de iniciar sesión, tu lista y tus valoraciones se guardan solo en tu navegador y no llegan a nuestros servidores; tampoco registramos qué cortos ves ni por dónde vas. Al iniciar sesión, lo que tu navegador había guardado se añade a tu cuenta y se borra del navegador. La excepción son los reproductores que permitiste cargar sin preguntar en ese navegador: no pasan a tu cuenta, porque los elegiste solo para él; con la sesión iniciada vale lo que hayas elegido en tu cuenta. La sesión iniciada usa una cookie técnica (ver la [política de cookies](/es/cookies)).
 
-### 2.6 Analítica (sin cookies)
+### 2.7 Analítica (sin cookies)
 
 Usamos **Umami**, instalado en nuestro propio servidor, para contar visitas, páginas vistas y eventos como «reproducción iniciada». Umami no usa cookies ni guarda tu IP: con la IP y el navegador calcula un identificador anónimo que cambia cada cierto tiempo, y solo obtenemos cifras agregadas, que no permiten identificarte. Podemos compartir esas cifras con patrocinadores.
 
 - Base jurídica: interés legítimo en conocer el uso de FENAKI y mejorarlo (art. 6.1.f RGPD).
 - Conservación: como no permiten identificarte, conservamos las cifras mientras nos sean útiles.
 
-### 2.7 Seguridad y registro de errores
+### 2.8 Seguridad y registro de errores
 
 |               |                                                                                                                                                                                                          |
 | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -84,7 +94,7 @@ Usamos **Umami**, instalado en nuestro propio servidor, para contar visitas, pá
 | Base jurídica | Interés legítimo en la seguridad del servicio (art. 6.1.f RGPD y considerando 49)                                                                                                                        |
 | Conservación  | Registros del servidor: se sobrescriben solos cuando alcanzan un tamaño máximo. Errores en Sentry: 30 días                                                                                               |
 
-### 2.8 Reproductores de YouTube y Vimeo
+### 2.9 Reproductores de YouTube y Vimeo
 
 Los cortos se ven en el reproductor oficial de YouTube (Google) o de Vimeo. No se carga nada de esas empresas hasta que pulsas «reproducir» en un corto y aceptas en la ventana que te explica qué ocurre, salvo que hayas pedido que recordemos tu elección. Al cargarse el reproductor, esas empresas reciben tu dirección IP y datos técnicos de tu navegador, y el reproductor guarda datos en tu navegador (detalle en la [política de cookies](/es/cookies)).
 
@@ -92,7 +102,7 @@ Los cortos se ven en el reproductor oficial de YouTube (Google) o de Vimeo. No s
 - **Responsabilidad:** FENAKI decide insertar el reproductor y por eso es corresponsable con Google o Vimeo de la recogida y transmisión de esos datos (sentencia _Fashion ID_, C-40/17). Lo que esas empresas hagan después con ellos es responsabilidad suya: consulta la [política de privacidad de Google](https://policies.google.com/privacy?hl=es) y la [de Vimeo](https://vimeo.com/privacy).
 - **Si tienes cuenta e iniciaste sesión,** FENAKI lee del reproductor el punto del corto por el que vas para ofrecerte «Seguir viendo» (ver 2.5). Sin sesión no se registra nada.
 
-### 2.9 Envío de cortos («Sube tu corto»)
+### 2.10 Envío de cortos («Sube tu corto»)
 
 |               |                                                                                                                                                                                                              |
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -127,7 +137,7 @@ Google (YouTube) y Vimeo no son encargados de FENAKI: cuando aceptas sus reprodu
 
 Puedes ejercer en cualquier momento tus derechos de acceso, rectificación, supresión, oposición, limitación del tratamiento y portabilidad, y retirar tu consentimiento sin que afecte a lo tratado antes.
 
-**Ejercicio de los derechos.** Puedes ejercerlos por email a hola@fenaki.tv, indicando qué derecho quieres ejercer. Si tenemos dudas razonables sobre tu identidad, podemos pedirte información adicional para confirmarla. Te responderemos en el plazo de un mes, ampliable dos meses más en casos complejos (art. 12 RGPD). Para darte de baja de la lista de espera, puedes usar el enlace incluido en cada email. Si tienes cuenta, puedes descargar tus datos y borrarla directamente desde «Mi cuenta».
+**Ejercicio de los derechos.** Puedes ejercerlos por email a hola@fenaki.tv, indicando qué derecho quieres ejercer. Si tenemos dudas razonables sobre tu identidad, podemos pedirte información adicional para confirmarla. Te responderemos en el plazo de un mes, ampliable dos meses más en casos complejos (art. 12 RGPD). Para darte de baja de la lista de espera o de la newsletter, puedes usar el enlace incluido en cada email. Si tienes cuenta, puedes descargar tus datos y borrarla directamente desde «Mi cuenta».
 
 **Reclamación ante la autoridad.** Si crees que no hemos tratado bien tus datos, puedes reclamar ante la Agencia Española de Protección de Datos (AEPD) en [sedeagpd.gob.es](https://sedeagpd.gob.es). Antes de hacerlo, puedes escribirnos para intentar resolverlo.
 
@@ -137,4 +147,4 @@ Aplicamos medidas técnicas y organizativas adecuadas: conexión cifrada (HTTPS)
 
 ## 8. Modificaciones de esta política
 
-Antes de tratar datos para algo nuevo (por ejemplo, una newsletter, pagos o el envío de cortos por autores), actualizaremos esta política. Publicaremos cada versión con su fecha y, si el cambio es importante, te avisaremos por email si estás en la lista de espera o tienes cuenta.
+Antes de tratar datos para algo nuevo (por ejemplo, pagos), actualizaremos esta política. Publicaremos cada versión con su fecha y, si el cambio es importante, te avisaremos por email si estás en la lista de espera o en la newsletter, o si tienes cuenta.

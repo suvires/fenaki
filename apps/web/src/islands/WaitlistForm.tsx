@@ -2,12 +2,14 @@ import { createTranslator, type Locale } from '@fenaki/i18n'
 import { Button, Notice, TextField } from '@fenaki/ui'
 import { useState, type SubmitEvent } from 'react'
 import { EVENTS } from '../lib/analytics.ts'
-import { checkEmail } from '@fenaki/waitlist'
+import { checkEmail, type SignupKind } from '@fenaki/waitlist'
 import { paths } from '../lib/i18n.ts'
 import { rememberPending } from './WaitlistPending.tsx'
 
 interface WaitlistFormProps {
   locale: Locale
+  /** The landing page's launch notice, or the weekly selection once the catalog is open. */
+  kind?: SignupKind
 }
 
 type State = { kind: 'idle' } | { kind: 'submitting' } | { kind: 'failed' }
@@ -18,12 +20,42 @@ declare global {
   }
 }
 
+const COPY = {
+  launch: {
+    label: 'waitlist.email.label',
+    placeholder: 'waitlist.email.placeholder',
+    submit: 'waitlist.submit',
+    submitting: 'waitlist.submitting',
+    error: {
+      empty: 'waitlist.error.empty',
+      invalid: 'waitlist.error.invalid',
+      server: 'waitlist.error.server',
+    },
+    event: EVENTS.waitlistSignup,
+  },
+  weekly: {
+    label: 'newsletter.email.label',
+    placeholder: 'newsletter.email.placeholder',
+    submit: 'newsletter.submit',
+    submitting: 'newsletter.submitting',
+    error: {
+      empty: 'newsletter.error.empty',
+      invalid: 'newsletter.error.invalid',
+      server: 'newsletter.error.server',
+    },
+    event: EVENTS.newsletterSignup,
+  },
+} as const
+
 /**
- * The waitlist form. Posts to /api/waitlist, which subscribes the address in listmonk with double
- * opt-in, and then goes to the «Revisa tu email» page, which asks the viewer to confirm from their inbox.
+ * The signup form: the launch waitlist or the weekly selection. Posts to /api/waitlist, which
+ * subscribes the address in listmonk with double opt-in, and then goes to the «Revisa tu email»
+ * page, which asks the viewer to confirm from their inbox.
  */
-export function WaitlistForm({ locale }: WaitlistFormProps) {
+export function WaitlistForm({ locale, kind = 'launch' }: WaitlistFormProps) {
   const t = createTranslator(locale)
+  const copy = COPY[kind]
+  const fieldId = kind === 'launch' ? 'waitlist-email' : 'newsletter-email'
   const [state, setState] = useState<State>({ kind: 'idle' })
   const [fieldError, setFieldError] = useState<'empty' | 'invalid' | null>(null)
 
@@ -59,10 +91,10 @@ export function WaitlistForm({ locale }: WaitlistFormProps) {
       return
     }
     setFieldError(null)
-    // Only the launch notice for now: the weekly selection is not offered on the form.
-    const sent = await send(checked.email, false, String(form.get('website') ?? ''))
+    // The launch form offers only the launch notice; the weekly form is only the selection.
+    const sent = await send(checked.email, kind === 'weekly', String(form.get('website') ?? ''))
     if (!sent) return
-    window.umami?.track(EVENTS.waitlistSignup)
+    window.umami?.track(copy.event)
     window.location.assign(paths.waitlistPending(locale))
   }
 
@@ -70,22 +102,22 @@ export function WaitlistForm({ locale }: WaitlistFormProps) {
   return (
     <form className="grid gap-4" noValidate onSubmit={submit}>
       <TextField
-        id="waitlist-email"
+        id={fieldId}
         name="email"
         type="email"
         autoComplete="email"
         inputMode="email"
         required
-        label={t('waitlist.email.label')}
-        placeholder={t('waitlist.email.placeholder')}
+        label={t(copy.label)}
+        placeholder={t(copy.placeholder)}
         // The visible label is a question and the instruction is the placeholder, which goes as you
         // type: the field's name carries both, starting with the visible label (WCAG 2.5.3).
-        aria-label={`${t('waitlist.email.label')} ${t('waitlist.email.placeholder')}`}
-        error={fieldError ? t(`waitlist.error.${fieldError}`) : undefined}
+        aria-label={`${t(copy.label)} ${t(copy.placeholder)}`}
+        error={fieldError ? t(copy.error[fieldError]) : undefined}
         onChange={() => setFieldError(null)}
         action={
           <Button type="submit" size="lg" disabled={submitting} aria-busy={submitting}>
-            {submitting ? t('waitlist.submitting') : t('waitlist.submit')}
+            {submitting ? t(copy.submitting) : t(copy.submit)}
           </Button>
         }
       />
@@ -95,7 +127,7 @@ export function WaitlistForm({ locale }: WaitlistFormProps) {
       </div>
       {state.kind === 'failed' ? (
         <Notice tone="danger" role="alert">
-          {t('waitlist.error.server')}
+          {t(copy.error.server)}
         </Notice>
       ) : null}
     </form>

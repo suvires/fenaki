@@ -9,7 +9,15 @@ import type { Listmonk, ListmonkList, ListmonkSubscriber } from './listmonk.ts'
 /** listmonk list tags: the setup script creates the lists, the web app finds them by tag. */
 export const LIST_TAGS = { launch: 'fenaki-launch', weekly: 'fenaki-weekly' } as const
 
-export const confirmationTemplateName = (locale: Locale) => `fenaki-waitlist-confirm-${locale}`
+/**
+ * What a signup is for: the launch notice (the landing page's form, optionally with the weekly
+ * selection) or only the weekly selection (the newsletter form once the catalog is open). Each has
+ * its own confirmation email.
+ */
+export type SignupKind = 'launch' | 'weekly'
+
+export const confirmationTemplateName = (locale: Locale, kind: SignupKind = 'launch') =>
+  kind === 'launch' ? `fenaki-waitlist-confirm-${locale}` : `fenaki-newsletter-confirm-${locale}`
 
 /**
  * When the weekly selection goes out: Friday morning, Spanish time, ready for the weekend. The
@@ -70,8 +78,10 @@ const sentAt = (subscriber: ListmonkSubscriber) => {
 
 export interface SubscribeInput {
   email: string
-  /** Also the weekly selection, not only the launch notice. */
+  /** The weekly selection: with the launch notice, or on its own when `launch` is false. */
   newsletter: boolean
+  /** The launch notice (default). False once the catalog is open: only the weekly selection. */
+  launch?: boolean
   locale: Locale
   siteUrl: string
   fromEmail?: string
@@ -79,21 +89,26 @@ export interface SubscribeInput {
 }
 
 /**
- * Adds the address to the launch list (and the weekly list if asked) as unconfirmed, then sends
- * the confirmation email. The answer is the same whether the address was new, pending or already
+ * Adds the address to the launch list and/or the weekly list as unconfirmed, then sends the
+ * confirmation email of that kind of signup. The answer is the same whether the address was new, pending or already
  * confirmed, so the form never reveals who is on the list.
  */
 export async function subscribe(client: Listmonk, input: SubscribeInput): Promise<void> {
   const now = input.now ?? Date.now()
   const lists = await waitlistLists(client)
-  const wanted: ListmonkList[] = input.newsletter ? [lists.launch, lists.weekly] : [lists.launch]
+  const launch = input.launch ?? true
+  const wanted: ListmonkList[] = [
+    ...(launch ? [lists.launch] : []),
+    ...(input.newsletter ? [lists.weekly] : []),
+  ]
+  if (wanted.length === 0) throw new Error('A signup needs the launch list or the weekly list')
 
   let subscriber = await client.subscriberByEmail(input.email)
   if (!subscriber) {
     subscriber = await client.createSubscriber({
       email: input.email,
       lists: wanted.map((list) => list.id),
-      attribs: { locale: input.locale, source: 'landing' },
+      attribs: { locale: input.locale, source: launch ? 'landing' : 'newsletter' },
     })
   } else {
     if (subscriber.status === 'blocklisted') return
@@ -114,7 +129,9 @@ export async function subscribe(client: Listmonk, input: SubscribeInput): Promis
   if (!pending) return
   if (now - sentAt(subscriber) < RESEND_INTERVAL_MS) return
 
-  const template = await client.templateByName(confirmationTemplateName(input.locale))
+  const template = await client.templateByName(
+    confirmationTemplateName(input.locale, launch ? 'launch' : 'weekly'),
+  )
   if (!template)
     throw new Error('The confirmation email template is missing: run `pnpm setup:services`')
   await client.updateAttribs(subscriber, {
@@ -134,7 +151,8 @@ export async function subscribe(client: Listmonk, input: SubscribeInput): Promis
   })
 }
 
-export type ConfirmResult = { status: 'confirmed'; newsletter: boolean } | { status: 'expired' }
+export type ConfirmResult =
+  { status: 'confirmed'; launch: boolean; newsletter: boolean } | { status: 'expired' }
 
 /**
  * Confirms the pending waitlist subscriptions of the subscriber with this UUID. Links stop
@@ -163,7 +181,11 @@ export async function confirm(
     pending.map((list) => list.uuid),
     input.clientIp,
   )
-  return { status: 'confirmed', newsletter: pending.some((list) => list.id === lists.weekly.id) }
+  return {
+    status: 'confirmed',
+    launch: pending.some((list) => list.id === lists.launch.id),
+    newsletter: pending.some((list) => list.id === lists.weekly.id),
+  }
 }
 
 /** When the subscriber's current confirmation link stops working. */

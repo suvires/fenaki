@@ -15,6 +15,12 @@ describe('confirmationEmail', () => {
     expect(body).toContain('{{ .Tx.Data.site_url }}privacidad')
     expect(body).not.toMatch(/\{(legalNotice|privacyPolicy|url)\}/)
   })
+  it('has its own copy for the weekly selection', () => {
+    const { subject, body } = confirmationEmail('es', 'weekly')
+    expect(subject).toBe('Confirma tu suscripción a la selección semanal')
+    expect(body).toContain('los viernes por la mañana')
+    expect(body).not.toContain('lanzamiento')
+  })
 })
 
 describe('isHiddenInMode', () => {

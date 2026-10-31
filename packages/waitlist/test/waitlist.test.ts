@@ -30,6 +30,7 @@ const UUID = '83c21589-0190-4785-935f-5b6e9e52b649'
 function fakeListmonk(existing?: ListmonkSubscriber) {
   let subscriber = existing
   const sent: Record<string, string>[] = []
+  const templates: string[] = []
   const confirmed: string[][] = []
   const client = {
     listsByTag: async (tag: string) => [LAUNCH, WEEKLY].filter((l) => l.tags.includes(tag)),
@@ -66,7 +67,10 @@ function fakeListmonk(existing?: ListmonkSubscriber) {
       if (subscriber) subscriber.attribs = attribs
       return subscriber
     },
-    templateByName: async (name: string) => ({ id: 9, name, type: 'tx' }),
+    templateByName: async (name: string) => {
+      templates.push(name)
+      return { id: 9, name, type: 'tx' }
+    },
     sendTransactional: async (message: { data: Record<string, string> }) => {
       sent.push(message.data)
       return true
@@ -87,7 +91,13 @@ function fakeListmonk(existing?: ListmonkSubscriber) {
         if (lists.includes(list.uuid)) list.subscription_status = 'confirmed'
     },
   }
-  return { client: client as unknown as Listmonk, sent, confirmed, get: () => subscriber }
+  return {
+    client: client as unknown as Listmonk,
+    sent,
+    templates,
+    confirmed,
+    get: () => subscriber,
+  }
 }
 
 const input = { email: 'ana@ejemplo.com', locale: 'es' as const, siteUrl: 'https://fenaki.tv' }
@@ -126,6 +136,18 @@ describe('subscribe', () => {
     expect(fake.sent).toHaveLength(2)
   })
 
+  it('subscribes only to the weekly list with its own confirmation email', async () => {
+    const fake = fakeListmonk()
+    await subscribe(fake.client, { ...input, newsletter: true, launch: false, now: NOW })
+    expect(fake.get()?.lists.map((l) => l.id)).toEqual([WEEKLY.id])
+    expect(fake.templates).toEqual(['fenaki-newsletter-confirm-es'])
+    expect(await confirm(fake.client, { subscriberUuid: UUID, now: NOW })).toEqual({
+      status: 'confirmed',
+      launch: false,
+      newsletter: true,
+    })
+  })
+
   it('sends nothing to blocklisted or already confirmed addresses', async () => {
     const fake = fakeListmonk()
     await subscribe(fake.client, { ...input, newsletter: false, now: NOW })
@@ -141,6 +163,7 @@ describe('confirm', () => {
     await subscribe(fake.client, { ...input, newsletter: true, now: NOW })
     expect(await confirm(fake.client, { subscriberUuid: UUID, now: NOW })).toEqual({
       status: 'confirmed',
+      launch: true,
       newsletter: true,
     })
     expect(fake.confirmed).toEqual([[LAUNCH.uuid, WEEKLY.uuid]])

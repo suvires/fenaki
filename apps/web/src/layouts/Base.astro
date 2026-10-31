@@ -6,6 +6,7 @@ import { SiteFooter, SiteHeader, Wordmark } from '@fenaki/ui'
 import catalogShot from '../assets/landing-catalog.webp'
 import { AccountSync } from '../islands/account/AccountSync.tsx'
 import { CardPreview } from '../islands/CardPreview.tsx'
+import { NewsletterSignup } from '../islands/NewsletterSignup.tsx'
 import { loadAccountState } from '../lib/account/data.ts'
 import { paths, translator } from '../lib/i18n.ts'
 import { csp, siteMode, siteUrl, umami } from '../lib/services.ts'
@@ -35,12 +36,18 @@ interface Props {
   ogType?: 'website' | 'video.other' | 'profile'
   /** schema.org structured data. */
   jsonLd?: Record<string, unknown> | Record<string, unknown>[]
+  /**
+   * The weekly selection's signup above the footer (catalog only). Off on the pages of the signup
+   * itself («Revisa tu email», the confirmation).
+   */
+  newsletter?: boolean
 }
 
 const {
   locale,
   glow = false,
   backdrop = false,
+  newsletter = true,
   home = false,
   title,
   description,
@@ -414,6 +421,11 @@ const footerGroups = landing
         )
       }
     </script>
+    {!landing && newsletter && (
+      <div class="w-full mx-auto max-w-page px-4 md:px-8 pt-16">
+        <NewsletterSignup client:visible locale={locale} />
+      </div>
+    )}
     <SiteFooter
       className="w-full mx-auto max-w-page px-4 md:px-8 pb-8"
       label={t('footer.label')}

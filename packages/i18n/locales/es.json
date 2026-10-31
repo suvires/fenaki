@@ -251,6 +251,26 @@
       "back": "Apúntate de nuevo"
     }
   },
+  "newsletter": {
+    "title": "La selección semanal",
+    "text": "Los {weekday} por la mañana, una selección de cortos del catálogo en tu email.",
+    "email": {
+      "label": "Tu email",
+      "placeholder": "Escribe tu email"
+    },
+    "submit": "Suscribirme",
+    "submitting": "Enviando…",
+    "privacy": "FENAKI usará tu email solo para enviarte la selección semanal. Puedes darte de baja desde cualquier email. Más información en la {privacyPolicy}.",
+    "error": {
+      "empty": "Escribe tu email para suscribirte.",
+      "invalid": "Ese email no parece completo. Revisa que tenga @ y un dominio, por ejemplo nombre@ejemplo.com.",
+      "server": "No hemos podido guardar tu email. Vuelve a intentarlo en unos minutos."
+    },
+    "confirmed": {
+      "title": "Suscripción confirmada",
+      "text": "Recibirás la selección semanal los {weekday} por la mañana."
+    }
+  },
   "email": {
     "confirm": {
       "subject": "Confirma tu email para que te avisemos",
@@ -261,6 +281,11 @@
       "fallback": "¿No funciona el botón? Copia este enlace en el navegador: {url}",
       "expiry": "El enlace caduca en 7 días. Si no te has apuntado tú, ignora este email: no volveremos a escribirte.",
       "footer": "Te enviamos este email desde {site}. {privacyPolicy}"
+    },
+    "confirmNewsletter": {
+      "subject": "Confirma tu suscripción a la selección semanal",
+      "preview": "Un clic y recibirás la selección semanal de FENAKI.",
+      "intro": "Recibirás la selección semanal de FENAKI los {weekday} por la mañana."
     }
   },
   "legal": {

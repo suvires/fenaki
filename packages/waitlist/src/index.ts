@@ -23,5 +23,6 @@ export {
   subscribe,
   type ConfirmResult,
   type EmailCheck,
+  type SignupKind,
   type SubscribeInput,
 } from './waitlist.ts'

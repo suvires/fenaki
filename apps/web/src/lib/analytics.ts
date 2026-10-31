@@ -6,6 +6,7 @@ import type { Sponsor } from '@fenaki/cms/types'
 
 export const EVENTS = {
   waitlistSignup: 'waitlist-signup',
+  newsletterSignup: 'newsletter-signup',
   play: 'play',
   sponsorClick: 'sponsor-click',
   share: 'share',

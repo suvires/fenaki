@@ -2,7 +2,7 @@ import { defaultLocale } from '@fenaki/i18n'
 import type { APIRoute } from 'astro'
 import { localeFrom } from '../../lib/i18n.ts'
 import { createRateLimit } from '../../lib/rate-limit.ts'
-import { fromEmail, listmonk, siteUrl } from '../../lib/services.ts'
+import { fromEmail, listmonk, siteMode, siteUrl } from '../../lib/services.ts'
 import { checkEmail, subscribe } from '@fenaki/waitlist'
 
 const allow = createRateLimit(10, 10 * 60 * 1000)
@@ -11,8 +11,10 @@ const json = (body: unknown, status = 200) =>
   Response.json(body, { status, headers: { 'Cache-Control': 'no-store' } })
 
 /**
- * Waitlist signup: subscribes the address in listmonk with double opt-in and sends the
- * confirmation email. Answers the same for new, pending and confirmed addresses.
+ * Signup: subscribes the address in listmonk with double opt-in and sends the confirmation email.
+ * Before the launch (`landing`) it is the waitlist for the launch notice; once the catalog is open
+ * it is only the weekly selection, whatever the form sends. Answers the same for new, pending and
+ * confirmed addresses.
  */
 export const POST: APIRoute = async ({ request, clientAddress }) => {
   const body = (await request.json().catch(() => null)) as Record<string, unknown> | null
@@ -25,9 +27,11 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
   if (!allow(clientAddress)) return json({ error: 'rate_limited' }, 429)
 
   try {
+    const launch = siteMode === 'landing'
     await subscribe(listmonk(), {
       email: checked.email,
-      newsletter: body.newsletter === true,
+      launch,
+      newsletter: launch ? body.newsletter === true : true,
       locale:
         localeFrom(typeof body.locale === 'string' ? body.locale : undefined) ?? defaultLocale,
       siteUrl,
