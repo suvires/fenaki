@@ -13,8 +13,8 @@ describe('createTranslator', () => {
   })
 
   it('selects plural forms with Intl.PluralRules', () => {
-    expect(t('collection.eyebrow', { count: 1 })).toBe('Colección · 1 corto')
-    expect(t('collection.eyebrow', { count: 6 })).toBe('Colección · 6 cortos')
+    expect(t('collection.eyebrow', { count: 1 })).toBe('1 corto')
+    expect(t('collection.eyebrow', { count: 6 })).toBe('6 cortos')
   })
 
   it('formats numeric parameters for the locale', () => {

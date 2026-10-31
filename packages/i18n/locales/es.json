@@ -49,8 +49,8 @@
   },
   "collection": {
     "eyebrow": {
-      "one": "Colección · {count} corto",
-      "other": "Colección · {count} cortos"
+      "one": "{count} corto",
+      "other": "{count} cortos"
     },
     "cta": "Ver la colección",
     "addToList": "Añadir a mi lista",

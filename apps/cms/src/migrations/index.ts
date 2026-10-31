@@ -40,6 +40,7 @@ import * as migration_20261029_090000_clean_titles from './20261029_090000_clean
 import * as migration_20261031_120000_launch_order from './20261031_120000_launch_order'
 import * as migration_20261031_123000_stills_include_title from './20261031_123000_stills_include_title'
 import * as migration_20261031_130000_collection_names from './20261031_130000_collection_names'
+import * as migration_20261031_140000_collection_descriptions from './20261031_140000_collection_descriptions'
 
 export const migrations = [
   {
@@ -251,5 +252,10 @@ export const migrations = [
     up: migration_20261031_130000_collection_names.up,
     down: migration_20261031_130000_collection_names.down,
     name: '20261031_130000_collection_names',
+  },
+  {
+    up: migration_20261031_140000_collection_descriptions.up,
+    down: migration_20261031_140000_collection_descriptions.down,
+    name: '20261031_140000_collection_descriptions',
   },
 ]

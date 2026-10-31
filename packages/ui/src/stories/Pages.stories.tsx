@@ -25,7 +25,7 @@ export const Home: Story = {
         <SearchField label="Buscar cortos" placeholder="Título, director o tema" />
       </div>
       <CollectionHero
-        eyebrow="Colección · 6 cortos"
+        eyebrow="6 cortos"
         title="Imprescindibles del corto español"
         description="Seis cortos que marcaron una época, en los canales de sus autores."
         ctaLabel="Ver la colección"
