@@ -5,7 +5,7 @@ import { localeFrom, paths, translator } from '../../../lib/i18n.ts'
 import { themeCounts } from '../../../lib/search.ts'
 import { collectionPage } from '../../../lib/seo.ts'
 import { siteUrl } from '../../../lib/services.ts'
-import { THEMES, topicHref } from '../../../lib/topics.ts'
+import { THEMES, topicHref, topicTone } from '../../../lib/topics.ts'
 
 const locale = localeFrom(Astro.params.locale)
 if (!locale) return Astro.rewrite('/404')
@@ -15,6 +15,7 @@ const counts = await themeCounts(locale).catch(() => ({}) as Record<string, numb
 const topics = THEMES.map((theme) => ({
   title: t(`short.themes.${theme}`),
   href: topicHref(locale, theme),
+  tone: topicTone(theme),
   count: counts[theme] ?? 0,
 }))
 const jsonLd = collectionPage(siteUrl, {
@@ -39,6 +40,7 @@ const jsonLd = collectionPage(siteUrl, {
       <li>
         <TopicCard
           stretch
+          tone={topic.tone}
           title={topic.title}
           href={topic.href}
           meta={topic.count > 0 ? t('browse.count', { count: topic.count }) : undefined}

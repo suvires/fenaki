@@ -1,5 +1,6 @@
 /** The theme pages (/es/temas/<slug>): one per catalog theme, with a localized slug and text. */
 import type { Locale, MessageKey } from '@fenaki/i18n'
+import type { TopicTone } from '@fenaki/ui'
 import { THEMES, type Theme } from './browse.ts'
 import { paths, translator } from './i18n.ts'
 
@@ -22,3 +23,9 @@ export const topicText = (locale: Locale, theme: Theme) => ({
   title: text(locale, theme, 'title'),
   intro: text(locale, theme, 'intro'),
 })
+
+const TOPIC_TONES: TopicTone[] = ['tungsteno', 'sala', 'plata']
+
+/** Each theme's poster tone, the same on every page; in THEMES order the tones alternate. */
+export const topicTone = (theme: Theme): TopicTone =>
+  TOPIC_TONES[THEMES.indexOf(theme) % TOPIC_TONES.length] ?? 'sala'

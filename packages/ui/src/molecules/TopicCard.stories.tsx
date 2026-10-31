@@ -11,6 +11,8 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Default: Story = {}
+export const Tungsteno: Story = { args: { tone: 'tungsteno' } }
+export const Plata: Story = { args: { tone: 'plata' } }
 export const LongTitle: Story = { args: { title: 'Naturaleza y medio ambiente' } }
 export const Stretched: Story = {
   args: { stretch: true },

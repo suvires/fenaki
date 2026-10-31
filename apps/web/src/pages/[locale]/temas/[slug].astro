@@ -9,7 +9,7 @@ import { pageHref, paginationProps, parsePage } from '../../../lib/paging.ts'
 import { browseShorts, type BrowseResult } from '../../../lib/search.ts'
 import { collectionPage } from '../../../lib/seo.ts'
 import { siteUrl } from '../../../lib/services.ts'
-import { THEMES, topicFromSlug, topicHref, topicText } from '../../../lib/topics.ts'
+import { THEMES, topicFromSlug, topicHref, topicText, topicTone } from '../../../lib/topics.ts'
 
 const locale = localeFrom(Astro.params.locale)
 if (!locale) return Astro.rewrite('/404')
@@ -91,7 +91,11 @@ const jsonLd =
         actionHref={paths.topics(locale)}
       >
         {THEMES.filter((other) => other !== theme).map((other) => (
-          <TopicCard title={t(`short.themes.${other}`)} href={topicHref(locale, other)} />
+          <TopicCard
+            tone={topicTone(other)}
+            title={t(`short.themes.${other}`)}
+            href={topicHref(locale, other)}
+          />
         ))}
       </Rail>
     </>
