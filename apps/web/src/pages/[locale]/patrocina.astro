@@ -50,7 +50,7 @@ const offers = [
     </ul>
   </Prose>
 
-  {/* What there is to buy comes first; who it reaches, the founder price and the rules follow. */}
+  {/* What there is to buy comes first; who it reaches, why FENAKI and the rules follow. */}
   <section class="grid gap-6" aria-labelledby="offers">
     <Prose>
       <h2 id="offers">{t('sponsor.offersTitle')}</h2>
@@ -66,9 +66,7 @@ const offers = [
           includes={offer.includes.map((item) =>
             t(`sponsor.${offer.key}.includes.${item}` as Parameters<typeof t>[0]),
           )}
-          listPrice={t(`sponsor.${offer.key}.listPrice`)}
           price={t(`sponsor.${offer.key}.price`)}
-          priceNote={t('sponsor.founderNote')}
           action={offer.link}
         />
       ))}
@@ -82,8 +80,8 @@ const offers = [
         <li>{t(`sponsor.audience.${key}`)}</li>
       ))}
     </ul>
-    <h2>{t('sponsor.founders.title')}</h2>
-    <p>{t('sponsor.founders.text')}</p>
+    <h2>{t('sponsor.why.title')}</h2>
+    <p>{t('sponsor.why.text')}</p>
     <h2>{t('sponsor.guarantee.title')}</h2>
     <p>{t('sponsor.guarantee.text')}</p>
     <h2>{t('sponsor.figures.title')}</h2>

@@ -10,14 +10,8 @@ const meta = {
     title: 'Sala propia',
     description: 'Una página propia y permanente con tu selección de cortos y tu identidad.',
     includesLabel: 'Incluye',
-    includes: [
-      'Página permanente',
-      'Difusión en el lanzamiento y en la newsletter',
-      'Informe de cifras',
-    ],
-    listPrice: '700 € + IVA',
-    price: '350 € + IVA',
-    priceNote: 'Precio de fundador · tres primeras organizaciones',
+    includes: ['Página permanente', 'Difusión en redes y en la newsletter', 'Informe de cifras'],
+    price: '700 € + IVA',
   },
   decorators: [(Story) => <div className="max-w-(--container-narrow)">{Story()}</div>],
 } satisfies Meta<typeof OfferCard>
@@ -25,10 +19,11 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Founder: Story = {}
+export const Default: Story = {}
 export const WithAction: Story = {
   args: { action: { href: '#', label: 'Salas para festivales y escuelas' } },
 }
-export const ListPriceOnly: Story = {
-  args: { listPrice: undefined, price: '700 € + IVA', priceNote: undefined },
+/** A limited offer: the list price struck through, and a note on who gets it. */
+export const Discounted: Story = {
+  args: { listPrice: '700 € + IVA', price: '560 € + IVA', priceNote: 'Hasta el 31 de diciembre' },
 }

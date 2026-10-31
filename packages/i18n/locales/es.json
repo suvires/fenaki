@@ -431,13 +431,12 @@
       "teachers": "Docentes que buscan cortos para usar en clase.",
       "filmmakers": "Cortometrajistas que buscan público después del circuito de festivales."
     },
-    "founders": {
+    "why": {
       "title": "Por qué FENAKI",
       "text": "Tu nombre aparece junto a cine que la gente elige ver, no en un anuncio que interrumpe. Cada colección y cada sala forma parte de un catálogo que se explora por tema, género, país y premios. Lo que contratas se mide con cifras reales, no estimadas."
     },
     "offersTitle": "Dos formas de estar en FENAKI",
     "includes": "Incluye",
-    "founderNote": "Precio de fundador · tres primeras organizaciones",
     "collection": {
       "audience": "Para marcas e instituciones culturales",
       "title": "Colección patrocinada",
@@ -448,8 +447,7 @@
         "social": "3 publicaciones en redes",
         "report": "Informe de cifras"
       },
-      "listPrice": "500 € + IVA",
-      "price": "250 € + IVA"
+      "price": "500 € + IVA"
     },
     "showcase": {
       "audience": "Para festivales, escuelas de cine e instituciones",
@@ -460,8 +458,7 @@
         "promotion": "Difusión en redes y en la newsletter",
         "report": "Informe de cifras"
       },
-      "listPrice": "700 € + IVA",
-      "price": "350 € + IVA"
+      "price": "700 € + IVA"
     },
     "guarantee": {
       "title": "Garantía",
