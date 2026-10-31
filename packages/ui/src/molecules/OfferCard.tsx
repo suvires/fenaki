@@ -44,7 +44,7 @@ export function OfferCard({
     <article
       id={id}
       aria-labelledby={headingId}
-      className={cx('flex flex-col gap-4 p-6 rounded-sm border border-subtle bg-raised', className)}
+      className={cx('flex flex-col gap-4 p-6 md:p-8 rounded-lg bg-raised', className)}
     >
       <p className="m-0 font-mono text-label uppercase text-accent">{audience}</p>
       <h2 id={headingId} className="m-0 font-display text-title uppercase">
